@@ -1,0 +1,15 @@
+ellipsis()//单行省略
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+
+ellipsisM()//多行省略
+  overflow: hidden
+  text-overflow: ellipsis
+  display: -webkit-box
+  -webkit-box-orient: vertical // -webkit-line-clamp: 2
+
+bgImage($url)  // 创建bg-image($url)函数
+  background: url($url + "@2x.png") no-repeat center center/100% 100%
+  @media(-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3)
+    background: url($url + "@3x.png") no-repeat center center/100% 100%
