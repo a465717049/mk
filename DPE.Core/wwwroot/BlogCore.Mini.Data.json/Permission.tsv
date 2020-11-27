@@ -1,0 +1,204 @@
+[
+  {
+    "Code": "/Permission/Assign",
+    "Name": "分配",
+    "IsButton": false,
+    "IsHide": false,
+    "IskeepAlive": false,
+    "Func": null,
+    "Pid": 1,
+    "Mid": 0,
+    "OrderSort": 0,
+    "Icon": "",
+    "Description": "",
+    "Enabled": true,
+    "CreateId": 0,
+    "CreateBy": "",
+    "CreateTime": "2020-06-09 00:00",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "2020-06-09 00:00",
+    "IsDeleted": false,
+    "PidArr": [
+      0,
+      1
+    ],
+    "PnameArr": [
+      "根节点/",
+      "系统设置/"
+    ],
+    "PCodeArr": [
+    ],
+    "MName": null,
+    "hasChildren": true,
+    "Id": 6
+  },
+  {
+    "Code": "/Permission/Permission",
+    "Name": "菜单",
+    "IsButton": false,
+    "IsHide": false,
+    "IskeepAlive": false,
+    "Func": null,
+    "Pid": 1,
+    "Mid": 0,
+    "OrderSort": 0,
+    "Icon": "",
+    "Description": "",
+    "Enabled": true,
+    "CreateId": 0,
+    "CreateBy": "",
+    "CreateTime": "2020-06-09 00:00",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "2020-06-09 00:00",
+    "IsDeleted": false,
+    "PidArr": [
+      0,
+      1
+    ],
+    "PnameArr": [
+      "根节点/",
+      "系统设置/"
+    ],
+    "PCodeArr": [
+    ],
+    "MName": null,
+    "hasChildren": true,
+    "Id": 5
+  },
+  {
+    "Code": "/Permission/Module",
+    "Name": "接口",
+    "IsButton": false,
+    "IsHide": false,
+    "IskeepAlive": false,
+    "Func": null,
+    "Pid": 1,
+    "Mid": 0,
+    "OrderSort": 0,
+    "Icon": "",
+    "Description": "",
+    "Enabled": true,
+    "CreateId": 0,
+    "CreateBy": "",
+    "CreateTime": "2020-06-09 00:00",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "2020-06-09 00:00",
+    "IsDeleted": false,
+    "PidArr": [
+      0,
+      1
+    ],
+    "PnameArr": [
+      "根节点/",
+      "系统设置/"
+    ],
+    "PCodeArr": [
+    ],
+    "MName": null,
+    "hasChildren": true,
+    "Id": 4
+  },
+  {
+    "Code": "/User/Users",
+    "Name": "用户",
+    "IsButton": false,
+    "IsHide": false,
+    "IskeepAlive": false,
+    "Func": null,
+    "Pid": 1,
+    "Mid": 0,
+    "OrderSort": 0,
+    "Icon": "",
+    "Description": "",
+    "Enabled": true,
+    "CreateId": 0,
+    "CreateBy": "",
+    "CreateTime": "2020-06-09 00:00",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "2020-06-09 00:00",
+    "IsDeleted": false,
+    "PidArr": [
+      0,
+      1
+    ],
+    "PnameArr": [
+      "根节点/",
+      "系统设置/"
+    ],
+    "PCodeArr": [
+    ],
+    "MName": null,
+    "hasChildren": true,
+    "Id": 3
+  },
+  {
+    "Code": "/User/Roles",
+    "Name": "角色",
+    "IsButton": false,
+    "IsHide": false,
+    "IskeepAlive": false,
+    "Func": null,
+    "Pid": 1,
+    "Mid": 0,
+    "OrderSort": 0,
+    "Icon": "",
+    "Description": "",
+    "Enabled": true,
+    "CreateId": 0,
+    "CreateBy": "",
+    "CreateTime": "2020-06-09 00:00",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "2020-06-09 00:00",
+    "IsDeleted": false,
+    "PidArr": [
+      0,
+      1
+    ],
+    "PnameArr": [
+      "根节点/",
+      "系统设置/"
+    ],
+    "PCodeArr": [
+    ],
+    "MName": null,
+    "hasChildren": true,
+    "Id": 2
+  },
+  {
+    "Code": "-",
+    "Name": "系统设置",
+    "IsButton": false,
+    "IsHide": false,
+    "IskeepAlive": false,
+    "Func": null,
+    "Pid": 0,
+    "Mid": 0,
+    "OrderSort": 0,
+    "Icon": "",
+    "Description": "",
+    "Enabled": true,
+    "CreateId": 0,
+    "CreateBy": "",
+    "CreateTime": "2020-06-09 00:00",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "2020-06-09 00:00",
+    "IsDeleted": false,
+    "PidArr": [
+      0
+    ],
+    "PnameArr": [
+      "根节点/"
+    ],
+    "PCodeArr": [
+    ],
+    "MName": null,
+    "hasChildren": true,
+    "Id": 1
+  }
+]

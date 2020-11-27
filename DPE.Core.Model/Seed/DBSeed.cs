@@ -1,0 +1,213 @@
+﻿using DPE.Core.Common;
+using DPE.Core.Common.DB;
+using DPE.Core.Common.Helper;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DPE.Core.Model.Models
+{
+    public class DBSeed
+    {
+        // 这是我的在线demo数据，比较多，且杂乱
+        // gitee 源数据
+        private static string SeedDataFolder = "BlogCore.Data.json/{0}.tsv";
+
+
+        // 这里我把重要的权限数据提出来的精简版，默认一个Admin_Role + 一个管理员用户，
+        // 然后就是菜单+接口+权限分配，注意没有其他博客信息了，下边seeddata 的时候，删掉即可。
+
+        // gitee 源数据
+        private static string SeedDataFolderMini = "BlogCore.Mini.Data.json/{0}.tsv";
+
+
+        /// <summary>
+        /// 异步添加种子数据
+        /// </summary>
+        /// <param name="myContext"></param>
+        /// <param name="WebRootPath"></param>
+        /// <returns></returns>
+        public static async Task SeedAsync(MyContext myContext, string WebRootPath)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(WebRootPath))
+                {
+                    throw new Exception("获取wwwroot路径时，异常！");
+                }
+
+                SeedDataFolder = Path.Combine(WebRootPath, SeedDataFolder);
+                SeedDataFolderMini = Path.Combine(WebRootPath, SeedDataFolderMini);
+
+                Console.WriteLine("************ DPE.Core DataBase Set *****************");
+                Console.WriteLine($"Is multi-DataBase: {Appsettings.app(new string[] { "MutiDBEnabled" })}");
+                Console.WriteLine($"Is CQRS: {Appsettings.app(new string[] { "CQRSEnabled" })}");
+                Console.WriteLine();
+                Console.WriteLine($"Master DB ConId: {MyContext.ConnId}");
+                Console.WriteLine($"Master DB Type: {MyContext.DbType}");
+                Console.WriteLine($"Master DB ConnectString: {MyContext.ConnectionString}");
+                Console.WriteLine();
+                if (Appsettings.app(new string[] { "MutiDBEnabled" }).ObjToBool())
+                {
+                    var slaveIndex = 0;
+                    BaseDBConfig.MutiConnectionString.Item1.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
+                    {
+                        slaveIndex++;
+                        Console.WriteLine($"Slave{slaveIndex} DB ID: {m.ConnId}");
+                        Console.WriteLine($"Slave{slaveIndex} DB Type: {m.DbType}");
+                        Console.WriteLine($"Slave{slaveIndex} DB ConnectString: {m.Connection}");
+                        Console.WriteLine($"--------------------------------------");
+                    });
+                }
+                else if (Appsettings.app(new string[] { "CQRSEnabled" }).ObjToBool())
+                {
+                    var slaveIndex = 0;
+                    BaseDBConfig.MutiConnectionString.Item2.Where(x => x.ConnId != MainDb.CurrentDbConnId).ToList().ForEach(m =>
+                    {
+                        slaveIndex++;
+                        Console.WriteLine($"Slave{slaveIndex} DB ID: {m.ConnId}");
+                        Console.WriteLine($"Slave{slaveIndex} DB Type: {m.DbType}");
+                        Console.WriteLine($"Slave{slaveIndex} DB ConnectString: {m.Connection}");
+                        Console.WriteLine($"--------------------------------------");
+                    });
+                }
+                else
+                {
+                }
+
+                Console.WriteLine();
+                Console.WriteLine($"Create Database(The Db Id:{MyContext.ConnId})...");
+                // 创建数据库
+                myContext.Db.DbMaintenance.CreateDatabase();
+
+                ConsoleHelper.WriteSuccessLine($"Database created successfully!");
+
+                Console.WriteLine("Create Tables...");
+                // 创建表
+                myContext.CreateTableByEntity(false,
+                    typeof(Module),
+                    typeof(ModulePermission),
+                    typeof(Permission),
+                    typeof(Role),
+                    typeof(RoleModulePermission),
+                    typeof(sysUserInfo),
+                    typeof(TasksQz),
+                    typeof(UserRole));
+
+                // 后期单独处理某些表
+                // myContext.Db.CodeFirst.InitTables(typeof(sysUserInfo));
+
+                ConsoleHelper.WriteSuccessLine($"Tables created successfully!");
+                Console.WriteLine();
+
+                if (Appsettings.app(new string[] { "AppSettings", "SeedDBDataEnabled" }).ObjToBool())
+                {
+                    Console.WriteLine($"Seeding database data (The Db Id:{MyContext.ConnId})...");
+
+
+                    #region Module
+                    if (!await myContext.Db.Queryable<Module>().AnyAsync())
+                    {
+                        myContext.GetEntityDB<Module>().InsertRange(JsonHelper.ParseFormByJson<List<Module>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Module"), Encoding.UTF8)));
+                        Console.WriteLine("Table:Module created success!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Table:Module already exists...");
+                    }
+                    #endregion
+
+
+                    #region Permission
+                    if (!await myContext.Db.Queryable<Permission>().AnyAsync())
+                    {
+                        myContext.GetEntityDB<Permission>().InsertRange(JsonHelper.ParseFormByJson<List<Permission>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Permission"), Encoding.UTF8)));
+                        Console.WriteLine("Table:Permission created success!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Table:Permission already exists...");
+                    }
+                    #endregion
+
+
+                    #region Role
+                    if (!await myContext.Db.Queryable<Role>().AnyAsync())
+                    {
+                        myContext.GetEntityDB<Role>().InsertRange(JsonHelper.ParseFormByJson<List<Role>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "Role"), Encoding.UTF8)));
+                        Console.WriteLine("Table:Role created success!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Table:Role already exists...");
+                    }
+                    #endregion
+
+
+                    #region RoleModulePermission
+                    if (!await myContext.Db.Queryable<RoleModulePermission>().AnyAsync())
+                    {
+                        myContext.GetEntityDB<RoleModulePermission>().InsertRange(JsonHelper.ParseFormByJson<List<RoleModulePermission>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "RoleModulePermission"), Encoding.UTF8)));
+                        Console.WriteLine("Table:RoleModulePermission created success!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Table:RoleModulePermission already exists...");
+                    }
+                    #endregion
+
+
+                    #region UserRole
+                    if (!await myContext.Db.Queryable<UserRole>().AnyAsync())
+                    {
+                        myContext.GetEntityDB<UserRole>().InsertRange(JsonHelper.ParseFormByJson<List<UserRole>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "UserRole"), Encoding.UTF8)));
+                        Console.WriteLine("Table:UserRole created success!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Table:UserRole already exists...");
+                    }
+                    #endregion
+
+
+                    #region sysUserInfo
+                    if (!await myContext.Db.Queryable<sysUserInfo>().AnyAsync())
+                    {
+                        myContext.GetEntityDB<sysUserInfo>().InsertRange(JsonHelper.ParseFormByJson<List<sysUserInfo>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "sysUserInfo"), Encoding.UTF8)));
+                        Console.WriteLine("Table:sysUserInfo created success!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Table:sysUserInfo already exists...");
+                    }
+                    #endregion
+
+
+                    #region TasksQz
+                    if (!await myContext.Db.Queryable<TasksQz>().AnyAsync())
+                    {
+                        myContext.GetEntityDB<TasksQz>().InsertRange(JsonHelper.ParseFormByJson<List<TasksQz>>(FileHelper.ReadFile(string.Format(SeedDataFolder, "TasksQz"), Encoding.UTF8)));
+                        Console.WriteLine("Table:TasksQz created success!");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Table:TasksQz already exists...");
+                    }
+                    #endregion
+
+                    ConsoleHelper.WriteSuccessLine($"Done seeding database!");
+                }
+
+                Console.WriteLine();
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+    }
+}

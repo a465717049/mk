@@ -1,0 +1,68 @@
+[
+  {
+    "RoleId": 3,
+    "ModuleId": 0,
+    "PermissionId": 1,
+    "Role": null,
+    "Module": null,
+    "Permission": null,
+    "Id": 1,
+    "CreateTime": "\/Date(1546272000000+0800)\/",
+    "IsDeleted": false
+  },
+  {
+    "RoleId": 3,
+    "ModuleId": 0,
+    "PermissionId": 2,
+    "Role": null,
+    "Module": null,
+    "Permission": null,
+    "Id": 2,
+    "CreateTime": "\/Date(1546272000000+0800)\/",
+    "IsDeleted": false
+  },
+  {
+    "RoleId": 3,
+    "ModuleId": 0,
+    "PermissionId": 3,
+    "Role": null,
+    "Module": null,
+    "Permission": null,
+    "Id": 3,
+    "CreateTime": "\/Date(1546272000000+0800)\/",
+    "IsDeleted": false
+  },
+  {
+    "RoleId": 3,
+    "ModuleId": 0,
+    "PermissionId": 4,
+    "Role": null,
+    "Module": null,
+    "Permission": null,
+    "Id": 4,
+    "CreateTime": "\/Date(1546272000000+0800)\/",
+    "IsDeleted": false
+  },
+  {
+    "RoleId": 3,
+    "ModuleId": 0,
+    "PermissionId": 5,
+    "Role": null,
+    "Module": null,
+    "Permission": null,
+    "Id": 5,
+    "CreateTime": "\/Date(1546272000000+0800)\/",
+    "IsDeleted": false
+  },
+  {
+    "RoleId": 3,
+    "ModuleId": 0,
+    "PermissionId": 6,
+    "Role": null,
+    "Module": null,
+    "Permission": null,
+    "Id": 6,
+    "CreateTime": "\/Date(1546272000000+0800)\/",
+    "IsDeleted": false
+  }
+]

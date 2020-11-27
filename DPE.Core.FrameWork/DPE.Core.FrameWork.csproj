@@ -1,0 +1,74 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="DPE.Core.FrameWork.Entity\DPE.Core.FrameWork.csproj">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DPE.Core.FrameWork.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DPE.Core.FrameWork.Repository\DPE.Core.FrameWork.Repository.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DPE.Core.FrameWork.Repository.cs</LastGenOutput>
+    </None>
+    <None Update="DPE.Core.FrameWork.Entity\DPE.Core.FrameWork.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput></LastGenOutput>
+    </None>
+    <None Update="DPE.Core.FrameWork.IRepository\DPE.Core.FrameWork.IRepository.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DPE.Core.FrameWork.IRepository.cs</LastGenOutput>
+    </None>
+    <None Update="DPE.Core.FrameWork.IServices\DPE.Core.FrameWork.IServices.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DPE.Core.FrameWork.IServices.cs</LastGenOutput>
+    </None>
+    <None Update="DPE.Core.FrameWork.Repository\DPE.Core.FrameWork.Repository.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DPE.Core.FrameWork.Repository.cs</LastGenOutput>
+    </None>
+    <None Update="DPE.Core.FrameWork.Services\DPE.Core.FrameWork.Services.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DPE.Core.FrameWork.Services.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DPE.Core.FrameWork.Repository\DPE.Core.FrameWork.Repository.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DPE.Core.FrameWork.Repository.tt</DependentUpon>
+    </Compile>
+    <Compile Update="DPE.Core.FrameWork.IRepository\DPE.Core.FrameWork.IRepository.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DPE.Core.FrameWork.IRepository.tt</DependentUpon>
+    </Compile>
+    <Compile Update="DPE.Core.FrameWork.IServices\DPE.Core.FrameWork.IServices.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DPE.Core.FrameWork.IServices.tt</DependentUpon>
+    </Compile>
+    <Compile Update="DPE.Core.FrameWork.Repository\DPE.Core.FrameWork.Repository.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DPE.Core.FrameWork.Repository.tt</DependentUpon>
+    </Compile>
+    <Compile Update="DPE.Core.FrameWork.Services\DPE.Core.FrameWork.Services.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DPE.Core.FrameWork.Services.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,1680 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DPE.Core</name>
+    </assembly>
+    <members>
+        <member name="T:DPE.Core.AOP.BlogCacheAOP">
+            <summary>
+            面向切面的缓存使用
+            </summary>
+        </member>
+        <member name="T:DPE.Core.AOP.BlogLogAOP">
+            <summary>
+            拦截器BlogLogAOP 继承IInterceptor接口
+            </summary>
+        </member>
+        <member name="M:DPE.Core.AOP.BlogLogAOP.Intercept(Castle.DynamicProxy.IInvocation)">
+            <summary>
+            实例化IInterceptor唯一方法 
+            </summary>
+            <param name="invocation">包含被拦截方法的信息</param>
+        </member>
+        <member name="T:DPE.Core.AOP.BlogRedisCacheAOP">
+            <summary>
+            面向切面的缓存使用
+            </summary>
+        </member>
+        <member name="T:DPE.Core.AOP.BlogTranAOP">
+            <summary>
+            事务拦截器BlogTranAOP 继承IInterceptor接口
+            </summary>
+        </member>
+        <member name="M:DPE.Core.AOP.BlogTranAOP.Intercept(Castle.DynamicProxy.IInvocation)">
+            <summary>
+            实例化IInterceptor唯一方法 
+            </summary>
+            <param name="invocation">包含被拦截方法的信息</param>
+        </member>
+        <member name="T:DPE.Core.AOP.BlogUserAuditAOP">
+            <summary>
+            面向切面的缓存使用
+            </summary>
+        </member>
+        <member name="M:DPE.Core.AOP.CacheAOPbase.Intercept(Castle.DynamicProxy.IInvocation)">
+            <summary>
+            AOP的拦截方法
+            </summary>
+            <param name="invocation"></param>
+        </member>
+        <member name="M:DPE.Core.AOP.CacheAOPbase.CustomCacheKey(Castle.DynamicProxy.IInvocation)">
+            <summary>
+            自定义缓存的key
+            </summary>
+            <param name="invocation"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.AOP.CacheAOPbase.GetArgumentValue(System.Object)">
+            <summary>
+            object 转 string
+            </summary>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.AOP.RabbitMQClient.PushMessage(System.String,System.Object)">
+            <summary>
+            发布消息
+            </summary>
+            <param name="queue">队列名称</param>
+            <param name="message">消息内容,可以是字符串</param>
+        </member>
+        <member name="M:DPE.Core.AuthHelper.OverWrite.JwtHelper.IssueJwt(DPE.Core.AuthHelper.OverWrite.TokenModelJwt)">
+            <summary>
+            颁发JWT字符串
+            </summary>
+            <param name="tokenModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.AuthHelper.OverWrite.JwtHelper.SerializeJwt(System.String)">
+            <summary>
+            解析
+            </summary>
+            <param name="jwtStr"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.AuthHelper.OverWrite.TokenModelJwt">
+            <summary>
+            令牌
+            </summary>
+        </member>
+        <member name="P:DPE.Core.AuthHelper.OverWrite.TokenModelJwt.Uid">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:DPE.Core.AuthHelper.OverWrite.TokenModelJwt.Role">
+            <summary>
+            角色
+            </summary>
+        </member>
+        <member name="P:DPE.Core.AuthHelper.OverWrite.TokenModelJwt.Work">
+            <summary>
+            职能
+            </summary>
+        </member>
+        <member name="T:DPE.Core.AuthHelper.JwtTokenAuth">
+            <summary>
+            中间件
+            原做为自定义授权中间件
+            先做检查 header token的使用
+            </summary>
+        </member>
+        <member name="F:DPE.Core.AuthHelper.JwtTokenAuth._next">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:DPE.Core.AuthHelper.JwtTokenAuth.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            
+            </summary>
+            <param name="next"></param>
+        </member>
+        <member name="M:DPE.Core.AuthHelper.JwtTokenAuth.Invoke(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            
+            </summary>
+            <param name="httpContext"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.AuthHelper.JwtToken">
+            <summary>
+            JWTToken生成类
+            </summary>
+        </member>
+        <member name="M:DPE.Core.AuthHelper.JwtToken.BuildJwtToken(System.Security.Claims.Claim[],DPE.Core.AuthHelper.PermissionRequirement)">
+            <summary>
+            获取基于JWT的Token
+            </summary>
+            <param name="claims">需要在登陆的时候配置</param>
+            <param name="permissionRequirement">在startup中定义的参数</param>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.AuthHelper.PermissionHandler">
+            <summary>
+            权限授权处理器
+            </summary>
+        </member>
+        <member name="P:DPE.Core.AuthHelper.PermissionHandler.Schemes">
+            <summary>
+            验证方案提供对象
+            </summary>
+        </member>
+        <member name="M:DPE.Core.AuthHelper.PermissionHandler.#ctor(DPE.Core.Common.IRedisCacheManager,Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider,DPE.Core.IServices.IRoleModulePermissionServices,Microsoft.AspNetCore.Http.IHttpContextAccessor)">
+            <summary>
+            构造函数注入
+            </summary>
+            <param name="redisCacheManager"></param>
+            <param name="schemes"></param>
+            <param name="roleModulePermissionServices"></param>
+            <param name="accessor"></param>
+        </member>
+        <member name="T:DPE.Core.AuthHelper.PermissionItem">
+            <summary>
+            用户或角色或其他凭据实体,就像是订单详情一样
+            之前的名字是 Permission
+            </summary>
+        </member>
+        <member name="P:DPE.Core.AuthHelper.PermissionItem.Role">
+            <summary>
+            用户或角色或其他凭据名称
+            </summary>
+        </member>
+        <member name="P:DPE.Core.AuthHelper.PermissionItem.Url">
+            <summary>
+            请求Url
+            </summary>
+        </member>
+        <member name="T:DPE.Core.AuthHelper.PermissionRequirement">
+            <summary>
+            必要参数类，类似一个订单信息
+            继承 IAuthorizationRequirement，用于设计自定义权限处理器PermissionHandler
+            因为AuthorizationHandler 中的泛型参数 TRequirement 必须继承 IAuthorizationRequirement
+            </summary>
+        </member>
+        <member name="P:DPE.Core.AuthHelper.PermissionRequirement.Permissions">
+            <summary>
+            用户权限集合，一个订单包含了很多详情，
+            同理，一个网站的认证发行中，也有很多权限详情(这里是Role和URL的关系)
+            </summary>
+        </member>
+        <member name="P:DPE.Core.AuthHelper.PermissionRequirement.DeniedAction">
+            <summary>
+            无权限action
+            </summary>
+        </member>
+        <member name="P:DPE.Core.AuthHelper.PermissionRequirement.ClaimType">
+            <summary>
+            认证授权类型
+            </summary>
+        </member>
+        <member name="P:DPE.Core.AuthHelper.PermissionRequirement.LoginPath">
+            <summary>
+            请求路径
+            </summary>
+        </member>
+        <member name="P:DPE.Core.AuthHelper.PermissionRequirement.Issuer">
+            <summary>
+            发行人
+            </summary>
+        </member>
+        <member name="P:DPE.Core.AuthHelper.PermissionRequirement.Audience">
+            <summary>
+            订阅人
+            </summary>
+        </member>
+        <member name="P:DPE.Core.AuthHelper.PermissionRequirement.Expiration">
+            <summary>
+            过期时间
+            </summary>
+        </member>
+        <member name="P:DPE.Core.AuthHelper.PermissionRequirement.SigningCredentials">
+            <summary>
+            签名验证
+            </summary>
+        </member>
+        <member name="M:DPE.Core.AuthHelper.PermissionRequirement.#ctor(System.String,System.Collections.Generic.List{DPE.Core.AuthHelper.PermissionItem},System.String,System.String,System.String,Microsoft.IdentityModel.Tokens.SigningCredentials,System.TimeSpan)">
+            <summary>
+            构造
+            </summary>
+            <param name="deniedAction">拒约请求的url</param>
+            <param name="permissions">权限集合</param>
+            <param name="claimType">声明类型</param>
+            <param name="issuer">发行人</param>
+            <param name="audience">订阅人</param>
+            <param name="signingCredentials">签名验证实体</param>
+            <param name="expiration">过期时间</param>
+        </member>
+        <member name="T:DPE.Core.AutoMapper.AutoMapperConfig">
+            <summary>
+            静态全局 AutoMapper 配置文件
+            </summary>
+        </member>
+        <member name="M:DPE.Core.AutoMapper.CustomProfile.#ctor">
+            <summary>
+            配置构造函数，用来创建关系映射
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:DPE.Core.Controllers.ADController" -->
+        <member name="M:DPE.Core.Controllers.ADController.SignIn">
+            <summary>
+            签到
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.BannerController">
+            <summary>
+            Banner 管理【权限】
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.BannerController.GetBanner(System.String)">
+            <summary>
+            滚屏公告
+            </summary>
+            <param name="language">cn en</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.DbFirstController.#ctor(SqlSugar.ISqlSugarClient,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.DbFirstController.GetFrameFiles">
+            <summary>
+            获取 整体框架 文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.DbFirstController.GetFrameFilesByTableNames(System.String[],System.String)">
+            <summary>
+            根据数据库表名 生成整体框架
+            仅针对通过CodeFirst生成表的情况
+            </summary>
+            <param name="ConnID">数据库链接名称</param>
+            <param name="tableNames">需要生成的表名</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.MigrateController.GetRMPMaps">
+            <summary>
+            获取权限部分Map数据
+            生成到tsb文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.MigrateController.SaveDataToDb">
+            <summary>
+            保存数据到数据库
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.DPEActivitiesController">
+            <summary>
+            DPEActivities 管理【权限】
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.DPEActivitiesController.GetDPEActivities(System.String)">
+            <summary>
+            活动列表
+            </summary>
+            <param name="language">cn en</param>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.DPEController">
+            <summary>
+            DPE管理【权限】
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.DPEController.GetDPEEexchange(System.Int32,System.Int32)">
+            <summary>
+            获取DPE数据 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.DPEController.GetBuyDPEHistory(System.Int32,System.Int32)">
+            <summary>
+            获取股票数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.DPEController.GetSerarchApple(System.Int64,System.String)">
+            <summary>
+            获取Apple serarch
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.DPEController.GetBuyDPEList(System.Int64,System.Int32,System.Int32)">
+            <summary>
+            获取排队记录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.DPEProfitController">
+            <summary>
+            DPEProfit 利润计算器【权限】
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.DPEProfitController.SumDPEProfit">
+            <summary>
+            利润计算器
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.DPETaskController">
+            <summary>
+            DPETask管理【权限】
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.DPETaskController.GetDPETask(System.String)">
+            <summary>
+            任务列表  0 不能领取 1 已领取 2 未領取
+            </summary>
+            <param name="language">cn en</param>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.EmailController">
+             <summary>
+            邮箱 银币管理【权限】
+             </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.EmailController.GetEamilList(System.String)">
+            <summary>
+            邮件列表
+            <param name="language">cn en</param>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.EmailController.GetEmailInfo(System.Int32)">
+            <summary>
+            邮件查看
+            </summary>
+            <param name="id">邮件id</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.EmailController.DeleteEmail(System.Int32)">
+            <summary>
+            邮件删除
+            </summary>
+            <param name="id">邮件id</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.EmailController.DeleteEmailAll">
+            <summary>
+            一件邮件删除
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.EPController">
+            <summary>
+            EP 金币 酬金 管理【权限】
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.EPController.GetEPByUid">
+            <summary>
+            获取EP数据根据 uid
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.EPController.GetEPExchange(System.String)">
+            <summary>
+            仓里金币列表记录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.EPController.GetEPGoldExchange">
+            <summary>
+            仓里酬金列表记录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.EPController.EPSell(System.String)">
+            <summary>
+            出售EP
+            </summary>
+            <param name="ePSellParams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.EPController.EPBuy(System.Int64)">
+            <summary>
+            EP购买
+            </summary>
+            <param name="eid">ep id </param>
+            <param name="buyid">购买 id</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.EPController.EPPay(System.Int64)">
+            <summary>
+            EP购买
+            </summary>
+            <param name="eid">ep id </param>
+            <param name="payid">支付 id</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.EPController.GetEPExchangeList(System.Int32,System.Int32,System.Int32,System.String)">
+            <summary>
+            EP記錄
+            </summary>
+            <param name="type"></param>
+            <param name="pageSize">每页显示行数</param>
+            <param name="pageIndex">页索引</param>
+            <param name="cktype">类型查询  ep rp sp dpe  irp  ad manure</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.EPController.GetEPRecordList(System.Int32,System.Int32,System.Int32)">
+            <summary>
+            EP出售记录  1 出售中 2 交易中 4 已支付    8 已完成
+            </summary>
+            <param name="type"></param>
+            <param name="pageSize">每页显示行数</param>
+            <param name="pageIndex">页索引</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.EPController.GetEPUserSell(System.Int32,System.Int32)">
+            <summary>
+            GetEPUserSell
+            </summary>
+            <param name="pageSize">每页显示行数</param>
+            <param name="pageIndex">页索引</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.EPController.TransOtherType(System.String,System.String,System.Decimal,System.String,System.String)">
+            <summary>
+            EP/RP转换成RP/SP
+            </summary>
+            <param name="oType">原类型:EP、RP</param>
+            <param name="dType">目标类型:RP、SP</param>
+            <param name="amount">金额</param>
+            <param name="tpwd"></param>
+            <param name="gcode"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.EPController.TransToUser(System.String,System.Int64,System.String,System.String,System.Decimal)">
+            <summary>
+            EP/RP轉出
+            </summary>
+            <param name="oType">原类型:EP、RP</param>
+            <param name="dType">目标类型:RP、SP</param>
+            <param name="password">密码</param>
+            <param name="amount">金额</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.EPController.EPToEexchange(System.Int64,System.Decimal,System.String,System.String)">
+            <summary>
+            RP转出 
+            </summary>
+            <param name="touid"></param>
+            <param name="amount"></param>
+            <param name="tpwd"></param>
+            <param name="gcode"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.ImgController">
+            <summary>
+            图片管理
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.ImgController.DownImg(Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            下载图片（支持中文字符）
+            </summary>
+            <param name="environment"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ImgController.InsertPicture(Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            上传图片,多文件，可以使用 postman 测试，
+            如果是单文件，可以 参数写 IFormFile file1
+            </summary>
+            <param name="environment"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.IRPController">
+            <summary>
+            IRP管理【权限】
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.IRPController.GetIRPByUid">
+            <summary>
+            获取IRP数据根据 uid
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.LoginController">
+            <summary>
+            登录管理【无权限】
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.LoginController.#ctor(DPE.Core.Common.IRedisCacheManager,DPE.Core.IServices.ISysUserInfoServices,DPE.Core.IServices.IUserRoleServices,DPE.Core.IServices.IRoleServices,DPE.Core.AuthHelper.PermissionRequirement,DPE.Core.IServices.IRoleModulePermissionServices)">
+            <summary>
+            构造函数注入
+            </summary>
+            <param name="sysUserInfoServices"></param>
+            <param name="userRoleServices"></param>
+            <param name="roleServices"></param>
+            <param name="requirement"></param>
+            <param name="roleModulePermissionServices"></param>
+        </member>
+        <member name="M:DPE.Core.Controllers.LoginController.Login(System.String,System.String)">
+            <summary>
+            登錄
+            </summary>
+            <param name="name">用戶名</param>
+            <param name="pass">密碼</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.LoginController.RefreshToken(System.String)">
+            <summary>
+            请求刷新Token（以旧换新）
+            </summary>
+            <param name="token"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.ManureController">
+            <summary>
+            肥料 管理【权限】
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.ManureController.GetManureExchange">
+            <summary>
+            仓里肥料列表记录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ManureController.ApplySow">
+            <summary>
+            请求播种
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ManureController.ApplyFEData">
+            <summary>
+            请求扩建农场数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ManureController.FriendsRefresh">
+            <summary>
+            好友列表刷新
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ManureController.Invitation">
+            <summary>
+            邀请好友
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ManureController.ApplyAppleCountAndPrice">
+            <summary>
+            请求苹果的总数和单价
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ManureController.FriendsFertilizer(System.String,System.Int32)">
+            <summary>
+            好友施肥
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ManureController.GetFriendsList">
+            <summary>
+            好友列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ManureController.ApplySellApple(System.Int64,System.Int32)">
+            <summary>
+            请求出售苹果
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ManureController.SellStock(System.Int64,System.Int32,System.String,System.String)">
+            <summary>
+            出售股票
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ManureController.ApplyPlayLocust">
+            <summary>
+            是否播放蝗虫
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ManureController.ApplyAppleStatus">
+            <summary>
+            请求苹果状态
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ManureController.updateAppleStatus(System.Int32)">
+            <summary>
+            修改苹果状态
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ManureController.ApplyFE">
+            <summary>
+            请求扩建农场
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ManureController.GetAppleRecord">
+            <summary>
+            蘋果生成記錄
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ManureController.GetUserInfoAll">
+            <summary>
+            游戲接口數據整合
+            </summary>
+            <returns>用户信息</returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.ModuleController">
+            <summary>
+            接口管理
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.ModuleController.Get(System.Int32,System.String)">
+            <summary>
+            获取全部接口api
+            </summary>
+            <param name="page"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ModuleController.Post(DPE.Core.Model.Models.Module)">
+            <summary>
+            添加一条接口信息
+            </summary>
+            <param name="module"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ModuleController.Put(DPE.Core.Model.Models.Module)">
+            <summary>
+            更新接口信息
+            </summary>
+            <param name="module"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ModuleController.Delete(System.Int32)">
+            <summary>
+            删除一条接口
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.MonitorController.Server">
+            <summary>
+            服务器配置信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.MonitorController.Get">
+            <summary>
+            SignalR send data
+            </summary>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:DPE.Core.Controllers.FAQController" -->
+        <member name="M:DPE.Core.Controllers.FAQController.GetFAQ">
+            <summary>
+            GetFAQ
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.FAQController.AddFAQ(System.String,System.String)">
+            <summary>
+            AddFAQ
+            </summary>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:DPE.Core.Controllers.IndexDataController" -->
+        <member name="M:DPE.Core.Controllers.IndexDataController.GetIndexData">
+            <summary>
+             首頁數據
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.RelationController.GetFimalyList(System.Int64)">
+            <summary>
+            获取家族賬號清單
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.RelationController.GetFriendsList(System.Int64)">
+            <summary>
+            朋友清單
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.RelationController.GetRelationList(System.Int64)">
+            <summary>
+            朋友關係
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.StockPriceTrendController">
+             StockPriceTrend管理
+        </member>
+        <member name="M:DPE.Core.Controllers.StockPriceTrendController.GetStockPriceTrend">
+            <summary>
+            價格曲綫
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.TradingCenterController">
+             radingCenter 服務中心
+        </member>
+        <member name="M:DPE.Core.Controllers.TradingCenterController.GetTradingCenter">
+            <summary>
+            服務中心
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.WaitedsControllerController">
+             Waiteds 排队
+        </member>
+        <member name="M:DPE.Core.Controllers.WaitedsControllerController.GetWaiteds">
+            <summary>
+            排隊清單
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.NewsController">
+            <summary>
+            News 管理【权限】
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.NewsController.GetNews(System.String)">
+            <summary>
+            公告
+            </summary>
+            <param name="language">cn en</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.NewsController.GetNewsWeb(System.Int32)">
+            <summary>
+            公告
+            </summary>
+            <param name="language">cn en</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.NewsController.GetNewsDeatilWeb(System.Int64)">
+            <summary>
+            公告
+            </summary>
+            <param name="id"></param>
+            <param name="language">cn en</param>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.PermissionController">
+            <summary>
+            菜单管理
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.PermissionController.#ctor(DPE.Core.IServices.IPermissionServices,DPE.Core.IServices.IModuleServices,DPE.Core.IServices.IRoleModulePermissionServices,DPE.Core.IServices.IUserRoleServices,Microsoft.AspNetCore.Http.IHttpContextAccessor,DPE.Core.Common.HttpContextUser.IUser,DPE.Core.AuthHelper.PermissionRequirement)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="permissionServices"></param>
+            <param name="moduleServices"></param>
+            <param name="roleModulePermissionServices"></param>
+            <param name="userRoleServices"></param>
+            <param name="httpContext"></param>
+            <param name="user"></param>
+            <param name="requirement"></param>
+        </member>
+        <member name="M:DPE.Core.Controllers.PermissionController.Get(System.Int32,System.String)">
+            <summary>
+            获取菜单
+            </summary>
+            <param name="page"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.PermissionController.GetTreeTable(System.Int32,System.String)">
+            <summary>
+            查询树形 Table
+            </summary>
+            <param name="f">父节点</param>
+            <param name="key">关键字</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.PermissionController.Post(DPE.Core.Model.Models.Permission)">
+            <summary>
+            添加一个菜单
+            </summary>
+            <param name="permission"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.PermissionController.Assign(DPE.Core.Controllers.AssignView)">
+            <summary>
+            保存菜单权限分配
+            </summary>
+            <param name="assignView"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.PermissionController.GetPermissionTree(System.Int32,System.Boolean)">
+            <summary>
+            获取菜单树
+            </summary>
+            <param name="pid"></param>
+            <param name="needbtn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.PermissionController.GetNavigationBar(System.Int64)">
+            <summary>
+            获取路由树
+            </summary>
+            <param name="uid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.PermissionController.GetPermissionIdByRoleId(System.Int32)">
+            <summary>
+            通过角色获取菜单【无权限】
+            </summary>
+            <param name="rid"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.PermissionController.Put(DPE.Core.Model.Models.Permission)">
+            <summary>
+            更新菜单
+            </summary>
+            <param name="permission"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.PermissionController.Delete(System.Int32)">
+            <summary>
+            删除菜单
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.QuestionController">
+            <summary>
+            News 管理【权限】
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.QuestionController.GetMyQuestion">
+            <summary>
+            获取我的问题
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.RegisterController">
+            <summary>
+            注册
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.RegisterController.#ctor(DPE.Core.IServices.ISysUserInfoServices)">
+            <summary>
+            构造函数注入
+            </summary>
+            <param name="sysUserInfoServices"></param>
+        </member>
+        <member name="M:DPE.Core.Controllers.RegisterController.Register(System.String,System.String,System.String)">
+            <summary>
+            注册
+            </summary>
+            <param name="name">用戶名</param>
+            <param name="pass">密碼</param>
+            <param name="code">邀請碼</param>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.RoleController">
+            <summary>
+            角色管理
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.RoleController.Get(System.Int32,System.String)">
+            <summary>
+            获取全部角色
+            </summary>
+            <param name="page"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.RoleController.Post(DPE.Core.Model.Models.Role)">
+            <summary>
+            添加角色
+            </summary>
+            <param name="role"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.RoleController.Put(DPE.Core.Model.Models.Role)">
+            <summary>
+            更新角色
+            </summary>
+            <param name="role"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.RoleController.Delete(System.Int32)">
+            <summary>
+            删除角色
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.RPController">
+            <summary>
+            RP管理【权限】
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.RPController.GetRPEexchange">
+            <summary>
+            获取RP数据 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.RPController.RPToEexchange(System.Int64,System.Decimal,System.String,System.String)">
+            <summary>
+            RP转出 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.ShopListController">
+            <summary>
+            Shop 商店管理【无权限】
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.ShopListController.GetShopList(System.String)">
+            <summary>
+            商店列表 商品清單
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ShopListController.GetUserGoodsList(System.String)">
+            <summary>
+            仓里商品订单列表记录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ShopListController.BuyGoods(System.Int64,System.String,System.String,System.String)">
+            <summary>
+            购买商品 商品購買
+            </summary>
+            <param name="id">id</param>
+            <param name="name">姓名</param>
+            <param name="iphone">手机号</param>
+            <param name="source">地址</param> 
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ShopListController.GetShopDeatilList(System.Int64)">
+            <summary>
+            商品明細
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.ShopListController.GetShopDeatilLike(System.String)">
+            <summary>
+            商品模糊查询
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.SPController">
+            <summary>
+            SP 银币管理【权限】
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.SPController.GetSPInfo">
+            <summary>
+            获取SP数据根据 uid
+            【无权限】
+            </summary>
+            <param name="uid">uid</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.SPController.GetSPExchange(System.String)">
+            <summary>
+            仓里银币列表记录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.SPController.GetSplitRecords(System.Int64)">
+            <summary>
+            获取DPE数据 
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.TasksQzController.Get(System.Int32,System.String)">
+            <summary>
+            分页获取
+            </summary>
+            <param name="page"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.TasksQzController.Post(DPE.Core.Model.Models.TasksQz)">
+            <summary>
+            添加计划任务
+            </summary>
+            <param name="tasksQz"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.TasksQzController.Put(DPE.Core.Model.Models.TasksQz)">
+            <summary>
+            修改计划任务
+            </summary>
+            <param name="tasksQz"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.TasksQzController.StartJob(System.Int32)">
+            <summary>
+            启动计划任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.TasksQzController.StopJob(System.Int32)">
+            <summary>
+            停止一个计划任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>        
+        </member>
+        <member name="M:DPE.Core.Controllers.TasksQzController.ReCovery(System.Int32)">
+            <summary>
+            重启一个计划任务
+            </summary>
+            <param name="jobId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.UpdateController">
+             <summary>
+            邮箱 银币管理【权限】D:\API\DPE\DPE.Core\AuthHelper\Policys\PermissionItem.cs
+             </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.UpdateController.getVerificationCode">
+            <summary>
+            获取用户总收益
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.UserActivitiesController">
+            <summary>
+            UserActivities活动报名 管理【权限】
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserActivitiesController.GetUserActivities(System.Int32)">
+            <summary>
+            活动报名
+            </summary>
+            <param name="id">活动id // 0 没有报名 1 已报名</param>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.UserController">
+            <summary>
+            用户管理
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.#ctor(DPE.Core.IRepository.UnitOfWork.IUnitOfWork,DPE.Core.IServices.ISysUserInfoServices,DPE.Core.IServices.IUserRoleServices,DPE.Core.IServices.IRoleServices,DPE.Core.Common.HttpContextUser.IUser,Microsoft.Extensions.Logging.ILogger{DPE.Core.Controllers.UserController},DPE.Core.IServices.IUserInfoServices,DPE.Core.IServices.IQuestionServices,DPE.Core.IServices.IAnswerServices,DPE.Core.IServices.IUserFeedbackServices,DPE.Core.IServices.IAdminReplyServices,DPE.Core.IServices.IDisposeFeedbackServices,DPE.Core.IServices.IAnswerServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="unitOfWork"></param>
+            <param name="sysUserInfoServices"></param>
+            <param name="userRoleServices"></param>
+            <param name="roleServices"></param>
+            <param name="user"></param>
+            <param name="logger"></param>
+            <param name="userInfoServices"></param>
+            <param name="iquestionservices"></param>
+            <param name="ianswerservices"></param>
+            <param name="iuserfeedbackservices"></param>
+            <param name="iadminreplyservices"></param>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.Get(System.Int32,System.String)">
+            <summary>
+            获取全部用户
+            </summary>
+            <param name="page"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.GetInfoByToken(System.String)">
+            <summary>
+            获取用户详情根据token
+            【无权限】
+            </summary>
+            <param name="token">令牌</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.Post(DPE.Core.Model.Models.sysUserInfo)">
+            <summary>
+            添加一个用户
+            </summary>
+            <param name="sysUserInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.Put(DPE.Core.Model.Models.sysUserInfo)">
+            <summary>
+            更新用户与角色
+            </summary>
+            <param name="sysUserInfo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.Delete(System.Int32)">
+            <summary>
+            删除用户
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.SetUserSex(System.Int32)">
+            <summary>
+            设置男女
+            【无权限】
+            </summary>
+            <param name="sex"> 0 男 1 女</param>
+            <returns>设置男女</returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.SetUserName(System.String)">
+            <summary>
+             设置名字
+            【无权限】
+            </summary>
+            <param name="nickname">名字</param>
+            <returns>设置名字</returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.SetUserlocation(System.String,System.String)">
+            <summary>
+            设置金币地址 設置錢包地址
+            【无权限】
+            </summary>
+            <param name="uid">uid</param>
+            <param name="location">金币地址</param>
+            <returns>设置金币地址</returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.SetUseruStatus">
+            <summary>
+            设置农场主
+            【无权限】
+            </summary>
+            <returns>设置农场主</returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.Resetpwd(System.String,System.String)">
+            <summary>
+            修改密码
+            【无权限】
+            </summary>
+            <param name="password">原密碼</param>
+            <param name="new_password">新密碼</param>
+            <returns>修改密码</returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.SetUseridcard(System.String,System.String)">
+            <summary>
+            实名认证
+            【无权限】
+            </summary>
+            <param name="name">姓名</param>
+            <param name="ide">身份证号</param>
+            <returns>实名认证</returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.UpdatePassword(System.String,System.Int32,System.String,System.Int32,System.String,System.String)">
+            <summary>
+            修改密码
+            </summary>
+            <param name="password"></param>
+            <param name="new_password"></param>
+            <param name="qid"></param>
+            <param name="qanswer"></param>
+            <param name="idcard"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.GetQuestion">
+            <summary>
+            获取所有密保问题
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.DeleteQuestion(System.Int32)">
+            <summary>
+            删除密保问题
+            </summary>
+            <param name="id">问题id</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.AddQuestion(System.String,System.String)">
+            <summary>
+            新增一条密保问题
+            </summary>
+            <param name="Question_CN">问题的中文描述</param>
+            <param name="Question_EN">问题的英文描述</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.AddOrUpdateAnswer(System.Int32,System.String)">
+            <summary>
+            新增或修改一条用户问题及答案
+            </summary>
+            <param name="qID">问题id</param>
+            <param name="answer">答案</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.DeleteAnswer(System.Int32)">
+            <summary>
+            删除一条用户问题
+            </summary>
+            <param name="qID">问题id</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.GetAnswer(System.Int32)">
+            <summary>
+            获取一条用户问题
+            </summary>
+            <param name="qID">问题id</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.CheckAnswer(System.Int32,System.String)">
+            <summary>
+            检查密保问题答案是否正确
+            </summary>
+            <param name="qID">问题id</param>
+            <param name="answer">用户所填用户问题答案</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.AddUserFeedBack(System.String,System.String)">
+            <summary>
+            新增一条用户反馈
+            </summary>
+            <param name="content">反馈内容</param>
+            <param name="imgUrl">图片地址(如果有)</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.UpdateUserFeedBack(System.Int32,System.String,System.String)">
+            <summary>
+            修改用户反馈
+            </summary>
+            <param name="ufbId">反馈问题ID</param>
+            <param name="content">反馈内容</param>
+            <param name="imgUrl">图片地址(如果有)</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.DeleteUserFeedBack(System.Int32)">
+            <summary>
+            删除用户反馈
+            </summary>
+            <param name="ufbId">反馈问题ID</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.GetUserFeedBack">
+            <summary>
+            获取用户的反馈问题
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.AddAdminReply(System.Int32,System.String)">
+            <summary>
+            新增一条管理员回复
+            </summary>
+            <param name="content">反馈内容</param>
+            <param name="ufbId">反馈问题id</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.GetAdminReply(System.Int32)">
+            <summary>
+            获取管理员的回复
+            </summary>
+            <param name="ufdId">用户反馈问题的id</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.UpdateHeadImage(System.String)">
+            <summary>
+            修改用户头像
+            </summary>
+            <param name="uHeadImgUrl">头像url</param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserController.getMessgeToken">
+            <summary>
+            獲取聊天token及客服ID
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.UserInfoController">
+            <summary>
+            用户信息
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserInfoController.#ctor(DPE.Core.IServices.IEPServices,DPE.Core.IServices.IUserInfoServices,DPE.Core.IServices.IEPexchangeServices,DPE.Core.IServices.ISPexchangeServices,DPE.Core.AuthHelper.PermissionRequirement,DPE.Core.Common.HttpContextUser.IUser)">
+            <summary>
+            构造函数注入
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserInfoController.GetUserInfo">
+            <summary>
+            获取用户信息
+            </summary>
+            <returns>用户信息</returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserInfoController.checkEPUser(System.Int64,System.String)">
+            <summary>
+            获取EP数据根据 uid
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserInfoController.checkUser(System.Int64)">
+            <summary>
+            获取EP数据根据 uid
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserInfoController.GetShouru">
+            <summary>
+            获取用户总收益
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Controllers.UserRoleController">
+            <summary>
+            用户角色关系
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserRoleController.#ctor(DPE.Core.IServices.ISysUserInfoServices,DPE.Core.IServices.IUserRoleServices,DPE.Core.IServices.IRoleServices)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="sysUserInfoServices"></param>
+            <param name="userRoleServices"></param>
+            <param name="roleServices"></param>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserRoleController.AddUser(System.String,System.String)">
+            <summary>
+            新建用户
+            </summary>
+            <param name="loginName"></param>
+            <param name="loginPwd"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserRoleController.AddRole(System.String)">
+            <summary>
+            新建Role
+            </summary>
+            <param name="roleName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Controllers.UserRoleController.AddUserRole(System.Int64,System.Int32)">
+            <summary>
+            新建用户角色关系
+            </summary>
+            <param name="uid"></param>
+            <param name="rid"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Extensions.AppConfigSetup">
+            <summary>
+            Cors 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Extensions.AuthorizationSetup">
+            <summary>
+            Db 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Extensions.Authorization_Ids4Setup">
+            <summary>
+            权限 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Extensions.AutoMapperSetup">
+            <summary>
+            Automapper 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Extensions.CorsSetup">
+            <summary>
+            Cors 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Extensions.DbSetup">
+            <summary>
+            Db 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Extensions.HttpContextSetup">
+            <summary>
+            Db 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Extensions.IpPolicyRateLimitSetup">
+            <summary>
+            Cors 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Extensions.JobSetup">
+            <summary>
+            Cors 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Extensions.MemoryCacheSetup">
+            <summary>
+            Cors 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Extensions.MiniProfilerSetup">
+            <summary>
+            MiniProfiler 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Extensions.SqlsugarSetup">
+            <summary>
+            SqlSugar 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Extensions.SwaggerSetup">
+            <summary>
+            Swagger 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Extensions.WebApiClientSetup">
+            <summary>
+            WebApiClientSetup 启动服务
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Extensions.WebApiClientSetup.AddHttpApi(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            注册WebApiClient接口
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="T:DPE.Core.Extensions.AllServicesMildd">
+            <summary>
+            Cors 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Extensions.QuartzJobMildd">
+            <summary>
+            Quartz 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Extensions.SeedDataMildd">
+            <summary>
+            Cors 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Extensions.SwaggerMildd">
+            <summary>
+            Cors 启动服务
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Filter.GlobalRouteAuthorizeConvention">
+            <summary>
+            Summary:全局路由权限公约
+            Remarks:目的是针对不同的路由，采用不同的授权过滤器
+            如果 controller 上不加 [Authorize] 特性，默认都是 Permission 策略
+            否则，如果想特例其他授权机制的话，需要在 controller 上带上  [Authorize]，然后再action上自定义授权即可，比如 [Authorize(Roles = "Admin")]
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Filter.GlobalAuthorizeFilter">
+            <summary>
+            全局权限过滤器【无效】
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Filter.GlobalExceptionsFilter">
+            <summary>
+            全局异常错误日志
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Filter.GlobalExceptionsFilter.WriteLog(System.String,System.Exception)">
+            <summary>
+            自定义返回格式
+            </summary>
+            <param name="throwMsg"></param>
+            <param name="ex"></param>
+            <returns></returns>
+        </member>
+        <member name="P:DPE.Core.Filter.JsonErrorResponse.Message">
+            <summary>
+            生产环境的消息
+            </summary>
+        </member>
+        <member name="P:DPE.Core.Filter.JsonErrorResponse.DevelopmentMessage">
+            <summary>
+            开发环境的消息
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Filter.GlobalRoutePrefixFilter">
+            <summary>
+            全局路由前缀公约
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Middlewares.IPLogMildd">
+            <summary>
+            中间件
+            记录IP请求数据
+            </summary>
+        </member>
+        <member name="F:DPE.Core.Middlewares.IPLogMildd._next">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Middlewares.IPLogMildd.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            
+            </summary>
+            <param name="next"></param>
+        </member>
+        <member name="M:DPE.Core.Middlewares.MiddlewareHelpers.UseJwtTokenAuth(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            自定义授权中间件
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Middlewares.MiddlewareHelpers.UseReuestResponseLog(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            请求响应中间件
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Middlewares.MiddlewareHelpers.UseSignalRSendMildd(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            SignalR中间件
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Middlewares.MiddlewareHelpers.UseExceptionHandlerMidd(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            异常处理中间件
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="M:DPE.Core.Middlewares.MiddlewareHelpers.UseIPLogMildd(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            IP请求中间件
+            </summary>
+            <param name="app"></param>
+            <returns></returns>
+        </member>
+        <member name="T:DPE.Core.Middlewares.RequRespLogMildd">
+            <summary>
+            中间件
+            记录请求和响应数据
+            </summary>
+        </member>
+        <member name="F:DPE.Core.Middlewares.RequRespLogMildd._next">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Middlewares.RequRespLogMildd.#ctor(Microsoft.AspNetCore.Http.RequestDelegate)">
+            <summary>
+            
+            </summary>
+            <param name="next"></param>
+        </member>
+        <member name="T:DPE.Core.Middlewares.SeedDbDataMildd">
+            <summary>
+            中间件
+            记录IP请求数据
+            </summary>
+        </member>
+        <member name="F:DPE.Core.Middlewares.SeedDbDataMildd._next">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Middlewares.SeedDbDataMildd.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,DPE.Core.Model.Models.MyContext,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            
+            </summary>
+            <param name="next"></param>
+            <param name="myContext"></param>
+            <param name="env"></param>
+        </member>
+        <member name="T:DPE.Core.Middlewares.SignalRSendMildd">
+            <summary>
+            中间件
+            记录请求和响应数据
+            </summary>
+        </member>
+        <member name="F:DPE.Core.Middlewares.SignalRSendMildd._next">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:DPE.Core.Middlewares.SignalRSendMildd.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,Microsoft.AspNetCore.SignalR.IHubContext{DPE.Core.Hubs.ChatHub})">
+            <summary>
+            
+            </summary>
+            <param name="next"></param>
+            <param name="hubContext"></param>
+        </member>
+        <member name="T:DPE.Core.SwaggerHelper.CustomApiVersion">
+            <summary>
+            自定义版本
+            </summary>
+        </member>
+        <member name="T:DPE.Core.SwaggerHelper.CustomApiVersion.ApiVersions">
+            <summary>
+            Api接口版本 自定义
+            </summary>
+        </member>
+        <member name="F:DPE.Core.SwaggerHelper.CustomApiVersion.ApiVersions.V1">
+            <summary>
+            V1 版本
+            </summary>
+        </member>
+        <member name="F:DPE.Core.SwaggerHelper.CustomApiVersion.ApiVersions.V2">
+            <summary>
+            V2 版本
+            </summary>
+        </member>
+        <member name="T:DPE.Core.SwaggerHelper.CustomRouteAttribute">
+            <summary>
+            自定义路由 /api/{version}/[controler]/[action]
+            </summary>
+        </member>
+        <member name="P:DPE.Core.SwaggerHelper.CustomRouteAttribute.GroupName">
+            <summary>
+            分组名称,是来实现接口 IApiDescriptionGroupNameProvider
+            </summary>
+        </member>
+        <member name="M:DPE.Core.SwaggerHelper.CustomRouteAttribute.#ctor(System.String)">
+            <summary>
+            自定义路由构造函数，继承基类路由
+            </summary>
+            <param name="actionName"></param>
+        </member>
+        <member name="M:DPE.Core.SwaggerHelper.CustomRouteAttribute.#ctor(DPE.Core.SwaggerHelper.CustomApiVersion.ApiVersions,System.String)">
+            <summary>
+            自定义版本+路由构造函数，继承基类路由
+            </summary>
+            <param name="actionName"></param>
+            <param name="version"></param>
+        </member>
+    </members>
+</doc>

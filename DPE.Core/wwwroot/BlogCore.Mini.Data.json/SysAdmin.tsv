@@ -1,0 +1,74 @@
+[
+  {
+    "uID": 3,
+    "uLoginName": "ServerAdmin",
+    "uLoginPWD": "95cd7a5e8e9a622797c0977c95dce715",
+    "uRealName": "ServerAdmin",
+    "uStatus": 0,
+    "uRemark": "",
+    "uCreateTime": "2020-06-09 12:19",
+    "uUpdateTime": "2020-06-09 12:19",
+    "uLastErrTime": "2020-06-09 12:19",
+    "uErrorCount": 0,
+    "name": "",
+    "sex": 0,
+    "age": 17,
+    "birth": "2020-06-24 00:00",
+    "addr": "",
+    "tdIsDelete": false,
+    "RIDs": [
+      3
+    ],
+    "RoleNames": [
+      "Server"
+    ]
+  },
+  {
+    "uID": 2,
+    "uLoginName": "PaymentUser",
+    "uLoginPWD": "28c8fc7dcd2d8a9114bcda88f987f8c6",
+    "uRealName": "PaymentUser",
+    "uStatus": 0,
+    "uRemark": "",
+    "uCreateTime": "2020-06-09 12:18",
+    "uUpdateTime": "2020-06-09 12:18",
+    "uLastErrTime": "2020-06-09 12:18",
+    "uErrorCount": 0,
+    "name": "",
+    "sex": 1,
+    "age": 20,
+    "birth": "2020-06-16 00:00",
+    "addr": "",
+    "tdIsDelete": false,
+    "RIDs": [
+      2
+    ],
+    "RoleNames": [
+      "Payment"
+    ]
+  },
+  {
+    "uID": 1,
+    "uLoginName": "SystemUser",
+    "uLoginPWD": "A8891ABB4EBDCF6B6B978E86E7CE5C22",
+    "uRealName": "SystemUser",
+    "uStatus": 0,
+    "uRemark": null,
+    "uCreateTime": "2020-06-08 22:09",
+    "uUpdateTime": "2020-06-08 22:09",
+    "uLastErrTime": "2020-06-08 22:09",
+    "uErrorCount": 0,
+    "name": null,
+    "sex": 0,
+    "age": 20,
+    "birth": "2020-06-09 00:00",
+    "addr": null,
+    "tdIsDelete": false,
+    "RIDs": [
+      1
+    ],
+    "RoleNames": [
+      "System"
+    ]
+  }
+]

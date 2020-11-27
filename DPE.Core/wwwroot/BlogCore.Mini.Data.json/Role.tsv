@@ -1,0 +1,44 @@
+[
+  {
+    "IsDeleted": false,
+    "Name": "Server",
+    "Description": "服务中心",
+    "OrderSort": 1,
+    "Enabled": true,
+    "CreateId": 0,
+    "CreateBy": "",
+    "CreateTime": "2020-06-09 12:15",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "2020-06-09 12:15",
+    "Id": 3
+  },
+  {
+    "IsDeleted": false,
+    "Name": "Payment",
+    "Description": "付费用户",
+    "OrderSort": 1,
+    "Enabled": true,
+    "CreateId": 0,
+    "CreateBy": "",
+    "CreateTime": "2020-06-09 12:14",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "2020-06-09 12:14",
+    "Id": 2
+  },
+  {
+    "IsDeleted": false,
+    "Name": "System",
+    "Description": "普通用户",
+    "OrderSort": 0,
+    "Enabled": true,
+    "CreateId": 1,
+    "CreateBy": null,
+    "CreateTime": "2020-06-08 22:07",
+    "ModifyId": null,
+    "ModifyBy": null,
+    "ModifyTime": "2020-06-08 22:07",
+    "Id": 1
+  }
+]
