@@ -1,19 +1,17 @@
 <template>
   <div class="passwordWrap">
-    <TopBar class="center-one-search" :option="topBarOption" >
-      <div >安全問答</div>
+    <TopBar class="center-one-search">
+      <div>密保设置</div>
     </TopBar>
     <div class="innerWrap">
+      <div class="tips base-flex flex-start p-58 bg-white borderR mb-80">
+        <img src="@/assets/imgs/tipimg.png" class="img" alt />
+        <div class="tips-part">
+          <div class="tip-titl">提示</div>
+          <div>您将设置三个问题及答案，以后在多场合会 涉及到密保验证。</div>
+        </div>
+      </div>
       <ul>
-        <li>
-          <div class="photoWrap">
-            <img class="photo" src="../../assets/imgs/forgot1-img1.png" alt />
-            <span>
-              提示：
-              <br />请输入你的安全验证并牢记
-            </span>
-          </div>
-        </li>
         <li>
           <div class="title">{{Q1}}</div>
           <input type="text" hidden v-model="q1id" />
@@ -41,7 +39,13 @@
       </ul>
       <button class="submit" @click="goNext">提交</button>
     </div>
-    <YellowComfirm :show="isEnter" @clickOver="clickOverpay" @clickOk="clickOk()" :tipTitle="tips" @changeModel="changeModel"></YellowComfirm>
+    <YellowComfirm
+      :show="isEnter"
+      @clickOver="clickOverpay"
+      @clickOk="clickOk()"
+      :tipTitle="tips"
+      @changeModel="changeModel"
+    ></YellowComfirm>
   </div>
 </template>
 
@@ -60,9 +64,6 @@ export default {
   },
   data() {
     return {
-      topBarOption: {
-        iconLeft: "back"
-      },
       showChat: true,
       q1id: 0,
       q2id: 0,
@@ -122,20 +123,18 @@ export default {
     ToGetAllQuestionList() {
       http(GetAllQuestionList, null, json => {
         console.log(json);
-        let max=json.response.length-1
+        let max = json.response.length - 1;
         if (json.code === 0) {
-         let q1= Math.ceil(Math.random()*max)
-           let q2= Math.ceil(Math.random()*max)
-         while(q1==q2)
-         {
-           q2= Math.ceil(Math.random()*max)
-         }
-           let q3= Math.ceil(Math.random()*max)
-        while(q3==q2||q3==q1)
-         {
-           q3= Math.ceil(Math.random()*max)
-         }
-       
+          let q1 = Math.ceil(Math.random() * max);
+          let q2 = Math.ceil(Math.random() * max);
+          while (q1 == q2) {
+            q2 = Math.ceil(Math.random() * max);
+          }
+          let q3 = Math.ceil(Math.random() * max);
+          while (q3 == q2 || q3 == q1) {
+            q3 = Math.ceil(Math.random() * max);
+          }
+
           this.Q1 = json.response[q1].Question_CN;
           this.Q2 = json.response[q2].Question_CN;
           this.Q3 = json.response[q3].Question_CN;
@@ -164,10 +163,25 @@ export default {
     width: 100vw;
     height: calc(100vh - 300px);
     overflow: auto;
-    background-color: #ebeaf0;
-    border-radius: 40px 40px 0 0;
     margin-top: -10px;
     padding: 40px 0 240px;
+    .tips-part {
+      font-weight: bold;
+      color: rgba(52, 52, 52, 1);
+    }
+    .tips {
+      width: 90%;
+      min-height: 158px;
+      align-items: center;
+      padding: 30px;
+      margin: 0 auto;
+      box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.24);
+      .img {
+        width: 148px;
+        height: 115px;
+        margin-right: 70px;
+      }
+    }
     ul {
       width: 90%;
       margin: 0 auto;
@@ -291,15 +305,15 @@ export default {
   .submit {
     display: block;
     width: 90%;
-    margin: 0 auto;
+    margin: 100px auto 0;
     background: #f5c148;
-    border-radius: 40px;
-    height: 164px;
-    line-height: 164px;
-    font-size: 60px;
-    letter-spacing: 10px;
+    border-radius: 20px;
+    height: 130px;
+    line-height: 130px;
+    font-size: 52px;
     color: #fff;
-    margin-top: 100px;
+    font-weight: 600;
+    letter-spacing: 4px;
     position: relative;
   }
 }

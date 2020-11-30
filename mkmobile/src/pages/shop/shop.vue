@@ -1,147 +1,180 @@
-<!--  -->
 <template>
-  <div>
-    <TopBar
-      class="center-one-search"
-      :option="topBarOption"
-    >商店</TopBar>
-    <div class>
-      <div class="shop borderR bg-gray clearfix">
-     <div class="tips-part">
-            <div class="tip-titl"></div>
-            <!-- <div>任何活动您只需交纳EP后剩下的事情由官方 合作伙伴来解决。</div> -->
-            <div>即將更新！</div> 
+  <div class="shopWrap">
+    <TopBar class="center-one-search" :option="topBarOption" :badge="carNum">商店</TopBar>
+    <div>
+      <div class="shop clearfix">
+        <TopSearch @onSearch="search" :placeinputValue="''"></TopSearch>
+        <ScrollRefresh
+          @getData="ToGetShopList"
+          :residualHeight="200"
+          :isNeedUp="false"
+          class="innerScroll"
+        >
+          <div class="shop-info center">
+            <waterfall
+              :col="col"
+              :width="itemWidth"
+              :gutterWidth="gutterWidth"
+              :data="data"
+              @loadmore="loadmore"
+              @scroll="scroll"
+            >
+              <template>
+                <div
+                  class="container p-58"
+                  v-for="(item,index) in data"
+                  :key="index"
+                  :style="'background-color:'+item.bgc"
+                >
+                  <!-- 后期根据将图片设置为自动高 -->
+                  <img
+                    :src="item.icon_url"
+                    :class="index===1?'imgSpecial':''"
+                    class="img-info mt-100 center"
+                    alt
+                  />
+                  <div class="title font-weight Tleft">{{item.price}}</div>
+                  <div class="detail Tleft">{{item.name}}</div>
+                  <div class="circle" @click="goDetail(item.id)">+</div>
+                  <div class="tag" v-show="item.tag">{{item.tag}}</div>
+                </div>
+              </template>
+            </waterfall>
           </div>
-        <!-- 搜索 -->
-        <div class="shop-info center">
-          <waterfall
-            :col="col"
-            :width="itemWidth"
-            :gutterWidth="gutterWidth"
-            :data="data"
-            @loadmore="loadmore"
-            @scroll="scroll"
-          >
-            <template>
-                
-              <div class="container p-58" v-for="(item,index) in data" :key="index">
-                <!-- 后期根据将图片设置为自动高 -->
-                <img
-                  :src="item.icon_url"
-                  :class="index===1?'imgSpecial':''"
-                  class="img-info mt-100 center"
-                  alt
-                />
-                <div class="title font-weight Tleft">{{item.price}}</div>
-                <div class="detail Tleft">{{item.name}}</div>
-                <div class="circle" @click="goDetail(item.id)">+</div>
-              </div>
-            </template>
-          </waterfall>
-        </div>
+        </ScrollRefresh>
       </div>
     </div>
-     <YellowComfirm
-      :show="showComfirm"
-      :tipTitle="tips"
-    ></YellowComfirm>
+    <YellowComfirm :show="showComfirm" :tipTitle="tips"></YellowComfirm>
   </div>
 </template>
 <script>
-import TopBar from 'components/TopBar'
-import TopSearch from 'components/TopSearch'
-import { http } from 'util/request'
-import { GetShopList, GetUserInfo, GetShopDeatilLike } from 'util/netApi'
-import { storage } from 'util/storage'
-import { accessToken, loginPro } from 'util/const.js'
-import YellowComfirm from 'components/YellowComfirm'
+import TopBar from "components/TopBar";
+import TopSearch from "components/TopSearch";
+import { http } from "util/request";
+import { GetShopList, GetUserInfo, GetShopDeatilLike } from "util/netApi";
+import { storage } from "util/storage";
+import { accessToken, loginPro } from "util/const.js";
+import YellowComfirm from "components/YellowComfirm";
+import ScrollRefresh from "components/ScrollRefresh";
 export default {
-  name: 'Shop',
+  name: "Shop",
   components: {
     TopBar,
     TopSearch,
-    YellowComfirm
+    YellowComfirm,
+    ScrollRefresh
   },
   data() {
     return {
+      carNum:1,
       showChat: false,
-      placeinputValue: '',
+      placeinputValue: "",
       topBarOption: {
-        iconLeft: 'iconzhankai',
-        iconRight: ''
+        iconLeft: "iconShapecopy",
+        iconRight: "icongouwucheman"
       },
       showComfirm: true,
-      tips:"即將更新！",
+      tips: "即將更新！",
       data: [
-        //  {
-        //    icon_url: require('@/assets/imgs/shop/camea.png'),
-        //    price: '70$',
-        //    name: 'Children Camera Visionkids Happycamu'
-        //   },
-        //   {
-        //     icon_url: require('@/assets/imgs/shop/bag.png'),
-        //     price: '70$',
-        //     name: 'Children Camera Visionkids Happycamu'
-        //   }
+        {
+          icon_url: require("@/assets/imgs/shop/camea.png"),
+          price: "70$",
+          name: "Children Camera Visionkids Happycamu",
+          id: 1,
+          bgc: "#F5E0BA",
+          tag: "促销中"
+        },
+        {
+          icon_url: require("@/assets/imgs/shop/bag.png"),
+          price: "70$",
+          name: "Children Camera Visionkids Happycamu",
+          id: 2,
+          bgc: "#CADBA7"
+        },
+        {
+          icon_url: require("@/assets/imgs/shop/bag.png"),
+          price: "70$",
+          name: "Children Camera Visionkids Happycamu",
+          id: 3,
+          bgc: "#D1D4CB"
+        },
+        {
+          icon_url: require("@/assets/imgs/shop/bag.png"),
+          price: "70$",
+          name: "Children Camera Visionkids Happycamu",
+          id: 5,
+          bgc: "#CADBA7"
+        },
+        {
+          icon_url: require("@/assets/imgs/shop/bag.png"),
+          price: "70$",
+          name: "Children Camera Visionkids Happycamu",
+          id: 6,
+          bgc: "#D1D4CB"
+        }
       ],
       col: 2
-    }
+    };
   },
   computed: {
     itemWidth() {
-      return (document.documentElement.clientWidth - 50) / 2
+      return (document.documentElement.clientWidth - 60) / 2;
     },
     gutterWidth() {
-      return 9 * 0.5 * (document.documentElement.clientWidth / 375)
+      return 30 * 0.5 * (document.documentElement.clientWidth / 375);
     }
   },
   methods: {
     onSearch(value) {
-      this.ToGetShopDeatilLike(value)
+      this.ToGetShopDeatilLike(value);
     },
     goDetail(shopid) {
-      this.$router.push('./shopDetail?id=' + shopid)
+      this.$router.push("./shopDetail?id=" + shopid);
     },
     scroll(scrollData) {
-      console.log(scrollData)
+      console.log(scrollData);
     },
     loadmore(index) {
-      this.data = this.data.concat(this.data)
+      this.data = this.data.concat(this.data);
     },
     ToGetShopList() {
       http(GetShopList, null, json => {
         if (json.code === 0) {
-          this.data = json.response.list
+          this.data = json.response.list;
         }
-      })
+      });
     },
     ToGetShopDeatilLike(value) {
-      console.log(value)
+      console.log(value);
       http(GetShopDeatilLike, { key: value }, json => {
         if (json.code === 0) {
-          console.log(json)
-          this.data = json.response.list
+          console.log(json);
+          this.data = json.response.list;
           // this.username = json.response.nickname
         }
-      })
+      });
     }
   },
   created() {
-    this.ToGetShopList()
+    this.ToGetShopList();
   }
-}
+};
 </script>
 <style lang='less' scoped>
 .shop {
-  border-radius: 40px;
-  border: 1px solid #ececec;
-  margin-top: 20px;
   position: relative;
   padding: 0 58px;
+  .innerScroll {
+  /deep/.wrapper {
+    padding-top: 80px;
+    .bscroll-container {
+      min-height: calc(100vh - 360px) !important;
+    }
+  }
+}
   .shop-info {
-    height: calc(100vh - 700px);
-    overflow-y: auto;
-    margin-top: 20px;
+    // margin-top: 20px;
+    padding-top: 20px;
     .container {
       position: relative;
       border-radius: 80px;
@@ -161,12 +194,15 @@ export default {
         height: 300px;
       }
       .title {
-        font-size: 60px;
+        font-size: 54px;
         color: rgba(0, 0, 0, 1);
         opacity: 0.72;
       }
       .detail {
-        font-size: 42px;
+        font-size: 26px;
+        color: rgba(0, 0, 0, 1);
+        opacity: 0.75;
+        line-height: 50px;
       }
       .circle {
         position: absolute;
@@ -176,11 +212,23 @@ export default {
         height: 127px;
         background: white;
         opacity: 0.32;
-        border-top-right-radius: 65px;
-        border-bottom-left-radius: 65px;
+        border-top-right-radius: 70px;
+        border-bottom-left-radius: 70px;
         font-size: 80px;
       }
     }
+  }
+  .tag {
+    height: 64px;
+    line-height: 64px;
+    position: absolute;
+    top: 40px;
+    left: 78px;
+    background: #7d0d0d;
+    border-radius: 32px;
+    padding: 0 26px;
+    color: #fff;
+    font-size: 34px;
   }
 }
 </style>

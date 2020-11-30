@@ -50,7 +50,7 @@ export default {
   data() {
     return {
       topBarOption: {
-        iconLeft: "iconzhankai",
+        iconLeft: "iconShapecopy",
         iconRight: ""
       },
       contacts: null,
@@ -72,7 +72,6 @@ export default {
     padding-bottom: 300px;
     overflow-y: scroll;
     height: calc(100vh - 260px);
-    background-color: #ebeaf0;
     border-radius: 40px 40px 0 0;
     margin-top: 0px;
     padding-top: 90px;
@@ -88,22 +87,23 @@ export default {
       font-weight: 800;
       li {
         .title {
-          color: #757c8f;
+          color: #FFFFFF;
           font-size: 42px;
-          margin: 22px 0;
+          margin: 60px 0 22px;
           font-weight: 800;
           letter-spacing: 10px;
+          padding-left: 20px;
         }
         input {
-          height: 128px;
-          line-height: 128px;
-          color: #191719;
-          width: 100%;
-          padding: 0 30px;
-          border-radius: 20px;
-          font-size: 42px;
-          font-weight: 600;
-          letter-spacing: 10px;
+         height: 130px;
+        line-height: 130px;
+        color: #9E9E9F;
+        width: 100%;
+        padding: 0 30px;
+        border-radius: 20px;
+        font-size: 60px;
+        font-weight: 600;
+        letter-spacing: 10px;
         }
         /deep/ .van-dropdown-menu__bar {
           height: 148px;
@@ -208,7 +208,7 @@ export default {
     width: 90%;
     margin: 0 auto;
     background: #f5c148;
-    border-radius: 40px;
+    border-radius: 20px;
     height: 128px;
     line-height: 128px;
     font-size: 42px;

@@ -1,13 +1,14 @@
 <template>
   <div>
-    <TopBar class="center-one-search" :option="topBarOption">反饋</TopBar>
-    <ScrollRefresh
+    <TopBar class="center-one-search" :option="topBarOption">反 饋</TopBar>
+   
+      <div class="feedback-body">
+         <ScrollRefresh
       @getData="ToGetUserFeedBack"
-      :residualHeight="140"
+      :residualHeight="240"
       :isNeedUp="false"
       class="innerScroll"
     >
-      <div class="feedback-body">
         <ul class="chat_bd">
           <li v-for="item in list" :key="item.id">
             <div class="chat_time" v-if="item.direction === 'center'">{{ item.time }}</div>
@@ -21,13 +22,14 @@
             </div>
           </li>
         </ul>
+        </ScrollRefresh>
         <div class="send-msg">
           <i class="iconfont iconyuyin"></i>
           <input type="text" v-model="msg" />
           <button type="primary" @click="sendMessage">发送</button>
         </div>
       </div>
-    </ScrollRefresh>
+    
   </div>
 </template>
 
@@ -37,6 +39,7 @@ import { http } from "util/request";
 import { GetUserFeedBack, AddUserFeedBack } from "util/netApi";
 import { storage } from "util/storage";
 import ScrollRefresh from "components/ScrollRefresh";
+import defaultImg from "@/assets/imgs/set/head02.png";
 import { accessToken, loginPro } from "util/const.js";
 
 export default {
@@ -48,30 +51,86 @@ export default {
     return {
       msg: "",
       topBarOption: {
-        iconLeft: "iconzhankai",
-        iconRight: ""
+        iconLeft: "iconShapecopy",
+        iconRight: false
       },
       list: [
-        //  {
-        //    id: 1,
-        //    direction: 'center',
-        //    time: '昨天  22:18',
-        //    image: ''
-        //  },
-        //  {
-        //    id: 2,
-        //    direction: 'left',
-        //    date: '6mel,2020',
-        //    image: require('@/assets/imgs/nick-1.png'),
-        //    msg: '请问有什么可以帮到您'
-        //   },
-        //   {
-        //     id: 3,
-        //     image: require('@/assets/imgs/nick-1.png'),
-        //    direction: 'right',
-        //     msg:
-        //      '请问最近的车奖是怎么一回事？？色极为关键是南方健身房是的封建时代和封建士大夫十分'
-        //   }
+        {
+          id: 1,
+          direction: "center",
+          time: "昨天  22:18",
+          image: defaultImg
+        },
+        {
+          id: 2,
+          direction: "left",
+          date: "6mel,2020",
+          image: defaultImg,
+          msg: "请问有什么可以帮到您"
+        },
+        {
+          id: 3,
+          image: require("@/assets/imgs/nick-1.png"),
+          direction: "right",
+          msg:
+            "请问最近的车奖是怎么一回事？？色极为关键是南方健身房是的封建时代和封建士大夫十分"
+        },
+         {
+          id: 4,
+          direction: "left",
+          date: "6mel,2020",
+          image: defaultImg,
+          msg: "请问有什么可以帮到您"
+        },
+        {
+          id: 5,
+          image: require("@/assets/imgs/nick-1.png"),
+          direction: "right",
+          msg:
+            "请问最近的车奖是怎么一回事？"
+        },
+        {
+          id: 6,
+          direction: "left",
+          date: "6mel,2020",
+          image: defaultImg,
+          msg: "请问有什么可以帮到您"
+        },
+        {
+          id: 7,
+          image: require("@/assets/imgs/nick-1.png"),
+          direction: "right",
+          msg:
+            "请问最近的车奖是怎么一回事？"
+        },
+        {
+          id: 8,
+          direction: "left",
+          date: "6mel,2020",
+          image: defaultImg,
+          msg: "请问有什么可以帮到您"
+        },
+        {
+          id: 9,
+          image: require("@/assets/imgs/nick-1.png"),
+          direction: "right",
+          msg:
+            "请问最近的车奖是怎么一回事？"
+        },
+        {
+          id: 10,
+          direction: "left",
+          date: "6mel,2020",
+          image: defaultImg,
+          msg: "请问有什么可以帮到您"
+        },
+        {
+          id: 11,
+          image: require("@/assets/imgs/nick-1.png"),
+          direction: "right",
+          msg:
+            "请问最近的车奖是怎么一回事？"
+        }
       ]
     };
   },
@@ -110,7 +169,7 @@ export default {
 <style lang="less" scope>
 .innerScroll {
   /deep/.wrapper {
-    background: #ece5cc;
+    // background: #ece5cc;
     .bscroll-container {
       min-height: calc(100vh - 400px) !important;
     }
@@ -119,23 +178,22 @@ export default {
 .feedback-body {
   margin-top: 20px;
   width: 100%;
-  // overflow: scroll;
-
   z-index: 999;
   border-radius: 50px 50px 0 0;
-  padding: 98px 60px 60px 60px;
+  padding: 0px 30px 60px 30px;
   min-height: calc(100vh - 400px);
   .chat_bd {
-    height: calc(100vh - 850px);
+    padding-bottom: 200px;
     .chat_time {
       text-align: center;
-      color: #6f6d72;
+      color: #fff;
       font-size: 35px;
       margin-bottom: 20px;
     }
     .chat_item {
       overflow: hidden;
       font-size: 38px;
+      padding: 10px 0;
       img {
         width: 146px;
         height: 156px;
@@ -147,11 +205,12 @@ export default {
       .chat_left_msg {
         margin-top: 30px;
         float: left;
-        width: calc(100vw - 450px);
+        width: calc(100vw - 430px);
         min-height: 106px;
         background: #fff;
         border-radius: 20px;
         position: relative;
+        color: #6f6d72;
         padding: 20px;
 
         &::before {
@@ -171,12 +230,11 @@ export default {
       }
       .chat_right_msg {
         padding: 20px;
-        margin-top: 30px;
         float: right;
-        width: calc(100vw - 450px);
+        width: calc(100vw - 430px);
         min-height: 106px;
-        background-color: #6318c3;
-        color: #fff;
+        background-color: #77d9d3;
+        color: #040000;
         border-radius: 20px;
         position: relative;
         &::before {
@@ -187,7 +245,7 @@ export default {
           top: 32px;
           width: 0;
           border: 15px solid;
-          border-color: transparent transparent transparent #6318c3;
+          border-color: transparent transparent transparent #77d9d3;
         }
       }
     }
@@ -200,7 +258,7 @@ export default {
 
     i {
       font-size: 96px;
-      color: #6318c3;
+      color: #fff;
       margin-right: 40px;
     }
     input {
@@ -215,7 +273,7 @@ export default {
       height: 108px;
       text-align: center;
       color: #fff;
-      background: #6318c3;
+      background: #efb618;
       margin-left: 40px;
       border-radius: 20px;
       font-size: 40px;

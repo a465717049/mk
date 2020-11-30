@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       topBarOption: {
-        iconLeft: 'iconzhankai',
+        iconLeft: 'iconShapecopy',
         iconRight: ''
       },
       ntype:null,
@@ -191,12 +191,11 @@ export default {
     .right{
       .title{
         font-weight: 700;
-        font-size: 33px;
+        font-size: 35px;
       }
       .message{
         font-size: 32px;
-        line-height: 55px;
-         margin-top: 35px;
+         margin-top: 15px;
          margin-left: 15px;
           color: #666;
       }

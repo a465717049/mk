@@ -1,28 +1,31 @@
 <template>
   <div class="forgotWrap">
-    <TopBar class="center-one-search" :option="topBarOption">
+    <!-- <TopBar class="center-one-search" :option="topBarOption">
       <div>Forgot Password</div>
-    </TopBar>
+    </TopBar>-->
+
     <div class="innerWrap">
+      <img :src="forgotImg" alt class="head" />
+      <h6 class="forgotTitle">重置您的密码</h6>
       <ul>
         <li>
-          <div class="title">請輸入您的用戶ID</div>
+          <div class="title">請輸入您的ID</div>
           <input type="text" v-model="id" />
         </li>
-        <!--    <li>
-          <div class="title">重置登录密码</div>
-             <van-dropdown-menu>
+        <li>
+          <div class="title">重置密码的类型</div>
+          <van-dropdown-menu>
             <van-dropdown-item v-model="passwordType" :options="passwordTypeList" />
           </van-dropdown-menu>
-        </li>-->
-        <!-- <li>
-          <div class="title">請輸入驗證碼</div>
+        </li>
+        <li>
+          <div class="title">输入验证码</div>
           <div class="verification">
             <input type="text" v-model="verification" />
-            <img :src="image" @click='getVerificationCode' alt />
+            <img :src="image" @click="getVerificationCode" alt />
           </div>
-        </li> -->
-        <li>
+        </li>
+        <!-- <li>
           <div class="photoWrap">
             <img class="photo" src="../../assets/imgs/forgot1-img1.png" alt />
             <span>
@@ -30,14 +33,26 @@
               <br />下一步將驗證您的預留信息。
             </span>
           </div>
+        </li>-->
+        <li class="tipWrap">
+          <div class="tip">提示：</div>
+          <div class="tip">下一步将验证您预留的信息。</div>
+        </li>
+        <li>
+          <button class="next" @click="gox">下一步</button>
         </li>
       </ul>
-
-      <button class="next" @click='gox'>
-        提交
-      </button>
+      <div class="bottom-part">
+        <div class="version1">MOKI MONKEY 摩奇候</div>
+        <div class="version2">MOKI MONKEY Co.,ltd.. Copyright 2020 (C) All right reserved</div>
+      </div>
     </div>
-    <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk" @changeModel="changeModel"></YellowComfirm>
+    <YellowComfirm
+      :show="showComfirm"
+      :tipTitle="tips"
+      @clickOk="clickOk"
+      @changeModel="changeModel"
+    ></YellowComfirm>
   </div>
 </template>
 
@@ -47,6 +62,7 @@ import TopBar from "components/TopBar";
 import { storage } from "util/storage";
 import { http } from "util/request";
 import { getVerificationCode, checkUser } from "util/netApi";
+import forgot from "@/assets/imgs/login/forgot.png";
 export default {
   components: {
     TopBar,
@@ -64,6 +80,7 @@ export default {
       code: null,
       image: null,
       showComfirm: false,
+      forgotImg: forgot,
       //  receiptId: null,
       //  transPassword: null,
       //  verificationCode: null,
@@ -87,7 +104,7 @@ export default {
     getVerificationCode() {
       http(getVerificationCode, null, json => {
         if (json.code === 0) {
-          console.log(json.response.vcode)
+          console.log(json.response.vcode);
           let img = json.response.vcode;
           var tem1 = img.substring(0, img.length - 21);
           var tem2 = img.substring(img.length - 16);
@@ -119,40 +136,62 @@ export default {
 
 <style lang="less" scoped>
 .forgotWrap {
+  .forgotTitle {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 60px;
+    font-size: 70px;
+    color: #000403;
+    font-weight: bolder;
+  }
+  .tipWrap {
+    padding-top: 70px !important;
+  }
+  .tip {
+    line-height: 54px;
+    font-weight: bold;
+    color: #353535;
+    font-size: 38px;
+  }
   .innerWrap {
     width: 100vw;
-    padding-bottom: 300px;
     overflow-y: scroll;
-    height: calc(100vh - 260px);
-    background-color: #ebeaf0;
-    border-radius: 40px 40px 0 0;
-    margin-top: -20px;
-    padding-top: 90px;
+    height: calc(100vh);
+    background: #efb618 url("../../assets/imgs/login/ybj.png") no-repeat left
+      top / 100% 100%;
+    .head {
+      display: block;
+      width: 370px;
+      height: 294px;
+      margin: 80px auto 230px;
+    }
     ul {
       width: 90%;
       margin: 0 auto;
       li {
+        padding-top: 20px;
         .title {
-          color: #333;
+          color: #353535;
           font-size: 42px;
           margin: 42px 0;
           font-weight: 800;
-          letter-spacing: 10px;
+          letter-spacing: 6px;
         }
         input {
-          height: 148px;
-          line-height: 148px;
-          color: #9d9d9f;
+          height: 139px;
+          box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.24);
+          line-height: 139px;
+          color: #6f6d72;
           width: 100%;
-          padding: 0 30px;
+          padding: 0 38px;
           border-radius: 20px;
-          font-size: 42px;
+          font-size: 50px;
           font-weight: 600;
           letter-spacing: 10px;
         }
         /deep/ .van-dropdown-menu__bar {
-          height: 148px;
-          line-height: 148px;
+          height: 139px;
+          line-height: 139px;
           color: #6f6d72;
           width: 100%;
           padding: 0 20px;
@@ -164,8 +203,8 @@ export default {
           font-weight: 700;
         }
         /deep/ .van-dropdown-menu__title {
-          height: 148px;
-          line-height: 148px;
+          height: 138px;
+          line-height: 138px;
           display: inline-block;
           width: 98%;
         }
@@ -214,6 +253,7 @@ export default {
             box-sizing: border-box;
             height: 110px;
             border-radius: 0;
+            box-shadow: none;
           }
           img {
             display: inline-block;
@@ -246,23 +286,44 @@ export default {
     padding: 60px;
   }
   .next {
-    display: block;
-    width: 90%;
-    margin: 0 auto;
-    background: #f5c148;
-    border-radius: 40px;
-    height: 164px;
-    line-height: 164px;
-    font-size: 50px;
+    background: #006bb6;
+    margin-top: 60px;
+    height: 150px;
+    width: 100%;
+    text-align: center;
+    border-radius: 80px;
+    font-size: 52px;
     color: #fff;
-    margin-top: 100px;
+    font-weight: 900;
+  }
+  .bottom-part {
     position: relative;
-    font-weight: 800;
-    letter-spacing: 10px;
-    a {
-      color: #fff;
-      letter-spacing: 30px;
-    }
+    height: 25%;
+    font-family: HYYakuHei;
+  }
+  .version2 {
+    color: #060000;
+    font-size: 28px;
+    margin-top: 40px;
+    text-align: center;
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+    left: 50%;
+    transform: translate(-50%);
+    font-weight: bold;
+  }
+  .version1 {
+    color: #060000;
+    font-size: 42px;
+    margin-top: 40px;
+    text-align: center;
+    position: absolute;
+    bottom: 160px;
+    width: 100%;
+    left: 50%;
+    transform: translate(-50%);
+    font-weight: bold;
   }
 }
 </style>

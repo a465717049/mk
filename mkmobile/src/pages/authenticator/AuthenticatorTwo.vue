@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBar class="center-one-search" :option="topBarOption">密鑰</TopBar>
+    <TopBar class="center-one-search" >谷歌验证</TopBar>
     <div class="authenticator-two-body">
       <div class="auth-card">
         <img src="@/assets/imgs/auth-header.png" alt />
@@ -27,10 +27,9 @@
           </div>
         </div>
       </div>
-      <button class="button" @click="goNext">
+      <!-- <button class="button" @click="goNext">
         下一步
-        <i class="jiantou iconfont iconarrow-right"></i>
-      </button>
+      </button> -->
     </div>
   </div>
 </template>
@@ -50,10 +49,6 @@ export default {
     return {
       androidCode: '',
       iosCode: '',
-      topBarOption: {
-        iconLeft: 'back',
-        iconRight: ''
-      }
     }
   },
   methods: {
@@ -77,7 +72,6 @@ export default {
 
 <style lang="less" scope>
 .authenticator-two-body {
-  background: #ebeaf0;
   top: 260px;
   width: 100%;
   overflow: scroll;
@@ -88,56 +82,63 @@ export default {
   .auth-card {
     background: #fff;
     display: flex;
-    padding: 30px 50px;
-    margin-bottom: 98px;
+    padding: 20px 30px;
+    margin-bottom: 138px;
     border-radius: 20px;
+    box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.24);
     img {
-      width: 193px;
-      height: 185px;
+      width: 140px;
+      height: 140px;
       margin-right: 20px;
       margin-top: 20px;
     }
     div {
       flex: 1;
       .auth-top-tit {
-        font-size: 60px;
+        font-size: 46px;
         text-align: center;
+             color: #191819;
+        font-weight: 600;
         line-height: 60px;
-        margin-bottom: 25px;
+        margin-bottom: 15px;
+        margin-top: 20px;
       }
       .auth-top-tip {
-        font-size: 30px;
+        font-size: 25px;
         text-align: center;
-        margin: 0 100px;
-        line-height: 30px;
+        color: #191819;
+        font-weight: 600;
+        letter-spacing: 0;
       }
     }
   }
   .code-body {
     .c-cell {
       .c-cell-label {
-        width: 100%;
-        height: 42px;
-        font-size: 40px;
+        font-size: 42px;
+        margin: 42px 20px 20px 0;
+        color: #fff;
         font-weight: bold;
-        margin-bottom: 35px;
-        color: #191819;
       }
       .c-cell-value {
-        font-size: 32px;
-        background: #fff;
-        height: 150px;
+       height: 123px;
+        line-height: 123px;
+        font-size: 42px;
+        width: 100%;
+        padding: 30px 20px;
         border-radius: 20px;
-        line-height: 150px;
-        margin-bottom: 60px;
-        position: relative;
-        padding-left: 20px;
-        width: 100vw - 40px;
+        color: #6F6D72;
+        font-weight: 600;
+        letter-spacing: 4px;
         overflow: hidden;
+        background: #fff;
+        position: relative;
         i {
           position: absolute;
-          right: 30px;
-          font-size: 70px;
+          right: 20px;
+          top: 8px;
+          font-size: 80px;
+          font-weight: normal;
           color: #b6b6b6;
         }
       }
@@ -145,19 +146,13 @@ export default {
   }
   .button {
     width: 100%;
-    background: #f5c148;
-    height: 185px;
-    font-size: 52px;
+    background: #EFB618;
+    height: 128px;
+    font-size: 42px;
     color: #fff;
-    border-radius: 40px;
+    border-radius: 20px;
     position: relative;
     margin-top: 120px;
-    .jiantou {
-      position: absolute;
-      right: 30px;
-      top: 46px;
-      font-size: 60px;
-    }
   }
   .auth-buttom {
     padding: 98px 0;

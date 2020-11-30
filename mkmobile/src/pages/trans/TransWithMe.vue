@@ -1,12 +1,16 @@
 <template>
-  <div class="sellEpWrapper">
-    <TopBar class="center-one-search" :option="topBarOption">
-         資產轉換
-    </TopBar>
+  <div class="transWrapper">
+    <TopBar class="center-one-search" >兑 换</TopBar>
     <div class="innerWrap">
-      <div class="title-tip">點擊下方左側類型進行EP/RP切換</div>
+      <div class="tips base-flex flex-start p-58 bg-white borderR mb-80">
+        <img src="@/assets/imgs/tipimg.png" class="img" alt />
+        <div class="tips-part">
+          <div class="tip-titl">提示</div>
+          <div>EP可以提现，也可以兑换成为RP(注册分）</div>
+          <!-- <div>即將更新！</div> -->
+        </div>
+      </div>
       <div class="moneyWrap clearfix">
-        
         <div class="left fl">
           <div class="top" @click="ChangeTransType">{{form.oType}}</div>
           <div class="bottom">ACCOUNT</div>
@@ -16,7 +20,7 @@
       <ul>
         <li>
           <div class="title">轉出數量</div>
-            <input type="number" min=0 v-model="form.amount" />
+          <input type="number" min="0" v-model="form.amount" />
         </li>
         <li>
           <div class="title">接收類型</div>
@@ -31,54 +35,54 @@
         <!-- <li>
           <div class="title">谷歌验证码</div>
           <input type="text" v-model="form.gcode" />
-        </li> -->
+        </li>-->
       </ul>
-      <div class="title-tip">溫馨提示：一經轉換不能進行退回操作,請謹慎操作！</div>
       <button class="next" @click="ToTranWithMe">確認轉換</button>
     </div>
-    <YellowComfirm :show="showComfirm"  @clickOver="clickOverpay" :tipTitle="tips" @clickOk="clickOk()" @changeModel="changeModel"></YellowComfirm>
+    <YellowComfirm
+      :show="showComfirm"
+      @clickOver="clickOverpay"
+      :tipTitle="tips"
+      @clickOk="clickOk()"
+      @changeModel="changeModel"
+    ></YellowComfirm>
   </div>
 </template>
 <script type="text/javascript">
-import YellowComfirm from 'components/YellowComfirm'
-import { http } from 'util/request'
-import { TransOtherType, GetUserInfo } from 'util/netApi'
-import { storage } from 'util/storage'
-import TopBar from 'components/TopBar'
+import YellowComfirm from "components/YellowComfirm";
+import { http } from "util/request";
+import { TransOtherType, GetUserInfo } from "util/netApi";
+import { storage } from "util/storage";
+import TopBar from "components/TopBar";
 export default {
   data() {
     return {
       form: {
-        oType: 'EP',
-        dType: '',
+        oType: "EP",
+        dType: "",
         amount: 0,
-        tpwd: '',
-        gcode: ''
+        tpwd: "",
+        gcode: ""
       },
       account: 0,
-      topBarOption: {
-        iconLeft: 'back',
-        iconRight: '',
-      //  image: headerImg
-      },
       showComfirm: false,
-     
+
       receiptTypeList: [
-        { text: 'RP', value: 'RP' },
-        { text: 'SP', value: 'SP' }
+        { text: "RP", value: "RP" },
+        { text: "SP", value: "SP" }
       ],
       transPassword: null,
       verificationCode: null,
-      tips: '',
+      tips: "",
       tipsObj: {
-        noamount: '請填寫轉換數量',
-        amount: '餘額不足！',
-        notype: '請選擇轉出類型',
-        notpwd: '請填寫交易密碼',
-        nosucceed: '轉換異常，稍後重試',
-        succeed: '轉換成功'
+        noamount: "請填寫轉換數量",
+        amount: "餘額不足！",
+        notype: "請選擇轉出類型",
+        notpwd: "請填寫交易密碼",
+        nosucceed: "轉換異常，稍後重試",
+        succeed: "轉換成功"
       }
-    }
+    };
   },
   components: {
     TopBar,
@@ -88,111 +92,128 @@ export default {
   computed: {},
   methods: {
     clickOk() {
-      this.showComfirm = false
+      this.showComfirm = false;
     },
     changeModel(v) {
       this.showComfirm = v;
     },
     ChangeTransType() {
-      this.TogetUserInfo()
-      if (this.form.oType == 'EP') {
-        this.form.oType = 'RP'
-        this.receiptTypeList = [{ text: 'SP', value: 'SP' }]
+      this.TogetUserInfo();
+      if (this.form.oType == "EP") {
+        this.form.oType = "RP";
+        this.receiptTypeList = [{ text: "SP", value: "SP" }];
       } else {
-        this.form.oType = 'EP'
+        this.form.oType = "EP";
         this.receiptTypeList = [
-          { text: 'RP', value: 'RP' },
-          { text: 'SP', value: 'SP' }
-        ]
+          { text: "RP", value: "RP" },
+          { text: "SP", value: "SP" }
+        ];
       }
     },
     TogetUserInfo() {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          console.log(json)
-          if (this.form.oType == 'EP') {
-            this.account = json.response.gold
-          } else if (this.form.oType == 'RP') {
-            this.account = json.response.rp
+          console.log(json);
+          if (this.form.oType == "EP") {
+            this.account = json.response.gold;
+          } else if (this.form.oType == "RP") {
+            this.account = json.response.rp;
           }
         }
-      })
+      });
     },
     ToTranWithMe() {
       if (this.form.amount <= 0) {
-        this.showComfirm = true
-        this.tips = this.tipsObj.noamount
-        return
+        this.showComfirm = true;
+        this.tips = this.tipsObj.noamount;
+        return;
       }
-       if (this.form.amount > this.account) {
-        this.showComfirm = true
-        this.tips = this.tipsObj.amount
-        return
+      if (this.form.amount > this.account) {
+        this.showComfirm = true;
+        this.tips = this.tipsObj.amount;
+        return;
       }
 
       if (!this.form.dType) {
-        this.showComfirm = true
-        this.tips = this.tipsObj.notype
-        return
+        this.showComfirm = true;
+        this.tips = this.tipsObj.notype;
+        return;
       }
 
       if (!this.form.tpwd) {
-        this.showComfirm = true
-        this.tips = this.tipsObj.notpwd
-        return
+        this.showComfirm = true;
+        this.tips = this.tipsObj.notpwd;
+        return;
       }
 
-      console.log(this.form)
-      let _this = this
+      console.log(this.form);
+      let _this = this;
       http(TransOtherType, this.form, json => {
         if (json.code === 0) {
-          this.showComfirm = true
-          this.tips = this.tipsObj.succeed
+          this.showComfirm = true;
+          this.tips = this.tipsObj.succeed;
           this.TogetUserInfo();
         } else {
-          this.showComfirm = true
+          this.showComfirm = true;
           if (!json.success) {
-            this.tips = json.msg
+            this.tips = json.msg;
           } else {
-            this.tips = this.tipsObj.nosucceed
+            this.tips = this.tipsObj.nosucceed;
           }
         }
-      })
+      });
     }
   },
   created() {
-    this.TogetUserInfo()
+    this.TogetUserInfo();
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
-.sellEpWrapper {
+.transWrapper {
   .innerWrap {
     width: 100vw;
     padding-bottom: 300px;
     overflow-y: scroll;
     height: calc(100vh - 260px);
-    background-color: #ebeaf0;
     border-radius: 40px 40px 0 0;
-    margin-top: -60px;
-    padding-top: 90px;
+    margin-top: -0px;
+    padding-top: 30px;
+    .tips-part {
+      font-weight: bold;
+      color: rgba(52, 52, 52, 1);
+    }
+    .tips {
+      width: 90%;
+      min-height: 158px;
+      align-items: center;
+      padding: 30px ;
+      margin: 0 auto 50px;
+      box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.24);
+      .img {
+        width: 148px;
+        height: 115px;
+        margin-right: 70px;
+      }
+    }
   }
   ul {
     width: 90%;
     margin: 0 auto;
     li {
       .title {
-        color: #9d9d9f;
+        color: #ffffff;
         font-size: 42px;
-        margin: 42px 0;
+        margin: 60px 0 22px;
         font-weight: 800;
         letter-spacing: 10px;
+        padding-left: 20px;
       }
       input {
-        height: 148px;
-        line-height: 148px;
-        color: #9d9d9f;
+        height: 130px;
+        line-height: 130px;
+        color: #9e9e9f;
         width: 100%;
         padding: 0 30px;
         border-radius: 20px;
@@ -201,21 +222,24 @@ export default {
         letter-spacing: 10px;
       }
       /deep/ .van-dropdown-menu__bar {
-        height: 148px;
-        line-height: 148px;
-        color: #6f6d72;
+        height: 130px;
+        line-height: 130px;
+        color: #9e9e9f;
+        font-weight: 600;
         width: 100%;
         padding: 0 20px;
         border-radius: 20px;
+        letter-spacing: 10px;
       }
       /deep/ .van-ellipsis {
-        font-size: 60px;
-        color: #9d9d9f;
+        font-size: 42px;
+        color: #9e9e9f;
         font-weight: 600;
+        letter-spacing: 10px;
       }
       /deep/ .van-dropdown-menu__title {
-        height: 148px;
-        line-height: 148px;
+        height: 130px;
+        line-height: 130px;
         display: inline-block;
         width: 98%;
       }
@@ -242,13 +266,13 @@ export default {
         height: 148px;
         line-height: 148px;
         padding: 0 80px;
-        font-size: 42px;
+        font-size: 40px;
       }
       /deep/ .van-dropdown-item__option--active {
-        color: #6e21d1;
+        color: #efb618;
       }
       /deep/ .van-icon-success::before {
-        color: #6e21d1;
+        color: #efb618;
       }
 
       .verification {
@@ -279,20 +303,14 @@ export default {
     width: 90%;
     margin: 0 auto;
     background: #f5c148;
-    border-radius: 40px;
-    height: 164px;
-    line-height: 164px;
-    font-size: 42px;
+    border-radius: 20px;
+    height: 130px;
+    line-height: 130px;
+    font-size: 52px;
     color: #fff;
     margin-top: 100px;
-    font-weight: 800;
-    letter-spacing: 10px;
-  }
-  .title-tip{
-     padding: 20px 60px;
-       font-size: 40px;
-        font-weight: 600;
-        color: #999;
+    font-weight: 600;
+    letter-spacing: 4px;
   }
   .moneyWrap {
     height: 214px;
@@ -306,22 +324,24 @@ export default {
       .top {
         font-size: 104px;
         font-weight: 600;
-        color: #999;
-        height: 140px;
-        line-height: 140px;
+        color: #4a494c;
+        margin-top: 20px;
+        height: 100px;
+        line-height: 100px;
+        opacity: 0.62;
       }
       .bottom {
-        color: #999;
+        color: #4a494c;
         font-size: 42px;
-
         height: 80px;
         line-height: 80px;
+        opacity: 0.62;
       }
     }
     .right {
       font-size: 104px;
       font-weight: 600;
-      color: #6318c3;
+      color: #113d79;
     }
   }
 }

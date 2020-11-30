@@ -1,9 +1,11 @@
 <template>
   <div class="verificationWrap">
-    <TopBar class="center-one-search" :option="topBarOption">
+    <!-- <TopBar class="center-one-search" :option="topBarOption">
       驗證安全問題
-    </TopBar>
+    </TopBar>-->
     <div class="innerWrap">
+      <img :src="forgotImg" alt class="head" />
+      <h6 class="forgotTitle">验证问题</h6>
       <ul>
         <li>
           <div class="title">{{Q1}}</div>
@@ -20,19 +22,25 @@
           <input type="text" hidden v-model="initData.q3id" />
           <input type="text" v-model="initData.q3name" />
         </li>
+        <li class="tipWrap">
+          <div class="tip">提示：</div>
+          <div class="tip">下一步将验证您预留的信息。</div>
+        </li>
         <li>
-          <div class="photoWrap">
-            <img class="photo" src="../../assets/imgs/chilui.png" alt />
-            <span>
-              溫馨提示：
-              <br />驗證成功后將重置密碼。
-            </span>
-          </div>
+          <button class="next" @click="submit">驗證</button>
         </li>
       </ul>
-
-      <button class="next" @click="submit">驗證</button>
-      <YellowComfirm @clickOver="clickOverpay" :show="isEnter" @clickOk="clickOk()" :tipTitle="tips" @changeModel="changeModel"></YellowComfirm>
+      <div class="bottom-part">
+        <div class="version1">MOKI MONKEY 摩奇候</div>
+        <div class="version2">MOKI MONKEY Co.,ltd.. Copyright 2020 (C) All right reserved</div>
+      </div>
+      <YellowComfirm
+        @clickOver="clickOverpay"
+        :show="isEnter"
+        @clickOk="clickOk()"
+        :tipTitle="tips"
+        @changeModel="changeModel"
+      ></YellowComfirm>
     </div>
   </div>
 </template>
@@ -44,6 +52,7 @@ import { GetQuestionListByID, GetCheckQuestionAll } from "util/netApi";
 import { http } from "util/request";
 import { storage } from "util/storage";
 import { accessToken, loginPro } from "util/const.js";
+import forgot from "@/assets/imgs/login/forgot.png";
 export default {
   components: {
     TopBar,
@@ -52,6 +61,7 @@ export default {
   },
   data() {
     return {
+      forgotImg: forgot,
       isEnter: false,
       showConfirm: true,
       topBarOption: {
@@ -140,30 +150,55 @@ export default {
 
 <style lang="less" scoped>
 .verificationWrap {
+  .forgotTitle {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 60px;
+    font-size: 70px;
+    color: #000403;
+    font-weight: bolder;
+  }
+  .tipWrap {
+    padding-top: 70px !important;
+  }
+  .tip {
+    line-height: 54px;
+    font-weight: bold;
+    color: #353535;
+    font-size: 38px;
+  }
   .innerWrap {
     width: 100vw;
-    background-color: #ebeaf0;
-    border-radius: 40px 40px 0 0;
-    margin-top: -20px;
-    padding-top: 120px;
+    overflow-y: scroll;
+    height: calc(100vh);
+    background: #efb618 url("../../assets/imgs/login/ybj.png") no-repeat left
+      top / 100% 100%;
+    .head {
+      display: block;
+      width: 370px;
+      height: 294px;
+      margin: 80px auto 230px;
+    }
     ul {
       width: 90%;
       margin: 0 auto;
       li {
         .title {
-          color: #333;
+          color: #353535;
           font-size: 42px;
           margin: 42px 0;
           font-weight: 800;
+          letter-spacing: 6px;
         }
         input {
-          height: 148px;
-          line-height: 148px;
-          color: #9d9d9f;
+          height: 139px;
+          box-shadow: 0px 5px 6px 0px rgba(0, 0, 0, 0.24);
+          line-height: 139px;
+          color: #6f6d72;
           width: 100%;
-          padding: 0 30px;
+          padding: 0 38px;
           border-radius: 20px;
-          font-size: 42px;
+          font-size: 50px;
           font-weight: 600;
           letter-spacing: 10px;
         }
@@ -265,19 +300,44 @@ export default {
     padding: 60px;
   }
   .next {
-    display: block;
-    width: 90%;
-    margin: 0 auto;
-    background: #f5c148;
-    border-radius: 40px;
-    height: 164px;
-    line-height: 164px;
-    font-size: 42px;
+    background: #006bb6;
+    margin-top: 60px;
+    height: 150px;
+    width: 100%;
+    text-align: center;
+    border-radius: 80px;
+    font-size: 52px;
     color: #fff;
-    margin-top: 100px;
+    font-weight: 900;
+  }
+  .bottom-part {
     position: relative;
-    font-weight: 800;
-    letter-spacing: 30px;
+    height: 25vh;
+    font-family: HYYakuHei;
+  }
+  .version2 {
+    color: #060000;
+    font-size: 28px;
+    margin-top: 40px;
+    text-align: center;
+    position: absolute;
+    bottom: 50px;
+    width: 100%;
+    left: 50%;
+    transform: translate(-50%);
+    font-weight: bold;
+  }
+  .version1 {
+    color: #060000;
+    font-size: 42px;
+    margin-top: 40px;
+    text-align: center;
+    position: absolute;
+    bottom: 160px;
+    width: 100%;
+    left: 50%;
+    transform: translate(-50%);
+    font-weight: bold;
   }
 }
 </style>

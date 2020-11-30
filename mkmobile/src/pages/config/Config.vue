@@ -71,7 +71,7 @@ export default {
     return {
       topBarOption: {
        // image: headerImg,
-        iconLeft: 'iconzhankai',
+        iconLeft: 'iconShapecopy',
         iconRight: ''
       }
     }

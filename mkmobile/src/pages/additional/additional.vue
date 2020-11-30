@@ -1,21 +1,39 @@
 <template>
   <div class="sellEpWrapper">
-    <TopBar class="center-one-search" :option="topBarOption">
-      資料完善
-    </TopBar>
+    <TopBar class="center-one-search">完善个人资料</TopBar>
     <div class="innerWrap">
+      <div class="tips base-flex flex-start p-58 bg-white borderR mb-80">
+        <img src="@/assets/imgs/tipimg.png" class="img" alt />
+        <div class="tips-part">
+          <div class="tip-titl">提示</div>
+          <div>请阅读完整《 摩奇猴用户协议和隐私政策》</div>
+          <!-- <div>即將更新！</div> -->
+        </div>
+      </div>
       <ul>
         <li>
           <div class="title">真實姓名</div>
           <input type="text" v-model="initData.name" />
+          <i class="iconfont iconlock"></i>
         </li>
-        <li>
+          <li>
+          <div class="title">身份證</div>
+          <input type="text" v-model="initData.typeNumber" />
+          <i class="iconfont iconlock"></i>
+        </li>
+              <li>
+          <div class="title">手机：</div>
+          <input type="text" v-model="initData.nickName" />
+          <i class="iconfont iconlock"></i>
+        </li>
+        <!-- <li>
           <div class="title">國家</div>
           <van-dropdown-menu>
             <van-dropdown-item v-model="initData.country" :options="option1" />
           </van-dropdown-menu>
-        </li>
-        <li>
+        </li> -->
+        
+        <!-- <li>
           <div class="title">身份類型</div>
           <van-dropdown-menu>
             <van-dropdown-item v-model="initData.type" :options="option2" />
@@ -29,17 +47,21 @@
           <div class="title">擴展區域</div>
           <van-radio-group v-model="initData.radioValue" disabled direction="horizontal">
             <van-radio name="1">水果區</van-radio>
-             <van-radio name="0">蔬菜區</van-radio>
+            <van-radio name="0">蔬菜區</van-radio>
           </van-radio-group>
+        </li> -->
+          <li>
+          <div class="title">配送地址：</div>
+          <input type="text" v-model="initData.nickName" />
+          <i class="iconfont iconlock"></i>
         </li>
         <li>
-          <div class="title">交易密碼</div>
+          <div class="title">密码验证(交易密码）:</div>
           <input type="password" v-model="initData.password" />
         </li>
       </ul>
-      <button class="next" @click="goCheckData">下一步</button>
+      <button class="next" @click="goCheckData">提交申请</button>
     </div>
-    <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk()"></YellowComfirm>
   </div>
 </template>
 <script type="text/javascript">
@@ -67,7 +89,6 @@ export default {
       topBarOption: {
         iconLeft: "back",
         iconRight: ""
-        
       },
       initData: {
         name: "",
@@ -141,7 +162,7 @@ export default {
             this.addmodel.CountryPhoneCode = this.initData.country;
             this.addmodel.idNumber = this.initData.typeNumber;
             this.addmodel.TradePass = this.initData.password;
-             storage.setLocalStorage("joindata", JSON.stringify(this.addmodel));
+            storage.setLocalStorage("joindata", JSON.stringify(this.addmodel));
             this.$router.push({ name: "CheckData" });
           } else {
             this.showComfirm = true;
@@ -152,14 +173,13 @@ export default {
     }
   },
   created() {
-    if (storage.getLocalStorage('joindata')) {
-      
-      this.addmodel = JSON.parse(storage.getLocalStorage('joindata'));
-       this.initData.name= this.addmodel.uRealName;
-       this.initData.type=this.addmodel.idType ;
-       this.initData.country= this.addmodel.CountryPhoneCode;
-       this.initData.typeNumber=this.addmodel.idNumber ;
-       this.initData.password=this.addmodel.TradePass ; 
+    if (storage.getLocalStorage("joindata")) {
+      this.addmodel = JSON.parse(storage.getLocalStorage("joindata"));
+      this.initData.name = this.addmodel.uRealName;
+      this.initData.type = this.addmodel.idType;
+      this.initData.country = this.addmodel.CountryPhoneCode;
+      this.initData.typeNumber = this.addmodel.idNumber;
+      this.initData.password = this.addmodel.TradePass;
       if (this.addmodel.L == 0) {
         this.initData.radioValue = "0";
       } else {
@@ -174,48 +194,78 @@ export default {
 .sellEpWrapper {
   .innerWrap {
     width: 100vw;
-    background-color: #ebeaf0;
     border-radius: 40px 40px 0 0;
+      height: calc(100vh - 300px);
+    overflow: auto;
     margin-top: -20px;
     padding-top: 30px;
-    padding-bottom: 400px;
+    padding-bottom: 200px;
+    .tips-part {
+      font-weight: bold;
+      color: rgba(52, 52, 52, 1);
+    }
+    .tips {
+      width: 90%;
+      min-height: 158px;
+      align-items: center;
+      padding: 30px;
+      margin: 0 auto;
+      box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.24);
+      .img {
+        width: 148px;
+        height: 115px;
+        margin-right: 70px;
+      }
+    }
   }
   ul {
     width: 90%;
     margin: 0 auto;
     li {
+      position: relative;
       .title {
         font-size: 42px;
-        margin: 42px;
-        margin-bottom: 20px;
-        opacity: 0.62;
-        color: #4a494c;
+        margin: 42px 20px 20px 0;
+        color: #fff;
         font-weight: bold;
       }
       input {
-        height: 148px;
-        color: #6f6d72;
+        height: 123px;
+        line-height: 123px;
         font-size: 42px;
-        font-weight: 600;
         width: 100%;
-        padding: 30px 80px;
+        padding: 30px 20px;
         border-radius: 20px;
+        color: #6f6d72;
+        font-weight: 600;
+        letter-spacing: 4px;
+      }
+      .iconfont {
+        position: absolute;
+        font-size: 60px;
+        color: #4493d5;
+        top: 100px;
+        right: 20px;
       }
       /deep/ .van-dropdown-menu__bar {
-        height: 148px;
-        line-height: 148px;
-        color: #6f6d72;
+        height: 130px;
+        line-height: 130px;
+        color: #9e9e9f;
+        font-weight: 600;
         width: 100%;
         padding: 0 20px;
         border-radius: 20px;
+        letter-spacing: 10px;
       }
       /deep/ .van-ellipsis {
-        font-size: 42px;
-        color: #4a494c;
+        font-size: 60px;
+        color: #9e9e9f;
+        font-weight: 600;
+        letter-spacing: 10px;
       }
       /deep/ .van-dropdown-menu__title {
-        height: 148px;
-        line-height: 148px;
+        height: 130px;
+        line-height: 130px;
         display: inline-block;
         width: 98%;
       }
@@ -242,13 +292,13 @@ export default {
         height: 148px;
         line-height: 148px;
         padding: 0 80px;
-        font-size: 42px;
+        font-size: 50px;
       }
       /deep/ .van-dropdown-item__option--active {
-        color: #6e21d1;
+        color: #efb618;
       }
       /deep/ .van-icon-success::before {
-        color: #6e21d1;
+        color: #efb618;
       }
 
       .verification {
@@ -315,15 +365,14 @@ export default {
     width: 90%;
     margin: 0 auto;
     background: #f5c148;
-    border-radius: 40px;
-    height: 164px;
-    line-height: 164px;
-    font-size: 42px;
+    border-radius: 20px;
+    height: 130px;
+    line-height: 130px;
+    font-size: 52px;
     color: #fff;
     margin-top: 100px;
-    position: relative;
-    font-weight: 800;
-    letter-spacing: 10px;
+    font-weight: 600;
+    letter-spacing: 4px;
   }
 }
 </style>

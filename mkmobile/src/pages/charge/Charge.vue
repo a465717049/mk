@@ -39,7 +39,7 @@ export default {
   data() {
     return {
       topBarOption: {
-        iconLeft: "iconzhankai",
+        iconLeft: "iconShapecopy",
         iconRight: "",
         //image: headerImg
       },

@@ -25,7 +25,7 @@
               <i class="iconfont iconarrowup author font80"></i>
             </div>
             <div class="arrow-show arrow-last center" @click="onButton('down')">
-              <i class="iconfont iconarrow author font90"></i>
+              <i class="iconfont iconarrow author font80"></i>
             </div>
           </div>
         </div>
@@ -150,9 +150,6 @@ export default {
   .search-input {
     margin-bottom: 50px;
   }
-  .iconsearch{
-    margin-top: 20px;
-  }
   .auth-card {
     background: #fff;
     display: flex;
@@ -174,7 +171,6 @@ export default {
     }
     .auth-top-tip {
       font-size: 60px;
-      line-height: 120px;
       color: #8d8d8d;
     }
   }
@@ -186,13 +182,12 @@ export default {
     .arrow-show {
       width: 143px;
       height: 140px;
-      line-height:  135px;
       margin: 0 30px;
       background: url("../../assets/imgs/set/squer-img.png") center center /
         100% 100%;
       .author {
         color: #7ab4b4;
-        margin-top: 20px;
+        margin-top: 35px;
         margin-left: 10px;
       }
     }
@@ -210,15 +205,12 @@ export default {
     margin-top: 120px;
     padding: 40px;
     div {
-      text-align: left;
+      text-align: right;
       font-size: 92px;
       width: 400px;
-      margin-top: 20px;
       line-height: 90px;
       .pai-title {
         font-size: 40px;
-        padding-left: 80px;
-        text-align: left;
       }
     }
     .jiantou {
@@ -230,15 +222,10 @@ export default {
     }
     .num {
       font-weight: bold;
-      padding-left: 80px;
-        text-align: left;
     }
     p {
       text-align: center;
     }
-  }
-  .font90{
-    font-size: 90px;
   }
 }
 </style>

@@ -25,7 +25,6 @@ const router = new Router({
       children: [{
           name: "Home",
           path: "/home",
-          meta: { title: '首頁', icon: '', noCache: false, affix: false,keepAlive:false }, 
           component: resolve => require(["@/pages/home/Home"], resolve)
         },
         {
@@ -37,6 +36,21 @@ const router = new Router({
           name: "shop",
           path: "/shop",
           component: resolve => require(["@/pages/shop/shop"], resolve)
+        },
+        {
+          name: "shopCar",
+          path: "/shopCar",
+          component: resolve => require(["@/pages/shop/shopCar"], resolve)
+        },
+        {
+          name: "shopList",
+          path: "/shopList",
+          component: resolve => require(["@/pages/shop/shopList"], resolve)
+        },
+        {
+          name: "orderDetail",
+          path: "/orderDetail",
+          component: resolve => require(["@/pages/shop/orderDetail"], resolve)
         },
         {
           name: "setting",
@@ -109,6 +123,11 @@ const router = new Router({
           component: resolve => require(["@/pages/trans/TransWithMe"], resolve)
         },
         {
+          name: "Withdrawal",
+          path: "/withdrawal",
+          component: resolve => require(["@/pages/trans/Withdrawal"], resolve)
+        },
+        {
           name: "News",
           path: "/news",
           component: resolve => require(["@/pages/news/index"], resolve)
@@ -161,6 +180,11 @@ const router = new Router({
           name: "Wallet",
           path: "/wallet",
           component: resolve => require(["@/pages/wallet/Wallet"], resolve)
+        },
+        {
+          name: "Bank",
+          path: "/bank",
+          component: resolve => require(["@/pages/bank/Bank"], resolve)
         },
         {
           name: "Search",
@@ -223,9 +247,14 @@ const router = new Router({
           component: resolve => require(["@/pages/join/JoinUs"], resolve)
         },
         {
-          name: "JoinFamily",
-          path: "/joinFamily",
-          component: resolve => require(["@/pages/join/JoinFamily"], resolve)
+          name: "VipUpgrade",
+          path: "/vipUpgrade",
+          component: resolve => require(["@/pages/join/VipUpgrade"], resolve)
+        },
+        {
+          name: "JoinUs",
+          path: "/joinUs",
+          component: resolve => require(["@/pages/join/JoinUs"], resolve)
         },
         {
           name: "Additional",

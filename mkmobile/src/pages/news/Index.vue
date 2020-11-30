@@ -1,6 +1,6 @@
 <template>
   <div class="newsIndexWrapper">
-    <TopBar class="center-one-search" :option="topBarOption">公告</TopBar>
+    <TopBar class="center-one-search">资 讯</TopBar>
     <div class="innerWrap">
       <div class="w90">
         <!-- <div class="banner">
@@ -43,11 +43,32 @@ export default {
   data() {
     return {
       topBarOption: {
-        iconLeft: "iconzhankai",
+        iconLeft: "iconShapecopy",
         iconRight: ""
       },
       ntype: null,
-      newsList: []
+      newsList: [
+        {
+          title:'We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio',
+          message:'We are very happy that the DPE zhengzhou club can be set up in such a serious situation.',
+          date:'ssituation',
+        },
+        {
+          title:'We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio',
+          message:'We are very happy that the DPE zhengzhou club can be set up in such a serious situation.',
+          date:'ssituation',
+        },
+        {
+          title:'We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio',
+          message:'We are very happy that the DPE zhengzhou club can be set up in such a serious situation.',
+          date:'ssituation',
+        },
+        {
+          title:'We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio',
+          message:'We are very happy that the DPE zhengzhou club can be set up in such a serious situation.',
+          date:'ssituation',
+        }
+      ]
     };
   },
   watch: {
@@ -104,13 +125,10 @@ export default {
 
 <style lang="less" scoped>
 .newsIndexWrapper {
-  height: 100vh;
   .innerWrap {
     width: 100vw;
-    background-color: #ebeaf0;
     border-radius: 40px 40px 0 0;
     margin-top: -20px;
-    padding-top: 30px;
     z-index: 1000;
     height: calc(100vh - 460px);
     overflow: auto;
@@ -189,8 +207,7 @@ export default {
   }
   .message {
     font-size: 32px;
-    line-height: 55px;
-    margin-top: 35px;
+    margin-top: 15px;
     margin-left: 15px;
     color: #666;
   }

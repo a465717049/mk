@@ -1,163 +1,200 @@
 <template>
   <div class="shop-part">
-    <TopBar class="center-one-search" :option="topBarOption" :showChat="showChat">Shop</TopBar>
-    <div class="scrollPart" ref="scrollPart">
-      <div class="shop-detail font40 center relative">
-        <img class="shop-img center mt-100 mb-100" v-bind:src="pIcon" alt />
-        <div class="buy border-top-radius mt-80">
-          <div class="title Tleft font-weight pt-60 font60">{{pName}}</div>
-          <div class="detail-info pt-60 Tleft font42">{{pDesc}}</div>
-          <div class="base-flex mt-40">
-            <van-field name="stepper" class="font42">
-              <template #input>
-                <van-stepper
-                  v-model="stepper"
-                  @plus="onPlus"
-                  @minus="onMinus"
-                  :max="startmax"
-                  class="font42"
-                />
-              </template>
-            </van-field>
-            <span class="font65 base-purple">$ {{price}}</span>
-          </div>
-          <div class="base-flex mt-40">
-            <div class="heart borderR">
-              <i class="iconfont iconheart"></i>
+    <TopBar class="center-one-search" :option="topBarOption" :badge="carNum">商品介绍</TopBar>
+    <ScrollRefresh
+      @getData="ToGetShopDeatilList"
+      :residualHeight="140"
+      :isNeedUp="false"
+      class="innerScroll"
+    >
+      <div class="scrollPart" ref="scrollPart">
+        <div class="shop-detail font40 center relative">
+          <span class="tag" v-show="ptag">{{ptag}}</span>
+          <div class="monkey">
+            <div class="monkeywrap">
+              <img src="../../assets/imgs/login/head.png" alt class="head" />
+              <img src="../../assets/imgs/login/eye5.png" alt class="eye" />
             </div>
-            <button class="buy-btn center borderR" @click="buyShop">立即购买</button>
+            <span class="moki">MOKI minkey 摩奇猴</span>
+          </div>
+          <van-swipe :autoplay="4000" class="sweiper1" @change="onChangeSwiper">
+            <van-swipe-item v-for="(image, index) in images" :key="index">
+              <img :src="image.image" />
+            </van-swipe-item>
+            <template #indicator>
+              <div class="custom-indicator">{{ current + 1 }}/{{images.length}}</div>
+            </template>
+          </van-swipe>
+          <!-- <img class="shop-img center mt-100 mb-100" :src="pIcon" alt /> -->
+          <div class="buy border-top-radius mt-80">
+            <!-- <div class="title Tleft font-weight pt-60 font60">{{pName}}</div> -->
+            <ul class="detail-info pt-60 Tleft font42">
+              <li v-for="(item,index) in pInfo" :key="index" class="info-item">{{item}}</li>
+            </ul>
+            <div class="base-flex mt-40">
+              <van-field name="stepper" class="font42">
+                <template #input>
+                  <van-stepper
+                    v-model="stepper"
+                    @plus="onPlus"
+                    @minus="onMinus"
+                    :max="startmax"
+                    class="font42"
+                  />
+                </template>
+              </van-field>
+              <span class="price">$ {{price}}1111</span>
+            </div>
+            <div class="base-flex mt-40">
+              <div class="heart borderR">
+                <i class="iconfont icongouwucheman"></i>
+              </div>
+              <button class="buy-btn center borderR" @click="buyShop">立即购买</button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <YellowComfirm :show="showComfirm"  @clickOver="clickOverpay" :tipTitle="tips" @clickOk="clickOk()" @changeModel="changeModel"></YellowComfirm>
+    </ScrollRefresh>
+    <YellowComfirm
+      :show="showComfirm"
+      @clickOver="clickOverpay"
+      :tipTitle="tips"
+      @clickOk="clickOk()"
+      @changeModel="changeModel"
+    ></YellowComfirm>
   </div>
 </template>
 <script>
-import TopBar from 'components/TopBar'
-import YellowComfirm from 'components/YellowComfirm'
-import BScroll from 'better-scroll'
-import { http } from 'util/request'
-import { GetShopDeatilList, GetUserInfo, BuyGoodsweb } from 'util/netApi'
-import { storage } from 'util/storage'
-import { accessToken, loginPro } from 'util/const.js'
+import TopBar from "components/TopBar";
+import YellowComfirm from "components/YellowComfirm";
+import { http } from "util/request";
+import { GetShopDeatilList, GetUserInfo, BuyGoodsweb } from "util/netApi";
+import { storage } from "util/storage";
+import banner1 from "../../assets/imgs/banner-00.png";
+import banner2 from "../../assets/imgs/banner-01.png";
+import { accessToken, loginPro } from "util/const.js";
+import ScrollRefresh from "components/ScrollRefresh";
 export default {
-  name: 'shopDetail',
+  name: "shopDetail",
   components: {
     TopBar,
-    YellowComfirm
+    YellowComfirm,
+    ScrollRefresh
   },
   data() {
     return {
       showComfirm: false,
+      carNum:1,
       shopid: 0,
-      pName: '',
-      pDesc: '',
-      pIcon: '',
+      images: [{ image: banner1 }, { image: banner2 }],
+      current: 0,
+      // pName: "促销中",
+      // pDesc: "促销中促销中促销中",
+      pInfo: [
+        "品牌： MOKI MONKEY",
+        "商品产地：孟加拉国、越南等（批次不同产地不同，以 实际发货为准）",
+        "货号：MOKI- 100 ",
+        "类别：平角裤腰型",
+        "材质：聚合烯矿丝棉"
+      ],
+      pIcon: require("@/assets/imgs/shop/camea.png"),
+      ptag: "促销优惠期",
       price: 0,
       shopprice: 0,
       stepper: 1,
       startmax: 8,
       showChat: true,
       topBarOption: {
-        iconLeft: 'iconzhankai',
-        iconRight: '11'
+        iconLeft: "back",
+        iconRight: "icongouwucheman"
       },
-      tips: '',
+      tips: "",
       tipsObj: {}
-    }
+    };
   },
   methods: {
+    onChangeSwiper(index) {
+      this.current = index;
+    },
     clickOk() {
-      this.showComfirm = false
+      this.showComfirm = false;
     },
     changeModel(v) {
       this.showComfirm = v;
     },
     onPlus() {
       //增加
-      this.price += this.shopprice
+      this.price += this.shopprice;
     },
     onMinus() {
       //减少
-      this.price -= this.shopprice
+      this.price -= this.shopprice;
     },
     buyShop() {
       http(BuyGoodsweb, { id: this.tmpshopid }, json => {
         if (json.code === 0) {
         } else {
-          this.showComfirm = true
-          this.tips = json.msg
+          this.showComfirm = true;
+          this.tips = json.msg;
         }
-      })
-    },
-    scrollInit() {
-      if (!this.scroll) {
-        this.scroll = new BScroll(this.$refs.scrollPart, {
-          scrollY: true,
-          click: true,
-          bounce: {
-            top: true,
-            bottom: true
-          }
-        })
-      } else {
-        this.scroll.refresh()
-      }
+      });
     },
     ToGetShopDeatilList(tmpshopid) {
       http(GetShopDeatilList, { shopid: tmpshopid }, json => {
-        console.log(json)
+        console.log(json);
         if (json.code === 0) {
-          var shop = json.response.list[0]
-          this.pName = shop.pName
-          this.pDesc = shop.pDesc
-          this.pIcon = shop.pIcon
-          this.price = shop.price
-          this.shopprice = shop.price
-          this.startmax = shop.pNum
+          var shop = json.response.list[0];
+          this.pName = shop.pName;
+          this.pDesc = shop.pDesc;
+          this.pIcon = shop.pIcon;
+          this.price = shop.price;
+          this.shopprice = shop.price;
+          this.startmax = shop.pNum;
         }
-      })
+      });
     }
   },
   created() {
     if (this.$route.query.id) {
-      this.shopid = this.$route.query.id
-      this.ToGetShopDeatilList(this.shopid)
+      this.shopid = this.$route.query.id;
+      this.ToGetShopDeatilList(this.shopid);
     }
   },
   mounted() {
-    this.scrollInit()
+    // this.scrollInit()
   }
-}
+};
 </script>
 <style lang='less' scoped>
 .shop-part {
-  .scrollPart {
-    height: calc(100vh - 400px);
-    overflow: hidden;
-    border-radius: 40px;
-    margin-top: -120px;
-    background: #ebeaf0;
+  .innerScroll {
+    /deep/.wrapper {
+      background: #dce2eb;
+      .bscroll-container {
+        min-height: calc(100vh - 400px) !important;
+      }
+    }
   }
   .shop-detail {
-    background: #cadba7;
+    background: #c6d0de;
+    padding-top: 200px;
     .shop-img {
       width: 652px;
       height: 882px;
     }
     .buy {
-      height: 45vh;
+      // height: 45vh;
       padding: 0 58px;
-      background: #dee9c8;
-      border-radius: 56px;
+      background: #dce2eb;
+      border-radius: 56px 56px 0 0;
+      padding-bottom: 150px;
       /deep/.van-stepper__plus {
         width: 84px;
         height: 84px;
         border-radius: 42px;
         border: 4px solid rgba(100, 24, 195, 1);
         margin-left: 15px;
-        background: #dee9c8;
+        background: #dce2eb;
       }
       /deep/.van-stepper__plus::after {
         color: black;
@@ -184,7 +221,7 @@ export default {
         border-radius: 42px;
         border: 4px solid rgba(100, 24, 195, 1);
         margin-right: 15px;
-        background: #dee9c8;
+        background: #dce2eb;
       }
       /deep/.van-stepper__input {
         font-size: 42px;
@@ -192,10 +229,10 @@ export default {
 
       /deep/.van-cell {
         width: 40%;
-        background: #dee9c8;
+        background: #dce2eb;
       }
       /deep/.van-stepper__input {
-        background: #dee9c8;
+        background: #dce2eb;
         height: 84px;
         width: 60px;
         line-height: 84px;
@@ -218,6 +255,102 @@ export default {
         font-weight: bold;
         font-size: 53px;
       }
+    }
+    .detail-info {
+      padding-left: 104px;
+      li {
+        font-weight: bold;
+        color: #191819;
+        margin-bottom: 10px;
+        font-size: 38px;
+      }
+    }
+    .price {
+      font-size: 67px;
+      font-weight: bold;
+      color: #f00833;
+    }
+    .tag {
+      height: 69px;
+      line-height: 69px;
+      background: #f00833;
+      border-radius: 34px;
+      padding: 0 20px;
+      font-size: 37px;
+      color: #dee3ee;
+      top: 92px;
+      left: 57px;
+      position: absolute;
+    }
+  }
+  .sweiper1 {
+    margin: 0 auto;
+    padding-bottom: 222px;
+    width: 602px;
+    height: 600px;
+    img {
+      width: 100%;
+      height: 373px;
+    }
+    /deep/ .van-swipe-item {
+      border-radius: 24px;
+      overflow: hidden;
+      border: 10px solid #fff;
+    }
+    /deep/ .van-swipe__indicator {
+      width: 20px;
+      height: 20px;
+    }
+    /deep/ .van-swipe__indicator--active {
+      background-color: #6318c3;
+    }
+    /deep/ .custom-indicator {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #b3bdbe;
+      border-radius: 57px;
+      height: 70px;
+      line-height: 70px;
+      color: #dee3ee;
+      font-size: 38px;
+      padding: 0 30px;
+      letter-spacing: 10px;
+    }
+  }
+  .monkey {
+    position: absolute;
+    top: 625px;
+    right: 66px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .monkeywrap {
+      width: 135px;
+      height: 107px;
+      position: relative;
+
+      .head {
+        width: 135px;
+        height: 107px;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .eye {
+        position: absolute;
+        width: 50px;
+        height: 16px;
+        left: 42px;
+        top: 30px;
+      }
+    }
+
+    .moki {
+      font-size: 20px;
+      font-weight: bold;
+      color: #191819;
     }
   }
 }

@@ -48,7 +48,7 @@ export default {
       searchvalue: 0,
       showLocation: true,
       topBarOption: {
-        iconLeft: 'iconzhankai',
+        iconLeft: 'iconShapecopy',
         iconRight: ''
       },
       count: 0,

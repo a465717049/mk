@@ -11,32 +11,25 @@
               <input
                 type="text"
                 placeholder="請輸入ERC20地址"
+                :disabled="this.address!==''"
                 v-model="form.location"
               />
             </div>
-            <div class="t-img">
-              <img src="@/assets/imgs/T.png" alt />
-              <input
-                type="text"
-                placeholder="請輸入TRC20地址"   
-                v-model="form.addr"
-              />
-            </div>
           </li>
           <li>
-            <div class="title" >交易密码</div>
-            <input type="password" v-model="form.tpwd" />
+            <div class="title" v-show="this.address==''">交易密码</div>
+            <input type="password" v-show="this.address==''" v-model="form.tpwd" />
           </li>
           <li>
-            <div class="title">身份證號碼</div>
-            <input type="password" v-model="form.idnum" />
+            <div class="title" v-show="this.address==''">身份證號碼</div>
+            <input type="password" v-show="this.address==''" v-model="form.idnum" />
           </li>
           <li>
-            <div class="title">谷歌驗證碼</div>
-            <input type="number" v-model="form.google" />
+            <div class="title" v-show="this.address==''">谷歌驗證碼</div>
+            <input type="number" v-show="this.address==''" v-model="form.google" />
           </li>
         </ul>
-        <button class="button"  @click="goNext">確定</button>
+        <button class="button" v-show="this.address==''" @click="goNext">確定</button>
         <div class="auth-card">
           <img src="@/assets/imgs/two-persion.png" alt />
           <div>
@@ -75,13 +68,12 @@ export default {
     return {
       form: {
         location: "",
-        addr:"",
         tpwd: "",
         idnum: "",
         google: ""
       },
-      address: "",
-      Taddress: "",
+      // address: "1",
+      address:'',
       //   password: "",
       isEnter: false,
       topBarOption: {
@@ -91,10 +83,8 @@ export default {
       tips: "",
       tipsObj: {
         nosucceed: "設置錢包地址失敗",
-        nolong: "請設置正確的ERC錢包地址",
-        nolong1: "請設置正確的TRC錢包地址",
-        noex: "ERC錢包地址長度不正確",
-        noex1: "TRC錢包地址長度不正確",
+        nolong: "請設置正確的錢包地址",
+        noex: "錢包地址長度不正確",
         succeed: "設置錢包地址成功"
       }
     };
@@ -106,28 +96,13 @@ export default {
         this.isEnter = true;
         return;
       }
-       if (!this.form.addr) {
-        this.tips = this.tipsObj.noex1;
-        this.isEnter = true;
-        return;
-      }
       if (this.form.location.length != 42) {
         this.tips = this.tipsObj.noex;
         this.isEnter = true;
         return;
       }
-       if (this.form.addr.length != 34) {
-        this.tips = this.tipsObj.noex1;
-        this.isEnter = true;
-        return;
-      }
       if (this.form.location.substring(0, 2).toLowerCase() !== "0x") {
         this.tips = this.tipsObj.nolong;
-        this.isEnter = true;
-        return;
-      }
-    if (this.form.addr.substring(0, 1).toLowerCase() !== "t") {
-        this.tips = this.tipsObj.nolong1;
         this.isEnter = true;
         return;
       }
@@ -157,14 +132,9 @@ export default {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
           this.form.location = json.response.coin_location;
-          this.form.addr = json.response.trc_address;
           this.form.location = this.form.location ? this.form.location : "";
-          this.form.addr = this.form.addr ? this.form.addr : "";
           this.address = json.response.coin_location
             ? json.response.coin_location
-            : "";
-          this.Taddress = json.response.trc_address
-            ? json.response.trc_address
             : "";
         }
       });
@@ -210,9 +180,7 @@ export default {
       font-size: 30px;
     }
   }
- .t-img{
-   margin-top: 20px;
- }
+
   ul {
     li {
       .title {

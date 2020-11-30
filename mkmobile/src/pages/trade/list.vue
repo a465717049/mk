@@ -1,10 +1,10 @@
 <template>
   <div class="ep-list">
-    <TopBar class="center-one-search" :option="topBarOption">{{tmpcktype}}記錄</TopBar>
-    <div class="border-top-radius relative bg-gray">
-      <div class="trade borderR bg-gray clearfix">
-        <van-tabs @click="readloadinfo" v-model="active" color="#6e21d1" line-height="0">
-          <van-tab title="全部">
+    <TopBar class="center-one-search" :option="topBarOption">{{tmpcktype}}台账</TopBar>
+    <div class=" relative">
+      <div class="trade  clearfix">
+        <van-tabs @click="readloadinfo" v-model="active" color="#EFB618" line-height="0">
+          <van-tab title="所有台账">
             <div class="listWrap" ref="listWrap">
               <ScrollRefresh
                 @getData="load"
@@ -45,7 +45,7 @@
               </div>
             </div>-->
           </van-tab>
-          <van-tab title="收入">
+          <van-tab title="转入">
             <div class="listWrap">
               <ScrollRefresh
                 @getData="load"
@@ -85,7 +85,7 @@
               </div>-->
             </div>
           </van-tab>
-          <van-tab title="支出">
+          <van-tab title="转出">
             <div class="listWrap" ref="listWrap">
               <div class="container">
                 <ScrollRefresh
@@ -139,10 +139,6 @@ export default {
     return {
       active: 0,
       showChat: true,
-      topBarOption: {
-        iconLeft: "back",
-        iconRight: ""
-      },
       photoList: {
         EP: EP,
         SP: SP,
@@ -214,8 +210,8 @@ export default {
   },
   created() {
     // console.log(this.$route.params);
-    this.tmpcktype = this.$route.params.cktype.toUpperCase();
-    this.load(1);
+    // this.tmpcktype = this.$route.params.cktype.toUpperCase();
+    // this.load(1);
   }
 };
 
@@ -234,27 +230,25 @@ export default {
     height: 76vh;
     margin-top: 10px;
     border-radius: 40px 40px 0 0;
-    /deep/.van-tabs {
-      height: 70px;
-      line-height: 70px;
-    }
     /deep/.van-tabs__wrap {
-      height: 70px;
+      height: 100px;
     }
     /deep/.van-tab {
       font-size: 42px;
       font-weight: 600;
-      background: #ebeaf0;
-      border-bottom: 6px solid #767c8f;
-      color: #6e21d1;
+      border-bottom: 8px solid #FFFFFF;
+      color: #191819;
+      height: 90px;
+      line-height: 90px;
+      padding-bottom: 20px;
     }
     /deep/.van-tab__text {
-      color: #767c8f;
+      color: #191819;
     }
     /deep/.van-tab--active {
-      border-bottom: 6px solid #6e21d1;
+      border-bottom: 8px solid #EFB618;
       /deep/.van-tab__text {
-        color: #6e21d1;
+        color: #fff;
       }
     }
     .listWrap {
@@ -327,6 +321,12 @@ export default {
       .special-price {
         color: #fe0000;
       }
+    }
+    /deep/ .van-tabs__nav{
+      background: rgba(0,0,0,0);
+    }
+     /deep/ .van-hairline--top-bottom::after{
+          border-width:0;
     }
   }
 }

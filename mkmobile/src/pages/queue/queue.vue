@@ -11,7 +11,7 @@
     </TopBar>
   
  
-    <div class="bg-gray p-38">
+    <div class="bg-gray p-58">
       <div class="queue relative">
         <div class="queue-name"><ul>
             <li class="title base-info">
@@ -124,22 +124,15 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.center-one-search{
-  height: 500px!important;
-}
 /deep/.top-bar{
   min-height:500px !important;
 }
 .search-pos {
-  height: 128px;
+  height: 129px;
   width: 100%;
-  margin-top: -40px;
   padding: 0 58px;
   transform: translate(-50%);
    display: block;
-}
-.p-38{
-  padding: 38px;
 }
 .count {
   text-align: center;
@@ -150,7 +143,7 @@ export default {
   font-weight: 600;
   padding: 0 58px;
   display: block;
-  margin-top: -240px;
+  margin-top: -230px;
   margin-bottom: 30px;
   position: relative;
 }
@@ -163,7 +156,7 @@ export default {
   font-weight: 600;
   padding: 0 58px;
   display: block;
-  margin-top: 110px;
+  margin-top: 120px;
   margin-bottom: 30px;
   position: relative;
 }
@@ -171,10 +164,11 @@ export default {
   height: 600px;
 }
 .queue {
-  margin-top: -20px;
+  margin-top: -120px;
   border-radius: 40px;
-  padding-left: 22px;
-  padding-right: 29px;
+  padding-left: 52px;
+  padding-right: 59px;
+
   padding-bottom: 60px;
   background: #fff;
   border: 2px solid #e5e5e5;
