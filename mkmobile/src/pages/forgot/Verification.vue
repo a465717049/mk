@@ -24,7 +24,7 @@
         </li>
         <li class="tipWrap">
           <div class="tip">提示：</div>
-          <div class="tip">下一步将验证您预留的信息。</div>
+          <div class="tip">验证成功后将密码重置。</div>
         </li>
         <li>
           <button class="next" @click="submit">驗證</button>
@@ -157,6 +157,8 @@ export default {
     font-size: 70px;
     color: #000403;
     font-weight: bolder;
+    z-index: 2;
+    position: relative;
   }
   .tipWrap {
     padding-top: 70px !important;
@@ -173,15 +175,19 @@ export default {
     height: calc(100vh);
     background: #efb618 url("../../assets/imgs/login/ybj.png") no-repeat left
       top / 100% 100%;
+    padding-top: 450px;
     .head {
       display: block;
       width: 370px;
       height: 294px;
-      margin: 80px auto 230px;
+      position: absolute;
+      top: 80px;
+      left: calc(50vw - 185px);
     }
     ul {
       width: 90%;
       margin: 0 auto;
+      z-index: 2;
       li {
         .title {
           color: #353535;

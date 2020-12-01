@@ -644,6 +644,11 @@ export default {
   .icontubiao- {
     font-size: 80px;
     margin-right: 20px;
+    margin-left: -8px;
+  }
+  .icontuichu{
+    font-size: 50px !important;
+    margin-left: 5px;
   }
 }
 .leftTreeTitle {

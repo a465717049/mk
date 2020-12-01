@@ -83,8 +83,8 @@ export default {
         name: "",
         pass: ""
       },
-      timer:null,
-      time:1,
+      timer: null,
+      time: 1,
       value: 0,
       ifSave: false, //是否保存密码
       showP: false,
@@ -207,27 +207,27 @@ export default {
   mounted() {
     this.redirect = storage.getLocalStorage(loginPro);
     storage.delLocalStorage(accessToken);
-     this.timer=setInterval(()=>{
-      this.time++
-    },2000)
+    this.timer = setInterval(() => {
+      this.time++;
+    }, 2000);
   },
-  beforeDestroy(){
-    clearInterval(this.timer)
-  },
+  beforeDestroy() {
+    clearInterval(this.timer);
+  }
 };
 </script>
 <style lang="less" scoped>
 @keyframes myfirst {
-  0%{
+  0% {
     opacity: 0;
   }
-  10%{
+  10% {
     opacity: 1;
   }
-   80%{
+  80% {
     opacity: 1;
   }
-   100%{
+  100% {
     opacity: 0;
   }
 }
@@ -268,7 +268,7 @@ export default {
           background: url("../../assets/imgs/login/eye1.png") no-repeat left top /
             100% 100%;
         }
-        .eye2{
+        .eye2 {
           background: url("../../assets/imgs/login/eye2.png") no-repeat left top /
             100% 100%;
         }
@@ -292,7 +292,6 @@ export default {
           background: url("../../assets/imgs/login/eye7.png") no-repeat left top /
             100% 100%;
         }
-
       }
     }
 
@@ -379,6 +378,9 @@ export default {
         }
         /deep/.van-checkbox__icon {
           font-size: 42px;
+          .van-icon {
+            border: 1px solid #fff;
+          }
         }
         /deep/.van-checkbox__icon--checked {
           .van-icon {

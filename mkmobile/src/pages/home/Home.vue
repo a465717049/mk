@@ -291,7 +291,7 @@ export default {
 .innerScroll {
   /deep/.wrapper {
     .bscroll-container {
-      min-height: calc(100vh + 400px) !important;
+      min-height: calc(100vh + 10px) !important;
     }
   }
 }
@@ -321,7 +321,7 @@ export default {
       height: 20px;
     }
     /deep/ .van-swipe__indicator--active {
-      background-color: #6318c3;
+      background-color: #efb618;
     }
   }
   .swiper2Box {

@@ -5,7 +5,7 @@
     <!-- </keep-alive> -->
 
     <van-overlay :show="globalLoadingShow" @click="show = false">
-      <van-loading color="#6E21D1" size="300" v-show="globalLoadingShow" />
+      <van-loading color="#efb618" size="300" v-show="globalLoadingShow" />
     </van-overlay>
   </div>
 </template>

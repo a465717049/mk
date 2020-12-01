@@ -213,6 +213,7 @@ export default {
   }
   div.friendsNum {
     margin-left: 0px;
+    font-size: 40px;
   }
 }
 </style>
