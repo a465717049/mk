@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="wrapper" ref="wrapper" :style="{height: scrollHeight}">
-      <div class="bscroll-container" >
+      <div class="bscroll-container">
         <!-- 刷新提示信息 -->
         <div class="top-tip">
           <span class="refresh-hook">{{pulldownMsg}}</span>
@@ -35,30 +35,30 @@ export default {
       pullBottomTip: false,
       alertHook: "none",
       scrollHeight: 0, //滚动区域的高度
-      pageIndex: 1
+      pageIndex: 1,
     };
   },
   props: {
     residualHeight: {
       //要减去的高度
       type: Number,
-      required: true
+      required: true,
     },
     active: {
-      type: Number //激活的tab栏
+      type: Number, //激活的tab栏
     },
     isNone: {
-      type: Boolean,//数据是否加载完毕
-      default: false
+      type: Boolean, //数据是否加载完毕
+      default: false,
     },
     isNeedDown: {
       type: Boolean, //是否需要下拉刷新
-      default: true
+      default: true,
     },
     isNeedUp: {
       type: Boolean, //是否需要上拉加载
-      default: true
-    }
+      default: true,
+    },
   },
   methods: {
     getHeight() {
@@ -73,12 +73,12 @@ export default {
       setTimeout(() => {
         this.alertHook = "none";
       }, 1000);
-    }
+    },
   },
   watch: {
     active() {
       this.pageIndex = 1;
-    }
+    },
   },
   created() {
     const that = this;
@@ -89,18 +89,18 @@ export default {
         pullUpLoad: this.isNeedUp, //上拉加载更多
         bounce: {
           top: this.isNeedDown,
-          bottom:  this.isNeedUp
-        }
+          bottom: this.isNeedUp,
+        },
       });
 
       // 滑动过程中事件
-      this.scroll.on("scroll", pos => {
+      this.scroll.on("scroll", (pos) => {
         if (pos.y > 30) {
           this.pulldownMsg = "释放立即刷新";
         }
       });
       // 滑动结束松开事件
-      this.scroll.on("touchEnd", async pos => {
+      this.scroll.on("touchEnd", async (pos) => {
         //上拉刷新
         if (pos.y > 30) {
           this.pageIndex = 1;
@@ -119,11 +119,10 @@ export default {
           } else {
             that.pullupMsg = "没有更多了。。。";
           }
-
         }
       });
     });
-  }
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -160,25 +159,23 @@ export default {
     bottom: -100px;
     left: 0;
   }
-
-  
 }
 /* 全局提示信息 */
-  .alert-hook {
-    display: none;
-    position: fixed;
-    top: 62px;
-    left: 25vw;
-    z-index: 9999;
-    width: 100%;
-    height: 100px;
-    line-height: 100px;
-    text-align: center;
-    color: #fff;
-    font-size: 30px;
-    width: 50vw;
-    border-radius: 20px;
-    background: rgba(7, 17, 27, 0.5);
-  }
+.alert-hook {
+  display: none;
+  position: fixed;
+  top: 62px;
+  left: 25vw;
+  z-index: 9999;
+  width: 100%;
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  color: #fff;
+  font-size: 30px;
+  width: 50vw;
+  border-radius: 20px;
+  background: rgba(7, 17, 27, 0.5);
+}
 </style>
 

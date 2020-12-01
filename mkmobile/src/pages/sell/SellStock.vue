@@ -50,6 +50,14 @@ export default {
         tpwd: '',
         gcode: ''
       },
+<<<<<<< HEAD
+      topBarOption: {
+        iconLeft: 'back',
+        iconRight: '',
+      //  image: headerImg
+      },
+=======
+>>>>>>> 7d70ae9023f59e70a8893e7a273613b09dd8b459
       account: null,
       sellNumber: null,
       transamount: '$',
@@ -278,7 +286,11 @@ export default {
     .right {
       font-size: 104px;
       font-weight: 600;
+<<<<<<< HEAD
+      color: #6318c3;
+=======
       color: #113D79;
+>>>>>>> 7d70ae9023f59e70a8893e7a273613b09dd8b459
     }
   }
 }

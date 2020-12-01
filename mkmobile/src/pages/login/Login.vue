@@ -55,8 +55,12 @@
     </div>
 
     <div class="bottom-part">
+<<<<<<< HEAD
+      <div class="version">Ver 3.2.1</div>
+=======
       <div class="version1">MOKI MONKEY 摩奇候 ver 1.0</div>
       <div class="version2">MOKI MONKEY Co.,ltd.. Copyright 2020 (C) All right reserved</div>
+>>>>>>> 7d70ae9023f59e70a8893e7a273613b09dd8b459
     </div>
     <YellowComfirm
       :show="showComfirm"

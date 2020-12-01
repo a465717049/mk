@@ -53,21 +53,21 @@ namespace DPE.Core.AuthHelper
             {
                 try
                 {
-                    string hetoken = httpContext.Request.Headers["Authorization"];
-                    if (!string.IsNullOrEmpty(hetoken))
-                    {
-                        string[] tmpbearer = hetoken.Split(" ");
-                        if (tmpbearer.Length > 1)
-                        {
-                            string tmptoken = tmpbearer[1];
-                            if (!_redisCacheManager.Get(MD5Helper.MD5Encrypt32(tmptoken)))
-                            {
-                                //不存在token 退出
-                                string error = "已登出";
-                                context.Fail();
-                            }
-                        }
-                    }
+                    //string hetoken = httpContext.Request.Headers["Authorization"];
+                    //if (!string.IsNullOrEmpty(hetoken))
+                    //{
+                    //    string[] tmpbearer = hetoken.Split(" ");
+                    //    if (tmpbearer.Length > 1)
+                    //    {
+                    //        string tmptoken = tmpbearer[1];
+                    //        if (!_redisCacheManager.Get(MD5Helper.MD5Encrypt32(tmptoken)))
+                    //        {
+                    //            //不存在token 退出
+                    //            string error = "已登出";
+                    //            context.Fail();
+                    //        }
+                    //    }
+                    //}
                 }
                 catch (Exception ex){
                     context.Fail();

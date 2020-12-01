@@ -60,6 +60,45 @@
               <span>{{ initData.USDTRate }}</span>CNY
             </div>
           </div>
+<<<<<<< HEAD
+        </div>
+        <div class="title">付款信息</div>
+        <div class="qrCodeWrap">
+          <!-- <p class="copy">（ 掃描二維碼進行付款 ）</p>
+            <img class="qrcode" src="../../assets/imgs/qr.png" alt />-->
+          <p class="code">{{ initData.priceCode }}</p>
+          <p class="code">{{ initData.trc }}</p>
+        </div>
+        <div class="title">待付</div>
+        <div class="payBox">
+          <ul>
+            <li class="box">
+              <span class="money cny">{{ initData.receiveMoneyCNY.toFixed(3) }}</span>
+              <span class="type">CNY</span>
+            </li>
+            <li class="huo">或</li>
+            <li class="box">
+              <span class="money usdt">{{ initData.receiveMoneyUSDT.toFixed(3) }}</span>
+              <span class="type">USDT</span>
+            </li>
+          </ul>
+          <div class="bottom">
+            1 EP =
+            <span>{{ initData.EPRate }}</span> CNY 1 USDT =
+            <span>{{ initData.USDTRate }}</span>CNY
+          </div>
+        </div>
+        <div class="buttonWrap">
+          <div class="confirm" v-if="this.initData.status==1&&this.initData.name!=this.uid&&this.isservice" @click="epbuy">确认購買</div>
+          <div class="cancel" v-if="this.initData.status==2&&this.initData.buyId==this.uid&&this.isservice" @click="cancebuy">放弃付款</div>
+          <div class="confirm" v-if="this.initData.status==2&&this.initData.buyId==this.uid&&this.isservice" @click="epbuy">确认付款</div>
+        </div>
+
+        <div id='selldiv' v-if="this.initData.status==2&&this.initData.name==this.uid" style="font-size: 14px;color: #666;">
+          <div v-if="!showtimeout"> 买家将在{{min}}分 {{sec}}秒 内确认付款 否则你可以进行投诉</div>
+          <div v-if="showtimeout"> 买家确认付款已超时 你可以进行投诉</div>
+=======
+>>>>>>> 7d70ae9023f59e70a8893e7a273613b09dd8b459
           <div class="buttonWrap">
             <div
               class="confirm"
