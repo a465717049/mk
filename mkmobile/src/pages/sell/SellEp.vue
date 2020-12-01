@@ -13,12 +13,9 @@
       </div>
       <ul>
         <li class='usdt' >
-          <div class="title">請再次核對ERC20錢包地址是否正確</div>
+          <div class="title">USDT地址：請再次核對錢包地址是否正確</div>
           <input type="text" disabled v-model="form.usdtAddress" />
-        </li>
-          <li class='usdt' >
-          <div class="title">請再次核對TRC20錢包地址是否正確</div>
-           <input type="text" disabled v-model="form.trcAddress" />
+          <input type="text" disabled v-model="form.trcAddress" />
         </li>
         <li>
           <div class="title">出售數量</div>
@@ -157,11 +154,6 @@ export default {
         return;
       }
       if (!this.form.phone) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.nophone;
-        return;
-      }
-      if (this.form.phone.length!=11) {
         this.showComfirm = true;
         this.tips = this.tipsObj.nophone;
         return;
@@ -335,16 +327,16 @@ export default {
    .usdt{
       .title{
         padding: 0;
-        margin-top: 40px;
-        margin-bottom: 10px;
+        margin-top: 60px;
+        margin-bottom: 20px;
         letter-spacing: 2px;
       }
         input{
           font-size: 40px;
           font-weight: normal;
           letter-spacing: 2px;
-          height: 80px;
-          line-height: 80px;
+          height: 100px;
+          line-height: 100px;
           color: #6318c3;
         }
       }

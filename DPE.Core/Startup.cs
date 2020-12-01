@@ -60,8 +60,8 @@ namespace DPE.Core
             services.AddHttpApi();
             
             //消息队列
-        //    services.AddSingleton(new RabbitMQClient());
-       //     services.AddHostedService<RabbitMessageLister>();
+       //     services.AddSingleton(new RabbitMQClient());
+        //    services.AddHostedService<RabbitMessageLister>();
 
             if (Permissions.IsUseIds4)
             {

@@ -11,6 +11,7 @@
               <input
                 type="text"
                 placeholder="請輸入ERC20地址"
+                :disabled="this.address!==''&&this.Taddress!==''"
                 v-model="form.location"
               />
             </div>
@@ -19,24 +20,25 @@
               <input
                 type="text"
                 placeholder="請輸入TRC20地址"   
+                :disabled="this.address!==''&&this.Taddress!==''"
                 v-model="form.addr"
               />
             </div>
           </li>
           <li>
-            <div class="title" >交易密码</div>
-            <input type="password" v-model="form.tpwd" />
+            <div class="title" v-show="this.address==''||this.Taddress==''">交易密码</div>
+            <input type="password" v-show="this.address==''||this.Taddress==''" v-model="form.tpwd" />
           </li>
           <li>
-            <div class="title">身份證號碼</div>
-            <input type="password" v-model="form.idnum" />
+            <div class="title" v-show="this.address==''||this.Taddress==''">身份證號碼</div>
+            <input type="password" v-show="this.address==''||this.Taddress==''" v-model="form.idnum" />
           </li>
           <li>
-            <div class="title">谷歌驗證碼</div>
-            <input type="number" v-model="form.google" />
+            <div class="title" v-show="this.address==''||this.Taddress==''">谷歌驗證碼</div>
+            <input type="number" v-show="this.address==''||this.Taddress==''" v-model="form.google" />
           </li>
         </ul>
-        <button class="button"  @click="goNext">確定</button>
+        <button class="button" v-show="this.address==''||this.Taddress==''" @click="goNext">確定</button>
         <div class="auth-card">
           <img src="@/assets/imgs/two-persion.png" alt />
           <div>
@@ -106,11 +108,6 @@ export default {
         this.isEnter = true;
         return;
       }
-       if (!this.form.addr) {
-        this.tips = this.tipsObj.noex1;
-        this.isEnter = true;
-        return;
-      }
       if (this.form.location.length != 42) {
         this.tips = this.tipsObj.noex;
         this.isEnter = true;
@@ -157,14 +154,9 @@ export default {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
           this.form.location = json.response.coin_location;
-          this.form.addr = json.response.trc_address;
           this.form.location = this.form.location ? this.form.location : "";
-          this.form.addr = this.form.addr ? this.form.addr : "";
           this.address = json.response.coin_location
             ? json.response.coin_location
-            : "";
-          this.Taddress = json.response.trc_address
-            ? json.response.trc_address
             : "";
         }
       });

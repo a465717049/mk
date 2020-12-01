@@ -58,7 +58,7 @@
     </div>
 
     <div class="bottom-part">
-      <div class="version">Ver 4.1.0</div>
+      <div class="version">Ver 3.2.1</div>
     </div>
     <YellowComfirm :show="showComfirm"
      @clickOver="clickOverpay"

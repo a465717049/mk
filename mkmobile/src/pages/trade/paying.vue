@@ -30,12 +30,10 @@
           </div>
         </div>
         <div class="title">付款信息</div>
-        <div class="qrCodeWrap"  v-if="this.initData.status==2">
+        <div class="qrCodeWrap">
           <!-- <p class="copy">（ 掃描二維碼進行付款 ）</p>
-            <img class="qERCrcode" src="../../assets/imgs/qr.png" alt />-->
-          <div>ERC20</div>
+            <img class="qrcode" src="../../assets/imgs/qr.png" alt />-->
           <p class="code">{{ initData.priceCode }}</p>
-          <div>TRC20</div>
           <p class="code">{{ initData.trc }}</p>
         </div>
         <div class="title">待付</div>
@@ -399,6 +397,7 @@ export default {
 
   .qrCodeWrap {
     width: 100%;
+    background-color: #fff;
     border-radius: 40px;
     padding: 40px 0;
     .copy {
@@ -410,7 +409,6 @@ export default {
       line-height: 60px;
     }
     .qrcode {
-      
       width: 400px;
       height: 400px;
       display: block;
@@ -418,14 +416,11 @@ export default {
     }
     .code {
       font-size: 30px;
-      
-      background-color: #fff;
       color: #333;
       font-size: 36px;
       text-align: center;
-      height: 120px;
-      line-height: 120px;
-      border-radius: 10px;
+      height: 60px;
+      line-height: 60px;
     }
   }
   .chargeBox {
