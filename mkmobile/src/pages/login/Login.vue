@@ -221,7 +221,7 @@ export default {
   0%{
     opacity: 0;
   }
-  20%{
+  10%{
     opacity: 1;
   }
    80%{

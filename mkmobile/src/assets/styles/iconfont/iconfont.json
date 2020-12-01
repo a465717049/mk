@@ -6,6 +6,76 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "880335",
+      "name": "right",
+      "font_class": "right",
+      "unicode": "e6b9",
+      "unicode_decimal": 59065
+    },
+    {
+      "icon_id": "737948",
+      "name": "list",
+      "font_class": "list",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "902010",
+      "name": "car",
+      "font_class": "car",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "1727262",
+      "name": "03拆包裹、取件-线性",
+      "font_class": "chaibaoguoqujian-xianxing",
+      "unicode": "e885",
+      "unicode_decimal": 59525
+    },
+    {
+      "icon_id": "2674927",
+      "name": "箭头 上",
+      "font_class": "jiantoushang",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "4294078",
+      "name": "运输",
+      "font_class": "yunshu",
+      "unicode": "e789",
+      "unicode_decimal": 59273
+    },
+    {
+      "icon_id": "6839508",
+      "name": "发货",
+      "font_class": "fahuo",
+      "unicode": "e6b5",
+      "unicode_decimal": 59061
+    },
+    {
+      "icon_id": "9783459",
+      "name": "仓库",
+      "font_class": "cangku",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "9785669",
+      "name": "person",
+      "font_class": "person",
+      "unicode": "e656",
+      "unicode_decimal": 58966
+    },
+    {
+      "icon_id": "15429454",
+      "name": "出库单 goods/wh/outStock",
+      "font_class": "goodswhoutStock",
+      "unicode": "e663",
+      "unicode_decimal": 58979
+    },
+    {
       "icon_id": "1802972",
       "name": "lock",
       "font_class": "lock",

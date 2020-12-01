@@ -54,7 +54,7 @@
         <div class="home-list">
           <div class="recent">
             <div class="title-re">最近交易</div>
-            <div class="view"  ><router-link to="Exchangedata" class="router">查看所有</router-link></div>
+            <div class="view"  ><router-link to="epList" class="router">查看所有</router-link></div>
           </div>
           <van-tabs v-model="active" @click="readloadinfo">
             <van-tab title="所有">

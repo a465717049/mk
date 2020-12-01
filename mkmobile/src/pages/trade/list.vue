@@ -1,8 +1,8 @@
 <template>
   <div class="ep-list">
-    <TopBar class="center-one-search" :option="topBarOption">{{tmpcktype}}台账</TopBar>
-    <div class=" relative">
-      <div class="trade  clearfix">
+    <TopBar class="center-one-search" >{{tmpcktype}}台账</TopBar>
+    <div class="relative">
+      <div class="trade clearfix">
         <van-tabs @click="readloadinfo" v-model="active" color="#EFB618" line-height="0">
           <van-tab title="所有台账">
             <div class="listWrap" ref="listWrap">
@@ -214,7 +214,6 @@ export default {
     // this.load(1);
   }
 };
-
 </script>
 <style lang="less" scoped>
 .ep-list {
@@ -236,7 +235,7 @@ export default {
     /deep/.van-tab {
       font-size: 42px;
       font-weight: 600;
-      border-bottom: 8px solid #FFFFFF;
+      border-bottom: 8px solid #ffffff;
       color: #191819;
       height: 90px;
       line-height: 90px;
@@ -246,7 +245,7 @@ export default {
       color: #191819;
     }
     /deep/.van-tab--active {
-      border-bottom: 8px solid #EFB618;
+      border-bottom: 8px solid #efb618;
       /deep/.van-tab__text {
         color: #fff;
       }
@@ -322,11 +321,11 @@ export default {
         color: #fe0000;
       }
     }
-    /deep/ .van-tabs__nav{
-      background: rgba(0,0,0,0);
+    /deep/ .van-tabs__nav {
+      background: rgba(0, 0, 0, 0);
     }
-     /deep/ .van-hairline--top-bottom::after{
-          border-width:0;
+    /deep/ .van-hairline--top-bottom::after {
+      border-width: 0;
     }
   }
 }

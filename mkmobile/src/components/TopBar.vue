@@ -14,7 +14,11 @@
       <i v-if="option.image" class="iconfont icon-r">
         <img class="img-header img-photo" :src="option.image" alt />
       </i>
-
+      <i
+        v-else-if="option.iconRight==='iconxiaoxi1'"
+        class="iconfont img-r iconxiaoxi1"
+        @click="goFeedBack"
+      ></i>
       <i v-else class="iconfont img-r" :class="option.iconRight" @click="clickR">
         <!-- <img v-if="!option.iconRight" class="img-fangxing" src="@/assets/imgs/fangxing.png" alt /> -->
         <!-- 未读图标  -->
@@ -221,6 +225,10 @@ export default {
     },
     goSetting() {
       this.$router.push({ name: "setting" });
+    },
+    goFeedBack() {
+      console.log(1212)
+      this.$router.push('Feedback');
     }
   },
   mounted() {

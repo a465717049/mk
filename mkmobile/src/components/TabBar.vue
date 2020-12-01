@@ -54,7 +54,7 @@ export default {
         },
         {
           id: "tabbar3",
-          to: "/friends",
+          to: "/friendsList",
           className: "icontuandui iconfont",
           text: "朋友",
           selected: false

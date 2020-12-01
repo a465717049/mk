@@ -33,23 +33,18 @@
               </ul>
             </div>
             <div class="wuliu">
-              <div class="title">
-                配送公司：{{company}}
-              </div>
-              <van-steps direction="vertical" :active="0">
-                <van-step>
-                  <h3>【城市】物流状态1</h3>
-                  <p>2016-07-12 12:40</p>
-                </van-step>
-                <van-step>
-                  <h3>【城市】物流状态2</h3>
-                  <p>2016-07-11 10:00</p>
-                </van-step>
-                <van-step>
-                  <h3>快件已发货</h3>
-                  <p>2016-07-10 09:30</p>
-                </van-step>
-              </van-steps>
+              <div class="title">配送公司：{{company}}</div>
+              <ul class="steps">
+                <li v-for="(item,index) in steps" :key="index">
+                  <span class="time_steps">{{item.time}}</span>
+                  <i :class="['iconfont', icons[item.type]]"></i>
+                  <div class="info_steps">
+                    <span class="title_steps">{{item.title}}</span>
+                    <span class="subInfo_steps">{{item.subInfo}}</span>
+                  </div>
+                  <div class="stepLine"></div>
+                </li>
+              </ul>
             </div>
           </div>
         </ScrollRefresh>
@@ -88,7 +83,88 @@ export default {
       orderNo: "MT000000043432",
       orderType: 2,
       col: 2,
-      company:'顺丰快递',
+      company: "顺丰快递",
+      icons: ["dot", "iconlist", "iconcangku", "iconjiantoushang", "icongoodswhoutStock",'iconfahuo', "iconcar", "iconyunshu", "iconperson", "iconchaibaoguoqujian-xianxing",'iconright'],
+      steps: [
+        //type:0 点  type:1 已下单
+        {
+          time: "11-12 12:11",
+          title: "已签收",
+          subInfo: "店完成取件，感谢使用菜鸟驿站，期待再次为您服务。",
+          type: 10
+        },
+        {
+          time: "11-12 12:11",
+          title: "代取件",
+          subInfo: "请凭取货码及时领取。如有疑问请联系19925322056",
+          type: 9
+        },
+        {
+          time: "11-12 12:11",
+          title: "派送中",
+          subInfo:
+            "深圳观兰D站派件员：葛细球 电话：18575590297 当前正在为您派件",
+          type: 8
+        },
+        {
+          time: "11-12 12:11",
+          title: "运输中",
+          subInfo:
+            "深圳观兰D站派件员：葛细球 电话：18575590297 当前正在为您派件",
+          type: 7
+        },
+        {
+          time: "11-12 12:11",
+          subInfo: "您的包裹已到达【深圳观兰D站】，准备分配派送员",
+          type: 0
+        },
+        {
+          time: "11-12 12:11",
+          subInfo: "您的包裹已到达1",
+          type: 0
+        },
+        {
+          time: "11-12 11:11",
+          title: "已揽件",
+          subInfo: "您的包裹已由物流公司揽收",
+          type: 6
+        },
+        {
+          time: "11-12 12:11",
+          title: "已发货",
+          subInfo: "包裹正在等待揽收",
+          type: 5
+        },
+        {
+          time: "11-12 12:11",
+          title: "已出库",
+          subInfo: "包裹已出库",
+          type:4
+        },
+        {
+          time: "11-12 11:11",
+          title: "仓库处理中",
+          subInfo: "商品已打包",
+          type: 3
+        },
+        {
+          time: "11-12 12:11",
+          subInfo: "订单已打印",
+          type: 0
+        },
+        {
+          time: "11-12 12:11",
+          title: "仓库已接单",
+          subInfo: "订单已入库",
+          type: 2
+        },
+        {
+          time: "11-12 11:11",
+          title: "已下单",
+          subInfo: "商品已经下单",
+          type: 1
+        }
+      ]
     };
   },
   computed: {
@@ -231,7 +307,7 @@ export default {
     }
   }
   .wuliu {
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 36px;
     padding: 30px 40px;
     margin-top: 40px;
@@ -241,9 +317,73 @@ export default {
       line-height: 130px;
       opacity: 0.75;
     }
-    /deep/ .van-step--vertical{
-     line-height: 40px; 
+  }
+  .steps {
+    li {
+      display: flex;
+      align-items: initial;
+      position: relative;
+      width: 100%;
+      padding-bottom: 30px;
     }
+    .iconfont {
+      font-size: 40px;
+      position: absolute;
+      top: 0px;
+      left: 125px;
+      z-index: 2;
+      width: 50px;
+      height: 50px;
+      background-color: #ccc;
+      color: #fff;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 50px;
+    }
+    .iconfont.dot {
+      top: 0px;
+      left: 142px;
+      width: 16px;
+      height: 16px;
+    }
+    .time_steps {
+      width: 100px;
+      margin-right: 100px;
+      text-align: center;
+      font-size: 30px;
+    }
+    .info_steps {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      .title_steps {
+        font-weight: bold;
+        color: #000000;
+        opacity: 0.75;
+        font-size: 36px;
+      }
+      .subInfo_steps {
+        opacity: 0.75;
+        font-size: 30px;
+      }
+    }
+  }
+  .stepLine {
+    position: absolute;
+    background-color: #ebedf0;
+    -webkit-transition: background-color 0.3s;
+    transition: background-color 0.3s;
+    top: 16px;
+    left: 150px;
+    width: 1px;
+    height: 100%;
+  }
+  .steps li:last-child .stepLine {
+    width: 0;
+  }
+  .steps li:first-child .iconfont {
+    color: #fff;
+    background-color: #e53d26;
   }
 }
 </style>
