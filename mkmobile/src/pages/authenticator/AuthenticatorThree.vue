@@ -1,13 +1,14 @@
 <template>
   <div>
-    <TopBar class="center-one-search" :option="topBarOption">驗證碼</TopBar>
+    <TopBar class="center-one-search" >谷歌验证</TopBar>
     <div class="password-body">
       <div class="auth-card">
         <img src="@/assets/imgs/auth-header.png" alt />
         <div>
           <div class="auth-top-tit">Google 身份驗證</div>
           <div class="auth-top-tip">
-            只需2步，獲取激活碼用於您的賬號進行安全校驗
+            只需2步，获取激活码用于您的帐号进行安全校验
+            <!-- 只需2步，獲取激活碼用於您的賬號進行安全校驗 -->
           </div>
         </div>
       </div>
@@ -56,10 +57,6 @@ export default {
     return {
       msg: "", // 支付密码
       isEnter: false,
-      topBarOption: {
-        iconLeft: "back",
-        iconRight: ""
-      },
       tips: ""
     };
   },
@@ -73,7 +70,7 @@ export default {
             this.$router.push({name:'AuthenticatorLast',params:{googlekey:json.response}})
          
           } else {
-            this.tips = '校驗失敗!'
+            this.tips = '校驗失敗1111111111111111111111111111111111111111111111111111!'
 
           }
         });
@@ -97,39 +94,43 @@ export default {
 
 <style lang="less" scoped>
 .password-body {
-  background: #ebeaf0;
   top: 260px;
   width: 100%;
   overflow: scroll;
   z-index: 999;
   border-radius: 50px 50px 0 0;
-  padding: 98px 60px 60px 60px;
+  padding: 98px 4vw 4vw 4vw;
   height: calc(100vh - 260px);
   .auth-card {
     background: #fff;
     display: flex;
-    padding: 30px 50px;
+    padding: 20px 30px;
     margin-bottom: 138px;
     border-radius: 20px;
+    box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.24);
     img {
-      width: 193px;
-      height: 185px;
+      width: 140px;
+      height: 140px;
       margin-right: 20px;
       margin-top: 20px;
     }
     div {
       flex: 1;
       .auth-top-tit {
-        font-size: 60px;
+        font-size: 46px;
         text-align: center;
+             color: #191819;
+        font-weight: 600;
         line-height: 60px;
-        margin-bottom: 25px;
+        margin-bottom: 15px;
+        margin-top: 20px;
       }
       .auth-top-tip {
-        font-size: 30px;
+        font-size: 25px;
         text-align: center;
-        margin: 0 100px;
-        line-height: 30px;
+        color: #191819;
+        font-weight: 600;
+        letter-spacing: 0;
       }
     }
   }
@@ -154,35 +155,30 @@ export default {
   //光标
 
   .pwd-wrap {
-    width: calc(100vw - 130px);
+    width: calc(100vw - 80px);
     height: 220px;
     padding-bottom: 1px;
     margin: 0 auto;
-    background: #fff;
     display: flex;
     display: -webkit-box;
     display: -webkit-flex;
-    background: #ebeaf0;
     padding: 40px 0;
     justify-content: space-between;
     cursor: pointer;
-    // position: absolute;
-    // left: 0;
-    // right: 0;
-    // top: 13%;
     z-index: 10;
     li {
       list-style-type: none;
       text-align: center;
-      line-height: 120px;
+      line-height: 130px;
       -webkit-box-flex: 1;
       flex: 1;
       background: #fff;
       -webkit-flex: 1;
-      margin-right: 25px;
-      border: 6px solid #440709;
-      border-radius: 20px;
+      margin-right: 40px;
+      border: 8px solid #410305;
+      border-radius: 13px;
       width: 138px;
+      box-sizing: border-box;
       span {
         color: #6318c3;
         font-weight: bold;

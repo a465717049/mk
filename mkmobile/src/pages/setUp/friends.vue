@@ -15,14 +15,14 @@
             <div class="left-man base-flex"   @click="gofriend(left)">
               <img src="@/assets/imgs/set/blue-man.png"   class="author" alt />
               <div class="Tright mt-100">
-                <div class="rate font60">水果區{{Lpercentage}}%</div>
+                <div class="rate font60">{{Lpercentage}}%</div>
                 <div class="num font-weight font60">{{LProfit}}</div>
               </div>
             </div>
             <div class="left-man base-flex"   @click="gofriend(right)">
               <img src="@/assets/imgs/set/red-man.png" class="author" alt />
               <div class="Tright mt-100">
-                <div class="rate font60">蔬菜區{{Rpercentage}}%</div>
+                <div class="rate font60">{{Rpercentage}}%</div>
                 <div class="num font-weight font60">{{RProfit}}</div>
               </div>
             </div>
@@ -97,14 +97,14 @@ export default {
       Lpercentage: 0,
       Rpercentage: 0,
       topBarOption: {
-        iconLeft: 'iconzhankai',
+        iconLeft: 'iconShapecopy',
         iconRight: ''
       },
       count:null,
       left:0,
       right:0,
-      friendsList: [],
-      familyList: [],
+      friendsList: [{ photo: photoList.head01, name: '' }],
+      familyList: [{ photo: photoList.head01, name: '' }],
     }
   },
   mounted() {},

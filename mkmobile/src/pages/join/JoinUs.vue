@@ -1,76 +1,93 @@
 <template>
-  <div class="sellEpWrapper">
-    <TopBar  class="center-one-search" :option="topBarOption">
-      創建新賬號
-    </TopBar>
+  <div class="joinWrapper">
+    <TopBar class="center-one-search">注册成为会员</TopBar>
     <div class="innerWrap">
+      <div class="tips base-flex flex-start p-58 bg-white borderR mb-80">
+        <img src="@/assets/imgs/tipimg.png" class="img" alt />
+        <div class="tips-part">
+          <div class="tip-titl">提示</div>
+          <div>密码最少6位,必须包含大小写及特殊字符。</div>
+          <!-- <div>即將更新！</div> -->
+        </div>
+      </div>
       <ul>
-        <li>
+        <!-- <li>
           <div class="title">账号:必須以字母開頭6-18位</div>
           <input type="text" v-model="initData.code" />
-        </li>
+        </li>-->
         <li>
-          <div class="title">昵稱</div>
+          <div class="title">昵稱:</div>
           <input type="text" v-model="initData.nickName" />
+          <i class="iconfont icondui"></i>
         </li>
         <li>
-          <div class="title">級別</div>
+          <div class="title">密碼:</div>
+          <input type="password" v-model="initData.password" />
+          <i class="iconfont icondui"></i>
+        </li>
+        <li>
+          <div class="title">安置ID:</div>
+          <input type="text" v-model="initData.nickName" />
+          <i class="iconfont icondui"></i>
+        </li>
+        <li>
+          <div class="title">接点ID:</div>
+          <input type="text" v-model="initData.nickName" />
+          <i class="iconfont icondui"></i>
+        </li>
+        <li>
+          <div class="title">会员级别：</div>
           <van-dropdown-menu>
             <van-dropdown-item v-model="initData.level" :options="option1" />
           </van-dropdown-menu>
         </li>
-        <li>
-          <div class="title">密碼</div>
-          <input type="password" v-model="initData.password" />
-        </li>
-        <li>
+        <!-- <li>
           <div class="title">重複</div>
           <input type="password" v-model="initData.comfirmPassword" />
-        </li>
+        </li>-->
       </ul>
-      <button class="next" @click="goEditData">下一步</button>
+      <button class="next" @click="goEditData">
+        下一步
+        <i class="jiantou iconfont iconarrow-right"></i>
+      </button>
     </div>
     <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk"></YellowComfirm>
   </div>
 </template>
 <script type="text/javascript">
-import TabBar from 'components/TabBar'
-import TopBar from 'components/TopBar'
-import { storage } from 'util/storage'
-import YellowComfirm from 'components/YellowComfirm'
+import TabBar from "components/TabBar";
+import TopBar from "components/TopBar";
+import { storage } from "util/storage";
+import YellowComfirm from "components/YellowComfirm";
 export default {
   data() {
     return {
       showComfirm: false,
-      tips: '',
+      tips: "",
       tipsObj: {
-        nomember: '請輸入账号！',
-        nonickname: '請輸入昵稱！',
-        nolevel: '請選擇級別！',
-        nopwd: '請輸入密碼！',
-        norpwd: '請輸入重複密碼',
-        nopwdreset: '兩次密碼不一致請重新確認！'
-      },
-      topBarOption: {
-        iconLeft: 'back',
-        iconRight: ''
+        nomember: "請輸入账号！",
+        nonickname: "請輸入昵稱！",
+        nolevel: "請選擇級別！",
+        nopwd: "請輸入密碼！",
+        norpwd: "請輸入重複密碼",
+        nopwdreset: "兩次密碼不一致請重新確認！"
       },
       initData: {
-        Jid:0,
+        Jid: 0,
         code: "",
-        nickName: '',
+        nickName: "",
         level: 1,
-        password: '',
-        comfirmPassword: '',
-        radioValue: '1',
+        password: "",
+        comfirmPassword: "",
+        radioValue: "1",
         parentID: 0,
         L: 0
       },
       option1: [
-        { text: '高級農場', value: 1 },
-        { text: '中級農場', value: 2 }
+        { text: "高級農場", value: 1 },
+        { text: "中級農場", value: 2 }
       ]
-    }
+    };
   },
   components: {
     TabBar,
@@ -81,140 +98,168 @@ export default {
   computed: {},
   methods: {
     clickOk() {
-      this.showComfirm = false
+      this.showComfirm = false;
     },
     goEditData() {
       if (this.initData.code === 0) {
-        this.showComfirm = true
-        this.tips = this.tipsObj.nomember
-        return
+        this.showComfirm = true;
+        this.tips = this.tipsObj.nomember;
+        return;
       }
       if (!this.initData.nickName) {
-        this.showComfirm = true
-        this.tips = this.tipsObj.nonickname
-        return
+        this.showComfirm = true;
+        this.tips = this.tipsObj.nonickname;
+        return;
       }
 
       if (!this.initData.level) {
-        this.showComfirm = true
-        this.tips = this.tipsObj.nolevel
-        return
+        this.showComfirm = true;
+        this.tips = this.tipsObj.nolevel;
+        return;
       }
 
       if (!this.initData.password) {
-        this.showComfirm = true
-        this.tips = this.tipsObj.nopwd
-        return
+        this.showComfirm = true;
+        this.tips = this.tipsObj.nopwd;
+        return;
       }
 
       if (!this.initData.comfirmPassword) {
-        this.showComfirm = true
-        this.tips = this.tipsObj.norpwd
-        return
+        this.showComfirm = true;
+        this.tips = this.tipsObj.norpwd;
+        return;
       }
 
       if (this.initData.password !== this.initData.comfirmPassword) {
-        this.showComfirm = true
-        this.tips = this.tipsObj.nopwdreset
-        return
+        this.showComfirm = true;
+        this.tips = this.tipsObj.nopwdreset;
+        return;
       }
 
       var Joindata = {
         Jid: this.initData.Jid, // uid
         idType: 2,
-        idNumber: '',
-        uRealName: '',
-        bankCardName: '',
+        idNumber: "",
+        uRealName: "",
+        bankCardName: "",
         loginPass: this.initData.password,
         investmentAmount: this.initData.level == 1 ? 1000 : 500,
         CountryPhoneCode: 86,
         MemberNo: this.initData.code,
         NickName: this.initData.nickName,
-        googleCode: '',
-        TradePass: '',
+        googleCode: "",
+        TradePass: "",
         TransUserID: 0,
         parentID: 0, //parentID 当前ID
         L: this.initData.L
-      }
-     // alert(this.initData.Jid)
-      storage.setLocalStorage('joindata', JSON.stringify(Joindata))
-      this.$router.push({ name: 'Additional' })
+      };
+      // alert(this.initData.Jid)
+      storage.setLocalStorage("joindata", JSON.stringify(Joindata));
+      this.$router.push({ name: "Additional" });
     }
   },
   created() {
- 
-
-    if (storage.getLocalStorage('joindata')) {
-    var modeldata = JSON.parse(storage.getLocalStorage('joindata'))
-    this.initData.code = modeldata.MemberNo
-    this.initData.Jid = modeldata.Jid
-    this.initData.nickName = modeldata.NickName
-    this.initData.L = modeldata.L
-    this.initData.MemberNo = modeldata.MemberNo
-    this.initData.loginPass = modeldata.loginPass
-    if (modeldata.investmentAmount == 500) {
-      this.initData.level = 2
+    if (storage.getLocalStorage("joindata")) {
+      var modeldata = JSON.parse(storage.getLocalStorage("joindata"));
+      this.initData.code = modeldata.MemberNo;
+      this.initData.Jid = modeldata.Jid;
+      this.initData.nickName = modeldata.NickName;
+      this.initData.L = modeldata.L;
+      this.initData.MemberNo = modeldata.MemberNo;
+      this.initData.loginPass = modeldata.loginPass;
+      if (modeldata.investmentAmount == 500) {
+        this.initData.level = 2;
       } else {
-       this.initData.level = 1
+        this.initData.level = 1;
       }
-     }
+    }
     if (this.$route.params.uid) {
-      this.initData.Jid = this.$route.params.uid
+      this.initData.Jid = this.$route.params.uid;
       this.initData.L = this.$route.params.isLeft
         ? this.$route.params.isLeft
-        : 0
+        : 0;
     }
-      console.log(this.$route.params.isLeft)
-      console.log(this.initData.L)
+    console.log(this.$route.params.isLeft);
+    console.log(this.initData.L);
   }
-}
+};
 </script>
 
 <style lang="less" scoped>
-.sellEpWrapper {
+.joinWrapper {
   .innerWrap {
     width: 100vw;
-    background-color: #ebeaf0;
     border-radius: 40px 40px 0 0;
     margin-top: -20px;
     padding-top: 30px;
     padding-bottom: 400px;
+    background-color: #4678bc;
+    .tips-part {
+      font-weight: bold;
+      color: rgba(52, 52, 52, 1);
+    }
+    .tips {
+      width: 90%;
+      min-height: 158px;
+      align-items: center;
+      padding: 30px ;
+      margin: 0 auto;
+      box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.24);
+      .img {
+        width: 148px;
+        height: 115px;
+        margin-right: 70px;
+      }
+    }
   }
   ul {
     width: 90%;
     margin: 0 auto;
     li {
+      position: relative;
       .title {
         font-size: 42px;
-        margin: 42px;
-        margin-bottom: 20px;
-        color: #4a494c;
+        margin: 42px 20px 20px 0;
+        color: #fff;
         font-weight: bold;
-        opacity: 0.62;
       }
       input {
-        height: 148px;
-        color: #4a494c;
+        height: 123px;
+        line-height: 123px;
         font-size: 42px;
         width: 100%;
-        padding: 30px 80px;
+        padding: 30px 20px;
         border-radius: 20px;
+        color: #6f6d72;
+        font-weight: 600;
+        letter-spacing: 4px;
+      }
+      .iconfont {
+        position: absolute;
+        font-size: 60px;
+        color: #4493d5;
+        top: 100px;
+        right: 20px;
       }
       /deep/ .van-dropdown-menu__bar {
-        height: 148px;
-        line-height: 148px;
-        color: #4a494c;
+        height: 130px;
+        line-height: 130px;
+        color: #9e9e9f;
+        font-weight: 600;
         width: 100%;
         padding: 0 20px;
         border-radius: 20px;
+        letter-spacing: 10px;
       }
       /deep/ .van-ellipsis {
         font-size: 42px;
-        color: #4a494c;
+        color: #9e9e9f;
+        font-weight: 600;
+        letter-spacing: 10px;
       }
       /deep/ .van-dropdown-menu__title {
-        height: 148px;
-        line-height: 148px;
+        height: 130px;
+        line-height: 130px;
         display: inline-block;
         width: 98%;
       }
@@ -241,15 +286,14 @@ export default {
         height: 148px;
         line-height: 148px;
         padding: 0 80px;
-        font-size: 42px;
+        font-size: 40px;
       }
       /deep/ .van-dropdown-item__option--active {
-        color: #6e21d1;
+        color: #efb618;
       }
       /deep/ .van-icon-success::before {
-        color: #6e21d1;
+        color: #efb618;
       }
-
       .verification {
         display: flex;
         border-radius: 40px;
@@ -280,7 +324,7 @@ export default {
           border-radius: 50%;
           border-color: #ccc;
           .van-icon::before {
-            content: '';
+            content: "";
           }
         }
         .van-radio__label {
@@ -297,7 +341,7 @@ export default {
             border-color: #ccc;
           }
           .van-icon::before {
-            content: '';
+            content: "";
             color: #fff;
             width: 24px;
             height: 24px;
@@ -311,16 +355,22 @@ export default {
   .next {
     display: block;
     width: 90%;
-    margin: 0 auto;
+    margin: 100px auto 0;
     background: #f5c148;
-    border-radius: 40px;
-    height: 164px;
-    line-height: 164px;
+    border-radius: 20px;
+    height: 130px;
+    line-height: 130px;
     font-size: 52px;
     color: #fff;
-    margin-top: 100px;
+    font-weight: 600;
+    letter-spacing: 4px;
     position: relative;
-    letter-spacing: 10px;
+    .jiantou {
+      position: absolute;
+      right: 30px;
+      top: 0px;
+      font-size: 60px;
+    }
   }
   .disabled {
     background: #ccc;

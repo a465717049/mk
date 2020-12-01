@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBar class="center-one-search" :option="topBarOption">設置</TopBar>
+    <TopBar class="center-one-search">头像设置</TopBar>
     <ScrollRefresh @getData="TogetUserInfo" :residualHeight="160" :isNeedUp="false">
       <div class="setUp-body">
         <h5>設置昵稱</h5>
@@ -17,6 +17,7 @@
             :key="index"
           >
             <img :src="item.img" alt />
+            <i class="iconfont icondui "></i>
           </li>
         </ul>
         <button class="button" @click="goNext">提交</button>
@@ -45,10 +46,6 @@ export default {
       address: "",
       headimg: "",
       headurl: "",
-      topBarOption: {
-        iconLeft: "back",
-        iconRight: ""
-      },
       addList: [
         { img: photoList.head01, headimg: "head01" },
         { img: photoList.head02, headimg: "head02" },
@@ -110,7 +107,6 @@ export default {
         { img: photoList.head058, headimg: "head058" },
         { img: photoList.head059, headimg: "head059" },
         { img: photoList.head060, headimg: "head060" }
-
       ]
     };
   },
@@ -150,34 +146,17 @@ export default {
 </script>
 
 <style lang="less" scope>
-.choosed {
-  box-shadow: 0px -6px 6px #333;
-}
-.choosed1 {
-  width: 100%;
-  height: 100%;
-  box-shadow: 0px 6px 6px #333;
-}
-.choosed1:hover,
-.choosed1:checked {
-  box-shadow: 0px -6px 6px #333;
-}
-
 .setUp-body {
-  background: #ebeaf0;
   top: 260px;
   width: 100%;
-  // overflow: scroll;
   z-index: 999;
   border-radius: 50px 50px 0 0;
-  padding: 60px 60px 100px 60px;
-  // height: calc(100vh - 260px);
+  padding: 4vw 4vw  100px 4vw;
   h5 {
-    font-size: 42px;
-    margin: 42px;
+    font-size: 44px;
+    margin: 42px 0 42px 20px;
     margin-bottom: 20px;
-    opacity: 0.62;
-    color: #4a494c;
+    color: #fff;
     font-weight: bold;
   }
   .t-img {
@@ -187,11 +166,11 @@ export default {
       height: 80px;
       position: absolute;
       left: 30px;
-      top: 36px;
+      top: 25px;
       z-index: 999;
     }
     input {
-      height: 148px;
+      height: 130px;
       font-size: 42px;
       width: 100%;
       padding: 30px 20px;
@@ -200,20 +179,36 @@ export default {
     }
   }
   .setUp-content {
-    padding: 70px;
+    padding: 6vw;
     overflow: hidden;
     padding-right: 20px;
+    background-color: #fff;
+    border-radius: 20px;
     li {
-      width: 174px;
-      height: 174px;
+      width: 20vw;
+      height: 20vw;
       float: left;
-      border-radius: 50%;
-      margin-right: 50px;
-      margin-bottom: 60px;
+      border-radius: 43px;
+      padding: 50px;
+      position: relative;
       img {
         width: 100%;
         height: 100%;
         overflow: hidden;
+      }
+      .iconfont{
+        position: absolute;
+        font-size: 60px;
+        color: #4493D5;
+        top: 11vw;
+        left: 11vw;
+        opacity: 0;
+      }
+    }
+    .choosed {
+      background-color: rgba(239,182,24,0.22);
+      .iconfont{
+        opacity: 1;
       }
     }
   }
@@ -221,13 +216,13 @@ export default {
     display: block;
     width: 100%;
     background: #edca08;
-    border-radius: 30px;
-    height: 134px;
-    line-height: 134px;
+    border-radius: 20px;
+    height: 130px;
+    line-height: 130px;
     font-size: 42px;
     letter-spacing: 10px;
     color: #fff;
-    margin-top: 50px;
+    margin-top: 100px;
   }
 }
 </style>

@@ -13,26 +13,15 @@
       :isNeedUp="false"
       class="relativeScroll"
     >
-      <div class="listWrap borderR">
-        <div class="friendsList borderR" ref="listWrap">
-          <div class="list  borderR bg-gray p-38">
+      <div class="listWrap">
+        <div class="friendsList" ref="listWrap">
+          <div class="list bg-gray">
             <div class="relative" v-for="(item,index) in familyList" :key="index">
               <img :src="item.photo" class="img" alt />
-
               <van-cell class="cell-info borderR mb-40" is-link @click="gofriend(item.uID)">
                 <div slot="title" class="data-title">
                   <div class="left">{{item.NickName+'('+item.uID+')'}}</div>
                   <div class="right">{{item.uCreateTime}}</div>
-                </div>
-                 <div slot="title" class="data-info">
-                  <div>
-                    <span>農場：</span>
-                    {{item.InvestmentLevel==1?'高級農場':'中級農場'}}
-                  </div>
-                 <div>
-                    <span>榮譽：</span>
-                    {{ getLv(item.honorLevel)}}
-                  </div>
                 </div>
                 <div slot="title" class="data-info">
                   <div>
@@ -108,21 +97,6 @@ export default {
       }
       this.loadinfo();
     },
-     getLv(level){
-      var lv=''
-          if(level==0)  lv='普通玩家'
-          if(level==1)  lv='達標社區'
-          if(level==2)  lv='初級社區'
-          if(level==3)  lv='中級社區'
-          if(level==4)  lv='高級社區'
-          if(level==5)  lv='超級社區'
-          if(level==6)  lv='橘子派'
-          if(level==7)  lv='香瓜派'
-          if(level==8)  lv='菠蘿派'
-          if(level==9)  lv='柚子派'
-          if(level==10)  lv='蘋果派'
-          return lv;
-    },
     loadinfo() {
       var _this = this;
       http(GetSearchFimaly, { uid: this.uid }, json => {
@@ -180,14 +154,12 @@ export default {
 }
 .listWrap {
   padding: 28px;
-  
 }
 .p-38 {
   padding: 28px;
 }
 .friendsList {
-  margin-top:40px;
-   background: #f2f3f7;
+  margin-top:60px;
   // position: relative;
   // height: calc(100vh - 1000px);
   // overflow: auto;
@@ -204,7 +176,7 @@ export default {
     .img {
       position: absolute;
       left: 30px;
-      top: 100px;
+      top: 80px;
       width: 106px;
       height: 106px;
       z-index: 99;
@@ -213,7 +185,7 @@ export default {
       font-size: 60px;
       height: 137px;
       line-height: 120px;
-      margin-top: 100px;
+      margin-top: 80px;
     }
     /deep/.van-cell__title {
       font-size: 42px;
@@ -242,43 +214,26 @@ export default {
   line-height: 60px;
   div {
     display: inline-flex;
-    width: 48%;
+    width: 50%;
     color: #e28b07;
-    text-align: left;
     span {
       color: #660a79;
       text-align: right;
       display: inline-block;
-      width: 150px;
-      white-space: nowrap;
-    }
-  }
-}
-.data-info-1 {
-  height: 60px;
-  line-height: 60px;
-  div {
-    display: inline-flex;
-    width: 40%;
-    color: #e28b07;
-    span {
-      color: #660a79;
-      text-align: left;
-      display: inline-block;
-      width: 50%;
+      width: 120px;
     }
   }
 }
 .data-title {
   div.left {
     display: inline-flex;
-    width: 46%;
+    width: 32%;
   }
   div.right {
     display: inline-flex;
-    width: 48%;
+    width: 45%;
     text-align: right;
-    margin-left: 0px;
+    margin-left: 100px;
   }
 }
 </style>

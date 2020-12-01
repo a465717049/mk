@@ -11,6 +11,7 @@
               <input
                 type="text"
                 placeholder="請輸入ERC20地址"
+<<<<<<< HEAD
                 :disabled="this.address!==''&&this.Taddress!==''"
                 v-model="form.location"
               />
@@ -39,6 +40,27 @@
           </li>
         </ul>
         <button class="button" v-show="this.address==''||this.Taddress==''" @click="goNext">確定</button>
+=======
+                :disabled="this.address!==''"
+                v-model="form.location"
+              />
+            </div>
+          </li>
+          <li>
+            <div class="title" v-show="this.address==''">交易密码</div>
+            <input type="password" v-show="this.address==''" v-model="form.tpwd" />
+          </li>
+          <li>
+            <div class="title" v-show="this.address==''">身份證號碼</div>
+            <input type="password" v-show="this.address==''" v-model="form.idnum" />
+          </li>
+          <li>
+            <div class="title" v-show="this.address==''">谷歌驗證碼</div>
+            <input type="number" v-show="this.address==''" v-model="form.google" />
+          </li>
+        </ul>
+        <button class="button" v-show="this.address==''" @click="goNext">確定</button>
+>>>>>>> 7d70ae9023f59e70a8893e7a273613b09dd8b459
         <div class="auth-card">
           <img src="@/assets/imgs/two-persion.png" alt />
           <div>
@@ -77,13 +99,12 @@ export default {
     return {
       form: {
         location: "",
-        addr:"",
         tpwd: "",
         idnum: "",
         google: ""
       },
-      address: "",
-      Taddress: "",
+      // address: "1",
+      address:'',
       //   password: "",
       isEnter: false,
       topBarOption: {
@@ -93,10 +114,8 @@ export default {
       tips: "",
       tipsObj: {
         nosucceed: "設置錢包地址失敗",
-        nolong: "請設置正確的ERC錢包地址",
-        nolong1: "請設置正確的TRC錢包地址",
-        noex: "ERC錢包地址長度不正確",
-        noex1: "TRC錢包地址長度不正確",
+        nolong: "請設置正確的錢包地址",
+        noex: "錢包地址長度不正確",
         succeed: "設置錢包地址成功"
       }
     };
@@ -113,18 +132,8 @@ export default {
         this.isEnter = true;
         return;
       }
-       if (this.form.addr.length != 34) {
-        this.tips = this.tipsObj.noex1;
-        this.isEnter = true;
-        return;
-      }
       if (this.form.location.substring(0, 2).toLowerCase() !== "0x") {
         this.tips = this.tipsObj.nolong;
-        this.isEnter = true;
-        return;
-      }
-    if (this.form.addr.substring(0, 1).toLowerCase() !== "t") {
-        this.tips = this.tipsObj.nolong1;
         this.isEnter = true;
         return;
       }
@@ -202,9 +211,7 @@ export default {
       font-size: 30px;
     }
   }
- .t-img{
-   margin-top: 20px;
- }
+
   ul {
     li {
       .title {

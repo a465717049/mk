@@ -1,6 +1,6 @@
 <template>
   <div class="sellEpWrapper">
-    <TopBar  class="center-one-search" :option="topBarOption">
+    <TopBar  class="center-one-search" >
       出售EP
     </TopBar>
     <div class="innerWrap">
@@ -15,7 +15,10 @@
         <li class='usdt' >
           <div class="title">USDT地址：請再次核對錢包地址是否正確</div>
           <input type="text" disabled v-model="form.usdtAddress" />
+<<<<<<< HEAD
           <input type="text" disabled v-model="form.trcAddress" />
+=======
+>>>>>>> 7d70ae9023f59e70a8893e7a273613b09dd8b459
         </li>
         <li>
           <div class="title">出售數量</div>
@@ -44,21 +47,6 @@
       @clickOk="clickOk()"
       @changeModel="changeModel"
     ></YellowComfirm>
-    <van-popup v-model="modelShow" :close-on-click-overlay="false"  class="wrap">
-      <div class="brown-border">
-          <div class="item">
-            <h3 class="item-tit">EP交易規則操作指南</h3>
-            <div class="item-tip">
-              <p>1、出售EP：出售EP步驟完成後，出售EP數量系統自動扣除，訂單進入“EP交易”在“出售中”顯示；</p>
-              <p>2、訂單成交：訂單被買方“確認購買”後，訂單進入“EP交易”在“交易中”顯示；買方進入支付環節，訂單進入支付倒計時30分鐘；</p>
-              <p>3、確認付款：買方支付完成後，操作“確認付款”，此時訂單還在交易中，訂單顯示“已支付”，等待賣方確認收款，訂單進入“確認收款”倒計時30分鐘；</p>
-              <p>4、確認收款：賣方收到相應的款項後，在“EP交易”的“交易中”，打開訂單，操作“確認收款”，系統自動釋放購買EP的數量，可在快速指引“台賬”的“EP記錄”查看；</p>
-              <p>5、交易完成：訂單完成後進入“EP交易”在“已完成”中查看詳情，訂單關閉，此筆交易才算完成全部流程；</p></div>
-          </div>
-        <div class="btn" @click="clickKnow">我已知曉</div>
-        <div></div>
-      </div>
-    </van-popup>
   </div>
 </template>
 <script type="text/javascript">
@@ -76,20 +64,13 @@ export default {
         epAmount: 0,
         phone: "",
         usdtAddress: "",
-        trcAddress: "",
         password: "",
         gCode: ""
       },
       account: 0,
-      topBarOption: {
-        iconLeft: "back",
-        iconRight: "",
-       // image: headerImg
-      },
       //transPassword: null,
       // verificationCode: null,
       showComfirm: false,
-      modelShow:true,
       tips: "",
       redirect: null,
       tipsObj: {
@@ -101,7 +82,6 @@ export default {
         nocode: "請輸入谷歌驗證碼",
         succeed: "轉出EP成功",
         noamount: "出售數量必須為100的整數倍",
-        noamount: ""
       }
     };
   },
@@ -125,16 +105,12 @@ export default {
     changeModel(v) {
       this.showComfirm = v;
     },
-    clickKnow(){
-         this.modelShow = false;
-    },
     TogetUserInfo() {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
           this.account = json.response.gold;
           this.form.usdtAddress = json.response.coin_location
-          this.form.trcAddress = json.response.trc_address
-          if(this.form.usdtAddress=='')//|| this.form.trcAddress==''
+          if(this.form.usdtAddress&& this.form.usdtAddress=='')
           {
               this.tips='請先綁定錢包地址！'
               this.showComfirm = true;
@@ -163,11 +139,6 @@ export default {
         this.tips = this.tipsObj.noaddr;
         return;
       }
-       if (!this.form.trcAddress) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.noaddr;
-        return;
-      }
       if (!this.form.password) {
         this.showComfirm = true;
         this.tips = this.tipsObj.nopwd;
@@ -188,7 +159,6 @@ export default {
         epAmount: this.form.epAmount,
         phone:this.form.phone,
         usdtAddress:this.form.usdtAddress,
-        trcAddress:this.form.trcAddress,
         password:this.form.password,
         gCode: this.form.gCode
       }
@@ -222,7 +192,6 @@ export default {
     padding-bottom: 300px;
     overflow-y: scroll;
     height: calc(100vh - 260px);
-    background-color: #ebeaf0;
     border-radius: 40px 40px 0 0;
     margin-top: -20px;
     padding-top: 90px;
@@ -232,16 +201,17 @@ export default {
     margin: 0 auto;
     li {
       .title {
-        color: #9d9d9f;
+        color: #FFFFFF;
         font-size: 42px;
-        margin: 42px 0;
+        margin: 60px 0 22px;
         font-weight: 800;
         letter-spacing: 10px;
+        padding-left: 20px;
       }
       input {
-        height: 148px;
-        line-height: 148px;
-        color: #9d9d9f;
+        height: 130px;
+        line-height: 130px;
+        color: #9E9E9F;
         width: 100%;
         padding: 0 30px;
         border-radius: 20px;
@@ -335,8 +305,13 @@ export default {
           font-size: 40px;
           font-weight: normal;
           letter-spacing: 2px;
+<<<<<<< HEAD
           height: 100px;
           line-height: 100px;
+=======
+          height: 130px;
+          line-height: 130px;
+>>>>>>> 7d70ae9023f59e70a8893e7a273613b09dd8b459
           color: #6318c3;
         }
       }
@@ -345,17 +320,16 @@ export default {
     width: 90%;
     margin: 0 auto;
     background: #f5c148;
-    border-radius: 40px;
-    height: 164px;
-    line-height: 164px;
-    font-size: 42px;
+    border-radius: 20px;
+    height: 130px;
+    line-height: 130px;
+    font-size: 52px;
     color: #fff;
     margin-top: 100px;
-    position: relative;
-    font-weight: 800;
-    letter-spacing: 10px;
+    font-weight: 600;
+    letter-spacing: 4px;
   }
-  .moneyWrap {
+ .moneyWrap {
     height: 214px;
     line-height: 214px;
     width: 90%;
@@ -367,53 +341,25 @@ export default {
       .top {
         font-size: 104px;
         font-weight: 600;
-        color: #999;
-        height: 140px;
-        line-height: 140px;
+        color: #4A494C;
+        margin-top: 20px;
+        height: 100px;
+        line-height: 100px;
+        opacity: 0.62;
       }
       .bottom {
-        color: #999;
+        color: #4A494C;
         font-size: 42px;
-
         height: 80px;
         line-height: 80px;
+        opacity: 0.62;
       }
     }
     .right {
       font-size: 104px;
       font-weight: 600;
-      color: #6318c3;
+      color: #113D79;
     }
-  }
-}
-.wrap{
-  width: 80%;
-  border: #6318c3 1px solid;
-  border-radius: 20px;
-  .item-tit{
-    text-align: center;
-    margin-bottom: 40px;
-    height: 120px;
-    line-height: 120px;
-    font-size: 800;
-    font-weight: bolder;
-    color: #ffffff;
-    background-color: #6318c3;
-  }
-  .item-tip{
-    padding: 10px 60px;
-  }
-  .btn{
-    text-align: center;
-    color: #ffffff;
-    border: #eca80a 1px solid;
-    background-color: #eca80a;
-    width: 280px;
-    margin: 30px auto 30px;
-    height: 120px;
-    line-height: 120px;
-     border-radius: 20px;
-
   }
 }
 </style>

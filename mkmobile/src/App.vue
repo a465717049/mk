@@ -34,7 +34,8 @@ export default {
 @import "~vux/src/styles/reset.less";
 #app {
   font-family: Adobe Heiti Std R;
-  background: #ebeaf0;
+  background: #4678BC;
+  background: url('./assets/imgs/bj.png') no-repeat center center/100% 100%;
   height: 100vh;
   width: 100vw;
 }

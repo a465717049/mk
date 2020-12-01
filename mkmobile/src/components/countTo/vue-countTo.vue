@@ -16,7 +16,7 @@ export default {
     endVal: {
       type: Number,
       required: false,
-      default: 2017.00
+      default: 2017
     },
     duration: {
       type: Number,
@@ -156,7 +156,7 @@ export default {
             )
         } else {
           this.printVal = this.easingFn(
-            progress,                       
+            progress,
             this.localStartVal,
             this.endVal - this.localStartVal,
             this.localDuration
@@ -197,7 +197,7 @@ export default {
       return !isNaN(parseFloat(val))
     },
     formatNumber(num) {
-      num = Number.parseFloat(num).toFixed(2)
+      num = num.toFixed(this.decimals)
       num += ''
       const x = num.split('.')
       let x1 = x[0]

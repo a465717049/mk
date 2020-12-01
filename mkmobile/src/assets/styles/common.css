@@ -41,7 +41,7 @@ html,
   color: #4d4d4d;
 }
 .router{
-  color: #6e21d1!important;
+  color: #EFB618!important;
 }
 .fl {
   float: left;
@@ -101,7 +101,11 @@ html,
   text-align: center;
 }
 .borderR {
-  border-radius: 40px;
+  border-radius: 20px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  -ms-border-radius: 20px;
+  -o-border-radius: 20px;
 }
 .border-top-radius {
   border-radius: 40px 40px 0 0;

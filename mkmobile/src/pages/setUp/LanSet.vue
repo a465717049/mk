@@ -1,14 +1,16 @@
 <template>
   <div>
-    <TopBar class="center-one-search" :option="topBarOption">設置語言</TopBar>
-    <div class="lan-set border-top-radius relative bg-gray">
-      <div class="set borderR bg-gray clearfix p-58">
+    <TopBar class="center-one-search">設置語言</TopBar>
+    <div class="lan-set border-top-radius relative">
+      <div class="set borderR clearfix p-58">
         <div class="relative special">
           <img src="@/assets/imgs/set/B-5.png" class="img" alt />
           <van-cell class="cell-info borderR mb-40" title="语言" arrow-direction="down" is-link url />
         </div>
         <div class="relative cell-special">
-          <van-cell class="cell-info borderR mb-40" title="中文繁体" is-link url />
+          <van-cell class="cell-info borderR mb-40 active" title="中文繁体" is-link url >
+            <i class="iconfont icondui"></i>
+          </van-cell>
         </div>
         <!-- <div class="relative cell-special">
           <van-cell class="cell-info borderR mb-40"
@@ -40,12 +42,7 @@ export default {
     TopBar
   },
   data() {
-    return {
-      topBarOption: {
-        iconLeft: "back",
-        iconRight: ""
-      }
-    };
+    return {};
   },
   methods: {},
   created() {},
@@ -57,8 +54,22 @@ export default {
   // margin-top: -160px;
   border-radius: 40px 40px 0 0;
   .cell-info {
-    height: 137px;
+    height: 140px;
     line-height: 120px;
+    .iconfont{
+      opacity: 0;
+    }
+  }
+  .cell-info.active {
+    border: 8px solid #494b63;
+           .iconfont {
+        position: absolute;
+        font-size: 60px;
+        color: #4493d5;
+        opacity: 1;
+        top: -6px;
+        right: 20px;
+      }
   }
   .img {
     position: absolute;

@@ -76,12 +76,12 @@ export default {
   data() {
     return {
       topBarOption: {
-        iconLeft: "iconzhankai",
+        iconLeft: "iconShapecopy",
         iconRight: ""
       },
       totalData: 0,
       lineData: [900, 3000, 400, 1800, 900, 1330, 1320],
-      datearray: ["1", "2", "3", "4", "5", "6", "7"],
+      datearray: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
       binVal: 56,
       initialVal: 500,
       withdrawVal: 500
@@ -100,7 +100,6 @@ export default {
     this.ToGetStockPriceTrend();
     this.TogetUserInfo();
     this.getShouru();
-    this.ToGetStockPriceTrend();
   },
   methods: {
     getData() {
@@ -249,13 +248,10 @@ export default {
             }
           },
           axisLabel: {
-              interval:0,  
-              rotate:-30,
+            interval: 0,
             textStyle: {
-              color: "#76787d", // x轴文字颜色
-              fontSize:9
+              color: "#76787d" // x轴文字颜色
             }
-           
           },
           data: this.datearray
         },
@@ -273,14 +269,14 @@ export default {
         },
         dataZoom: [
           {
-            type: "slider",
-            start: 60,
-            end: 100
+            type: "inside",
+            start: 0,
+            end: 10
           },
           {
-            start: 60,
-            end: 100,
-             handleIcon:
+            start: 0,
+            end: 10,
+            handleIcon:
               "M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z",
             handleSize: "96%",
             handleStyle: {
@@ -296,35 +292,21 @@ export default {
           {
             data: this.lineData,
             type: "line",
-            smooth: false, // 曲线是否圆润
+            smooth: true, // 曲线是否圆润
             symbol: (value, params) => {
               // 折线原点显示样式
               return "circle";
             }, // 是否去掉原点
-            showSymbol: true, // 是否显示原点
+            showSymbol: false, // 是否显示原点
             symbolSize: 10,
             itemStyle: {
               // 折现样式
               normal: {
                 borderColor: "#fff",
-                borderWidth: 1,
+                borderWidth: 3,
                 color: "#783cc7", //改变折线点的颜色
                 lineStyle: {
                   color: "#783cc7" //改变折线颜色
-                },
-                label:{
-                  show:true,
-                  position:'top',
-                  textStyle: {
-                                fontSize: 20
-                            },
-                  formatter: (params) => {
-                                    if ( this.lineData.length - 2 == params.dataIndex) {
-                                        return params.value
-                                    } else {
-                                        return ""
-                                    }
-                                }
                 }
               }
             },
@@ -375,17 +357,13 @@ export default {
           this.totalData = temp;
           var tmpresult = new Array();
           var tmpdate = new Array();
-      
+          var changedate = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
           json.response.list.forEach(model => {
-            tmpresult.unshift(model.price);
-            var tmpyue = new Date(model.createTime.replace(/\-/g, "/")).getMonth()+1;
-            var tmpcreat = new Date(model.createTime.replace(/\-/g, "/")).getDate();
-               tmpdate.unshift(tmpyue+'-'+tmpcreat);
-           
+            tmpresult.push(model.price);
+            var tmpcreat = new Date(model.createTime);
+            tmpdate.push(changedate[new Date(model.createTime).getDay()]);
           });
-          tmpresult.push(null)
-          tmpdate.push('')
-          //console.log(tmpresult, tmpdate, "tmpdate");
+          console.log(tmpresult, tmpdate, "tmpdate");
           this.lineData = tmpresult;
           this.datearray = tmpdate;
         }
@@ -423,7 +401,7 @@ export default {
   }
 }
 .two-tit-b {
-  margin-top: 88px;
+  margin-top: 20px;
   font-size: 120px !important;
 }
 .analyse-body {

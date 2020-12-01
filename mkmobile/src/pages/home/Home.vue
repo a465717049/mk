@@ -1,35 +1,34 @@
 <template>
-  <div class="homeWrapper bggray">
-      <ScrollRefresh  
-      @getData="re"
-      :residualHeight="58"
+  <div class="homeWrapper ">
+    <ScrollRefresh  
+      @getData="getData"
+      :residualHeight="70"
       :isNeedUp="false"
       class="innerScroll">
-    <TopBar :option="topBarOption" @clickR="goNews">
+    <TopBar  @clickR="goNews">
       <div class="center-four-search">
-        <div class="four-tit-t">Hello,{{uid}}</div>
-        <div class="four-tit-b">{{username}}</div>
-        <img class="img-yueliang" src="@/assets/imgs/yueliang.png" alt />
+        <div class="four-tit-t">Hello,测试{{uid}}</div>
+        <div class="four-tit-b">{{username}}Chelsea Ialan</div>
+        <!-- <img class="img-yueliang" src="@/assets/imgs/yueliang.png" alt />
         <img class="img-yueliang1" src="@/assets/imgs/yueliang1.png" alt />
-        <img class="img-fangxing" src="@/assets/imgs/fangxing.png" alt />
-       <div class='header-back'></div> <img  @click="goSetting" class="img-header" :src="headerimg" alt />
+        <img class="img-fangxing" src="@/assets/imgs/fangxing.png" alt /> -->
+        <img  @click="goSetting" class="header-back" :src="headerimg?headerimg:defaultImg" alt />
       </div>
     </TopBar>
-  
     <div class="mainWrap">
       <div class="innerWrap">
-        <van-swipe :autoplay="4000" class="sweiper1">
+        <van-swipe :autoplay="4000" class="sweiper1" :show-indicators="false">
           <van-swipe-item v-for="(image, index) in images" :key="index">
             <img :src="image.image" />
           </van-swipe-item>
         </van-swipe>
         <div class="swiper2Box">
           <van-swipe :autoplay="400000" class="sweiper2" @change="onSwiperChange">
-            <van-swipe-item v-for="(item, index) in balanceList"  :key="index">
-              <img src="../../assets/imgs/yellowBg.png"  alt />
+            <van-swipe-item v-for="(item, index) in balanceList" @click='goinfo(item.type)' :key="index">
+              <!-- <img src="../../assets/imgs/yellowBg.png" alt /> -->
             </van-swipe-item>
           </van-swipe>
-          <div class="countBox" @click='goinfo(type)'>
+          <div class="countBox">
             <p>{{ balanceTile }}</p>
             <countTo
               ref="count"
@@ -54,11 +53,11 @@
         </div>
         <div class="home-list">
           <div class="recent">
-            <div class="title-re">近期收益</div>
-            <div class="view"  ><router-link to="Exchangedata" class="router">更多</router-link></div>
+            <div class="title-re">最近交易</div>
+            <div class="view"  ><router-link to="epList" class="router">查看所有</router-link></div>
           </div>
           <van-tabs v-model="active" @click="readloadinfo">
-            <van-tab title="全部">
+            <van-tab title="所有">
               <div class="detail" v-for="(item,index) in listOne" :key="'one'+index">
                 <div class="info">
                   <img alt src='@/assets/imgs/EPimg.png' />
@@ -107,31 +106,58 @@
 </template>
 <script type="text/javascript">
 import TopBar from 'components/TopBar'
-import ScrollRefresh from "components/ScrollRefresh";
 import banner1 from '../../assets/imgs/banner-00.png'
 import banner2 from '../../assets/imgs/banner-01.png'
+import defaultImg from '@/assets/imgs/set/head02.png'
 import countTo from 'components/countTo'
 import { http } from 'util/request'
 import { GetBanner, GetUserInfo, getEpexchange } from 'util/netApi'
+import ScrollRefresh from "components/ScrollRefresh";
 import { storage } from 'util/storage'
 import { photoList } from 'util/const.js'
 export default {
   data() {
     return {
+      defaultImg,
       username: '',
       uid: '',
-      topBarOption: {
-        iconLeft: 'iconzhankai',
-        iconRight: 'iconlingdang'
-      },
+      // topBarOption: {
+      //   iconLeft: 'iconShapecopy',
+      //   iconRight: 'iconxiaoxi1'
+      // },
       active: 0,
       startVal: 0,
-      endVal: 0,
-      type:"dpe",
-      balanceTile: 'DPE Balance',
+      endVal: 11072,
+      balanceTile: '本周奖金',
       images: [{image:banner1},{image:banner2}],
       headerimg:null,
       balanceList: [
+         {
+              name: 'DPE Balance',
+              type:'dpe',
+              count: 123431
+            }
+            , 
+            {
+              name: 'EP Balance',  
+              type:'ep',
+              count: 6666666
+            },
+            {
+              name: 'RP Balance',
+               type:'rp',
+              count: 33333
+            },
+            {
+              name: 'SP Balance',
+               type:'sp',
+              count: 88888
+            },
+            {
+              name: 'DPE(主+子) Balance',
+               type:'sum',
+              count: 3333333
+            }
       ],
       listOne: [
       ],
@@ -163,9 +189,6 @@ export default {
     onSwiperChange(index) {
       this.endVal = this.balanceList[index].count
       this.balanceTile = this.balanceList[index].name
-      this.type = this.balanceList[index].type
-
-      return false;
     },
     
     ToGetBanner() {
@@ -192,8 +215,7 @@ export default {
        }
     },
     TogetUserInfo() {
-      var date=new Date();
-      http(GetUserInfo, {date:date}, json => {
+      http(GetUserInfo, null, json => {
         if (json.code === 0) {
           this.username = json.response.nickname
           this.uid = json.response.uid
@@ -201,6 +223,7 @@ export default {
           this.headerimg=photoList[json.response.photo]
           storage.setLocalStorage("service",json.response.service)
           this.balanceList = [
+        
              {
               name: 'DPE Balance',
               type:'dpe',
@@ -209,7 +232,7 @@ export default {
             , 
             {
               name: 'EP Balance',  
-               type:'ep',
+              type:'ep',
               count: json.response.gold
             },
             {
@@ -226,16 +249,11 @@ export default {
               name: 'DPE(主+子) Balance',
                type:'sum',
               count: json.response.sum
-            },
-            {
-              name: 'Dynamic Balance',
-               type:'ep',
-              count: json.response.dynamicTotal
             }
           ]
         }
         else{
-           this.$router.push({ path: "/login" });
+          //  this.$router.push({ path: "/login" });
         }
       })
      
@@ -255,47 +273,43 @@ export default {
         }
       )
     },
-    re(){
-        this.ToGetBanner()
-         this.TogetUserInfo()
-        this.readloadinfo()
+    getData(){
+      this.ToGetBanner()
+      this.TogetUserInfo()
+      this.readloadinfo()
     }
   },
-  created() {
-     this.ToGetBanner()
-  },
   mounted(){
-    this.ToGetBanner()
-    this.TogetUserInfo()
-    this.readloadinfo()
+    // this.ToGetBanner()
+    // this.TogetUserInfo()
+    // this.readloadinfo()
   }
 }
 </script>
 
 <style lang="less" scoped>
 .innerScroll {
-  height: 100vh;
   /deep/.wrapper {
     .bscroll-container {
-      min-height: calc(100vh + 450px) !important;
+      min-height: calc(100vh + 400px) !important;
     }
   }
 }
 .homeWrapper {
   height: 100vh;
-  overflow-y: scroll;
+  // overflow-y: scroll;
   .mainWrap {
     width: 95%;
-    margin: -60px auto 0;
+    margin: -80px auto 0;
     img {
       width: 100%;
     }
   }
   .sweiper1 {
-    margin-bottom: 20px;
+    margin-bottom: 42px;
     img {
       width: 100%;
-      height: 360px;
+      height: 354px;
     }
     /deep/ .van-swipe-item {
       border-radius: 24px;
@@ -312,27 +326,38 @@ export default {
   }
   .swiper2Box {
     position: relative;
-    margin-bottom: 20px;
-    height: 390px;
+    margin-bottom: 42px;
+    height: 340px;
+    .sweiper2{
+      background: url('../../assets/imgs/blueBj.png') no-repeat center center/100% 100%;
+    }
     .sweiper2,
     .sweiper2 img {
       height: 100%;
       border-radius: 24px;
+      background-color: #4678BC;
     }
     .countBox {
       position: absolute;
-      top: 40px;
-      color: #fff;
-      left: 120px;
+      top:0;
+      height: 340px;
+      width: 80vw;
+      display: flex;
+      left: 100px;
+      align-items: center;
+      justify-content: space-between;
+     
       p {
-        font-size: 60px;
+        font-size: 50px;
         margin-top:40px;
+        font-weight: 600;
+        color: #191819;
         margin-bottom: 50px;
       }
       .countNum {
         font-size: 106px;
         font-weight: 800;
-        margin-top: 50px;
+        color: #0C0100;
       }
     }
     /deep/ .van-swipe__indicator {
@@ -356,19 +381,24 @@ export default {
    top:120px;
    left: 10px;
    z-index: 2;
+   font-size: 64px;
+   color: #fff !important;
+   margin-left: -100px !important;
 }
 .four-tit-b{
-   position:absolute;
-    top:365px;
-    font-size: 100px!important;
-    z-index: 2;
+  position:absolute;
+  color: #0C0100;
+  top:230px;
+  font-size: 70px!important;
+  z-index: 2;
+  margin-left: -100px !important;
 }
-.img-fangxing{
-  animation: myfirst 3s 2s infinite;
-}
-.img-yueliang1{
-  animation: myfirst 4s 3s infinite;
-}
+// .img-fangxing{
+//   animation: myfirst 3s 2s infinite;
+// }
+// .img-yueliang1{
+//   animation: myfirst 4s 3s infinite;
+// }
 .home-list {
   border-radius: 24px;
   background: #f6f7f9;
@@ -377,18 +407,18 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 60px;
+    margin-bottom: 30px;
     border-bottom: none;
     .title-re {
       margin-top: 10px;
-      font-size: 52px;
+      font-size: 54px;
       font-weight: 600;
     }
     .view {
       margin-top: 10px;
       float: right;
-      color: #6e21d1;
-      font-size: 46px;
+      color: #EFB618;
+      font-size: 44px;
       font-weight: 800;
     }
   }
@@ -410,7 +440,7 @@ export default {
   /deep/ .van-tab {
     font-size: 42px;
     font-weight: 600;
-    color: #6e21d1;
+    color: #EFB618;
     background: #f6f7f9 !important;
   }
   /deep/ .van-tabs__nav--line::after {
@@ -426,16 +456,18 @@ export default {
     border: none;
   }
   /deep/ .van-tabs__line {
-    background: #6e21d1;
+    background: #EFB618;
     width: 250px !important;
+    height: 6px;
   }
   /deep/.van-tab__text {
-    color: #c6c6c6;
-    font-weight: 800;
+    color: #C5C5C5;
+    font-size: 54px;
+    // font-weight: 600;
   }
   /deep/.van-tab--active {
     .van-tab__text {
-      color: #6e21d1;
+      color: #EFB618;
     }
   }
   /deep/ .van-tabs__content {

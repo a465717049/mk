@@ -1,31 +1,25 @@
 <!--  -->
 <template>
   <div class="activity-list">
-    <TopBar class="center-one-search" :option="option">
-     活動
-    </TopBar>
-    <div class="scrollPart"
-         ref="scrollPart">
+    <TopBar class="center-one-search" :option="option">活動</TopBar>
+    <div class="scrollPart" ref="scrollPart">
       <div class="activity borderR bg-gray p-58">
         <div class="tips base-flex flex-start p-58 bg-white borderR mb-80">
-          <img src="@/assets/imgs/forgot1-img1.png"
-               class="img"
-               alt />
+          <img src="@/assets/imgs/forgot1-img1.png" class="img" alt />
           <div class="tips-part">
             <div class="tip-titl"></div>
             <!-- <div>任何活动您只需交纳EP后剩下的事情由官方 合作伙伴来解决。</div> -->
-            <div>即將更新！</div> 
+            <div>即將更新！</div>
           </div>
         </div>
-        <div class="ac-detail base-flex bg-darkgray p-58 borderR"
-             v-for="(item,listIndex) in activityList"
-             :key="listIndex">
+        <div
+          class="ac-detail base-flex bg-darkgray p-58 borderR"
+          v-for="(item,listIndex) in activityList"
+          :key="listIndex"
+        >
           <div class="left-img">
-            <van-swipe :autoplay="3000"
-                       @change="onChange(item,$event)"
-                       class="sweiper1">
-              <van-swipe-item v-for="(image, imagesIndex) in item.images"
-                              :key="imagesIndex">
+            <van-swipe :autoplay="3000" @change="onChange(item,$event)" class="sweiper1">
+              <van-swipe-item v-for="(image, imagesIndex) in item.images" :key="imagesIndex">
                 <img v-lazy="image" />
               </van-swipe-item>
               <template #indicator>
@@ -68,22 +62,20 @@ export default {
   components: {
     TopBar
   },
-  data () {
+  data() {
     return {
       currentImg: 0,
       option: {
-        iconLeft: "iconzhankai",
+        iconLeft: "iconShapecopy"
       },
-      activityList: [
-       
-      ],
+      activityList: []
     };
   },
   methods: {
-    onChange (item, index) {
+    onChange(item, index) {
       // 此时的index指的是当前images数组里面显示图片的index
       item.images.forEach(element => {
-        this.$set(item, 'currentImg', index)
+        this.$set(item, "currentImg", index);
       });
     }
     // scrollInit() {
@@ -101,8 +93,8 @@ export default {
     //   }
     // }
   },
-  created () { },
-  mounted () {
+  created() {},
+  mounted() {
     // this.scrollInit();
   }
 };

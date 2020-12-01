@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBar class="center-one-search" :option="topBarOption">激活碼</TopBar>
+    <TopBar class="center-one-search">谷歌验证</TopBar>
     <div class="authenticator-body">
       <div class="auth-card">
         <img src="@/assets/imgs/auth-header.png" alt />
@@ -13,7 +13,7 @@
       </div>
       <ul>
         <li>
-          <div class="title">激活碼</div>
+          <div class="title">邀请码</div>
           <input type="text" v-model="activationCode" />
         </li>
         <li>
@@ -23,13 +23,12 @@
       </ul>
       <button class="button" @click="goNext">
         下一步
-        <i class="jiantou iconfont iconarrow-right"></i>
       </button>
-      <div class="auth-buttom">
+      <!-- <div class="auth-buttom">
         * 只需2步，Google身份驗證器安裝到你手機. <br>
         1、輸入激活碼和交易密碼獲取專屬與您的Google密鑰. <br>
         2、將Google密鑰複製到Google身份驗證去中產生校驗碼.
-      </div>
+      </div> -->
     </div>
     <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk()"></YellowComfirm>
   </div>
@@ -53,10 +52,6 @@ export default {
       activationCode: '',
       showComfirm: false,
       password: '',
-      topBarOption: {
-        iconLeft: 'back',
-        iconRight: ''
-      },
       tips: '',
       tipsObj: {
         nosucceed: '驗證失敗',
@@ -98,7 +93,6 @@ export default {
 
 <style lang="less" scope>
 .authenticator-body {
-  background: #ebeaf0;
   top: 260px;
   width: 100%;
   overflow: scroll;
@@ -109,28 +103,33 @@ export default {
   .auth-card {
     background: #fff;
     display: flex;
-    padding: 30px 50px;
-    margin-bottom: 98px;
-    border-radius: 32px;
+    padding: 20px 30px;
+    margin-bottom: 138px;
+    border-radius: 20px;
+    box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.24);
     img {
-      width: 193px;
-      height: 185px;
+      width: 140px;
+      height: 140px;
       margin-right: 20px;
       margin-top: 20px;
     }
     div {
       flex: 1;
       .auth-top-tit {
-        font-size: 60px;
+        font-size: 46px;
         text-align: center;
+             color: #191819;
+        font-weight: 600;
         line-height: 60px;
-        margin-bottom: 25px;
+        margin-bottom: 15px;
+        margin-top: 20px;
       }
       .auth-top-tip {
-        font-size: 30px;
+        font-size: 25px;
         text-align: center;
-        margin: 0 100px;
-        line-height: 50px;
+        color: #191819;
+        font-weight: 600;
+        letter-spacing: 0;
       }
     }
   }
@@ -139,33 +138,32 @@ export default {
       .title {
         font-size: 42px;
         margin: 42px 20px 20px 0;
-        color: #191819;
+        color: #fff;
         font-weight: bold;
       }
       input {
-        height: 148px;
+        height: 123px;
+        line-height: 123px;
         font-size: 42px;
         width: 100%;
         padding: 30px 20px;
         border-radius: 20px;
+        color: #6F6D72;
+        font-weight: 600;
+        letter-spacing: 4px;
       }
     }
   }
   .button {
     width: 100%;
-    background: #f5c148;
-    height: 185px;
-    font-size: 52px;
+    background: #EFB618;
+    height: 128px;
+    font-size: 42px;
     color: #fff;
-    border-radius: 40px;
+    border-radius: 20px;
     position: relative;
     margin-top: 120px;
-    .jiantou {
-      position: absolute;
-      right: 30px;
-      top: 46px;
-      font-size: 60px;
-    }
+ 
   }
   .auth-buttom {
     padding: 98px 0;

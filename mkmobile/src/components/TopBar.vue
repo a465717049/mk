@@ -1,93 +1,164 @@
 <template>
   <div>
-  <div class="top-bar">
-    <i v-if="option.iconLeft!=='back'" class="iconfont1 icon-l" :class="option.iconLeft" @click="clickPopup"></i>
-    <i v-if="option.iconLeft=='back'" class="iconfont1 icon-l fanhui1" @click="back"></i>
-    <slot class='top-title'></slot>
-      <img class="img-left" src="@/assets/imgs/header/left.png" alt />
-    <img class="img-right" src="@/assets/imgs/header/right.png" alt />
-    <i v-if="option.image" class="iconfont icon-r ">
-      <img class="img-header img-photo" :src="option.image" alt />
-    </i>
-  
-    <i v-else class="iconfont img-r" :class="option.iconRight" @click="clickR">
-      <img v-if="!option.iconRight" class="img-fangxing" src="@/assets/imgs/fangxing.png" alt />
-      <!-- 未读图标  -->
-      <div v-if="hasNoRead" class="weidu"></div>
-    </i>
-    <div class='clear'></div>
+    <div class="top-bar">
+      <i
+        v-if="option.iconLeft!=='back'"
+        class="iconfont icon-l"
+        :class="option.iconLeft"
+        @click="clickPopup"
+      ></i>
+      <i v-if="option.iconLeft=='back'" class="iconfont icon-l iconfanhui" @click="back"></i>
+      <slot class="top-title"></slot>
+      <!-- <img class="img-left" src="@/assets/imgs/header/left.png" alt />
+      <img class="img-right" src="@/assets/imgs/header/right.png" alt />-->
+      <i v-if="option.image" class="iconfont icon-r">
+        <img class="img-header img-photo" :src="option.image" alt />
+      </i>
+      <i
+        v-else-if="option.iconRight==='iconxiaoxi1'"
+        class="iconfont img-r iconxiaoxi1"
+        @click="goFeedBack"
+      ></i>
+      <i v-else class="iconfont img-r" :class="option.iconRight" @click="clickR">
+        <!-- <img v-if="!option.iconRight" class="img-fangxing" src="@/assets/imgs/fangxing.png" alt /> -->
+        <!-- 未读图标  -->
+        <div v-if="hasNoRead" class="weidu"></div>
+        <div v-if="badge" class="badge">{{badge}}</div>
+      </i>
+      <div class="clear"></div>
     </div>
     <van-popup v-model="menuShow" :position="'left'" :style="{ height: '100vh', width: '60%'}">
       <div class="menu-tree">
-        <P class='menu-title'>快速指引</P>
+        <P class="menu-title">快速指引</P>
         <van-collapse v-model="activeNames">
-          <van-collapse-item title="仓库" name="1">
+          <van-collapse-item name="1">
+            <template #title>
+              <div class="leftTreeTitle">
+                <i class="iconfont iconfont2 iconcaiwutouzi"></i>
+                <span>财务</span>
+              </div>
+            </template>
             <ul>
               <li>
-                <router-link to="Config" class="router">
-                  <i class="iconfont iconshezhi"></i>資產
-                </router-link>
-              </li>
-              <!-- <li>
-                <router-link to="Config"
-                             class="router">
-                  <i class="iconfont iconxiaoshou"></i>出售
-                </router-link>
-              </li>-->
-              <li>
-                <!--   <router-link to="epList" class="router"> -->
-                <router-link to="Exchangedata" class="router">
-                  <i class="iconfont iconfeiyongtaizhang"></i>臺賬
-                </router-link>
-              </li>
-              <!-- <li v-if="service">
-                <router-link to="Charge" class="router">
-                  <i class="iconfont iconjiayou"></i>充值
-                </router-link>
-              </li> -->
-            </ul>
-          </van-collapse-item>
-          <van-collapse-item title="信息" name="2">
-            <ul>
-              <li>
-                <router-link to="News" class="router">
-                  <i class="iconfont iconxinxi"></i>公告
+                <router-link to="withdrawal" class="router">
+                  <i class="iconfont iconarrow-right"></i>提现
                 </router-link>
               </li>
               <li>
-                <router-link to="FX" class="router">
-                  <i class="iconfont iconfenxi"></i>分析
+                <router-link to="transWithMe" class="router">
+                  <i class="iconfont iconarrow-right"></i>转换
+                </router-link>
+              </li>
+              <li>
+                <router-link to="transRp" class="router">
+                  <i class="iconfont iconarrow-right"></i>转分
+                </router-link>
+              </li>
+              <li>
+                <router-link to="VipUpgrade" class="router">
+                  <i class="iconfont iconarrow-right"></i>升级
+                </router-link>
+              </li>
+              <li>
+                <router-link to="epList" class="router">
+                  <i class="iconfont iconarrow-right"></i>台帐
                 </router-link>
               </li>
             </ul>
           </van-collapse-item>
-          <div class="menu-item-self">
-            <router-link to="shop" class="router">商店</router-link>
-          </div>
-          <van-collapse-item title="社交" name="4">
+          <van-collapse-item name="2">
+            <template #title>
+              <div class="leftTreeTitle">
+                <i class="iconfont iconfont2 icontubiao-"></i>
+                <span>社交</span>
+              </div>
+            </template>
             <ul>
               <li>
-                <router-link to="friends" class="router">
-                  <i class="iconfont iconpengyou"></i>朋友
+                <router-link to="friendsList" class="router">
+                  <i class="iconfont iconarrow-right"></i>朋友
                 </router-link>
               </li>
               <li>
                 <router-link to="activityList" class="router">
-                  <i class="iconfont iconhuodong"></i>活動
+                  <i class="iconfont iconarrow-right"></i>活动
                 </router-link>
               </li>
               <li>
-                <router-link to="task" class="router">
-                  <i class="iconfont iconrenwu"></i>任務
+                <router-link to="/" class="router">
+                  <i class="iconfont iconarrow-right"></i>任务
+                </router-link>
+              </li>
+            </ul>
+          </van-collapse-item>
+          <van-collapse-item name="3">
+            <template #title>
+              <div class="leftTreeTitle">
+                <i class="iconfont iconfont2 iconlock"></i>
+                <span>商店</span>
+              </div>
+            </template>
+            <ul>
+              <li>
+                <router-link to="shop" class="router">
+                  <i class="iconfont iconarrow-right"></i>新品
+                </router-link>
+              </li>
+              <li>
+                <router-link to="shopCar" class="router">
+                  <i class="iconfont iconarrow-right"></i>购物车
+                </router-link>
+              </li>
+              <li>
+                <router-link to="shop" class="router">
+                  <i class="iconfont iconarrow-right"></i>再次购买
+                </router-link>
+              </li>
+              <li>
+                <router-link to="orderDetail" class="router">
+                  <i class="iconfont iconarrow-right"></i>订单详情
+                </router-link>
+              </li>
+            </ul>
+          </van-collapse-item>
+          <van-collapse-item name="4">
+            <template #title>
+              <div class="leftTreeTitle">
+                <i class="iconfont iconfont2 iconxinxi1"></i>
+                <span>信息</span>
+              </div>
+            </template>
+            <ul>
+              <li>
+                <router-link to="news" class="router">
+                  <i class="iconfont iconarrow-right"></i>公告
+                </router-link>
+              </li>
+              <li>
+                <router-link to="news" class="router">
+                  <i class="iconfont iconarrow-right"></i>分析
                 </router-link>
               </li>
             </ul>
           </van-collapse-item>
           <div class="menu-item-self">
-            <router-link to="feedback" class="router">意見反饋</router-link>
+            <router-link to="feedback" class="router">
+              <i class="iconfont iconyijianfankui"></i>
+              <span>意見</span>
+            </router-link>
           </div>
-          <div class="menu-item-self" @click="goSetting">設置</div>
-          <div class="menu-item-self"> <router-link to="login" class="router">退出  </router-link></div>
+          <div class="menu-item-self">
+            <router-link to="setting" class="router">
+              <i class="iconfont iconshezhi1"></i>
+              <span>設置</span>
+            </router-link>
+          </div>
+          <div class="menu-item-self">
+            <router-link to="login" class="router">
+              <i class="iconfont icontuichu"></i>
+              <span>退出</span>
+            </router-link>
+          </div>
         </van-collapse>
       </div>
     </van-popup>
@@ -96,7 +167,7 @@
        class="iconfont iconaui-icon-location loc-p"></i>
     <i v-if="showChat"
     class="iconfont iconchat chat"></i>-->
-</div>
+  </div>
 </template>
 
 <script>
@@ -111,7 +182,10 @@ export default {
     option: {
       type: Object,
       default: function() {
-        return {};
+        return {
+          iconLeft: "iconShapecopy",
+          iconRight: "iconxiaoxi1"
+        };
       }
     },
     showLocation: {
@@ -125,6 +199,11 @@ export default {
     hasNoRead: {
       type: Boolean,
       default: false
+    },
+    badge: {
+      //角标
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -138,14 +217,18 @@ export default {
     clickPopup() {
       this.menuShow = true;
     },
-    clickR(){
-       this.$emit('clickR',this)
+    clickR() {
+      this.$emit("clickR", this);
     },
-    back(){
-      this.$router.go(-1)
+    back() {
+      this.$router.go(-1);
     },
     goSetting() {
       this.$router.push({ name: "setting" });
+    },
+    goFeedBack() {
+      console.log(1212)
+      this.$router.push('Feedback');
     }
   },
   mounted() {
@@ -162,39 +245,39 @@ export default {
     transform: rotate(360deg);
   }
 }
-.img-left{
-  position:absolute;
+.img-left {
+  position: absolute;
   right: 0px;
-  top:0px;
+  top: -50px;
   height: 70%;
   width: auto;
   z-index: -1;
 }
-.img-right{
-  position:absolute;
+.img-right {
+  position: absolute;
   left: 0px;
-  top:0px;
+  top: -50px;
   height: 80%;
   width: auto;
   z-index: -1;
 }
-.menu-title{
+.menu-title {
   font-size: 50px;
   font-weight: bold;
-  color:#fff;
+  color: #efb618;
 }
 .top-bar {
   padding: 60px;
-  background: #6e21d1;
   display: block;
-  color: #fff!important;
-  opacity: 0.9;
+  color: #fff !important;
   min-height: 240px;
   text-align: center;
   position: relative;
   border-radius: 0 0 60px 60px;
+  overflow: hidden;
 
-  .iconfont,.iconfont1 {
+  .iconfont,
+  .iconfont1 {
     font-size: 90px;
     position: absolute;
     z-index: 999;
@@ -229,6 +312,23 @@ export default {
       border-radius: 50%;
       z-index: 999;
     }
+    .badge {
+      display: block;
+      position: absolute;
+      right: 0px;
+      top: 20px;
+      width: 46px;
+      height: 46px;
+      line-height: 46px;
+      text-align: center;
+      background: red;
+      border-radius: 50%;
+      z-index: 999;
+
+      font-size: 32px;
+      font-weight: bold;
+      color: #ffffff;
+    }
   }
 
   @keyframes myfirst {
@@ -241,6 +341,10 @@ export default {
   }
   .icon-l {
     left: 60px;
+  }
+  .iconShapecopy {
+    // width: 100px;
+    font-size: 60px;
   }
   .loc-p {
     font-size: 80px;
@@ -259,10 +363,10 @@ export default {
     right: 30px;
   }
 }
-.img-fangxing{
+.img-fangxing {
   animation: myfirst 3s 2s infinite;
 }
-.img-yueliang1{
+.img-yueliang1 {
   animation: myfirst 4s 3s infinite;
   z-index: 2;
 }
@@ -276,15 +380,15 @@ export default {
   font-size: 69px;
   font-weight: bold;
   justify-content: center;
-  background: #6e21d1;
+  // background: #6e21d1;
   display: block;
   color: #fff;
-  opacity: 0.9;
   min-height: 240px;
   text-align: center;
   position: relative;
   z-index: 999;
   border-radius: 0 0 60px 60px;
+  overflow: hidden;
 }
 </style>
 <style lang="less" scoped>
@@ -298,6 +402,7 @@ export default {
   height: 500px;
   font-weight: bold;
   position: relative;
+  overflow: hidden;
   .two-tit-t {
     font-weight: normal;
     letter-spacing: 6px;
@@ -320,12 +425,11 @@ export default {
     top: 257px;
     height: 58px;
   }
- 
 }
- .center-two-search .img-fangxing{
-     left: 650px;
-      top: 127px;
-  }
+.center-two-search .img-fangxing {
+  left: 650px;
+  top: 127px;
+}
 </style>
 <style lang="less" scoped>
 // 3
@@ -338,6 +442,7 @@ export default {
   height: 580px;
   font-weight: bold;
   position: relative;
+  overflow: hidden;
   .three-tit-t {
     font-weight: normal;
     letter-spacing: 6px;
@@ -357,12 +462,12 @@ export default {
   margin: 0 auto;
   padding-top: 100px;
   font-size: 60px;
-  height: 580px;
+  height: 440px;
   position: relative;
   .four-tit-t {
     font-weight: normal;
     letter-spacing: 6px;
-    padding-top: 140px;
+    padding-top: 40px;
     padding-left: 30px;
     color: #ccc;
     margin-left: -80px;
@@ -394,26 +499,28 @@ export default {
     top: 140px;
     height: 58px;
   }
-  .header-back{
-     position: absolute;
+  .header-back {
+    position: absolute;
     right: -73px;
-     top: 320px;
-    width: 186px;
-    height: 186px;
+    top: 160px;
+    width: 146px;
+    height: 146px;
     background-color: #fff;
     border-radius: 100px;
-    z-index: 998;  
+    border: 8px solid #fff;
+    z-index: 998;
+    // box-sizing: border-box;
   }
-  .img-header {
-    position: absolute;
-    right: -60px;
-    width: 164px;
-    height: 164px;
-    top: 330px;
-    background-color: #fff;
-    border-radius: 80px;
-    z-index: 999;  
-  }
+  // .img-header {
+  //   position: absolute;
+  //   right: -65px;
+  //   width: 140px;
+  //   height: 140px;
+  //   top: 267px;
+  //   background-color: #fff;
+  //   border-radius:140px;
+  //   z-index: 999;
+  // }
 }
 </style>
 <style lang="less" scoped>
@@ -423,40 +530,46 @@ export default {
 /deep/ .van-collapse-item__title--expanded::after {
   display: none;
 }
+/deep/ .van-popup--left {
+  opacity: 0.89;
+  z-index: 9999999;
+}
 .menu-tree {
   height: 100vh;
   width: 60vw;
-  background: rgba(27, 25, 30, 1);
+  background: #000;
   font-weight: normal;
   overflow: scroll;
-  z-index: 99999;
+  z-index: 9999;
   p {
     width: 60vw;
     text-align: left;
     font-weight: normal;
     padding-left: 50px;
     border-bottom: 0;
-    padding-top: 150px;
+    padding-top: 210px;
   }
   /deep/ .van-collapse {
     width: 60vw;
-    padding: 30px 50px 50px;
+    padding: 30px 20px 50px;
     padding-bottom: 350px;
-     z-index: 9999;
+    z-index: 9999;
     .van-collapse-item--border::after {
       border: 0;
     }
     .van-collapse-item {
       .van-cell {
-        background: rgba(27, 25, 30, 1);
+        background: #000;
         color: #fff;
-        padding: 50px 0;
+        padding: 20px;
         text-align: left;
-        color: #d9c704;
-        border-bottom: 4px solid #fff;
+        color: #fff;
+        border-bottom: 6px solid #fff;
+
         .van-cell__right-icon {
-          font-size: 60px;
-          color: #d9c704;
+          // font-size: 60px;
+          // color: #d9c704;
+          display: none;
         }
         .van-cell__title {
           font-size: 50px;
@@ -464,7 +577,7 @@ export default {
       }
 
       .van-collapse-item__content {
-        background: rgba(27, 25, 30, 1);
+        background: #000;
         border: 0;
         border-width: 0 0;
         padding: 0;
@@ -475,15 +588,19 @@ export default {
         text-align: left;
         padding-left: 80px;
         li {
-          padding: 20px;
-          position: relative;
+          font-size: 38px;
+          padding: 10px 0 10px 80px;
+
+          .router {
+            display: inline-block;
+            position: relative;
+            width: 100%;
+            color: #0ef2bf !important;
+          }
           i {
             position: absolute;
-            left: -70px;
-            font-size: 55px;
-          }
-          .router {
-            color: #fff!important;
+            left: -56px;
+            font-size: 40px;
           }
         }
       }
@@ -501,23 +618,39 @@ export default {
     border-width: 0 0;
   }
   .menu-item-self {
-    font-size: 50px;
-    color: #d9c704;
+    font-size: 42px;
+    color: #fff;
     position: relative;
-    border-bottom: 4px solid #fff;
-    padding: 20px 0 20px 0;
-    height: 140px;
+    // padding: 20px 0 20px 0;
+    height: 100px;
     line-height: 100px;
     text-align: left;
+    display: flex;
+    align-items: center;
     .router {
-      color: #d9c704!important;
+      color: #fff !important;
+      display: flex;
+      align-items: center;
     }
-    &::after {
-      content: "";
-      display: block;
-      position: absolute;
-      right: 30px;
+    .iconfont {
+      font-size: 60px;
+      margin-right: 36px;
     }
   }
+  .iconfont2 {
+    font-size: 60px;
+    margin-right: 36px;
+  }
+  .icontubiao- {
+    font-size: 80px;
+    margin-right: 20px;
+  }
+}
+.leftTreeTitle {
+  color: #fff;
+  font-size: 42px;
+  align-items: center;
+  display: flex;
+  height: 60px;
 }
 </style>

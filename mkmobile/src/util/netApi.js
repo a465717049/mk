@@ -85,8 +85,7 @@ export const GetUserInfo = {
   contentType: "application/json",
   url: "UserInfo/GetUserInfo",
   method: "POST",
-  version: v,
-  string: true
+  version: v
 };
 // 设置钱包地址
 export const SetUserlocationweb = {
@@ -257,14 +256,6 @@ export const CheckGoogleKey = {
   version: v,
   string: true
 };
-//谷歌校验解绑
-export const UnBindGoogleKey = {
-  contentType: "application/json",
-  url: "User/UnBindGoogleKey",
-  method: "POST",
-  version: v,
-  string: true
-};
 //公告消息
 export const GetNewsWeb = {
   contentType: "application/json",
@@ -404,15 +395,6 @@ export const GetSetQuestionList = {
 export const GetOneKeyReturn = {
   contentType: "application/json",
   url: "User/OneKeyReturn",
-  method: "POST",
-  version: v,
-  string: true
-};
-
-//投诉
-export const Usercomplaint = {
-  contentType: "application/json",
-  url: "EP/Usercomplaint",
   method: "POST",
   version: v,
   string: true

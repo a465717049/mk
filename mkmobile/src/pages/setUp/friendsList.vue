@@ -2,7 +2,7 @@
   <div class="relative">
     <TopBar class="center-one-search" :option="topBarOption">
       <div>
-        <div class="three-tit-t">好友列表</div>
+        <div class="three-tit-t">我的朋友</div>
         <div class="three-tit-b">{{friendsList.length}}</div>
         <TopSearch @onSearch="search"></TopSearch>
       </div>
@@ -15,33 +15,13 @@
     >
       <div class="listWrap borderR" ref="listWrap">
         <div class="friendsList">
-          <div class="list borderR bg-gray p-38">
+          <div class="list">
             <div class="relative" v-for="(item,index) in friendsList" :key="index">
               <img :src="item.photo" class="img" alt />
               <van-cell class="cell-info borderR mb-40" is-link @click="gofriend(item.uID)">
                 <div slot="title" class="data-title">
-                  <div class="left">{{item.NickName+'('+item.uID+')'}}</div>
-                  <div class="right">{{item.uCreateTime}}</div>
-                </div>
-                 <div slot="title" class="data-info">
-                  <div>
-                    <span>農 &nbsp;&nbsp;&nbsp;場：</span>
-                    {{item.InvestmentLevel==1?'高級農場':'中級農場'}}
-                  </div>
-                 <div>
-                    <span>榮  &nbsp;&nbsp;&nbsp;譽：</span>
-                    {{ getLv(item.honorLevel)}}
-                  </div>
-                </div>
-                <div slot="title" class="data-info">
-                  <div>
-                    <span>水果區：</span>
-                    {{item.LProfit}}
-                  </div>
-                  <div>
-                    <span>蔬菜區：</span>
-                    {{item.RProfit}}
-                  </div>
+                  <div class="friendsName">{{item.NickName+'('+item.uID+')'}}</div>
+                  <div class="friendsNum" v-if="item.friendsNum">{{item.friendsNum}}</div>
                 </div>
               </van-cell>
             </div>
@@ -57,6 +37,7 @@ import { http } from "util/request";
 import { photoList } from "util/const.js";
 import TopSearch from "components/TopSearch";
 import ScrollRefresh from "components/ScrollRefresh";
+import defaultImg from '@/assets/imgs/set/head02.png'
 import { GetFriendsList, GetSearchFimaly, GetUserInfo } from "util/netApi";
 export default {
   components: {
@@ -66,11 +47,43 @@ export default {
   },
   data() {
     return {
-      topBarOption: {
-        iconLeft: "back",
-        iconRight: ""
-      },
-      friendsList: [],
+      friendsList: [{
+        photo:defaultImg,
+        NickName:'Totay cyels',
+        uID:'10001',
+        friendsNum:'34'
+      },{
+        photo:defaultImg,
+        NickName:'Totay cyels',
+        uID:'10002',
+      },{
+        photo:defaultImg,
+        NickName:'Totay cyels',
+        uID:'10003',
+        friendsNum:'34'
+      },{
+        photo:defaultImg,
+        NickName:'Totay cyels',
+        uID:'10004',
+      },{
+        photo:defaultImg,
+        NickName:'Totay cyels',
+        uID:'10005',
+        friendsNum:'34'
+      },{
+        photo:defaultImg,
+        NickName:'Totay cyels',
+        uID:'10006',
+      },{
+        photo:defaultImg,
+        NickName:'Totay cyels',
+        uID:'10007',
+        friendsNum:'34'
+      },{
+        photo:defaultImg,
+        NickName:'Totay cyels',
+        uID:'10008',
+      }],
       uid: 0
     };
   },
@@ -96,21 +109,6 @@ export default {
       }
       this.loadinfo();
     },
-    getLv(level){
-      var lv=''
-          if(level==0)  lv='普通玩家'
-          if(level==1)  lv='達標社區'
-          if(level==2)  lv='初級社區'
-          if(level==3)  lv='中級社區'
-          if(level==4)  lv='高級社區'
-          if(level==5)  lv='超級社區'
-          if(level==6)  lv='橘子派'
-          if(level==7)  lv='香瓜派'
-          if(level==8)  lv='菠蘿派'
-          if(level==9)  lv='柚子派'
-          if(level==10)  lv='蘋果派'
-          return lv;
-    },
     gofriend(uID) {
       this.$router.push({ name: "relation", params: { uid: uID } });
     }
@@ -133,35 +131,39 @@ export default {
   position: relative;
   // height: calc(100vh - 650px);
   // overflow: scroll;
-  width: 90%;
+  width: 94%;
   margin: -40px auto 0;
+  padding-top: 40px;
 }
 .friendsList {
   margin-top: 60px;
   .list {
-    background: #f2f3f7;
+    // background: #f2f3f7;
     .cell-info {
-      line-height: 120px;
+      // line-height: 120px;
+      min-height: 150px;
+      align-items: center;
     }
     .img {
       position: absolute;
       left: 20px;
-      top: 80px;
-      width: 106px;
-      height: 106px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 120px;
+      height: 120px;
       z-index: 99;
     }
     /deep/.van-cell__right-icon {
       font-size: 60px;
-      height: 137px;
-      margin-top: 50px;
-      line-height: 120px;
+      // height: 137px;
+      // margin-top: 30px;
+      // line-height: 120px;
     }
     /deep/.van-cell__title {
-      font-size: 42px;
-      margin-left: 140px;
+     
+      margin-left: 160px;
       font-weight: bold;
-      color: rgba(118, 124, 143, 1);
+      color: #767C8F;
       position: relative;
     }
     /deep/.van-cell__value {
@@ -187,27 +189,29 @@ export default {
   line-height: 60px;
   div {
     display: inline-flex;
-    width: 48%;
+    width: 50%;
     color: #e28b07;
-    text-align: left;
     span {
       color: #660a79;
       text-align: right;
       display: inline-block;
-      width: 150px;
-      white-space: nowrap;
+      width: 140px;
     }
   }
 }
 .data-title {
-  div.left {
-    display: inline-flex;
-    width: 46%;
+  div{
+    height: 60px;
+    line-height: 60px;
   }
-  div.right {
-    display: inline-flex;
-    width: 48%;
-    text-align: right;
+  div.friendsName {
+    white-space:nowrap;
+    height: 100px;
+    line-height: 100px;
+    color: #767C8F;
+    font-size: 50px;
+  }
+  div.friendsNum {
     margin-left: 0px;
   }
 }

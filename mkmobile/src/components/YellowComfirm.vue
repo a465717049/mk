@@ -1,14 +1,20 @@
 <template>
-  <van-popup v-model="modelShow" :close-on-click-overlay="true" @click-overlay="clickOver" class="yellow-wrap">
-    <div class="brown-border">
+  <van-popup
+    v-model="modelShow"
+    :close-on-click-overlay="true"
+    @click-overlay="clickOver"
+    class="yellow-wrap"
+  >
+    <div class="brown-border clearfix">
       <div class="yellow-bg">
         <img class="item-l" src="@/assets/imgs/googl-header.png" alt />
+        <i class="iconfont iconguanbi" @click="clickNo"></i>
         <div class="item-r">
-          <h3 class="item-r-tit">溫馨提示：</h3>
+          <h3 class="item-r-tit">提示：</h3>
           <div class="item-r-tip">{{tipTitle}}</div>
         </div>
       </div>
-      <div class="btn" v-if="!showConfirmBtn" @click="clickOk">OK</div>
+      <!-- <div class="btn" v-if="!showConfirmBtn" @click="clickOk">OK</div> -->
       <div v-if="showConfirmBtn" class="confirm-btn">
         <div class="first-btn" @click="clickOk">主農場</div>
         <div class="second-btn" @click="clickNo">子農場</div>
@@ -53,37 +59,36 @@ export default {
     show(newV) {
       this.modelShow = newV;
     },
-    modelShow(newV){
-      this.$emit("changeModel",newV);
+    modelShow(newV) {
+      this.$emit("changeModel", newV);
     }
   },
   methods: {
-    clickOver(){
-       this.$emit("clickOver",false);
+    clickOver() {
+      this.$emit("clickOver", false);
     },
     //输入支付密码
     clickOk() {
       this.$emit("clickOk");
     },
     clickNo() {
+       this.modelShow=false
       this.$emit("clickNo");
-    },
+    }
   }
 };
 </script>
 
 <style lang="less" scoped>
 .yellow-wrap {
-  background: #facc5d;
+  background: #efb618;
   width: 76vw;
-  min-height: 400px;
   border-radius: 30px;
   padding: 5px;
   .brown-border {
-    padding: 40px;
-    border: 10px solid #3f1008;
+    padding: 40px 40px 20px 40px;
+    border: 12px solid #fff;
     width: 100%;
-    min-height: 390px;
     border-radius: 30px;
   }
   .btn {
@@ -130,8 +135,9 @@ export default {
   }
 }
 .yellow-bg {
-  width: 80vw;
+  width: 100%;
   display: flex;
+  position: relative;
   .item-l {
     width: 98px;
     height: 118px;
@@ -141,17 +147,24 @@ export default {
     flex: 1;
     color: #3f1008;
     .item-r-tit {
-      font-size: 40px;
+      font-size: 33px;
       font-weight: bold;
       line-height: 60px;
+      color: #410305;
     }
     .item-r-tip {
-      font-size: 36px;
-      line-height: 40px;
-      width: 50vw;
-      height: 160px;
+      font-size: 33px;
+      line-height: 60px;
+      color: #410305;
       display: block;
     }
+  }
+  .iconfont {
+    position: absolute;
+    font-size: 60px;
+    color: #fff;
+    top: -30px;
+    right: -20px;
   }
 }
 </style>

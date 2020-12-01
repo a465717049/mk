@@ -1,6 +1,12 @@
 <template>
   <div class="ep-info">
     <TopBar class="center-one-search" :option="topBarOption">EP交易</TopBar>
+    <ScrollRefresh
+      @getData="ToGetEPExchangeById"
+      :residualHeight="160"
+      :isNeedUp="false"
+      class="epScroll"
+    >
       <div class="border-top-radius relative bg-gray">
         <div class="trade borderR bg-gray clearfix p-58">
           <!-- 详细信息 -->
@@ -69,18 +75,21 @@
           <p class="closedTime">關閉時間: {{epdate}}</p>
         </div>
       </div>
+    </ScrollRefresh>
   </div>
 </template>
 <script>
 import TopBar from "components/TopBar";
 import { http } from "util/request";
+import ScrollRefresh from "components/ScrollRefresh";
 import { GetEPExchangeById } from "util/netApi";
 import { storage } from "util/storage";
 import { accessToken, loginPro } from "util/const.js";
 export default {
   name: "Set",
   components: {
-    TopBar
+    TopBar,
+    ScrollRefresh
   },
   data() {
     return {

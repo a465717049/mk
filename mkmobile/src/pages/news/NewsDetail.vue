@@ -1,7 +1,7 @@
 <template>
   <div class="newsDetailsWrapper">
-    <TopBar  class='center-one-search'  :option="topBarOption">
-     詳情
+    <TopBar  class='center-one-search' >
+     资 讯
     </TopBar>
     <div class="innerWrap">
       <div class="w90">
@@ -18,7 +18,7 @@
             -->
           </div>
         </div>
-        <div class="article" v-html='details' @click='ck'>
+        <div class="article" v-html='details'>
       
         </div>
       </div>
@@ -62,9 +62,6 @@ export default {
           this.details = json.response.detail
         }
       })
-    },
-    ck(){
-      return false;
     }
   },
   created() {
@@ -85,7 +82,7 @@ export default {
     border-radius: 40px 40px 0 0;
     margin-top: -40px;
     padding-top: 30px;
-    height: calc(100vh - 400px);
+    height: calc(100vh - 360px);
     overflow: auto;
   }
   .w90 {

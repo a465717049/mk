@@ -3,7 +3,12 @@
     <TopBar class="center-one-search" :option="topBarOption">
       <div>EP Trade</div>
     </TopBar>
-    <ScrollRefresh @getData="ToGetEPExchangeById" :residualHeight="160" :isNeedUp="false" class="innerScroll">
+    <ScrollRefresh
+      @getData="ToGetEPExchangeById"
+      :residualHeight="160"
+      :isNeedUp="false"
+      class="innerScroll"
+    >
       <div class="innerWrap">
         <div class="innerbox">
           <div class="saleInfo clearfix">
@@ -22,12 +27,12 @@
             <div class="right fr">
               <div class="rightCount">{{ initData.name }}</div>
               <ul>
-                <li>次數：{{ initData.times }}</li>
-                <li>完成： {{ initData.finish }}</li>
-                <li>投訴：{{ initData.complaint }}</li>
+                <li>次数: {{ initData.times }}</li>
+                <li>完成 : {{ initData.finish }}</li>
+                <li>投诉：{{ initData.complaint }}</li>
               </ul>
               <div class="money">{{ initData.price }}</div>
-              <p class="time">出售時間：{{ initData.date }}</p>
+              <p class="time">出售时间：{{ initData.date }}</p>
               <p class="tel">Tel: {{ initData.phone }}</p>
             </div>
           </div>
@@ -55,62 +60,37 @@
             <img class="photo" src="../../assets/imgs/chilui.png" alt />
             <span>
               提示：
-              <br />請確認收到款項后點擊確認收款
+              <br />请确认收到款项后再点击确认收款。
             </span>
           </div>
           <div class="buttonWrap">
-            <div class="reseive" v-if="this.initData.name==uid" @click="onEPFinish">確認收款</div>
-          </div>
-
-          <div id='selldiv' v-if="this.initData.status==4&&this.initData.name==this.uid&&this.initData.confirmTime==null" style="font-size: 14px;color: #666;">
-            <div v-if="!showtimeout"> 请在{{min}}分 {{sec}}秒 内确认收款 否则你可能会被投诉</div>
-            <div v-if="showtimeout"> 确认收款已超时 你可能会被投诉</div>
-          </div>
-
-          <div id='selldiv' v-if="this.initData.status==4&&this.initData.buyId==this.uid&&this.initData.confirmTime==null" style="font-size: 14px;color: #666;">
-            <div v-if="!showtimeout"> 卖家将在{{min}}分 {{sec}}秒 内确认收款 否则你可以进行投诉</div>
-            <div v-if="showtimeout"> 卖家确认收款已超时 你可以进行投诉</div>
-            <div class="buttonWrap">
-              <div class="cancel" v-if="showts" @click="complaint">投诉</div>
-            </div>
+            <div class="cancel" v-if="this.initData.name==uid">投诉买家</div>
+            <div class="reseive" v-if="this.initData.name==uid" @click="onEPFinish">确认收款</div>
           </div>
         </div>
       </div>
     </ScrollRefresh>
-    <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk()"></YellowComfirm>
   </div>
 </template>
 <script type="text/javascript">
 import TopBar from "components/TopBar";
 import ScrollRefresh from "components/ScrollRefresh";
 import headerImg from "../../assets/imgs/headerImg.png";
-import YellowComfirm from "components/YellowComfirm";
 import { http } from "util/request";
-import {
-  GetEPExchangeById,
-  GetUserInfo,
-  EPFinish,
-  Usercomplaint,
-} from "util/netApi";
+import { GetEPExchangeById, GetUserInfo, EPFinish } from "util/netApi";
 import { storage } from "util/storage";
 import { accessToken, photoList } from "util/const.js";
 export default {
   data() {
     return {
-      showComfirm: false,
-      tips: "",
       showChat: true,
-      showts: false,
-      showtimeout: false,
       topBarOption: {
         iconLeft: "back",
-        iconRight: "",
+        iconRight: ""
       },
       epid: 0,
       uid: 0,
       rate: 3,
-      min: 0,
-      sec: 0,
       initData: {
         name: "1122",
         Img: null,
@@ -126,55 +106,19 @@ export default {
         EPRate: "6.175",
         USDTRate: "7.01",
         priceCode: "0xeC333554c4d410899D6dBaBE4ED885ade4bE275F",
-        status: 1,
-        payTime: "",
-        confirmTime: "",
-      },
+        status: 1
+      }
     };
   },
   components: {
     TopBar,
-    ScrollRefresh,
-    YellowComfirm,
+    ScrollRefresh
   },
   mounted() {},
   computed: {},
   methods: {
-    clickOk() {
-      this.showComfirm = false;
-    },
-    countdown(newtime) {
-      const end = Date.parse(new Date(newtime)) + 1000 * 60 * 30;
-      const now = Date.parse(new Date());
-      const msec = end - now;
-
-      if (msec < 0) {
-        this.showts = true;
-        this.showtimeout = true;
-        return;
-      }
-      let day = parseInt(msec / 1000 / 60 / 60 / 24);
-      let hr = parseInt((msec / 1000 / 60 / 60) % 24);
-      let min = parseInt((msec / 1000 / 60) % 60);
-      let sec = parseInt((msec / 1000) % 60);
-      this.day = day;
-      this.hr = hr > 9 ? hr : "0" + hr;
-      this.min = min > 9 ? min : "0" + min;
-      this.sec = sec > 9 ? sec : "0" + sec;
-      const that = this;
-      if (min >= 0 && sec >= 0) {
-        if (min == 0 && sec == 0) {
-          this.showts = true;
-          this.showtimeout = true;
-          return;
-        }
-        setTimeout(function () {
-          that.countdown(newtime);
-        }, 1000);
-      }
-    },
     onEPFinish() {
-      http(EPFinish, { eid: this.epid }, (json) => {
+      http(EPFinish, { eid: this.epid }, json => {
         if (json.code == 0) {
           this.$router.go(-1);
         }
@@ -182,26 +126,11 @@ export default {
     },
 
     TogetUserInfo() {
-      http(GetUserInfo, null, (json) => {
+      http(GetUserInfo, null, json => {
         if (json.code === 0) {
           this.uid = json.response.uid;
         }
       });
-    },
-    complaint() {
-      http(
-        Usercomplaint,
-        { id: this.epid, complaintuid: this.initData.name },
-        (json) => {
-          if (json.code == 200) {
-            this.showComfirm = true;
-            this.tips = json.msg;
-          } else {
-            this.showComfirm = true;
-            this.tips = json.msg;
-          }
-        }
-      );
     },
     toeppay() {},
     ToGetEPExchangeById() {
@@ -210,7 +139,7 @@ export default {
       }
       this.TogetUserInfo();
       this.epid = this.$route.query.id;
-      http(GetEPExchangeById, { id: this.epid }, (json) => {
+      http(GetEPExchangeById, { id: this.epid }, json => {
         if (json.code === 0) {
           // initData.name  times  finish  complaint  price  date phone
           var model = json.response[0];
@@ -230,23 +159,20 @@ export default {
           this.initData.phone = model.phone;
           this.initData.priceCode = model.usdtAddress;
           this.initData.status = model.status;
-          this.initData.payTime = model.payTime;
-          this.initData.confirmTime = model.confirmTime;
-          this.countdown(this.initData.payTime);
         }
       });
-    },
+    }
   },
 
   created() {
     this.ToGetEPExchangeById();
-  },
+  }
 };
 </script>
 
 <style lang="less" scoped>
-.innerScroll {
-  /deep/ .wrapper .bscroll-container {
+.innerScroll{
+  /deep/ .wrapper  .bscroll-container{
     min-height: calc(100vh - 400px);
   }
 }

@@ -1,49 +1,57 @@
 <template>
-  <ScrollRefresh @getData="TogetUserInfo" :residualHeight="10" :isNeedUp="false">
   <div>
-    <TopBar class="center-one-search" :option="topBarOption">設置</TopBar>
-
-    <div class="set borderR bg-gray clearfix p-58">
-      <div class="relative">
-        <img :src="photo" class="img" alt />
-        <van-cell class="cell-info borderR mb-100" v-bind:title="username" is-link to="./SetUp" />
+    <TopBar class="center-one-search" >設置</TopBar>
+    <ScrollRefresh @getData="TogetUserInfo" :residualHeight="160" :isNeedUp="false" class="innerScroll">
+      <div class="set clearfix p-58">
+        <div class="relative">
+          <img :src="photo?photo:defaultImg" class="img" alt />
+          <van-cell class="cell-info borderR mb-100" v-bind:title="username" is-link to="./SetUp" />
+        </div>
+        <div class="relative">
+          <img src="@/assets/imgs/set/B-1.png" class="img" alt />
+          <van-cell class="cell-info borderR mb-40 cell-special" :title="userlv" />
+          <van-progress class="process base-purple" :percentage="lv/5*100>100?100:lv/5*100" />
+        </div>
+        <div class="relative">
+          <img src="@/assets/imgs/set/B-1.png" class="img" alt />
+          <van-cell class="cell-info borderR mb-40" :title="'注册时间:  '+registerTime" />
+        </div>
+        <div class="relative">
+          <img src="@/assets/imgs/set/B-5.png" class="img" alt />
+          <van-cell class="cell-info borderR mb-40" to="./password">
+            <template #title>
+              <span class="custom-title">级别：{{level}}</span>
+              <van-tag round class="tag">升级</van-tag>
+            </template>
+          </van-cell>
+        </div>
+        <div class="relative">
+          <img src="@/assets/imgs/set/B-2.png" class="img" alt />
+          <van-cell class="cell-info borderR mb-40" title="认证" is-link @click="GoAuthenticator" />
+        </div>
+        <div class="relative">
+          <img src="@/assets/imgs/set/b-3.png" class="img" alt />
+          <van-cell class="cell-info borderR mb-40" title="密码" is-link to="./password" />
+        </div>
+        <!-- <div class="relative">
+          <img src="@/assets/imgs/set/b-3.png" class="img" alt />
+          <van-cell class="cell-info borderR mb-40" title="安全问题" is-link to="./SetAnswer" />
+        </div> -->
+        <div class="relative">
+          <img src="@/assets/imgs/set/b-4.png" class="img" alt />
+          <van-cell class="cell-info borderR mb-40" title="银行" is-link to="bank" />
+        </div>
+        <div class="relative">
+          <img src="@/assets/imgs/set/b-6.png" class="img" alt />
+          <van-cell class="cell-info borderR mb-40" title="个人资料" is-link to="additional" />
+        </div>
+        <div class="relative">
+          <img src="@/assets/imgs/set/B-5.png" class="img" alt />
+          <van-cell class="cell-info borderR mb-40" title="语言" is-link to="./lanSet" />
+        </div>
       </div>
-      <div class="relative">
-        <img src="@/assets/imgs/set/B-1.png" class="img" alt />
-        <van-cell class="cell-info borderR mb-40 cell-special" :title="userlv" />
-        <van-progress class="process base-purple" :percentage="lv/5*100>100?100:lv/5*100" />
-      </div>
-       <div class="relative">
-        <img src="@/assets/imgs/set/B-1.png" class="img" alt />
-        <van-cell class="cell-info borderR mb-40" v-bind:title="this.createtime" />
-      </div>
-       <div class="relative">
-        <img src="@/assets/imgs/set/B-1.png" class="img" alt />
-        <van-cell class="cell-info borderR mb-40" v-bind:title="this.farmers"  />
-      </div>
-      <div class="relative">
-        <img src="@/assets/imgs/set/B-2.png" class="img" alt />
-        <van-cell class="cell-info borderR mb-40" title="认证" is-link @click="GoAuthenticator" />
-      </div>
-      <div class="relative">
-        <img src="@/assets/imgs/set/b-3.png" class="img" alt />
-        <van-cell class="cell-info borderR mb-40" title="密码" is-link to="./password" />
-      </div>
-      <div class="relative">
-        <img src="@/assets/imgs/set/b-3.png" class="img" alt />
-        <van-cell class="cell-info borderR mb-40" title="安全问题" is-link to="./SetAnswer" />
-      </div>
-      <div class="relative">
-        <img src="@/assets/imgs/set/b-4.png" class="img" alt />
-        <van-cell class="cell-info borderR mb-40" title="钱包" is-link to="./Wallet" />
-      </div>
-      <div class="relative">
-        <img src="@/assets/imgs/set/B-5.png" class="img" alt />
-        <van-cell class="cell-info borderR mb-40" title="语言" is-link to="./lanSet" />
-      </div>
-    </div>
+    </ScrollRefresh>
   </div>
-  </ScrollRefresh>
 </template>
 <script>
 import TopBar from "components/TopBar";
@@ -52,6 +60,7 @@ import { GetUserInfo } from "util/netApi";
 import { storage } from "util/storage";
 import { accessToken, photoList } from "util/const.js";
 import ScrollRefresh from "components/ScrollRefresh";
+import defaultImg from "@/assets/imgs/set/head02.png";
 export default {
   name: "Set",
   components: {
@@ -60,17 +69,14 @@ export default {
   },
   data() {
     return {
+      defaultImg,
       photo: "",
-      userlv: "",
+      userlv: "总监",
       lv: 0,
-      createtime: 0,
-      farmers:"",
-      username: "",
-      topBarOption: {
-        iconLeft: "iconzhankai",
-        iconRight: ""
-      },
-      isBindGoogle: false
+      username: "Totay cyels",
+      isBindGoogle: false,
+      level: "666会员",
+      registerTime: "2020-09-10 15:04"
     };
   },
   methods: {
@@ -79,33 +85,22 @@ export default {
         if (json.code === 0) {
           this.username = json.response.nickname;
           this.isBindGoogle = json.response.isBindGoogle;
-          if(json.response.lv_name==0)  this.userlv='普通玩家'
-          if(json.response.lv_name==1)  this.userlv='達標社區'
-          if(json.response.lv_name==2)  this.userlv='初級社區'
-          if(json.response.lv_name==3)  this.userlv='中級社區'
-          if(json.response.lv_name==4)  this.userlv='高級社區'
-          if(json.response.lv_name==5)  this.userlv='超級社區'
-          if(json.response.lv_name==6)  this.userlv='橘子派'
-          if(json.response.lv_name==7)  this.userlv='香瓜派'
-          if(json.response.lv_name==8)  this.userlv='菠蘿派'
-          if(json.response.lv_name==9)  this.userlv='柚子派'
-          if(json.response.lv_name==10)  this.userlv='蘋果派'
-          this.lv = json.response.lv_name ;
-          this.createtime ="注冊時間："+ this.formatDate(json.response.create_time) ;
-          this.farmers ="農場級別："+(json.response.farmers==1?"高級農場":"中級農場");
-          this.photo =photoList[json.response.photo];
+          if (json.response.lv_name == 0) this.userlv = "玩家";
+          if (json.response.lv_name == 1) this.userlv = "達標社區";
+          if (json.response.lv_name == 2) this.userlv = "初級社區";
+          if (json.response.lv_name == 3) this.userlv = "中級社區";
+          if (json.response.lv_name == 4) this.userlv = "高級社區";
+          if (json.response.lv_name == 5) this.userlv = "超級社區";
+          if (json.response.lv_name == 6) this.userlv = "橘子派";
+          if (json.response.lv_name == 7) this.userlv = "香瓜派";
+          if (json.response.lv_name == 8) this.userlv = "菠蘿派";
+          if (json.response.lv_name == 9) this.userlv = "柚子派";
+          if (json.response.lv_name == 10) this.userlv = "蘋果派";
+          this.lv = json.response.lv_name;
+          this.photo = photoList[json.response.photo];
         }
-      })
+      });
     },
-    formatDate(date) {
-        var date = new Date(date*1000);
-        var YY = date.getFullYear() + '-';
-        var MM = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-        var DD = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate());
-        var hh = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
-        var mm = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) ;
-        return YY + MM + DD +" "+hh + mm;
-     },
     GoAuthenticator() {
       console.log(this.isBindGoogle);
       if (this.isBindGoogle) {
@@ -126,17 +121,22 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.innerScroll{
+  /deep/ .wrapper  .bscroll-container{
+    min-height: calc(100vh - 420px);
+  }
+}
 .set {
   // margin-top: -160px;
-  border-radius: 40px 40px 0 0;
+  // border-radius: 40px 40px 0 0;
   .cell-info {
-    height: 137px;
+    height: 130px;
     line-height: 120px;
   }
   .img {
     position: absolute;
     left: 20px;
-    top: 10px;
+    top: 13px;
     width: 106px;
     height: 106px;
     z-index: 99;
@@ -152,7 +152,6 @@ export default {
     font-weight: bold;
     color: rgba(118, 124, 143, 1);
     position: relative;
-
   }
   .process {
     width: 60%;
@@ -161,6 +160,16 @@ export default {
     left: 160px;
     top: 40px;
     border-radius: 30px;
+  }
+  .tag {
+    background-color: #6418c3;
+    height: 66px;
+    line-height: 66px;
+    padding: 0 50px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
   }
   /deep/.van-progress {
     background: rgba(100, 24, 195, 1);

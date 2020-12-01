@@ -56,11 +56,11 @@ export default {
   data() {
     return {
       topBarOption: {
-        // 右边展开： iconzhankai
+        // 右边展开： iconShapecopy
         // 人物头像： iconchangyonglianxiren
         // 铃铛： iconlingdang
         // 不要就传空就行
-        iconLeft: "iconzhankai",
+        iconLeft: "iconShapecopy",
         iconRight: ""
       },
       showComfirm: true,

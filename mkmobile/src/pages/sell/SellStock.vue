@@ -1,6 +1,6 @@
 <template>
   <div class="sellEpWrapper">
-    <TopBar class="center-one-search" :option="topBarOption">
+    <TopBar class="center-one-search" >
           出售股票
     </TopBar>
     <div class="innerWrap">
@@ -50,11 +50,14 @@ export default {
         tpwd: '',
         gcode: ''
       },
+<<<<<<< HEAD
       topBarOption: {
         iconLeft: 'back',
         iconRight: '',
       //  image: headerImg
       },
+=======
+>>>>>>> 7d70ae9023f59e70a8893e7a273613b09dd8b459
       account: null,
       sellNumber: null,
       transamount: '$',
@@ -140,7 +143,6 @@ export default {
     padding-bottom: 300px;
     overflow-y: scroll;
     height: calc(100vh - 260px);
-    background-color: #ebeaf0;
     border-radius: 40px 40px 0 0;
     margin-top: -20px;
     padding-top: 90px;
@@ -150,16 +152,17 @@ export default {
     margin: 0 auto;
     li {
       .title {
-        color: #9d9d9f;
+        color: #FFFFFF;
         font-size: 42px;
-        margin: 42px 0;
+        margin: 60px 0 22px;
         font-weight: 800;
         letter-spacing: 10px;
+        padding-left: 20px;
       }
       input {
-        height: 148px;
-        line-height: 148px;
-        color: #9d9d9f;
+        height: 130px;
+        line-height: 130px;
+        color: #9E9E9F;
         width: 100%;
         padding: 0 30px;
         border-radius: 20px;
@@ -245,15 +248,14 @@ export default {
     width: 90%;
     margin: 0 auto;
     background: #f5c148;
-    border-radius: 40px;
-    height: 164px;
-    line-height: 164px;
-    font-size: 42px;
+    border-radius: 20px;
+    height: 130px;
+    line-height: 130px;
+    font-size: 52px;
     color: #fff;
     margin-top: 100px;
-    position: relative;
-    font-weight: 800;
-    letter-spacing: 10px;
+    font-weight: 600;
+    letter-spacing: 4px;
   }
   .moneyWrap {
     height: 214px;
@@ -267,22 +269,28 @@ export default {
       .top {
         font-size: 104px;
         font-weight: 600;
-        color: #999;
-        height: 140px;
-        line-height: 140px;
+        color: #4A494C;
+        margin-top: 20px;
+        height: 100px;
+        line-height: 100px;
+        opacity: 0.62;
       }
       .bottom {
-        color: #999;
+        color: #4A494C;
         font-size: 42px;
-
         height: 80px;
         line-height: 80px;
+        opacity: 0.62;
       }
     }
     .right {
       font-size: 104px;
       font-weight: 600;
+<<<<<<< HEAD
       color: #6318c3;
+=======
+      color: #113D79;
+>>>>>>> 7d70ae9023f59e70a8893e7a273613b09dd8b459
     }
   }
 }

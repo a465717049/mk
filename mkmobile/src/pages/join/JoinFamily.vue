@@ -274,7 +274,7 @@ export default {
     width: 90%;
     margin: 0 auto;
     background: #f5c148;
-    border-radius: 40px;
+    border-radius: 20px;
     height: 164px;
     line-height: 164px;
     font-size: 52px;
@@ -283,7 +283,7 @@ export default {
     position: relative;
     letter-spacing: 10px;
   }
-  .moneyWrap {
+ .moneyWrap {
     height: 214px;
     line-height: 214px;
     width: 90%;
@@ -295,22 +295,24 @@ export default {
       .top {
         font-size: 104px;
         font-weight: 600;
-        color: #999;
-        height: 140px;
-        line-height: 140px;
+        color: #4A494C;
+        margin-top: 20px;
+        height: 100px;
+        line-height: 100px;
+        opacity: 0.62;
       }
       .bottom {
-        color: #999;
+        color: #4A494C;
         font-size: 42px;
-
         height: 80px;
         line-height: 80px;
+        opacity: 0.62;
       }
     }
     .right {
       font-size: 104px;
       font-weight: 600;
-      color: #6318c3;
+      color: #113D79;
     }
   }
 }

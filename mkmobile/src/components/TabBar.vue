@@ -6,34 +6,25 @@
       :key="item.id"
       :class="[$route.path === item.to ?'active':'','tabItem']"
     >
-      <i :class="item.className"></i>
+      <i :class="[item.className,'tabIcon']"></i>
       <span :class="{active: $route.path === item.to}">{{item.text}}</span>
     </span>
     <van-action-sheet v-model="sheetShow" class="expressWrap">
-      <div class="title">Express</div>
       <ul class="box">
-        <li @click="goPage('/friends')">
-          <span>
-            <img src="../assets/imgs/bottom_icon1.png" alt class="img1" />
-          </span>
-          <p>朋友</p>
+        <li @click="goPage('/friendsList')">
+          <i class="iconfont iconzhucehuiyuan img1"></i>
+          <p>新增</p>
+        </li>
+        <li @click="goPage('/transEp')">
+          <i class="iconfont icontubiaozhizuomoban img2"></i>
+          <p>提现</p>
         </li>
         <li @click="goPage('/feedback')">
-          <span>
-            <img src="../assets/imgs/bottom_icon2.png" alt class="img2" />
-          </span>
-          <p>反饋</p>
-        </li>
-        <li @click="goPage('/config')">
-          <span>
-            <img src="../assets/imgs/bottom_icon3.png" alt class="img3" />
-          </span>
-          <p>交易</p>
+          <i class="iconfont iconyouxiang img3"></i>
+          <p>反馈</p>
         </li>
         <li @click="goPage('/')">
-          <span>
-            <img src="../assets/imgs/bottom_icon4.png" alt class="img4" />
-          </span>
+          <i class="iconfont icontuichu img4"></i>
           <p>退出</p>
         </li>
       </ul>
@@ -50,7 +41,7 @@ export default {
         {
           id: "tabbar1",
           to: "/home",
-          className: "home1 iconfont1",
+          className: "iconcl-icon-Home iconfont",
           text: "首頁",
           selected: true
         },
@@ -63,9 +54,9 @@ export default {
         },
         {
           id: "tabbar3",
-          to: "/Analyse",
-          className: "fenxi1 iconfont1",
-          text: "報表",
+          to: "/friendsList",
+          className: "icontuandui iconfont",
+          text: "朋友",
           selected: false
         }
       ],
@@ -84,9 +75,8 @@ export default {
       this.sheetShow = false;
       this.$router.push(href);
     },
-    logout(){
+    logout() {
       this.sheetShow = false;
-      
     }
   }
 };
@@ -95,8 +85,8 @@ export default {
 .xptabbar {
   position: fixed;
   bottom: 0;
-  z-index: 9997;
-  background-color: #fff;
+  z-index: 9999997;
+  background-color: #113d79;
   height: 170px;
   line-height: 170px;
   display: flex;
@@ -111,29 +101,29 @@ export default {
     text-align: center;
   }
   .tabItem.active {
-    i::before {
-      color: #6318c3;
+    .tabIcon::before {
+      color: #efb618;
     }
     span {
-      color: #6318c3;
+      color: #efb618;
     }
   }
-  i {
+  .tabIcon {
     width: 82px;
     height: 82px;
     display: block;
     margin: 0 auto;
     line-height: 82px;
   }
-  i::before {
+  .tabIcon::before {
     font-size: 90px;
-    color: #94999e;
+    color: #fff;
   }
   span {
     display: block;
     text-align: center;
     font-size: 40px;
-    color: #94999e;
+    color: #fff;
     height: 56px;
     line-height: 56px;
   }
@@ -141,32 +131,25 @@ export default {
     color: #ba825a;
   }
   .tabItem:nth-child(2) {
-    i {
-      width: 200px;
-      height: 200px;
+    .tabIcon {
+      width: 216px;
+      height: 216px;
       line-height: 190px;
       margin: -100px 0 0 0;
       border-radius: 50%;
-      background-color: #6318c3;
-      box-shadow: 0px -4px 2px  #dddddd;
-      border: 8px solid #ebeaf0;
+      background-color: #efb618;
+      box-shadow: 0px -4px 2px #4678bc;
+      border: 12px solid #4678bc;
     }
-    i::before {
+    .tabIcon::before {
       font-size: 90px;
       color: #fff;
     }
   }
   .van-popup--bottom.van-popup--round {
-    background: rgba(100, 24, 195, 0.9);
+    background: rgba(1, 11, 11, 0.8);
     border-radius: 40px 40px 0 0;
     z-index: 9999999;
-    .title {
-      height: 220px;
-      line-height: 220px;
-      font-size: 76px;
-      color: #fff;
-      text-align: center;
-    }
   }
   .iconzhexiantu:before {
     font-size: 80px;
@@ -180,36 +163,30 @@ export default {
       font-size: 40px;
       font-weight: 600;
       text-align: center;
+      padding-top: 60px;
+      display: flex;
+      flex-direction: column;
       p {
-        letter-spacing: 20px;
-        padding-left: 20px;
+        letter-spacing: 6px;
+        height: 100px;
+        line-height: 100px;
+        margin-bottom: 20px;
       }
-      span {
-        width: 180px;
-        height: 148px;
-        display: inline-block;
-        // background-color: rgba(255, 255, 255, 0.5);
-        border-radius: 20px;
+      .iconfont {
+        height: 120px;
+        font-weight: normal;
       }
-      .img1 {
-        width: 124px;
-        height: 99px;
-        margin-top: 20px;
+      .img1::before {
+        font-size: 100px;
       }
-      .img2 {
-        width: 124px;
-        height: 99px;
-        margin-top: 20px;
+      .img2::before {
+        font-size: 100px;
       }
-      .img3 {
-        width: 114px;
-        height: 99px;
-        margin-top: 20px;
+      .img3::before {
+        font-size: 74px;
       }
-      .img4 {
-        width: 114px;
-        height: 99px;
-        margin-top: 20px;
+      .img4::before {
+        font-size: 90px;
       }
     }
   }

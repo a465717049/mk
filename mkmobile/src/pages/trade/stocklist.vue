@@ -55,20 +55,18 @@ export default {
     TopBar,
     TopSearch,
     ScrollRefresh,
-    BScroll,
+    BScroll
   },
   data() {
     return {
-      pageSize: 20,
-      pageIndex: 1,
       searchvalue: 0,
       showLocation: true,
       topBarOption: {
         iconLeft: "back",
-        iconRight: "",
+        iconRight: ""
       },
       count: 0,
-      dataList: [],
+      dataList: []
     };
   },
   mounted() {
@@ -86,35 +84,21 @@ export default {
           click: true,
           bounce: {
             top: true,
-            bottom: true,
-          },
+            bottom: true
+          }
         });
       } else {
         this.scroll.refresh();
       }
     },
     ToGetDPEEexchange(value) {
-      let _this = this;
-      http(
-        GetDPEEexchange,
-        { pageIndex: value, pageSize: this.pageSize },
-        (json) => {
-          if (json.code === 0) {
-            // this.dataList.push(json.response[0]);
-            if (value === 1) {
-              _this.dataList = json.response;
-            } else {
-              json.response.forEach(function (item) {
-                _this.dataList.push(item);
-              });
-            }
-
-            //    this.dataList = json.response;
-            this.count = json.response.length;
-          }
+      http(GetDPEEexchange, { uid: value }, json => {
+        if (json.code === 0) {
+          this.dataList = json.response;
+          this.count = json.response.length;
         }
-      );
-    },
+      });
+    }
   },
   created() {
     if (this.$route.query.id != "undefined") {
@@ -122,7 +106,7 @@ export default {
     } else {
       this.ToGetDPEEexchange(0);
     }
-  },
+  }
 };
 </script>
 <style lang="less" scoped>

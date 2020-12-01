@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       "/api": {
-        target: "https://api.fsswgw.com",
+        target: "https://api.dpepie.com",
         changeOrigin: true,
         pathRewrite: {
           "^/api": "/api/"
@@ -59,16 +59,7 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: '',
     assetsPublicPath: '',
-    proxy: {
-      "/api": {
-        target: "https://api.fsswgw.cn",
-        changeOrigin: true,
-        ws:true,
-        pathRewrite: {
-          "^/api": "/api/"
-        }
-      }
-    },
+
     /**
      * Source Maps
      */

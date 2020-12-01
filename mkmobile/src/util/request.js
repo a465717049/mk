@@ -19,13 +19,11 @@ let getAccessToken = () => {
 let headerOption = () => {
   return {
     Authorization: getAccessToken(),
-    "Access-Control-Allow-Origin": "https://app.snptw.cn/,https://api.snptw.cn/,*",
+    "Access-Control-Allow-Origin": "https://api.dpepie.com/",
     "Access-Control-Allow-Credentials": "true",
     "content-type": "application/json;"
   };
 };
-
-console.log(headerOption.Authorizationm,'Authorization')
 // http返回码状态判断
 let state = (res, noLoading) => {
   if (noLoading) {
@@ -101,17 +99,15 @@ export const http = (opts, params, success, noLoading, error) => {
     notice.loading();
   }
   var xhr;
-   if (IPHONE) {
-     xhr = new plus.net.XMLHttpRequest();
-     
-    console.log(xhr,'xhr')
-   }
-  //  if (IPHONE && Safari) {
-  //    if (!XMLHttpRequest) {
-  //      return;
-  //    }
-  //   xhr = new XMLHttpRequest();
-  //  }
+  if (IPHONE) {
+    xhr = new plus.net.XMLHttpRequest();
+  }
+  if (IPHONE && Safari) {
+    if (!XMLHttpRequest) {
+      return;
+    }
+    xhr = new XMLHttpRequest();
+  }
   if (xhr) {
     error =
       error ||
@@ -119,14 +115,12 @@ export const http = (opts, params, success, noLoading, error) => {
         console.log("status:" + textStatus);
         console.log("data:" + XMLHttpRequest.responseText);
       };
-      if(opts.url.substring(0,4)!=='http'){
-        opts.url = baseUrl + opts.version + opts.url;
-      }
-   
-  
+    opts.url = baseUrl + opts.version + opts.url;
+    let token = getAccessToken();
+    xhr.setRequestHeader("Authorization", token);
     xhr.setRequestHeader(
       "Access-Control-Allow-Origin",
-      "https://app.snptw.cn/,https://api.snptw.cn/,*"
+      "https://api.dpepie.com/,https://api.dpepie.com,*"
     );
     xhr.setRequestHeader("Access-Control-Allow-Credentials", "true");
     xhr.onreadystatechange = function() {
@@ -136,18 +130,16 @@ export const http = (opts, params, success, noLoading, error) => {
           success(json);
           notice.loadingHide();
         } else {
-          console.log(xhr.responseText)
           state(xhr, noLoading);
           error(xhr, xhr.status);
           notice.loadingHide();
         }
-      }else{
-        console.log(xhr.responseText)
       }
     };
 
     try {
       var postData = params;
+      xhr.open(opts.method, opts.url, false);
       if (opts.string) {
         xhr.setRequestHeader(
           "Content-Type",
@@ -163,13 +155,7 @@ export const http = (opts, params, success, noLoading, error) => {
       } else {
         xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
       }
-      xhr.open(opts.method, opts.url+'?'+postData, false);
-      //console.log(opts.url,'URL')
-      let token = getAccessToken();
-      //console.log(token,'token')
-      xhr.setRequestHeader("Authorization", token);
       xhr.send(postData);
-     // console.log(postData)
     } catch (e) {
       console.log(e);
     }
