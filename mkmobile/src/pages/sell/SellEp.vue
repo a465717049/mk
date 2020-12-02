@@ -15,10 +15,6 @@
         <li class='usdt' >
           <div class="title">USDT地址：請再次核對錢包地址是否正確</div>
           <input type="text" disabled v-model="form.usdtAddress" />
-<<<<<<< HEAD
-          <input type="text" disabled v-model="form.trcAddress" />
-=======
->>>>>>> 7d70ae9023f59e70a8893e7a273613b09dd8b459
         </li>
         <li>
           <div class="title">出售數量</div>
@@ -305,13 +301,8 @@ export default {
           font-size: 40px;
           font-weight: normal;
           letter-spacing: 2px;
-<<<<<<< HEAD
-          height: 100px;
-          line-height: 100px;
-=======
           height: 130px;
           line-height: 130px;
->>>>>>> 7d70ae9023f59e70a8893e7a273613b09dd8b459
           color: #6318c3;
         }
       }
