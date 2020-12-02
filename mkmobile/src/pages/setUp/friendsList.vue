@@ -122,21 +122,22 @@ export default {
 .relativeScroll {
   /deep/.wrapper {
     padding-top: 20px;
+     .bscroll-container {
+    min-height: calc(100vh - 620px);
   }
 }
-.p-38 {
-  padding: 28px;
-}
+  }
+ 
+
 .listWrap {
   position: relative;
-  // height: calc(100vh - 650px);
-  // overflow: scroll;
-  width: 94%;
-  margin: -40px auto 0;
-  padding-top: 40px;
+  width: 100%;
+  margin-top: -40px;
+  padding: 40px 60px 0;
 }
 .friendsList {
   margin-top: 60px;
+  padding-bottom: 50px;
   .list {
     // background: #f2f3f7;
     .cell-info {

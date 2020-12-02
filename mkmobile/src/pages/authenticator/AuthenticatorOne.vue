@@ -22,7 +22,7 @@
         </li>
       </ul>
       <button class="button" @click="goNext">
-        下一步
+        激活帐户
       </button>
       <!-- <div class="auth-buttom">
         * 只需2步，Google身份驗證器安裝到你手機. <br>
@@ -151,6 +151,7 @@ export default {
         color: #6F6D72;
         font-weight: 600;
         letter-spacing: 4px;
+        background-color: #fff;
       }
     }
   }
