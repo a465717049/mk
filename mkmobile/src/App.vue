@@ -11,6 +11,9 @@
 </template>
 <script>
 import { mapState } from "vuex";
+// import {vConsole} from '@/assets/vconsole.js'
+// import Vconsole from 'vconsole'
+// const vConsole = new Vconsole()
 export default {
   name: "App",
   data() {
@@ -34,10 +37,12 @@ export default {
 @import "~vux/src/styles/reset.less";
 #app {
   font-family: Adobe Heiti Std R;
-  background: #4678BC;
-  background: url('./assets/imgs/bj.png') no-repeat center center/100% 100%;
+  background: #4678BC url('./assets/imgs/bj.png') no-repeat center center/100% 100%;
   height: 100vh;
   width: 100vw;
 }
+// .vc-switch{
+//   z-index: 999999990000009;
+// }
 
 </style>

@@ -50,7 +50,7 @@
           <span class="num">666</span>
         </div>
         <div class="buttonWrap">
-          <button class="back" @click="goNext">返回修改</button>
+          <button class="back" @click="goNext"><i class="iconfont iconfanhui"></i> 返回修改</button>
           <button class="sure" @click="goNext">确认注册</button>
         </div>
         <!-- <button class="next" @click="goNext">确认提交</button> -->
@@ -76,7 +76,7 @@ export default {
   },
   data() {
     return {
-      tips: "恭喜！注册成功了！登录ID: 100012登录密码：123456交易密码：123456请尽快登录修改并完善个人资料",
+      tips: "恭喜！注册成功了！<br/> 登录ID: 100012<br/>登录密码：123456<br/>交易密码：123456<br/>请尽快登录修改并完善个人资料",
       isEnter: false,
       account: "2,000",
       isreturn: 0,
@@ -314,7 +314,7 @@ export default {
     .right {
       font-size: 104px;
       font-weight: 600;
-      color: #113d79;
+      color: #4678BC;
     }
   }
   .buttonWrap {
@@ -335,6 +335,13 @@ export default {
     }
     .back {
       background-color: #0b41dc;
+      position: relative;
+      .iconfont{
+        position: absolute;
+        font-size: 64px;
+        color: #fff;
+        left: 40px;
+      }
     }
     .sure {
       background-color: #eeb20a;

@@ -1,6 +1,6 @@
 <template>
   <div class="ep-list">
-    <TopBar class="center-one-search" >{{tmpcktype}}台账</TopBar>
+    <TopBar class="center-one-search">{{tmpcktype}}台账</TopBar>
     <div class="relative">
       <div class="trade clearfix">
         <van-tabs @click="readloadinfo" v-model="active" color="#EFB618" line-height="0">
@@ -147,7 +147,10 @@ export default {
       },
       tmpcktype: "EP",
       showLocation: true,
-      listOne: [],
+      listOne: [
+        { remark: "销售奖", date: "11-20 20:08:02", amount: 450 },
+        { remark: "销售奖", date: "11-20 20:08:02", amount: -450 }
+      ],
       listTwo: [],
       listThree: [],
       pageSize: 10,
@@ -295,11 +298,17 @@ export default {
           margin-top: 20px;
           margin-left: 20px;
           width: 100%;
-          opacity: 0.62;
+          .font50 {
+            font-size: 35px;
+            font-weight: bold;
+            color: #000000;
+          }
           .sub-num {
             margin-top: 20px;
+            font-size: 36px;
+            font-weight: bold;
             color: #767c8f;
-            font-size: 40px;
+            opacity: 0.8;
           }
           > div {
             height: 50px;
@@ -308,10 +317,10 @@ export default {
         }
 
         > img {
-          margin-top: 10px;
+          margin-top: 20px;
           margin-left: 20px;
-          width: 123px;
-          height: 133px;
+          width: 121px;
+          height: 121px;
         }
       }
       .price {

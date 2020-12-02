@@ -189,11 +189,9 @@ export default {
 .joinWrapper {
   .innerWrap {
     width: 100vw;
-    border-radius: 40px 40px 0 0;
     margin-top: -20px;
     padding-top: 30px;
     padding-bottom: 400px;
-    background-color: #4678bc;
     .tips-part {
       font-weight: bold;
       color: rgba(52, 52, 52, 1);

@@ -307,7 +307,7 @@ export default {
     .right {
       font-size: 104px;
       font-weight: 600;
-      color: #113D79;
+      color: #4678BC;
     }
   }
 }

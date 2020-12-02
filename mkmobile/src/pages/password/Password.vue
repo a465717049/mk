@@ -182,6 +182,9 @@ export default {
           font-weight: 600;
           letter-spacing: 4px;
         }
+        input[type="password"]{
+          color: #4678BC;
+        }
         .iconfont {
           position: absolute;
           font-size: 60px;
@@ -190,9 +193,9 @@ export default {
           right: 20px;
         }
         /deep/ .van-dropdown-menu__bar {
-          height: 130px;
-          line-height: 130px;
-          color: #9e9e9f;
+          height: 120px;
+          line-height: 120px;
+          color: #6F6D72;
           font-weight: 600;
           width: 100%;
           padding: 0 20px;
@@ -201,13 +204,13 @@ export default {
         }
         /deep/ .van-ellipsis {
           font-size: 42px;
-          color: #9e9e9f;
+          color: #6F6D72;
           font-weight: 600;
           letter-spacing: 10px;
         }
         /deep/ .van-dropdown-menu__title {
-          height: 130px;
-          line-height: 130px;
+          height: 120px;
+          line-height: 120px;
           display: inline-block;
           width: 98%;
         }
