@@ -3,7 +3,7 @@
     <TopBar class="center-one-search" :option="topBarOption">订单详情</TopBar>
     <div>
       <div class="shop clearfix">
-        <TopSearch @onSearch="search" :placeinputValue="''"></TopSearch>
+        <TopSearch @onSearch="search" placeinputValue="输入订单号查询"></TopSearch>
         <ScrollRefresh
           @getData="ToGetShopList"
           :residualHeight="200"

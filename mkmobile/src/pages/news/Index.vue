@@ -1,6 +1,11 @@
 <template>
   <div class="newsIndexWrapper">
     <TopBar class="center-one-search">资 讯</TopBar>
+     <ScrollRefresh
+      @getData="ToGetNewsWeb"
+      :residualHeight="180"
+      :isNeedUp="false"
+    >
     <div class="innerWrap">
       <div class="w90">
         <!-- <div class="banner">
@@ -18,11 +23,16 @@
                 <img src="@/assets/imgs/defaultNews.png" alt />
               </div>
               <div class="right fr">
-                <div class="title">{{item.title}}</div>
+                <p class="title">{{item.title}}</p>
 
-                <div class="message">{{item.message}}</div>
+                <!-- <div class="message">{{item.message}}</div> -->
                 <div class="bottom">
-                  <div class="ago">{{item.date}}</div>
+                  <div class="name">{{item.name}}</div>
+                  <div class="ago">{{item.time}}</div>
+                  <div class="see">
+                    <i class="iconfont iconeye"></i>
+                    {{item.num}}
+                  </div>
                 </div>
               </div>
             </li>
@@ -30,13 +40,14 @@
         </div>
       </div>
     </div>
+        </ScrollRefresh>
   </div>
 </template>
 <script type="text/javascript">
 import TopBar from "components/TopBar";
-import BScroll from "better-scroll";
 import { http } from "util/request";
 import { GetNewsWeb } from "util/netApi";
+import ScrollRefresh from "components/ScrollRefresh";
 import { storage } from "util/storage";
 import { accessToken, loginPro } from "util/const.js";
 export default {
@@ -49,24 +60,67 @@ export default {
       ntype: null,
       newsList: [
         {
-          title:'We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio',
-          message:'We are very happy that the DPE zhengzhou club can be set up in such a serious situation.',
-          date:'ssituation',
+          title:
+            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
+          name: "zzzznnnn",
+          time: "13小时前",
+          num: "12124"
         },
         {
-          title:'We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio',
-          message:'We are very happy that the DPE zhengzhou club can be set up in such a serious situation.',
-          date:'ssituation',
+          title:
+            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
+          name: "zzzznnnn",
+          time: "13小时前",
+          num: "12124"
         },
         {
-          title:'We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio',
-          message:'We are very happy that the DPE zhengzhou club can be set up in such a serious situation.',
-          date:'ssituation',
+          title:
+            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
+          name: "zzzznnnn",
+          time: "13小时前",
+          num: "12124"
         },
         {
-          title:'We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio',
-          message:'We are very happy that the DPE zhengzhou club can be set up in such a serious situation.',
-          date:'ssituation',
+          title:
+            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
+          name: "zzzznnnn",
+          time: "13小时前",
+          num: "12124"
+        },
+        {
+          title:
+            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
+          name: "zzzznnnn",
+          time: "13小时前",
+          num: "12124"
+        },
+        {
+          title:
+            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
+          name: "zzzznnnn",
+          time: "13小时前",
+          num: "12124"
+        },
+        {
+          title:
+            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
+          name: "zzzznnnn",
+          time: "13小时前",
+          num: "12124"
+        },
+        {
+          title:
+            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
+          name: "zzzznnnn",
+          time: "13小时前",
+          num: "12124"
+        },
+        {
+          title:
+            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
+          name: "zzzznnnn",
+          time: "13小时前",
+          num: "12124"
         }
       ]
     };
@@ -79,7 +133,8 @@ export default {
     }
   },
   components: {
-    TopBar
+    TopBar,
+        ScrollRefresh
   },
   computed: {},
   mounted() {
@@ -97,20 +152,7 @@ export default {
         }
       });
     },
-    // scrollInit() {
-    //   if (!this.scroll) {
-    //     this.scroll = new BScroll(this.$refs.listWrap, {
-    //       scrollY: true,
-    //       click: true,
-    //       bounce: {
-    //         top: true,
-    //         bottom: true
-    //       }
-    //     });
-    //   } else {
-    //     this.scroll.refresh();
-    //   }
-    // },
+    
     getTabbar() {
       http(goodscollectionList).then(res => {
         console.log("11");
@@ -125,29 +167,16 @@ export default {
 
 <style lang="less" scoped>
 .newsIndexWrapper {
-  .innerWrap {
-    width: 100vw;
-    border-radius: 40px 40px 0 0;
-    margin-top: -20px;
-    z-index: 1000;
-    height: calc(100vh - 460px);
-    overflow: auto;
+  /deep/.wrapper {
+    padding-top: 20px;
+    .bscroll-container {
+      min-height: calc(100vh - 500px);
+    }
   }
   .w90 {
     width: 90%;
     margin: 0 auto;
   }
-  // .banner {
-  //   width: 100%;
-  //   height: 380px;
-  //   border-radius: 30px;
-  //   overflow: hidden;
-  //   margin-bottom: 30px;
-  //   img {
-  //     width: 100%;
-  //     height: 100%;
-  //   }
-  // }
   .newsList {
     padding-top: 50px;
     li {
@@ -162,11 +191,11 @@ export default {
     }
     .right {
       width: 54%;
-      p {
+      .title {
         font-size: 30px;
         color: #000;
         font-weight: 700;
-        height: 126px;
+        height: 120px;
         line-height: 42px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -177,6 +206,18 @@ export default {
       }
     }
     .bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .see {
+        display: flex;
+        align-items: center;
+        font-size: 26px;
+        font-weight: 600;
+      }
+      .name {
+        font-weight: 700;
+      }
       .iconfont {
         color: #ff780b;
         vertical-align: middle;
@@ -200,21 +241,29 @@ export default {
     overflow: hidden;
   }
 }
-.right {
-  .title {
-    font-weight: 700;
-    font-size: 35px;
-  }
-  .message {
-    font-size: 32px;
-    margin-top: 15px;
-    margin-left: 15px;
-    color: #666;
-  }
-  .ago {
-    margin-left: 15px;
-    font-size: 38px;
-    color: #666;
-  }
-}
+// .right {
+//   .title {
+//     font-weight: 700;
+//     font-size: 30px;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//     display: -webkit-box;
+//     -webkit-line-clamp: 3;
+//     -webkit-box-orient: vertical;
+//   }
+//   .message {
+//     font-size: 32px;
+//     margin-top: 15px;
+//     margin-left: 15px;
+//     color: #666;
+//   }
+//   .bottom {
+//     display: flex;
+//   }
+//   .ago {
+//     margin-left: 15px;
+//     font-size: 38px;
+//     color: #666;
+//   }
+// }
 </style>

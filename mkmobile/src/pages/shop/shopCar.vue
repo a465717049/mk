@@ -75,7 +75,7 @@ export default {
   data() {
     return {
       topBarOption: {
-        iconLeft: "iconShapecopy",
+        iconLeft: "back",
         iconRight: "icongouwucheman"
       },
       carNum:1,

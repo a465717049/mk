@@ -133,6 +133,7 @@ export default {
   position: relative;
   .bscroll-container {
     min-height: calc(100vh);
+    background-color: #c6d0de;
   }
   /* 下拉、上拉提示信息 */
   .top-tip {

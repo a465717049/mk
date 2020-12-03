@@ -174,7 +174,7 @@ export default {
 }
   .shop-info {
     // margin-top: 20px;
-    padding-top: 20px;
+    padding-top: 50px;
     .container {
       position: relative;
       border-radius: 80px;

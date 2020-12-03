@@ -315,7 +315,7 @@ export default {
     .right {
       font-size: 104px;
       font-weight: 600;
-      color: #4678BC;
+      color: #113D79;
     }
   }
 }
