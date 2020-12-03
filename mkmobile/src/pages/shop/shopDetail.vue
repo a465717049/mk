@@ -43,7 +43,7 @@
                   />
                 </template>
               </van-field>
-              <span class="price">$ {{price}}1111</span>
+              <span class="price">$ {{price}}</span>
             </div>
             <div class="base-flex mt-40">
               <div class="heart borderR">
@@ -91,14 +91,10 @@ export default {
       // pName: "促销中",
       // pDesc: "促销中促销中促销中",
       pInfo: [
-        "品牌： MOKI MONKEY",
-        "商品产地：孟加拉国、越南等（批次不同产地不同，以 实际发货为准）",
-        "货号：MOKI- 100 ",
-        "类别：平角裤腰型",
-        "材质：聚合烯矿丝棉"
+        "品牌： ",
       ],
       pIcon: require("@/assets/imgs/shop/camea.png"),
-      ptag: "促销优惠期",
+      ptag: "",
       price: 0,
       shopprice: 0,
       stepper: 1,
@@ -131,7 +127,7 @@ export default {
       this.price -= this.shopprice;
     },
     buyShop() {
-      http(BuyGoodsweb, { id: this.tmpshopid }, json => {
+      http(BuyGoodsweb, {shopid: this.shopid,buynum:this.stepper }, json => {
         if (json.code === 0) {
         } else {
           this.showComfirm = true;
@@ -144,7 +140,9 @@ export default {
         console.log(json);
         if (json.code === 0) {
           var shop = json.response.list[0];
+          console.log(shop)
           this.pName = shop.pName;
+          this.pInfo= [shop.pDesc]
           this.pDesc = shop.pDesc;
           this.pIcon = shop.pIcon;
           this.price = shop.price;

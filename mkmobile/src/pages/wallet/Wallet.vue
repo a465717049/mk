@@ -11,36 +11,6 @@
               <input
                 type="text"
                 placeholder="請輸入ERC20地址"
-<<<<<<< HEAD
-                :disabled="this.address!==''&&this.Taddress!==''"
-                v-model="form.location"
-              />
-            </div>
-            <div class="t-img">
-              <img src="@/assets/imgs/T.png" alt />
-              <input
-                type="text"
-                placeholder="請輸入TRC20地址"   
-                :disabled="this.address!==''&&this.Taddress!==''"
-                v-model="form.addr"
-              />
-            </div>
-          </li>
-          <li>
-            <div class="title" v-show="this.address==''||this.Taddress==''">交易密码</div>
-            <input type="password" v-show="this.address==''||this.Taddress==''" v-model="form.tpwd" />
-          </li>
-          <li>
-            <div class="title" v-show="this.address==''||this.Taddress==''">身份證號碼</div>
-            <input type="password" v-show="this.address==''||this.Taddress==''" v-model="form.idnum" />
-          </li>
-          <li>
-            <div class="title" v-show="this.address==''||this.Taddress==''">谷歌驗證碼</div>
-            <input type="number" v-show="this.address==''||this.Taddress==''" v-model="form.google" />
-          </li>
-        </ul>
-        <button class="button" v-show="this.address==''||this.Taddress==''" @click="goNext">確定</button>
-=======
                 :disabled="this.address!==''"
                 v-model="form.location"
               />
@@ -60,7 +30,6 @@
           </li>
         </ul>
         <button class="button" v-show="this.address==''" @click="goNext">確定</button>
->>>>>>> 7d70ae9023f59e70a8893e7a273613b09dd8b459
         <div class="auth-card">
           <img src="@/assets/imgs/two-persion.png" alt />
           <div>

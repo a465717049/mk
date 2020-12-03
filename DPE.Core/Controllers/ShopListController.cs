@@ -39,11 +39,16 @@ namespace DPE.Core.Controllers
         readonly IUserInfoServices _userInfoServices;
         readonly IEPServices _iepservices;
         readonly IEPexchangeServices _iepexchangeservices;
-
-
+        readonly IShopBuyDetailSerivces _ishopbuydetailserivces;
+        readonly IRPexchangeServices _irpexchangeservices;
+        readonly IRPServices _irpservices;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ShopListController(ISysUserInfoServices isysuserinfoservices,IUnitOfWork unitOfWork,IUser user, IShopListServices ishoplistservices, IUserGoodsListServices iusergoodslistservices, IUserInfoServices userInfoServices, IEPServices iepservices, IEPexchangeServices iepexchangeservices)
+
+        public ShopListController(ISysUserInfoServices isysuserinfoservices,IUnitOfWork unitOfWork,IUser user, 
+            IShopListServices ishoplistservices, IUserGoodsListServices iusergoodslistservices,
+            IUserInfoServices userInfoServices, IEPServices iepservices,
+            IEPexchangeServices iepexchangeservices, IShopBuyDetailSerivces ishopbuydetailserivces, IRPexchangeServices irpexchangeservices, IRPServices irpservices)
         {
             this._user = user;
             _userInfoServices = userInfoServices;
@@ -53,6 +58,9 @@ namespace DPE.Core.Controllers
             _iepexchangeservices = iepexchangeservices;
             _unitOfWork = unitOfWork;
             _isysuserinfoservices = isysuserinfoservices;
+            _ishopbuydetailserivces = ishopbuydetailserivces;
+            _irpexchangeservices = irpexchangeservices;
+            _irpservices = irpservices;
         }
 
 
@@ -266,20 +274,71 @@ namespace DPE.Core.Controllers
 
         [HttpPost]
         [Route("BuyGoodsweb")]
-        public async Task<MessageModel<dynamic>> BuyGoodsweb(long id)
+        public async Task<MessageModel<dynamic>> BuyGoodsweb(int shopid, int buynum)
         {
             MessageModel<dynamic> result = new MessageModel<dynamic>();
+
+            // _ishopbuydetailserivces
             try
             {
-                result.code = 10001;
-                result.msg = "疫情影响暂未开放";
-                result.success = false;
-                return result;
+                var shopdetail = await _ishoplistservices.QueryById(shopid);
+                if (shopdetail != null)
+                {
+                    if ((shopdetail.pNum - buynum)<0) 
+                    {
+                        result.code = 1002;
+                        result.msg = "库存不足";
+                        result.success = false;
+                        return result;
+                    }
+
+                    var rpinfo = (await _irpservices.Query(x=>x.uID==_user.ID)).First();
+                    if (rpinfo.amount < Convert.ToDecimal(buynum * shopdetail.price)) 
+                    {
+                        result.code = 1002;
+                        result.msg = "金额不不够";
+                        result.success = false;
+                        return result;
+
+                    }
+                    var addresult =await _ishopbuydetailserivces.Add(new ShopBuyDetail() { shopid=shopid, buyNum= buynum,
+                    buyuid=_user.ID, createTime=DateTime.Now, price=Convert.ToDecimal(buynum * shopdetail.price), status=1 });
+
+                    if (addresult > 0)
+                    {
+                        result.code = 0;
+                        result.msg = "购买成功";
+                        result.success = false;
+                        shopdetail.pNum = shopdetail.pNum - buynum;
+                        rpinfo.amount = rpinfo.amount - Convert.ToDecimal(buynum * shopdetail.price);
+                        await _ishoplistservices.Update(shopdetail);
+                        await _irpservices.Update(rpinfo);
+                        await _irpexchangeservices.Add(new RPexchange() { amount= Convert.ToDecimal(buynum * shopdetail.price), createTime=DateTime.Now, uID=_user.ID,
+                         lastTotal=rpinfo.amount + Convert.ToDecimal(buynum * shopdetail.price) , stype=88 , remark="购买商品", fromID=_user.ID
+                         });
+                    }
+                    else 
+                    {
+                        result.code = 10002;
+                        result.msg = "购买失败";
+                        result.success = false;
+                    }
+                    return result;
+                }
+                else
+                {
+                    result.code = 10001;
+                    result.msg = "未找到该商品信息";
+                    result.success = false;
+                    return result;
+                }
+
+              
             }
             catch
             {
                 result.code = 10001;
-                result.msg = "疫情影响暂未开放";
+                result.msg = "请稍后再试";
                 result.success = false;
                 return result;
             }

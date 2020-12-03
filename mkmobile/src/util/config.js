@@ -4,8 +4,8 @@
 //   process.env.NODE_ENV === "development" ||
 //   process.env.NODE_ENV === "testing"
 // ) {
-//   baseUrl = "http://localhost:8081/api/"; // 开发
-//   url = "https://manage.dpeplus.com"; // 开发
+let baseUrl = "http://localhost:8081/api/"; // 开发
+let url = "https://manage.dpeplus.com"; // 开发
 //   // baseUrl = 'http://192.168.1.8:8888/' // 开发
 // } else if (process.env.NODE_ENV === "preview") {
 //   baseUrl = "https://api.dpepie.com/api/"; // 预发布
@@ -25,8 +25,8 @@
 //   config
 // };
 
-let baseUrl = "/api/";
-let url = "https://manage.dpeplus.com"; // 域名
+//let baseUrl = "/api/";
+//let url = "https://manage.dpeplus.com"; // 域名
 
 const config = {
   imageUrl: "https://resource.upinstar.com",
@@ -35,5 +35,6 @@ const config = {
   url
 };
 
-export { config };
-
+export {
+  config
+};
