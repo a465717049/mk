@@ -9,7 +9,7 @@
           <div class="top">EP</div>
           <div class="bottom">ACCOUNT</div>
         </div>
-        <div class="right fr">{{account}}</div>
+        <div class="right fr">{{account}}123</div>
       </div>
       <ul>
         <li>
@@ -17,7 +17,7 @@
           <input type="number" v-model="form.amount" />
         </li>
         <li>
-          <div class="title">接受ID:{{name===''?'':name+'('+form.touid+')'}}</div>
+          <div class="title">接收ID:{{name===''?'':name+'('+form.touid+')'}}</div>
           <input type="text" v-model="form.touid" @blur="checkUser" />
         </li>
         <li>

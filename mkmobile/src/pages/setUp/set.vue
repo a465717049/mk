@@ -18,7 +18,7 @@
         </div>
         <div class="relative">
           <img src="@/assets/imgs/set/B-5.png" class="img" alt />
-          <van-cell class="cell-info borderR mb-40" to="./password">
+          <van-cell class="cell-info borderR mb-40" to="VipUpgrade">
             <template #title>
               <span class="custom-title">级别：{{level}}</span>
               <van-tag round class="tag">升级</van-tag>
@@ -31,7 +31,7 @@
         </div>
         <div class="relative">
           <img src="@/assets/imgs/set/b-3.png" class="img" alt />
-          <van-cell class="cell-info borderR mb-40" title="密码" is-link to="./password" />
+          <van-cell class="cell-info borderR mb-40" title="密码" is-link to="password" />
         </div>
         <!-- <div class="relative">
           <img src="@/assets/imgs/set/b-3.png" class="img" alt />
@@ -163,6 +163,7 @@ export default {
   }
   .tag {
     background-color: #6418c3;
+    font-size: 42px;
     height: 66px;
     line-height: 66px;
     padding: 0 50px;

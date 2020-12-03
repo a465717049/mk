@@ -13,14 +13,14 @@
       </div>
       <div class="code-body">
         <div class="c-cell">
-          <div class="c-cell-label">Android code</div>
+          <div class="c-cell-label">Android( 安卓手机 ）</div>
           <div class="c-cell-value">
             {{ androidCode }}
             <i class="iconfont iconcopy"></i>
           </div>
         </div>
         <div class="c-cell">
-          <div class="c-cell-label">IOS code</div>
+          <div class="c-cell-label">IPHONE（苹果手机）</div>
           <div class="c-cell-value">
             {{ iosCode }}
             <i class="iconfont iconcopy"></i>

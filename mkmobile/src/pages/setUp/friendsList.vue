@@ -37,7 +37,7 @@ import { http } from "util/request";
 import { photoList } from "util/const.js";
 import TopSearch from "components/TopSearch";
 import ScrollRefresh from "components/ScrollRefresh";
-import defaultImg from '@/assets/imgs/set/head02.png'
+import defaultImg from "@/assets/imgs/set/head02.png";
 import { GetFriendsList, GetSearchFimaly, GetUserInfo } from "util/netApi";
 export default {
   components: {
@@ -47,43 +47,52 @@ export default {
   },
   data() {
     return {
-      friendsList: [{
-        photo:defaultImg,
-        NickName:'Totay cyels',
-        uID:'10001',
-        friendsNum:'34'
-      },{
-        photo:defaultImg,
-        NickName:'Totay cyels',
-        uID:'10002',
-      },{
-        photo:defaultImg,
-        NickName:'Totay cyels',
-        uID:'10003',
-        friendsNum:'34'
-      },{
-        photo:defaultImg,
-        NickName:'Totay cyels',
-        uID:'10004',
-      },{
-        photo:defaultImg,
-        NickName:'Totay cyels',
-        uID:'10005',
-        friendsNum:'34'
-      },{
-        photo:defaultImg,
-        NickName:'Totay cyels',
-        uID:'10006',
-      },{
-        photo:defaultImg,
-        NickName:'Totay cyels',
-        uID:'10007',
-        friendsNum:'34'
-      },{
-        photo:defaultImg,
-        NickName:'Totay cyels',
-        uID:'10008',
-      }],
+      friendsList: [
+        {
+          photo: defaultImg,
+          NickName: "Totay cyels",
+          uID: "10001",
+          friendsNum: "34"
+        },
+        {
+          photo: defaultImg,
+          NickName: "Totay cyels",
+          uID: "10002"
+        },
+        {
+          photo: defaultImg,
+          NickName: "Totay cyels",
+          uID: "10003",
+          friendsNum: "34"
+        },
+        {
+          photo: defaultImg,
+          NickName: "Totay cyels",
+          uID: "10004"
+        },
+        {
+          photo: defaultImg,
+          NickName: "Totay cyels",
+          uID: "10005",
+          friendsNum: "34"
+        },
+        {
+          photo: defaultImg,
+          NickName: "Totay cyels",
+          uID: "10006"
+        },
+        {
+          photo: defaultImg,
+          NickName: "Totay cyels",
+          uID: "10007",
+          friendsNum: "34"
+        },
+        {
+          photo: defaultImg,
+          NickName: "Totay cyels",
+          uID: "10008"
+        }
+      ],
       uid: 0
     };
   },
@@ -122,21 +131,21 @@ export default {
 .relativeScroll {
   /deep/.wrapper {
     padding-top: 20px;
+    .bscroll-container {
+      min-height: calc(100vh - 620px);
+    }
   }
 }
-.p-38 {
-  padding: 28px;
-}
+
 .listWrap {
   position: relative;
-  // height: calc(100vh - 650px);
-  // overflow: scroll;
-  width: 94%;
-  margin: -40px auto 0;
-  padding-top: 40px;
+  width: 100%;
+  margin-top: -40px;
+  padding: 40px 60px 0;
 }
 .friendsList {
   margin-top: 60px;
+  padding-bottom: 50px;
   .list {
     // background: #f2f3f7;
     .cell-info {
@@ -160,10 +169,9 @@ export default {
       // line-height: 120px;
     }
     /deep/.van-cell__title {
-     
       margin-left: 160px;
       font-weight: bold;
-      color: #767C8F;
+      color: #767c8f;
       position: relative;
     }
     /deep/.van-cell__value {
@@ -200,19 +208,20 @@ export default {
   }
 }
 .data-title {
-  div{
+  div {
     height: 60px;
     line-height: 60px;
   }
   div.friendsName {
-    white-space:nowrap;
+    white-space: nowrap;
     height: 100px;
     line-height: 100px;
-    color: #767C8F;
+    color: #767c8f;
     font-size: 50px;
   }
   div.friendsNum {
     margin-left: 0px;
+    font-size: 40px;
   }
 }
 </style>

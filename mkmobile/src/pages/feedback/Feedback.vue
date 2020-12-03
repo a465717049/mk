@@ -1,14 +1,15 @@
 <template>
   <div>
     <TopBar class="center-one-search" :option="topBarOption">反 饋</TopBar>
-   
-      <div class="feedback-body">
-         <ScrollRefresh
-      @getData="ToGetUserFeedBack"
-      :residualHeight="240"
-      :isNeedUp="false"
-      class="innerScroll"
-    >
+
+    <div class="feedback-body">
+      <!-- <div class="innerScroll"></div> -->
+      <ScrollRefresh
+        @getData="ToGetUserFeedBack"
+        :residualHeight="240"
+        :isNeedUp="false"
+        class="innerScroll"
+      >
         <ul class="chat_bd">
           <li v-for="item in list" :key="item.id">
             <div class="chat_time" v-if="item.direction === 'center'">{{ item.time }}</div>
@@ -22,14 +23,13 @@
             </div>
           </li>
         </ul>
-        </ScrollRefresh>
-        <div class="send-msg">
-          <i class="iconfont iconyuyin"></i>
-          <input type="text" v-model="msg" />
-          <button type="primary" @click="sendMessage">发送</button>
-        </div>
+      </ScrollRefresh>
+      <div class="send-msg">
+        <i class="iconfont iconyuyin"></i>
+        <input type="text" v-model="msg" />
+        <button type="primary" @click="sendMessage">发送</button>
       </div>
-    
+    </div>
   </div>
 </template>
 
@@ -75,7 +75,7 @@ export default {
           msg:
             "请问最近的车奖是怎么一回事？？色极为关键是南方健身房是的封建时代和封建士大夫十分"
         },
-         {
+        {
           id: 4,
           direction: "left",
           date: "6mel,2020",
@@ -86,8 +86,7 @@ export default {
           id: 5,
           image: require("@/assets/imgs/nick-1.png"),
           direction: "right",
-          msg:
-            "请问最近的车奖是怎么一回事？"
+          msg: "请问最近的车奖是怎么一回事？"
         },
         {
           id: 6,
@@ -100,8 +99,7 @@ export default {
           id: 7,
           image: require("@/assets/imgs/nick-1.png"),
           direction: "right",
-          msg:
-            "请问最近的车奖是怎么一回事？"
+          msg: "请问最近的车奖是怎么一回事？"
         },
         {
           id: 8,
@@ -114,8 +112,7 @@ export default {
           id: 9,
           image: require("@/assets/imgs/nick-1.png"),
           direction: "right",
-          msg:
-            "请问最近的车奖是怎么一回事？"
+          msg: "请问最近的车奖是怎么一回事？"
         },
         {
           id: 10,
@@ -128,8 +125,7 @@ export default {
           id: 11,
           image: require("@/assets/imgs/nick-1.png"),
           direction: "right",
-          msg:
-            "请问最近的车奖是怎么一回事？"
+          msg: "请问最近的车奖是怎么一回事？"
         }
       ]
     };
@@ -170,6 +166,7 @@ export default {
 .innerScroll {
   /deep/.wrapper {
     // background: #ece5cc;
+    max-height: calc(100vh - 700px) !important;;
     .bscroll-container {
       min-height: calc(100vh - 400px) !important;
     }
@@ -183,7 +180,7 @@ export default {
   padding: 0px 30px 60px 30px;
   min-height: calc(100vh - 400px);
   .chat_bd {
-    padding-bottom: 200px;
+    // padding-bottom: 200px;
     .chat_time {
       text-align: center;
       color: #fff;

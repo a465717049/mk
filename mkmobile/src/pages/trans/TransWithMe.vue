@@ -37,7 +37,7 @@
           <input type="text" v-model="form.gcode" />
         </li>-->
       </ul>
-      <button class="next" @click="ToTranWithMe">確認轉換</button>
+      <button class="next" @click="ToTranWithMe">確認兑换</button>
     </div>
     <YellowComfirm
       :show="showComfirm"

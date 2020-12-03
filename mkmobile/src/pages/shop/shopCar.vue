@@ -75,7 +75,7 @@ export default {
   data() {
     return {
       topBarOption: {
-        iconLeft: "iconShapecopy",
+        iconLeft: "back",
         iconRight: "icongouwucheman"
       },
       carNum:1,
@@ -406,7 +406,7 @@ export default {
     .right {
       font-size: 104px;
       font-weight: 600;
-      color: #113d79;
+     color: #4678BC;
     }
   }
   .buttonWrap {

@@ -187,11 +187,9 @@ export default {
       margin: 0 auto;
       li {
         .title {
-          color: #353535;
+          color: #FFF;
           font-size: 42px;
           margin: 12px;
-          opacity: 0.62;
-          color: #4a494c;
           font-weight: bold;
         }
         input {

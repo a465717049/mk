@@ -11,7 +11,7 @@
         <i class="iconfont iconguanbi" @click="clickNo"></i>
         <div class="item-r">
           <h3 class="item-r-tit">提示：</h3>
-          <div class="item-r-tip">{{tipTitle}}</div>
+          <div class="item-r-tip" v-html="tipTitle"></div>
         </div>
       </div>
       <!-- <div class="btn" v-if="!showConfirmBtn" @click="clickOk">OK</div> -->

@@ -75,7 +75,7 @@ export default {
     line-height: 226px;
     padding: 70px;
     box-sizing: border-box;
-    background: #6318c3;
+    background: #efb618;
     display: flex;
     vertical-align: middle;
     width: 96%;
