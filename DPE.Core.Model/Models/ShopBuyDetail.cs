@@ -22,5 +22,17 @@ namespace DPE.Core.Model.Models
         public int status { get; set; }
         public string reamrk { get; set; }
         public DateTime createTime { get; set; }
+
+        public string buyaddr { get; set; }
+
+        public string buyname { get; set; }
+
+        public string buyphone { get; set; }
+
+        public string trackingnumber { get; set; }
+
+        public string shopordernumber { get; set; }
+
+        public string company { get; set; }
     }
 }

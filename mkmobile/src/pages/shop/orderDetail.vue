@@ -3,7 +3,7 @@
     <TopBar class="center-one-search" :option="topBarOption">订单详情</TopBar>
     <div>
       <div class="shop clearfix">
-        <TopSearch @onSearch="search" placeinputValue="输入订单号查询"></TopSearch>
+        <!--<TopSearch @onSearch="search" placeinputValue="输入订单号查询"></TopSearch>-->
         <ScrollRefresh
           @getData="ToGetShopList"
           :residualHeight="200"
@@ -12,30 +12,32 @@
         >
           <div class="innerWrap">
             <div class="goodsInfo">
-              <span>{{orderNo}}</span>
-              <div class="tag ytag" v-if="orderType===1">未发货</div>
-              <div class="tag gtag" v-else-if="orderType===2">配送中</div>
-              <div class="tag rtag" v-else-if="orderType===3">确认收货</div>
-              <div class="tag graytag" v-else-if="orderType===4">己完成</div>
+              <span>{{data.shopordernumber}}</span>
+              <div class="tag ytag" v-if="data.status===1">未发货</div>
+              <div class="tag gtag" v-else-if="data.status===2">配送中</div>
+              <div class="tag rtag" v-else-if="data.status===3">确认收货</div>
+              <div class="tag graytag" v-else-if="data.status===4">己完成</div>
             </div>
             <div class="goods base-flex flex-start p-58 borderR mb-80">
               <img src="@/assets/imgs/tipimg.png" class="img" alt />
               <div class="goods-info">
-                <div class="tip-titl">摩奇猴套装系列（A001)</div>
-                <div>赠送：面膜+修复水</div>
+                <div class="tip-titl">{{data.shopname}}</div>
+                <div>数量:{{data.shopnum}}    总价:{{data.shopprice}}</div>
+              
               </div>
             </div>
             <div class="distribution">
               <div class="dTitle">配送信息：</div>
               <ul class="dInfo">
-                <li>广东省深圳市龙华福龙大厦530室</li>
-                <li>150****890 李红</li>
+                <li>{{data.buyaddr}}</li>
+                <li>{{data.phonename}}</li>
+                 <li>备注:{{data.remark}}</li>
               </ul>
             </div>
             <div class="wuliu">
-              <div class="title">配送公司：{{company}}</div>
+              <div class="title">配送公司：{{data.company}} 快递单号:{{data.trackingnumber}}</div>
               <ul class="steps">
-                <li v-for="(item,index) in steps" :key="index">
+            <!--    <li v-for="(item,index) in steps" :key="index">
                   <span class="time_steps">{{item.time}}</span>
                   <i :class="['iconfont', icons[item.type]]"></i>
                   <div class="info_steps">
@@ -43,7 +45,7 @@
                     <span class="subInfo_steps">{{item.subInfo}}</span>
                   </div>
                   <div class="stepLine"></div>
-                </li>
+                </li> -->
               </ul>
             </div>
           </div>
@@ -57,7 +59,7 @@
 import TopBar from "components/TopBar";
 import TopSearch from "components/TopSearch";
 import { http } from "util/request";
-import { GetShopList, GetUserInfo, GetShopDeatilLike } from "util/netApi";
+import { GetShopList, GetUserInfo, GetShopDeatilLike,GetShopDetailsMyweb } from "util/netApi";
 import { storage } from "util/storage";
 import { accessToken, loginPro } from "util/const.js";
 import YellowComfirm from "components/YellowComfirm";
@@ -78,10 +80,21 @@ export default {
         iconLeft: "iconShapecopy",
         iconRight: "iconxiaoxi1"
       },
+      data:
+      {
+      shopid:0,
       showComfirm: true,
       tips: "即將更新！",
-      orderNo: "MT000000043432",
-      orderType: 2,
+      trackingnumber:"",
+      buyaddr:"",
+      phonename:"",
+      shopname:"",
+      shopnum:0,
+      shopprice:0,
+      shopordernumber: "MT000000043432",
+      status: 2,
+      remark:"",
+      },
       col: 2,
       company: "顺丰快递",
       icons: ["dot", "iconlist", "iconcangku", "iconjiantoushang", "icongoodswhoutStock",'iconfahuo', "iconcar", "iconyunshu", "iconperson", "iconchaibaoguoqujian-xianxing",'iconright'],
@@ -189,24 +202,15 @@ export default {
       this.data = this.data.concat(this.data);
     },
     ToGetShopList() {
-      http(GetShopList, null, json => {
+      http(GetShopDetailsMyweb, {id:this.shopid}, json => {
         if (json.code === 0) {
-          this.data = json.response.list;
-        }
-      });
-    },
-    ToGetShopDeatilLike(value) {
-      console.log(value);
-      http(GetShopDeatilLike, { key: value }, json => {
-        if (json.code === 0) {
-          console.log(json);
-          this.data = json.response.list;
-          // this.username = json.response.nickname
+         this.data=json.response.datainfo[0]   
         }
       });
     }
   },
   created() {
+  this.shopid = this.$route.query.id;
     this.ToGetShopList();
   }
 };

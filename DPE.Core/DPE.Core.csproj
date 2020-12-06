@@ -94,6 +94,6 @@
 	  <Folder Include="Controllers\Admin\" />
 	</ItemGroup>
 
-	<ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="http://json.schemastore.org/winget-pkgs" /></VisualStudio></ProjectExtensions>
+	<ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>

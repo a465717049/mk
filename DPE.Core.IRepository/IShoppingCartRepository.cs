@@ -6,7 +6,7 @@ namespace DPE.Core.IRepository
     /// <summary>
     /// IShopListRepository
     /// </summary>	
-    public interface IShoppingCartRepository : IBaseRepository<ShoppingCart>
+    public interface IShopBuyDetailRepository : IBaseRepository<ShopBuyDetail>
     {
     }
 }

@@ -399,3 +399,44 @@ export const GetOneKeyReturn = {
   version: v,
   string: true
 };
+
+//购物车
+export const AddGoodsweb = {
+  contentType: "application/json",
+  url: "Shop/AddGoodsweb",
+  method: "POST",
+  version: v,
+  string: true
+};
+
+//购物车数量
+export const GetShopCartsweb = {
+  contentType: "application/json",
+  url: "Shop/GetShopCartsweb",
+  method: "POST",
+  version: v,
+  string: true
+};
+//购物车数量
+export const GetShopaddr = {
+  contentType: "application/json",
+  url: "Shop/GetShopaddr",
+  method: "POST",
+  version: v,
+  string: true
+};
+//GetMyShopList
+export const GetMyShopList = {
+  contentType: "application/json",
+  url: "Shop/GetMyShopList",
+  method: "POST",
+  version: v,
+  string: true
+};
+export const GetShopDetailsMyweb = {
+  contentType: "application/json",
+  url: "Shop/GetShopDetailsMyweb",
+  method: "POST",
+  version: v,
+  string: true
+};

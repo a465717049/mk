@@ -110,8 +110,8 @@
                 </router-link>
               </li>
               <li>
-                <router-link to="shop" class="router">
-                  <i class="iconfont iconarrow-right"></i>再次购买
+                <router-link to="shoplist" class="router">
+                  <i class="iconfont iconarrow-right"></i>我的订单
                 </router-link>
               </li>
               <li>

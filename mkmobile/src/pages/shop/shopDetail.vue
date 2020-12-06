@@ -47,9 +47,12 @@
             </div>
             <div class="base-flex mt-40">
               <div class="heart borderR">
-                <i class="iconfont icongouwucheman"></i>
+                <i class="iconfont icongouwucheman" @click="addshop"></i>
               </div>
-              <button class="buy-btn center borderR" @click="buyShop">立即购买</button>
+                 <router-link to="shopCar" class="router"> <!--@click="buyShop" -->
+                   <button class="buy-btn center borderR" >立即购买</button>
+                </router-link>
+            
             </div>
           </div>
         </div>
@@ -68,7 +71,7 @@
 import TopBar from "components/TopBar";
 import YellowComfirm from "components/YellowComfirm";
 import { http } from "util/request";
-import { GetShopDeatilList, GetUserInfo, BuyGoodsweb } from "util/netApi";
+import { GetShopDeatilList, GetUserInfo, BuyGoodsweb ,AddGoodsweb,GetShopCartsweb} from "util/netApi";
 import { storage } from "util/storage";
 import banner1 from "../../assets/imgs/banner-00.png";
 import banner2 from "../../assets/imgs/banner-01.png";
@@ -127,6 +130,7 @@ export default {
       this.price -= this.shopprice;
     },
     buyShop() {
+      //shopCar
       http(BuyGoodsweb, {shopid: this.shopid,buynum:this.stepper }, json => {
         if (json.code === 0) {
         } else {
@@ -134,6 +138,25 @@ export default {
           this.tips = json.msg;
         }
       });
+    },
+    getshopcartnum()
+    {
+      http(GetShopCartsweb,null, json => {
+            if(json.code===0)
+            {
+              this.carNum=json.response.count;
+            }
+      });
+    },
+    addshop(){
+       http(AddGoodsweb, {shopid: this.shopid,num:this.stepper }, json => {
+         if(json.code===0)
+         {
+           this.getshopcartnum();
+         }
+           //  console.log("111");
+      });
+
     },
     ToGetShopDeatilList(tmpshopid) {
       http(GetShopDeatilList, { shopid: tmpshopid }, json => {
@@ -150,12 +173,14 @@ export default {
           this.startmax = shop.pNum;
         }
       });
+      
     }
   },
   created() {
     if (this.$route.query.id) {
       this.shopid = this.$route.query.id;
       this.ToGetShopDeatilList(this.shopid);
+      this.getshopcartnum();
     }
   },
   mounted() {

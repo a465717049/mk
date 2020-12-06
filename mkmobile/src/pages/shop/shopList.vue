@@ -3,7 +3,7 @@
     <TopBar class="center-one-search" :option="topBarOption">订 单</TopBar>
     <div>
       <div class="shop clearfix">
-        <TopSearch @onSearch="search" :placeinputValue="''"></TopSearch>
+        <TopSearch @click="search" :placeinputValue="''"></TopSearch>
         <ScrollRefresh
           @getData="ToGetShopList"
           :residualHeight="200"
@@ -13,12 +13,11 @@
           <div class="innerWrap">
             <ul class="info">
               <li v-for="(item,index) in data" :key="index">
-                <span>{{item.orderNo}}</span>
-
-                <div class="tag ytag" v-if="item.orderType===1">未发货</div>
-                <div class="tag gtag" v-else-if="item.orderType===2">配送中</div>
-                <div class="tag rtag" v-else-if="item.orderType===3">确认收货</div>
-                <div class="tag graytag" v-else-if="item.orderType===4">己完成</div>
+                <span @click="goDetail(item.id)">{{item.shopordernumber}}</span>  
+                <div class="tag ytag" v-if="item.status===1">未发货</div>
+                <div class="tag gtag" v-else-if="item.status===2">配送中</div>
+                <div class="tag rtag" v-else-if="item.status===3">确认收货</div>
+                <div class="tag graytag" v-else-if="item.status===4">己完成</div>
               </li>
             </ul>
           </div>
@@ -32,7 +31,7 @@
 import TopBar from "components/TopBar";
 import TopSearch from "components/TopSearch";
 import { http } from "util/request";
-import { GetShopList, GetUserInfo, GetShopDeatilLike } from "util/netApi";
+import { GetShopList, GetUserInfo, GetShopDeatilLike,GetMyShopList } from "util/netApi";
 import { storage } from "util/storage";
 import { accessToken, loginPro } from "util/const.js";
 import YellowComfirm from "components/YellowComfirm";
@@ -57,24 +56,20 @@ export default {
       tips: "即將更新！",
       data: [
         {
-          orderNo: "MT000000043432",
-          orderType: 2
+          shopordernumber: "MT000000043432",
+          status: 2
         },
         {
-          orderNo: "MT000000043433",
-          orderType: 1
+          shopordernumber: "MT000000043433",
+          status: 1
         },
         {
-          orderNo: "MT000000043434",
-          orderType: 3
+          shopordernumber: "MT000000043434",
+          status: 3
         },
         {
-          orderNo: "MT000000043435",
-          orderType: 4
-        },
-        {
-          orderNo: "MT000000043436",
-          orderType: 2
+          shopordernumber: "MT000000043435",
+          status: 4
         }
       ],
       col: 2
@@ -90,10 +85,11 @@ export default {
   },
   methods: {
     onSearch(value) {
-      this.ToGetShopDeatilLike(value);
+      console.log(value)
+        this.ToGetShopList(value);
     },
     goDetail(shopid) {
-      this.$router.push("./shopDetail?id=" + shopid);
+      this.$router.push("./orderDetail?id=" + shopid);
     },
     scroll(scrollData) {
       console.log(scrollData);
@@ -101,15 +97,17 @@ export default {
     loadmore(index) {
       this.data = this.data.concat(this.data);
     },
-    ToGetShopList() {
-      http(GetShopList, null, json => {
-        if (json.code === 0) {
-          this.data = json.response.list;
-        }
+    ToGetShopList(ordernumber) {
+       http(GetMyShopList, {ordernumber:ordernumber}, json => {
+         if(json.code===0)
+         {
+            this.data=json.response.list
+         }
+           //  console.log("111");
       });
     },
     ToGetShopDeatilLike(value) {
-      console.log(value);
+      //1  未发货    2 配送中  3确认收货   4己完成
       http(GetShopDeatilLike, { key: value }, json => {
         if (json.code === 0) {
           console.log(json);
@@ -120,7 +118,7 @@ export default {
     }
   },
   created() {
-    this.ToGetShopList();
+   this.ToGetShopList("");
   }
 };
 </script>

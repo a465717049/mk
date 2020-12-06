@@ -42,13 +42,15 @@ namespace DPE.Core.Controllers
         readonly IShopBuyDetailSerivces _ishopbuydetailserivces;
         readonly IRPexchangeServices _irpexchangeservices;
         readonly IRPServices _irpservices;
+        readonly IShoppingCartSerivces _ishoppingcartserivces;
         private readonly IUnitOfWork _unitOfWork;
 
 
-        public ShopListController(ISysUserInfoServices isysuserinfoservices,IUnitOfWork unitOfWork,IUser user, 
+        public ShopListController(ISysUserInfoServices isysuserinfoservices, IUnitOfWork unitOfWork, IUser user,
             IShopListServices ishoplistservices, IUserGoodsListServices iusergoodslistservices,
             IUserInfoServices userInfoServices, IEPServices iepservices,
-            IEPexchangeServices iepexchangeservices, IShopBuyDetailSerivces ishopbuydetailserivces, IRPexchangeServices irpexchangeservices, IRPServices irpservices)
+            IEPexchangeServices iepexchangeservices, IShopBuyDetailSerivces ishopbuydetailserivces,
+            IRPexchangeServices irpexchangeservices, IRPServices irpservices, IShoppingCartSerivces ishoppingcartserivces)
         {
             this._user = user;
             _userInfoServices = userInfoServices;
@@ -61,6 +63,7 @@ namespace DPE.Core.Controllers
             _ishopbuydetailserivces = ishopbuydetailserivces;
             _irpexchangeservices = irpexchangeservices;
             _irpservices = irpservices;
+            _ishoppingcartserivces = ishoppingcartserivces;
         }
 
 
@@ -71,10 +74,10 @@ namespace DPE.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("GetShopList")]
-        public async Task<MessageModel<ShopListViewModels>> GetShopList(string language="cn")
+        public async Task<MessageModel<ShopListViewModels>> GetShopList(string language = "cn")
         {
             //_user.ID
-       //     var user = await _userInfoServices.GetUserInfo(_user.ID);
+            //     var user = await _userInfoServices.GetUserInfo(_user.ID);
             var spinfo = await _ishoplistservices.Query();
             return new MessageModel<ShopListViewModels>()
             {
@@ -86,10 +89,10 @@ namespace DPE.Core.Controllers
                             orderby item.createTime descending
                             select new ShopListViewModelsList
                             {
-                                id =  item.id.ObjToInt(),
+                                id = item.id.ObjToInt(),
                                 name = item.pName,
                                 num = item.pNum.ObjToInt(),
-                                own_num = _iusergoodslistservices.GetUserShopOwnNum(_user.ID,item.id).Result.Sum(x=>x),
+                                own_num = _iusergoodslistservices.GetUserShopOwnNum(_user.ID, item.id).Result.Sum(x => x),
                                 icon_url = item.pIcon,
                                 price = Convert.ToInt32(item.price)
                             }).ToList()
@@ -105,7 +108,7 @@ namespace DPE.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("GetUserGoodsList")]
-        public async Task<MessageModel<dynamic>> GetUserGoodsList(string language="cn")
+        public async Task<MessageModel<dynamic>> GetUserGoodsList(string language = "cn")
         {
             //_user.ID
 
@@ -115,14 +118,14 @@ namespace DPE.Core.Controllers
             {
                 success = true,
                 msg = "",
-                response = new 
-                {   
-                    num=spinfo.Count,
+                response = new
+                {
+                    num = spinfo.Count,
                     list = (from item in spinfo
                             orderby item.id descending
                             select new ExchangeViewList
                             {
-                                msg =string.Format("购买:{0}",(_ishoplistservices.Query(x=>x.id==item.shopID)).Result.First().pName),
+                                msg = string.Format("购买:{0}", (_ishoplistservices.Query(x => x.id == item.shopID)).Result.First().pName),
                                 time = DateHelper.GetCreatetime(Convert.ToDateTime(item.createTime))
                             }).ToList()
                 }
@@ -159,7 +162,7 @@ namespace DPE.Core.Controllers
             try
             {
                 tmpcode = 0;
-             
+
                 var result = await _ishoplistservices.Query(x => x.id == id);
                 var user = await _userInfoServices.GetUserInfo(_user.ID);
                 _unitOfWork.BeginTran();
@@ -190,7 +193,7 @@ namespace DPE.Core.Controllers
                     tmpcode = 16003;
                 }
 
-                if (tmpcode != 0) 
+                if (tmpcode != 0)
                 {
                     returnresult.code = tmpcode;
                     return returnresult;
@@ -235,19 +238,19 @@ namespace DPE.Core.Controllers
                         remark = "購買商品",
                         price = shop.price,
                         scount = 0,
-                        stype =99
+                        stype = 99
                     });
 
                 }
-                else 
+                else
                 {
                     _unitOfWork.RollbackTran();
                     tmpcode = 1004;
                     return returnresult;
                 }
 
-               
-                returnresult= new MessageModel<dynamic>()
+
+                returnresult = new MessageModel<dynamic>()
                 {
                     success = true,
                     msg = "",
@@ -262,88 +265,170 @@ namespace DPE.Core.Controllers
 
                 return returnresult;
             }
-            catch 
+            catch
             {
-                 
+
                 _unitOfWork.RollbackTran();
                 return returnresult;
             }
-          
+
         }
 
 
         [HttpPost]
         [Route("BuyGoodsweb")]
-        public async Task<MessageModel<dynamic>> BuyGoodsweb(int shopid, int buynum)
+        public async Task<MessageModel<dynamic>> BuyGoodsweb(string addr, string phone, string name, string remark)
         {
             MessageModel<dynamic> result = new MessageModel<dynamic>();
-
-            // _ishopbuydetailserivces
+            int successnum = 0;
             try
             {
-                var shopdetail = await _ishoplistservices.QueryById(shopid);
-                if (shopdetail != null)
+                //结算购物车
+                if (_user.ID > 0)
                 {
-                    if ((shopdetail.pNum - buynum)<0) 
+                    _unitOfWork.BeginTran();
+                    var mycart = await _ishoppingcartserivces.Query(x => x.uid == _user.ID);
+                    List<ShopBuyDetail> addlist = new List<ShopBuyDetail>();
+                    foreach (ShoppingCart model in mycart)
                     {
-                        result.code = 1002;
-                        result.msg = "库存不足";
-                        result.success = false;
-                        return result;
-                    }
+                        var shopdetail = await _ishoplistservices.QueryById(model.shopid);
+                        var rpinfo = (await _irpservices.Query(x => x.uID == _user.ID)).First();
+                        if (shopdetail != null)
+                        {
+                            if ((shopdetail.pNum - model.shoptotalnum) < 0)
+                            {
+                                result.code = 1002;
+                                result.msg = shopdetail.pName + "库存不足";
+                                result.success = false;
+                                _unitOfWork.RollbackTran();
+                                return result;
+                            }
 
-                    var rpinfo = (await _irpservices.Query(x=>x.uID==_user.ID)).First();
-                    if (rpinfo.amount < Convert.ToDecimal(buynum * shopdetail.price)) 
-                    {
-                        result.code = 1002;
-                        result.msg = "金额不不够";
-                        result.success = false;
-                        return result;
+                            if (rpinfo.amount < Convert.ToDecimal(model.shoptotalnum * shopdetail.price))
+                            {
+                                result.code = 1002;
+                                result.msg = "金额不不够";
+                                result.success = false;
+                                _unitOfWork.RollbackTran();
+                                return result;
+                            }
+                            ShopBuyDetail shopmodel = new ShopBuyDetail();
+                            shopmodel.shopid = model.shopid;
+                            shopmodel.buyNum = model.shoptotalnum;
+                            shopmodel.buyuid = _user.ID;
+                            shopmodel.createTime = DateTime.Now;
+                            shopmodel.price = Convert.ToDecimal(model.shoptotalnum * _ishoplistservices.QueryById(model.shopid).Result.price);
+                            shopmodel.status = 1;
+                            shopmodel.buyaddr = addr;
+                            shopmodel.buyname = name;
+                            shopmodel.buyphone = phone;
+                            shopmodel.reamrk = remark;
+                            shopmodel.shopordernumber = creatOrderNumber();
 
-                    }
-                    var addresult =await _ishopbuydetailserivces.Add(new ShopBuyDetail() { shopid=shopid, buyNum= buynum,
-                    buyuid=_user.ID, createTime=DateTime.Now, price=Convert.ToDecimal(buynum * shopdetail.price), status=1 });
+                            var addresult = await _ishopbuydetailserivces.Add(shopmodel);
+                            if (addresult > 0)
+                            {
 
-                    if (addresult > 0)
-                    {
-                        result.code = 0;
-                        result.msg = "购买成功";
-                        result.success = false;
-                        shopdetail.pNum = shopdetail.pNum - buynum;
-                        rpinfo.amount = rpinfo.amount - Convert.ToDecimal(buynum * shopdetail.price);
-                        await _ishoplistservices.Update(shopdetail);
-                        await _irpservices.Update(rpinfo);
-                        await _irpexchangeservices.Add(new RPexchange() { amount= Convert.ToDecimal(buynum * shopdetail.price), createTime=DateTime.Now, uID=_user.ID,
-                         lastTotal=rpinfo.amount + Convert.ToDecimal(buynum * shopdetail.price) , stype=88 , remark="购买商品", fromID=_user.ID
-                         });
+                                shopdetail.pNum -= model.shoptotalnum;
+                                if (_ishoplistservices.Update(shopdetail).Result)
+                                {
+                                    rpinfo.amount = rpinfo.amount - Convert.ToDecimal(model.shoptotalnum * shopdetail.price);
+                                    if (_irpservices.Update(rpinfo).Result)
+                                    {
+                                        if (_irpexchangeservices.Add(new RPexchange()
+                                        {
+                                            amount = -Convert.ToDecimal(model.shoptotalnum * shopdetail.price),
+                                            createTime = DateTime.Now,
+                                            uID = _user.ID,
+                                            lastTotal = rpinfo.amount + Convert.ToDecimal(model.shoptotalnum * shopdetail.price),
+                                            stype = 88,
+                                            remark = "购买商品",
+                                            fromID = _user.ID
+                                        }).Result > 0)
+                                        {
+                                            if (_ishoppingcartserivces.DeleteById(model.id).Result)
+                                            {
+                                                successnum++;
+                                            }
+                                            else
+                                            {
+                                                result.code = 1002;
+                                                result.msg = shopdetail.pName + "结算异常请稍后再试";
+                                                result.success = false;
+                                                _unitOfWork.RollbackTran();
+                                                return result;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            result.code = 1002;
+                                            result.msg = shopdetail.pName + "结算异常请稍后再试";
+                                            result.success = false;
+                                            _unitOfWork.RollbackTran();
+                                            return result;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        result.code = 1002;
+                                        result.msg = shopdetail.pName + "结算异常请稍后再试";
+                                        result.success = false;
+                                        _unitOfWork.RollbackTran();
+                                        return result;
+                                    };
+                                }
+                                else
+                                {
+                                    result.code = 1002;
+                                    result.msg = shopdetail.pName + "更新商品数量有误请稍后再试";
+                                    result.success = false;
+                                    _unitOfWork.RollbackTran();
+                                    return result;
+                                }
+
+                            }
+                            else
+                            {
+                                result.code = 1002;
+                                result.msg = shopdetail.pName + "结算异常请稍后再试";
+                                result.success = false;
+                                _unitOfWork.RollbackTran();
+                                return result;
+                            }
+
+                        }
                     }
-                    else 
-                    {
-                        result.code = 10002;
-                        result.msg = "购买失败";
-                        result.success = false;
-                    }
-                    return result;
                 }
-                else
-                {
-                    result.code = 10001;
-                    result.msg = "未找到该商品信息";
-                    result.success = false;
-                    return result;
-                }
+                result.code = 0;
+                result.msg = "成功结算:" + successnum.ToString() + "件商品";
+                result.success = false;
+                _unitOfWork.CommitTran();
+                return result;
 
-              
             }
             catch
             {
                 result.code = 10001;
                 result.msg = "请稍后再试";
                 result.success = false;
+                _unitOfWork.RollbackTran();
                 return result;
             }
 
         }
+
+        public string creatOrderNumber() 
+        {
+
+            Random ran = new Random();
+            string tmpordernumber = string.Format("MK" + DateTime.Now.ToString("yyyyMMdd") + ran.Next(1000, 10000).ToString());
+            if (_ishopbuydetailserivces.Query(x => x.shopordernumber.Equals(tmpordernumber)).Result.Count > 0)  
+            {
+                creatOrderNumber();
+            }
+            return tmpordernumber;
+        }
+
 
 
         /// <summary>
@@ -414,5 +499,206 @@ namespace DPE.Core.Controllers
         }
 
 
+        //添加购物车
+        [HttpPost]
+        [Route("AddGoodsweb")]
+        public async Task<MessageModel<dynamic>> AddGoodsweb(int shopid,int num,string option="")
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                var shopdetail = await _ishoplistservices.QueryById(shopid);
+                if (shopdetail != null)
+                {
+                    var addshop = await _ishoppingcartserivces.Query(x => x.shopid == shopid && x.uid == _user.ID);
+                    if (addshop.Count() > 0)
+                    {
+                        var model = addshop.First();
+                        if (string.IsNullOrEmpty(option))
+                        {
+                            model.shoptotalnum += num;
+                        }
+                        else
+                        {
+                            model.shoptotalnum -= num;
+                        }
+
+                        if (model.shoptotalnum <= 0)
+                        {
+                            await _ishoppingcartserivces.Delete(model);
+                        }
+                        else 
+                        {
+                            await _ishoppingcartserivces.Update(model);
+                        }
+                    }
+                    else 
+                    {
+                        await _ishoppingcartserivces.Add(new ShoppingCart() { shopid = shopid, shoptotalnum = num, uid=_user.ID }); ;
+                    }
+                    result.code = 0;
+                    result.msg = "添加成功";
+                    result.success = true;
+
+                }
+                else 
+                {
+                    result.code = 10001;
+                    result.msg = "商品信息有误";
+                    result.success = false;
+                }
+                  
+                return result;
+            }
+            catch(Exception ex)
+            {
+                string a = ex.Message;
+                result.code = 10001;
+                result.msg = "请稍后再试";
+                result.success = false;
+                return result;
+            }
+
+        }
+
+
+        //获取我的订单
+        [HttpPost]
+        [Route("GetMyShopList")]
+        public async Task<MessageModel<dynamic>> GetMyShopList(string ordernumber="")
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                var data = await _ishopbuydetailserivces.Query(x => x.buyuid == _user.ID );
+                result.code = 0;
+                result.response = new
+                {
+                    list = data
+                };
+                return result;
+            }
+            catch (Exception ex)
+            {
+                string a = ex.Message;
+                result.code = 10001;
+                result.msg = "请稍后再试";
+                result.success = false;
+                return result;
+            }
+
+        }
+
+        [HttpPost]
+        [Route("GetShopDetailsMyweb")]
+        public async Task<MessageModel<dynamic>> GetShopDetailsMyweb(long id)
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                var data = await _ishopbuydetailserivces.Query(x => x.buyuid == _user.ID && x.id==id);
+                result.code = 0;
+                result.response = new
+                {
+                    datainfo = (from item in data
+                                select new
+                                {
+                                    shopordernumber = item.shopordernumber,
+                                    shopidid = item.shopid,
+                                    id = item.shopid,
+                                    buyaddr = item.buyaddr,
+                                    phonename = item.buyname + "  " + item.buyphone,
+                                    shopname = _ishoplistservices.QueryById(item.shopid).Result.pName,
+                                    shopnum = item.buyNum,
+                                    shopprice = item.price,
+                                    trackingnumber = item.trackingnumber,
+                                    company = item.company,
+                                    status = item.status,
+                                    remark = item.reamrk
+                                }).ToList()
+                };
+                return result;
+            }
+            catch (Exception ex)
+            {
+                string a = ex.Message;
+                result.code = 10001;
+                result.msg = "请稍后再试";
+                result.success = false;
+                return result;
+            }
+
+        }
+
+
+
+
+        //获取购物车
+        [HttpPost]
+        [Route("GetShopCartsweb")]
+        public async Task<MessageModel<dynamic>> GetShopCartsweb()
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                var data = await _ishoppingcartserivces.Query(x => x.uid == _user.ID);
+                result.code = 0;
+                result.response = new
+                {
+                    count = data.Count() > 0 ? data.Sum(x => x.shoptotalnum) : 0,
+                    data = new 
+                    {
+                        list = (from item in data
+                                orderby item.id descending
+                                select new 
+                                {
+                                   uid = item.uid,
+                                   id=item.id,
+                                   shopid =item.shopid,
+                                   shopnum=item.shoptotalnum,
+                                   shopdetail= _ishoplistservices.QueryById(item.shopid).Result
+                                }).ToList()
+                    }
+                };
+                return result;
+            }
+            catch (Exception ex)
+            {
+                string a = ex.Message;
+                result.code = 10001;
+                result.msg = "请稍后再试";
+                result.success = false;
+                return result;
+            }
+
+        }
+
+        //获取最后一次使用的地址
+        [HttpPost]
+        [Route("GetShopaddr")]
+        public async Task<MessageModel<dynamic>> GetShopaddr()
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                var data = await _ishopbuydetailserivces.Query(x => x.buyuid == _user.ID, " createTime desc ");
+                result.code = 0;
+                var descdata = data.First();
+                result.response = new
+                {
+                    data = descdata
+                };
+                return result;
+            }
+            catch (Exception ex)
+            {
+                string a = ex.Message;
+                result.code = 10001;
+                result.msg = "请稍后再试";
+                result.success = false;
+                return result;
+            }
+
+        }
     }
 }

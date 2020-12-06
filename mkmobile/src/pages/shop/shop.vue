@@ -51,7 +51,7 @@
 import TopBar from "components/TopBar";
 import TopSearch from "components/TopSearch";
 import { http } from "util/request";
-import { GetShopList, GetUserInfo, GetShopDeatilLike } from "util/netApi";
+import { GetShopList, GetUserInfo, GetShopDeatilLike ,GetShopCartsweb} from "util/netApi";
 import { storage } from "util/storage";
 import { accessToken, loginPro } from "util/const.js";
 import YellowComfirm from "components/YellowComfirm";
@@ -83,34 +83,6 @@ export default {
           id: 1,
           bgc: "#F5E0BA",
           tag: "促销中"
-        },
-        {
-          icon_url: require("@/assets/imgs/shop/bag.png"),
-          price: "70$",
-          name: "Children Camera Visionkids Happycamu",
-          id: 2,
-          bgc: "#CADBA7"
-        },
-        {
-          icon_url: require("@/assets/imgs/shop/bag.png"),
-          price: "70$",
-          name: "Children Camera Visionkids Happycamu",
-          id: 3,
-          bgc: "#D1D4CB"
-        },
-        {
-          icon_url: require("@/assets/imgs/shop/bag.png"),
-          price: "70$",
-          name: "Children Camera Visionkids Happycamu",
-          id: 5,
-          bgc: "#CADBA7"
-        },
-        {
-          icon_url: require("@/assets/imgs/shop/bag.png"),
-          price: "70$",
-          name: "Children Camera Visionkids Happycamu",
-          id: 6,
-          bgc: "#D1D4CB"
         }
       ],
       col: 2
@@ -144,6 +116,15 @@ export default {
         }
       });
     },
+    getshopcartnum()
+    {
+      http(GetShopCartsweb,null, json => {
+            if(json.code===0)
+            {
+              this.carNum=json.response.count;
+            }
+      });
+    },
     ToGetShopDeatilLike(value) {
       console.log(value);
       http(GetShopDeatilLike, { key: value }, json => {
@@ -157,6 +138,7 @@ export default {
   },
   created() {
     this.ToGetShopList();
+    this.getshopcartnum();
   }
 };
 </script>
