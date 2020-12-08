@@ -11,8 +11,6 @@
   "dependencies": {
     "@aspnet/signalr": "^1.1.4",
     "axios": "^0.18.0",
-    "browserslist": "^4.14.0",
-    "caniuse-lite": "^1.0.30001117",
     "echarts": "^3.8.5",
     "element-ui": "^2.8.2",
     "font-awesome": "^4.7.0",

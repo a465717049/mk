@@ -499,6 +499,146 @@ namespace DPE.Core.Controllers
         }
 
 
+        [HttpPost]
+        [Route("GetAdminBuyShopList")]
+        public async Task<MessageModel<dynamic>> GetAdminBuyShopList()
+        {
+
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+
+                int pageindex = Convert.ToInt32(HttpContext.Request.Form["pageindex"]);
+                int pagesize = Convert.ToInt32(HttpContext.Request.Form["pagesize"]);
+                string key = HttpContext.Request.Form["key"];
+                string stype = HttpContext.Request.Form["stype"];
+
+                if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+                {
+                    key = "";
+                }
+
+                if (string.IsNullOrEmpty(stype) || string.IsNullOrWhiteSpace(stype))
+                {
+                    stype = "";
+                }
+                pagesize = pagesize == 0 ? 20 : pagesize;
+                pageindex = pageindex == 0 ? 1 : pageindex;
+                var data = await _ishopbuydetailserivces.QueryPage(x => x.status.ToString().Contains(stype) &&
+              (x.buyuid.ToString().Contains(key) || x.buyaddr.Contains(key)), pageindex, pagesize, " createTime DESC ");
+
+                result.response = new
+                {
+                     dataCount=data.dataCount,
+                     page=data.page,
+                     pageCount=data.pageCount,
+                     data= (from item in data.data
+                           select new
+                           {
+                             item,
+                             shopname=_ishoplistservices.QueryById(item.shopid).Result.pName
+
+                           })
+            };
+                result.code = 200;
+                result.success = true;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+
+        }
+
+        [HttpPost]
+        [Route("AddTruckOrdersweb")]
+        public async Task<MessageModel<dynamic>> AddTruckOrdersweb()
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                int detailid = Convert.ToInt32(HttpContext.Request.Form["detailid"]);
+                string order = HttpContext.Request.Form["order"];
+
+                var shopdetail = await _ishopbuydetailserivces.QueryById(detailid);
+                if (shopdetail != null)
+                {
+                    shopdetail.trackingnumber = order;
+                    await _ishopbuydetailserivces.Update(shopdetail);
+                    result.code = 0;
+                    result.msg = "操作成功";
+                    result.success = true;
+
+                }
+                else
+                {
+                    result.code = 10001;
+                    result.msg = "商品信息有误";
+                    result.success = false;
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                string a = ex.Message;
+                result.code = 10001;
+                result.msg = "请稍后再试";
+                result.success = false;
+                return result;
+            }
+        }
+
+        [HttpPost]
+        [Route("ChangeOrdersweb")]
+        public async Task<MessageModel<dynamic>> ChangeOrdersweb()
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                int detailid = Convert.ToInt32(HttpContext.Request.Form["detailid"]);
+                int status = Convert.ToInt32(HttpContext.Request.Form["status"]);
+                var shopdetail = await _ishopbuydetailserivces.QueryById(detailid);
+                if (shopdetail != null)
+                {
+                    shopdetail.status = status;
+                    await _ishopbuydetailserivces.Update(shopdetail);
+                    result.code = 0;
+                    result.msg = "操作成功";
+                    result.success = true;
+
+                }
+                else
+                {
+                    result.code = 10001;
+                    result.msg = "商品信息有误";
+                    result.success = false;
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                string a = ex.Message;
+                result.code = 10001;
+                result.msg = "请稍后再试";
+                result.success = false;
+                return result;
+            }
+        }
+
         //添加购物车
         [HttpPost]
         [Route("AddGoodsweb")]

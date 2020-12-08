@@ -7,7 +7,7 @@ import Vue from 'vue';
 
 import applicationUserManager from "../Auth/applicationusermanager";
 
-let base = 'https://api.snptw.cn';
+let base = 'http://localhost:8081'; //'https://api.snptw.cn';
 // 如果是IIS部署，用这个，因为 IIS 只能是 CORS 跨域，不能代理
 // let base = process.env.NODE_ENV=="production"? 'http://localhost:8081':'';
 
@@ -522,4 +522,17 @@ export const GetAdminSPExchange = params => {
 
 export const GetAdminRPExchange = params => {
     return axios.post(`${base}/api/RP/GetAdminRPExchange`, qs.stringify(params)).then(res => res.data);
+};
+
+//GetAdminBuyShopList
+export const GetAdminBuyShopList = params => {
+    return axios.post(`${base}/api/Shop/GetAdminBuyShopList`, qs.stringify(params)).then(res => res.data);
+};
+//ChangeOrdersweb
+export const ChangeOrdersweb = params => {
+    return axios.post(`${base}/api/Shop/ChangeOrdersweb`, qs.stringify(params)).then(res => res.data);
+};
+//AddTruckOrdersweb
+export const AddTruckOrdersweb = params => {
+    return axios.post(`${base}/api/Shop/AddTruckOrdersweb`, qs.stringify(params)).then(res => res.data);
 };
