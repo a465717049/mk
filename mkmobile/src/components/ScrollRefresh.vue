@@ -21,109 +21,109 @@
 </template>
 
 <script>
-import BScroll from "better-scroll";
+import BScroll from 'better-scroll'
 
 export default {
-  mounted() {
-    this.getHeight();
+  mounted () {
+    this.getHeight()
   },
-  data() {
+  data () {
     return {
-      pulldownMsg: "下拉刷新",
-      pullupMsg: "加载更多",
+      pulldownMsg: '下拉刷新',
+      pullupMsg: '加载更多',
       pullTopTip: false,
       pullBottomTip: false,
-      alertHook: "none",
-      scrollHeight: 0, //滚动区域的高度
-      pageIndex: 1,
-    };
+      alertHook: 'none',
+      scrollHeight: 0, // 滚动区域的高度
+      pageIndex: 1
+    }
   },
   props: {
     residualHeight: {
-      //要减去的高度
+      // 要减去的高度
       type: Number,
-      required: true,
+      required: true
     },
     active: {
-      type: Number, //激活的tab栏
+      type: Number // 激活的tab栏
     },
     isNone: {
-      type: Boolean, //数据是否加载完毕
-      default: false,
+      type: Boolean, // 数据是否加载完毕
+      default: false
     },
     isNeedDown: {
-      type: Boolean, //是否需要下拉刷新
-      default: true,
+      type: Boolean, // 是否需要下拉刷新
+      default: true
     },
     isNeedUp: {
-      type: Boolean, //是否需要上拉加载
-      default: true,
-    },
+      type: Boolean, // 是否需要上拉加载
+      default: true
+    }
   },
   methods: {
-    getHeight() {
-      let num = parseFloat(document.querySelector("html").style.fontSize);
+    getHeight () {
+      let num = parseFloat(document.querySelector('html').style.fontSize)
       // console.log(num,'num')
-      const windowHeight = document.body.clientHeight / num;
-      this.scrollHeight = windowHeight - this.residualHeight / num + "rem";
+      const windowHeight = document.body.clientHeight / num
+      this.scrollHeight = windowHeight - this.residualHeight / num + 'rem'
     },
-    refreshalert() {
-      //刷新成功提示
-      this.alertHook = "block";
+    refreshalert () {
+      // 刷新成功提示
+      this.alertHook = 'block'
       setTimeout(() => {
-        this.alertHook = "none";
-      }, 1000);
-    },
+        this.alertHook = 'none'
+      }, 1000)
+    }
   },
   watch: {
-    active() {
-      this.pageIndex = 1;
-    },
+    active () {
+      this.pageIndex = 1
+    }
   },
-  created() {
-    const that = this;
+  created () {
+    const that = this
     this.$nextTick(() => {
       this.scroll = new BScroll(this.$refs.wrapper, {
         scrollY: true,
         click: true,
-        pullUpLoad: this.isNeedUp, //上拉加载更多
+        pullUpLoad: this.isNeedUp, // 上拉加载更多
         bounce: {
           top: this.isNeedDown,
-          bottom: this.isNeedUp,
-        },
-      });
+          bottom: this.isNeedUp
+        }
+      })
 
       // 滑动过程中事件
-      this.scroll.on("scroll", (pos) => {
+      this.scroll.on('scroll', pos => {
         if (pos.y > 30) {
-          this.pulldownMsg = "释放立即刷新";
+          this.pulldownMsg = '释放立即刷新'
         }
-      });
+      })
       // 滑动结束松开事件
-      this.scroll.on("touchEnd", async (pos) => {
-        //上拉刷新
+      this.scroll.on('touchEnd', async pos => {
+        // 上拉刷新
         if (pos.y > 30) {
-          this.pageIndex = 1;
-          await this.$emit("getData", 1);
-          that.pulldownMsg = "下拉刷新";
-          //刷新成功后提示
-          that.refreshalert();
-          //刷新列表后，重新计算滚动区域高度
-          that.scroll.refresh();
+          this.pageIndex = 1
+          await this.$emit('getData', 1)
+          that.pulldownMsg = '下拉刷新'
+          // 刷新成功后提示
+          that.refreshalert()
+          // 刷新列表后，重新计算滚动区域高度
+          that.scroll.refresh()
         } else if (pos.y < this.scroll.maxScrollY - 30) {
-          //下拉加载
+          // 下拉加载
           if (!this.isNone) {
-            that.pullupMsg = "加载更多。。。";
-            this.$emit("getData", ++this.pageIndex);
+            that.pullupMsg = '加载更多。。。'
+            this.$emit('getData', ++this.pageIndex)
             // that.scroll.refresh();
           } else {
-            that.pullupMsg = "没有更多了。。。";
+            that.pullupMsg = '没有更多了。。。'
           }
         }
-      });
-    });
-  },
-};
+      })
+    })
+  }
+}
 </script>
 <style lang="less" scoped>
 .wrapper {
@@ -133,7 +133,7 @@ export default {
   position: relative;
   .bscroll-container {
     min-height: calc(100vh);
-    background-color: #c6d0de;
+    // background-color: #c6d0de;
   }
   /* 下拉、上拉提示信息 */
   .top-tip {
@@ -179,4 +179,3 @@ export default {
   background: rgba(7, 17, 27, 0.5);
 }
 </style>
-

@@ -1,6 +1,6 @@
 <template>
   <div class="homeWrapper ">
-    <ScrollRefresh  
+    <ScrollRefresh
       @getData="getData"
       :residualHeight="70"
       :isNeedUp="false"
@@ -112,11 +112,11 @@ import defaultImg from '@/assets/imgs/set/head02.png'
 import countTo from 'components/countTo'
 import { http } from 'util/request'
 import { GetBanner, GetUserInfo, getEpexchange } from 'util/netApi'
-import ScrollRefresh from "components/ScrollRefresh";
+import ScrollRefresh from 'components/ScrollRefresh'
 import { storage } from 'util/storage'
 import { photoList } from 'util/const.js'
 export default {
-  data() {
+  data () {
     return {
       defaultImg,
       username: '',
@@ -129,40 +129,40 @@ export default {
       startVal: 0,
       endVal: 11072,
       balanceTile: '本周奖金',
-      images: [{image:banner1},{image:banner2}],
-      headerimg:null,
+      images: [{image: banner1}, {image: banner2}],
+      headerimg: null,
       balanceList: [
-         {
-              name: 'DPE Balance',
-              type:'dpe',
-              count: 123431
-            }
-            , 
-            {
-              name: 'EP Balance',  
-              type:'ep',
-              count: 6666666
-            },
-            {
-              name: 'RP Balance',
-               type:'rp',
-              count: 33333
-            },
-            {
-              name: 'SP Balance',
-               type:'sp',
-              count: 88888
-            },
-            {
-              name: 'DPE(主+子) Balance',
-               type:'sum',
-              count: 3333333
-            }
+        {
+          name: 'DPE Balance',
+          type: 'dpe',
+          count: 123431
+        },
+
+        {
+          name: 'EP Balance',
+          type: 'ep',
+          count: 6666666
+        },
+        {
+          name: 'RP Balance',
+          type: 'rp',
+          count: 33333
+        },
+        {
+          name: 'SP Balance',
+          type: 'sp',
+          count: 88888
+        },
+        {
+          name: 'DPE(主+子) Balance',
+          type: 'sum',
+          count: 3333333
+        }
       ],
       listOne: [
       ],
       listTwo: [
-      
+
       ],
       listThree: [
       ]
@@ -175,7 +175,7 @@ export default {
   },
   computed: {},
   methods: {
-    readloadinfo() {
+    readloadinfo () {
       var choiceindex = 1
       if (this.active == 0) {
         choiceindex = 1
@@ -186,80 +186,74 @@ export default {
       }
       this.ToGetEPlist(choiceindex)
     },
-    onSwiperChange(index) {
+    onSwiperChange (index) {
       this.endVal = this.balanceList[index].count
       this.balanceTile = this.balanceList[index].name
     },
-    
-    ToGetBanner() {
+
+    ToGetBanner () {
       // http(GetBanner, { language: 'cn' }, json => {
       //   if (json.code === 0) {
       //     this.images = json.response.list
       //   }
       // })
     },
-    goSetting() {
-      this.$router.push({ name: "SetUp" });
+    goSetting () {
+      this.$router.push({ name: 'SetUp' })
     },
-     goNews() {
-      this.$router.push({ name: "News" });
+    goNews () {
+      this.$router.push({ name: 'News' })
     },
-     goinfo(name) {
-       if(name=='sum')
-       {
-              this.$router.push({ name: "myFamily" });
-       }
-       else
-       {
-        this.$router.push({ name: 'epList', params: { cktype: name } });
-       }
+    goinfo (name) {
+      if (name == 'sum') {
+        this.$router.push({ name: 'myFamily' })
+      } else {
+        this.$router.push({ name: 'epList', params: { cktype: name } })
+      }
     },
-    TogetUserInfo() {
+    TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
           this.username = json.response.nickname
           this.uid = json.response.uid
           this.endVal = json.response.apple
-          this.headerimg=photoList[json.response.photo]
-          storage.setLocalStorage("service",json.response.service)
+          this.headerimg = photoList[json.response.photo]
+          storage.setLocalStorage('service', json.response.service)
           this.balanceList = [
-        
-             {
-              name: 'DPE Balance',
-              type:'dpe',
-              count: json.response.apple
-            }
-            , 
+
             {
-              name: 'EP Balance',  
-              type:'ep',
+              name: 'DPE Balance',
+              type: 'dpe',
+              count: json.response.apple
+            },
+            {
+              name: 'EP Balance',
+              type: 'ep',
               count: json.response.gold
             },
             {
               name: 'RP Balance',
-               type:'rp',
+              type: 'rp',
               count: json.response.rp
             },
             {
               name: 'SP Balance',
-               type:'sp',
+              type: 'sp',
               count: json.response.seed
             },
             {
               name: 'DPE(主+子) Balance',
-               type:'sum',
+              type: 'sum',
               count: json.response.sum
             }
           ]
-        }
-        else{
+        } else {
           //  this.$router.push({ path: "/login" });
         }
       })
-     
     },
-    ToGetEPlist(cktype) {
-      http(getEpexchange,{type: cktype, pageSize: 5, pageIndex: 1, cktype: 'ep' },
+    ToGetEPlist (cktype) {
+      http(getEpexchange, {type: cktype, pageSize: 5, pageIndex: 1, cktype: 'ep' },
         json => {
           if (json.response) {
             if (cktype == 1) {
@@ -273,13 +267,13 @@ export default {
         }
       )
     },
-    getData(){
+    getData () {
       this.ToGetBanner()
       this.TogetUserInfo()
       this.readloadinfo()
     }
   },
-  mounted(){
+  mounted () {
     // this.ToGetBanner()
     // this.TogetUserInfo()
     // this.readloadinfo()
@@ -346,7 +340,7 @@ export default {
       left: 100px;
       align-items: center;
       justify-content: space-between;
-     
+
       p {
         font-size: 50px;
         margin-top:40px;
@@ -463,6 +457,9 @@ export default {
   /deep/.van-tab__text {
     color: #C5C5C5;
     font-size: 54px;
+    display: block;
+    height: 100%;
+    line-height: 100%;
     // font-weight: 600;
   }
   /deep/.van-tab--active {
