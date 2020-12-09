@@ -1,9 +1,17 @@
 /**
  * 网络相关Api
  */
-import { config } from "./config.js";
-import { storage } from "./storage.js";
-import { accessToken, IPHONE, Safari } from "./const.js";
+import {
+  config
+} from "./config.js";
+import {
+  storage
+} from "./storage.js";
+import {
+  accessToken,
+  IPHONE,
+  Safari
+} from "./const.js";
 import axios from "axios";
 import notice from "./notice";
 import router from "../router";
@@ -31,32 +39,38 @@ let state = (res, noLoading) => {
     notice.loadingHide();
   }
 
-  if (!res.code&&res.code>0 ) { 
+  if (!res.code && res.code > 0) {
     notice.loadingHide();
   }
   switch (res.status) {
     case 302:
       notice.errorModal("302");
       break;
-    case 400: 
+    case 400:
       notice.errorModal("請求參數錯誤");
       break;
     case 401:
-      notice.errorModal("未授權，請重新登陸", function() {
-       router.push({ path: "/login" });
+      notice.errorModal("未授權，請重新登陸", function () {
+        router.push({
+          path: "/login"
+        });
       });
       break;
     case 403:
-      notice.errorModal("登錄超時，請重新登陸！", function() {
+      notice.errorModal("登錄超時，請重新登陸！", function () {
         notice.loadingHide();
-        router.push({ path: "/login" });
-       });
+        router.push({
+          path: "/login"
+        });
+      });
       break;
     case 404:
-      notice.errorModal("非法請求！請重新登陸", function() {
+      notice.errorModal("非法請求！請重新登陸", function () {
         notice.loadingHide();
-        router.push({ path: "/login" });
-       });
+        router.push({
+          path: "/login"
+        });
+      });
       break;
     case 405:
       notice.errorModal("非法請求！請重新登陸！");
@@ -80,8 +94,10 @@ let state = (res, noLoading) => {
       notice.errorModal("参数错误！");
       break;
     case 10002:
-      notice.errorModal("未授權，請重新登陸！", function() {
-        router.push({ path: "/login" });
+      notice.errorModal("未授權，請重新登陸！", function () {
+        router.push({
+          path: "/login"
+        });
       });
       break;
   }
@@ -111,7 +127,7 @@ export const http = (opts, params, success, noLoading, error) => {
   if (xhr) {
     error =
       error ||
-      function(XMLHttpRequest, textStatus, errorThrown) {
+      function (XMLHttpRequest, textStatus, errorThrown) {
         console.log("status:" + textStatus);
         console.log("data:" + XMLHttpRequest.responseText);
       };
@@ -123,7 +139,7 @@ export const http = (opts, params, success, noLoading, error) => {
       "https://api.dpepie.com/,https://api.dpepie.com,*"
     );
     xhr.setRequestHeader("Access-Control-Allow-Credentials", "true");
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           var json = JSON.parse(xhr.responseText || xhr.response);
@@ -200,27 +216,29 @@ export const http = (opts, params, success, noLoading, error) => {
     );
     axios.interceptors.response.use(
       response => {
-        if (response&&response.status && response.status === 200) {
+        if (response && response.status && response.status === 200) {
           notice.loadingHide();
-          state(response, ''); 
-        if (response.data) {
-          return response.data;
-        } else {
+          state(response, '');
+          if (response.data) {
+            return response.data;
+          } else {
+            return response;
+          }
+
+        } else if (response && response.status && response.status != 200) {
+
+          state(response, '');
+          return response;
+        } else if (response) {
+          state({
+            code: 403
+          }, '');
           return response;
         }
-       
-        }else if(response&&response.status && response.status != 200){
-          
-            state(response, ''); 
-            return response;
-          }else if(response){
-            state({code:403}, '');  
-            return response;
-        }
-       
+
       },
       err => {
-        state(err, ''); 
+        state(err, '');
         return Promise.resolve(err.response);
       }
     );
