@@ -7,8 +7,8 @@
       class="innerScroll">
     <TopBar  @clickR="goNews">
       <div class="center-four-search">
-        <div class="four-tit-t">Hello,测试{{uid}}</div>
-        <div class="four-tit-b">{{username}}Chelsea Ialan</div>
+        <div class="four-tit-t">Hello</div>
+        <div class="four-tit-b">{{username}}</div>
         <!-- <img class="img-yueliang" src="@/assets/imgs/yueliang.png" alt />
         <img class="img-yueliang1" src="@/assets/imgs/yueliang1.png" alt />
         <img class="img-fangxing" src="@/assets/imgs/fangxing.png" alt /> -->
@@ -23,7 +23,7 @@
           </van-swipe-item>
         </van-swipe>
         <div class="swiper2Box">
-          <van-swipe :autoplay="400000" class="sweiper2" @change="onSwiperChange">
+          <van-swipe :autoplay="4000" class="sweiper2" @change="onSwiperChange">
             <van-swipe-item v-for="(item, index) in balanceList" @click='goinfo(item.type)' :key="index">
               <!-- <img src="../../assets/imgs/yellowBg.png" alt /> -->
             </van-swipe-item>
@@ -34,7 +34,7 @@
               ref="count"
               :startVal="0"
               :endVal="endVal"
-              :duration="2000"
+              :duration="1000"
               separator=","
               prefix=""
               :useEasing="true"
@@ -128,35 +128,19 @@ export default {
       active: 0,
       startVal: 0,
       endVal: 11072,
-      balanceTile: '本周奖金',
+      balanceTile: '余额',
       images: [{image: banner1}, {image: banner2}],
       headerimg: null,
       balanceList: [
         {
-          name: 'DPE Balance',
-          type: 'dpe',
-          count: 123431
-        },
-
-        {
-          name: 'EP Balance',
+          name: '奖金',
           type: 'ep',
           count: 6666666
         },
         {
-          name: 'RP Balance',
+          name: '注册分',
           type: 'rp',
           count: 33333
-        },
-        {
-          name: 'SP Balance',
-          type: 'sp',
-          count: 88888
-        },
-        {
-          name: 'DPE(主+子) Balance',
-          type: 'sum',
-          count: 3333333
         }
       ],
       listOne: [
@@ -220,31 +204,15 @@ export default {
           this.headerimg = photoList[json.response.photo]
           storage.setLocalStorage('service', json.response.service)
           this.balanceList = [
-
             {
-              name: 'DPE Balance',
-              type: 'dpe',
-              count: json.response.apple
-            },
-            {
-              name: 'EP Balance',
+              name: '奖金',
               type: 'ep',
               count: json.response.gold
             },
             {
-              name: 'RP Balance',
+              name: '注册分',
               type: 'rp',
               count: json.response.rp
-            },
-            {
-              name: 'SP Balance',
-              type: 'sp',
-              count: json.response.seed
-            },
-            {
-              name: 'DPE(主+子) Balance',
-              type: 'sum',
-              count: json.response.sum
             }
           ]
         } else {
@@ -275,7 +243,7 @@ export default {
   },
   mounted () {
     // this.ToGetBanner()
-    // this.TogetUserInfo()
+     this.TogetUserInfo()
     // this.readloadinfo()
   }
 }
