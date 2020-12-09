@@ -11,7 +11,7 @@
     </span>
     <van-action-sheet v-model="sheetShow" class="expressWrap">
       <ul class="box">
-        <li @click="goPage('/friendsList')">
+        <li @click="goPage('/joinUs')">
           <i class="iconfont iconzhucehuiyuan img1"></i>
           <p>新增</p>
         </li>

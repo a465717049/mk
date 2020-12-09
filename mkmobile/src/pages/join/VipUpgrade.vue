@@ -40,7 +40,7 @@
       <div class="sumTitle">合计</div>
         <div class="sumInfo">
           <span class="tit">需扣除您的RP：</span>
-          <span class="num">666</span>
+          <span class="num">{{form.dType}}</span>
         </div>
       <button class="next" @click="ToTranWithMe">确认升级</button>
     </div>
@@ -56,14 +56,14 @@
 <script type="text/javascript">
 import YellowComfirm from "components/YellowComfirm";
 import { http } from "util/request";
-import { TransOtherType, GetUserInfo } from "util/netApi";
+import { TransOtherType, GetUserInfo ,UpdateLevelWeb} from "util/netApi";
 import { storage } from "util/storage";
 import TopBar from "components/TopBar";
 export default {
   data() {
     return {
       form: {
-        oType: "EP",
+        oType: "RP",
         dType: "",
         amount: 0,
         tpwd: "",
@@ -73,19 +73,18 @@ export default {
       showComfirm: false,
 
       receiptTypeList: [
-        { text: "RP", value: "RP" },
-        { text: "SP", value: "SP" }
+        { text: "666", value: 666 },
+        { text: "2000", value: 2000 },
+       { text: "10000", value: 10000 }
       ],
       transPassword: null,
       verificationCode: null,
       tips: "",
       tipsObj: {
-        noamount: "請填寫轉換數量",
         amount: "餘額不足！",
-        notype: "請選擇轉出類型",
-        notpwd: "請填寫交易密碼",
-        nosucceed: "轉換異常，稍後重試",
-        succeed: "轉換成功"
+        notype: "請選擇升級類型",
+        nosucceed: "升級異常，稍後重試",
+        succeed: "升級成功"
       }
     };
   },
@@ -119,6 +118,10 @@ export default {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
           console.log(json);
+           if (json.response.lv_name == 1) this.form.amount =666;
+           if (json.response.lv_name == 2) this.form.amount = 2000;
+           if (json.response.lv_name == 3) this.form.amount = 10000;
+    
           if (this.form.oType == "EP") {
             this.account = json.response.gold;
           } else if (this.form.oType == "RP") {
@@ -128,14 +131,15 @@ export default {
       });
     },
     ToTranWithMe() {
-      if (this.form.amount <= 0) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.noamount;
-        return;
-      }
-      if (this.form.amount > this.account) {
+      if (this.account <= 0) {
         this.showComfirm = true;
         this.tips = this.tipsObj.amount;
+        return;
+      }
+            console.log(this.form.dType)
+      if (this.form.amount >= this.form.dType) {
+        this.showComfirm = true;
+        this.tips = '不能小於當前等級';
         return;
       }
 
@@ -145,15 +149,9 @@ export default {
         return;
       }
 
-      if (!this.form.tpwd) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.notpwd;
-        return;
-      }
-
       console.log(this.form);
       let _this = this;
-      http(TransOtherType, this.form, json => {
+      http(UpdateLevelWeb, {level:this.form.dType}, json => {
         if (json.code === 0) {
           this.showComfirm = true;
           this.tips = this.tipsObj.succeed;
@@ -163,7 +161,7 @@ export default {
           if (!json.success) {
             this.tips = json.msg;
           } else {
-            this.tips = this.tipsObj.nosucceed;
+            this.tips = this.tipsObj.succeed;
           }
         }
       });

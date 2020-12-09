@@ -1635,6 +1635,57 @@ namespace DPE.Core.Controllers
 
         }
 
+
+        //升级
+        [HttpPost]
+        public async Task<MessageModel<dynamic>> UpdateLevelWeb(int level)
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                //AddNewUserModel addmodel
+                if (_user.ID == 0)
+                {
+                    result.code = 61005;
+                    result.success = false;
+                    result.msg = "身份验证过期请重新登陆";
+                    return result;
+                }
+
+                var inforesult = await _sysUserInfoServices.UpdateLevelByWeb(_user.ID, level);
+                if (inforesult == null || inforesult.Rows.Count <= 0)
+                {
+                    result.code = 63001;
+                    result.success = false;
+                    result.msg = "操作失敗，請稍後再試";
+                    return result;
+                }
+
+                if (string.IsNullOrEmpty(inforesult.Rows[0][0].ToString()))
+                {
+                    result.code = 63002;
+                    result.success = false;
+                    result.msg = "操作失敗，請稍後再試";
+                    return result;
+                }
+
+
+                result.code = 0;
+                result.success = true;
+                result.response = inforesult;
+                result.msg = inforesult.Rows[0][0].ToString();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.code = 63003;
+                result.success = false;
+                result.msg = ex.Message + "添加失敗，請稍後再試";
+                return result;
+            }
+
+        }
+
         //生成子账号
         [HttpPost]
         public async Task<MessageModel<dynamic>> CreateSubAccount(long uid, int amount, int area, string tpwd)

@@ -189,10 +189,23 @@ namespace DPE.Core.FrameWork.Services
                 new SugarParameter("TransUserID",model.TransUserID),
                 new SugarParameter("Jid",model.Jid),
                 new SugarParameter("phone",model.phone),
-                new SugarParameter("addr",model.addr)
+                new SugarParameter("addr",model.addr),
+                new SugarParameter("levlename",model.levlename)
             };
             return await _dal.QueryProcTable("Sp_CreatePayUser", par);
         }
+
+
+        public async Task<DataTable> UpdateLevelByWeb(long uid, int level)
+        {
+            SugarParameter[] par = new SugarParameter[] {
+                new SugarParameter("uid",uid),
+                new SugarParameter("level",level)
+               
+            };
+            return await _dal.QueryProcTable("updatesyslevel", par);
+        }
+       
 
         public async Task<DataTable> UpdateOneKeyReturn(long uid)
         {

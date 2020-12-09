@@ -39,6 +39,9 @@ namespace DPE.Core.IServices
 
         Task<DataTable> AddSpCreatePayUser(AddNewUserModel model);
 
+        //更新等级
+        Task<DataTable> UpdateLevelByWeb(long uid ,int level);
+
         Task<DataTable> AddSpCreateSubUser(long parentID, long uid, int amount, int area);
 
         Task<DataTable> UpdateOneKeyReturn(long uid);

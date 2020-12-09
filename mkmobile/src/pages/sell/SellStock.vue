@@ -86,7 +86,6 @@ export default {
     },
     TogetUserInfo() {
       http(GetUserInfo, null, json => {
-        console.log(json)
         if (json.code === 0) {
           this.account = json.response.apple
         }

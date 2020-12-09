@@ -95,6 +95,15 @@ export const SetUserlocationweb = {
   version: v,
   string: true
 };
+
+export const UpdateLevelWeb = {
+  contentType: "application/json",
+  url: "User/UpdateLevelWeb",
+  method: "POST",
+  version: v,
+  string: true
+};
+
 // 修改密码
 export const SetUpdatePassword = {
   contentType: "application/json",

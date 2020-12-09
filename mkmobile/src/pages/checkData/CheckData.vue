@@ -114,7 +114,7 @@ export default {
           if (json.code === 0) {
             //"恭喜！注册成功了！<br/> 登录ID: 100012<br/>登录密码：123456<br/>交易密码：123456<br/>请尽快登录修改并完善个人资料"
             this.isEnter = true;
-            this.tips = "恭喜！注册成功了！<br/> 登录ID:"+json.response[0].OldID+"<br/>登录密码："+this.addmodel.loginPass+"<br/>交易密码："+this.addmodel.TradePass+"<br/>请尽快登录修改并完善个人资料"
+            this.tips = "恭喜！注册成功了！<br/> 登录ID:"+json.msg+"<br/>登录密码："+this.addmodel.loginPass+"<br/>交易密码："+this.addmodel.TradePass+"<br/>请尽快登录修改并完善个人资料"
             this.account = this.account - this.addmodel.investmentAmount;
             this.isreturn = 1;
           } else {

@@ -22,7 +22,7 @@ namespace DPE.Core.Model.Models
         public int Jid { get; set; }
         public int L { get; set; }
 
-
+        public int levlename { get; set; }
         public string phone { get; set; }
         public string addr { get; set; }
     }

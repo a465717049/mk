@@ -85,6 +85,10 @@ export default {
         if (json.code === 0) {
           this.username = json.response.nickname;
           this.isBindGoogle = json.response.isBindGoogle;
+          if (json.response.lv_name == 1) this.level = "666会员";
+          if (json.response.lv_name == 2) this.level = "2000会员";
+          if (json.response.lv_name == 3) this.level = "10000会员";
+
           if (json.response.lv_name == 0) this.userlv = "玩家";
           if (json.response.lv_name == 1) this.userlv = "達標社區";
           if (json.response.lv_name == 2) this.userlv = "初級社區";
