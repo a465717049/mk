@@ -23,7 +23,7 @@
         </li>
               <li>
           <div class="title">手机：</div>
-          <input type="text" v-model="initData.nickName" />
+          <input type="text" v-model="initData.phone" />
           <i class="iconfont iconlock"></i>
         </li>
         <!-- <li>
@@ -52,7 +52,7 @@
         </li> -->
           <li>
           <div class="title">配送地址：</div>
-          <input type="text" v-model="initData.nickName" />
+          <input type="text" v-model="initData.addr" />
           <i class="iconfont iconlock"></i>
         </li>
         <li>
@@ -62,6 +62,7 @@
       </ul>
       <button class="next" @click="goCheckData">提交申请</button>
     </div>
+     <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk"></YellowComfirm>
   </div>
 </template>
 <script type="text/javascript">
@@ -91,6 +92,8 @@ export default {
         iconRight: ""
       },
       initData: {
+        phone:"",
+        addr:"",
         name: "",
         country: "",
         type: 2,
@@ -162,6 +165,8 @@ export default {
             this.addmodel.CountryPhoneCode = this.initData.country;
             this.addmodel.idNumber = this.initData.typeNumber;
             this.addmodel.TradePass = this.initData.password;
+            this.addmodel.phone = this.initData.phone;
+            this.addmodel.addr = this.initData.addr;
             storage.setLocalStorage("joindata", JSON.stringify(this.addmodel));
             this.$router.push({ name: "CheckData" });
           } else {
@@ -180,6 +185,8 @@ export default {
       this.initData.country = this.addmodel.CountryPhoneCode;
       this.initData.typeNumber = this.addmodel.idNumber;
       this.initData.password = this.addmodel.TradePass;
+      this.initData.phone=this.addmodel.phone;
+      this.initData.addr=this.addmodel.addr;
       if (this.addmodel.L == 0) {
         this.initData.radioValue = "0";
       } else {

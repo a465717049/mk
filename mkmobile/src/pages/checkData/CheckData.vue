@@ -39,15 +39,15 @@
           </li>
         </ul>-->
         <ul class="vipInfo">
-          <li>呢称：小呀小太郎</li>
-          <li>安置ID: 152023 (小红书）</li>
-          <li>接点ID: 152023 (小红书）</li>
-          <li>会员级别： 666会员</li>
+          <li>呢称：{{initData.addname}}</li>
+          <li>安置ID: {{initData.addpid}}</li>
+          <li>接点ID: {{initData.addtid}}</li>
+          <li>会员级别： {{initData.addlevle}}</li>
         </ul>
         <div class="sumTitle">合计</div>
         <div class="sumInfo">
           <span class="tit">需扣除您的RP：</span>
-          <span class="num">666</span>
+          <span class="num">{{initData.addprice}}</span>
         </div>
         <div class="buttonWrap">
           <button class="back" @click="goNext"><i class="iconfont iconfanhui"></i> 返回修改</button>
@@ -80,11 +80,17 @@ export default {
       isEnter: false,
       account: "2,000",
       isreturn: 0,
+     
       addmodel: {},
       initData: {
-        price: "",
-        positionId: "",
-        area: ""
+      price: "",
+      positionId: "",
+      area: "",
+      addname:"",
+      addpid:0,
+      addtid:0,
+      addlevle:"",
+      addprice:0,
       },
       option1: [
         { text: "1000", value: 1 },
@@ -106,8 +112,9 @@ export default {
         { jsondata: JSON.stringify(this.addmodel) },
         json => {
           if (json.code === 0) {
+            //"恭喜！注册成功了！<br/> 登录ID: 100012<br/>登录密码：123456<br/>交易密码：123456<br/>请尽快登录修改并完善个人资料"
             this.isEnter = true;
-            this.tips = "新账号:" + json.msg;
+            this.tips = "恭喜！注册成功了！<br/> 登录ID:"+json.response[0].OldID+"<br/>登录密码："+this.addmodel.loginPass+"<br/>交易密码："+this.addmodel.TradePass+"<br/>请尽快登录修改并完善个人资料"
             this.account = this.account - this.addmodel.investmentAmount;
             this.isreturn = 1;
           } else {
@@ -137,11 +144,18 @@ export default {
     }
   },
   created() {
+ 
     this.TogetUserInfo();
     if (storage.getLocalStorage("joindata")) {
       this.addmodel = JSON.parse(storage.getLocalStorage("joindata"));
+         console.log(this.addmodel)
       this.initData.price = this.addmodel.investmentAmount;
-      this.initData.positionId = this.addmodel.Jid;
+      this.initData.addname = this.addmodel.NickName;
+      this.initData.addtid = this.addmodel.Jid;
+      this.initData.addpid = this.addmodel.parentID;
+      this.initData.addprice=this.addmodel.investmentAmount;
+      this.initData.addlevle =this.addmodel.levlename;
+
       if (this.addmodel.L == 0) {
         this.initData.area = "蔬菜區";
       } else {

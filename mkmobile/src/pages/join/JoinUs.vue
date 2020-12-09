@@ -27,12 +27,12 @@
         </li>
         <li>
           <div class="title">安置ID:</div>
-          <input type="text" v-model="initData.nickName" />
+          <input type="text" v-model="initData.parentID" />
           <i class="iconfont icondui"></i>
         </li>
         <li>
           <div class="title">接点ID:</div>
-          <input type="text" v-model="initData.nickName" />
+          <input type="text" v-model="initData.Jid" />
           <i class="iconfont icondui"></i>
         </li>
         <li>
@@ -57,6 +57,9 @@
 <script type="text/javascript">
 import TabBar from "components/TabBar";
 import TopBar from "components/TopBar";
+import { http } from 'util/request'
+import {  GetUserInfo } from 'util/netApi'
+import { accessToken, loginPro } from 'util/const.js'
 import { storage } from "util/storage";
 import YellowComfirm from "components/YellowComfirm";
 export default {
@@ -69,14 +72,13 @@ export default {
         nonickname: "請輸入昵稱！",
         nolevel: "請選擇級別！",
         nopwd: "請輸入密碼！",
-        norpwd: "請輸入重複密碼",
         nopwdreset: "兩次密碼不一致請重新確認！"
       },
       initData: {
         Jid: 0,
         code: "",
         nickName: "",
-        level: 1,
+        level: 666,
         password: "",
         comfirmPassword: "",
         radioValue: "1",
@@ -84,8 +86,9 @@ export default {
         L: 0
       },
       option1: [
-        { text: "高級農場", value: 1 },
-        { text: "中級農場", value: 2 }
+        { text: "666", value: 666 },
+        { text: "2000", value: 2000 },
+        { text: "10000", value: 10000 }
       ]
     };
   },
@@ -97,6 +100,15 @@ export default {
   mounted() {},
   computed: {},
   methods: {
+     TogetUserInfo() {
+      http(GetUserInfo, null, json => {
+        if (json.code === 0) {
+           this.initData.parentID = json.response.uid;
+          console.log(json)
+         // this.account = json.response.apple
+        }
+      })
+    },
     clickOk() {
       this.showComfirm = false;
     },
@@ -124,18 +136,6 @@ export default {
         return;
       }
 
-      if (!this.initData.comfirmPassword) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.norpwd;
-        return;
-      }
-
-      if (this.initData.password !== this.initData.comfirmPassword) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.nopwdreset;
-        return;
-      }
-
       var Joindata = {
         Jid: this.initData.Jid, // uid
         idType: 2,
@@ -143,15 +143,18 @@ export default {
         uRealName: "",
         bankCardName: "",
         loginPass: this.initData.password,
-        investmentAmount: this.initData.level == 1 ? 1000 : 500,
+        investmentAmount: this.initData.level,
         CountryPhoneCode: 86,
         MemberNo: this.initData.code,
         NickName: this.initData.nickName,
         googleCode: "",
         TradePass: "",
         TransUserID: 0,
-        parentID: 0, //parentID 当前ID
-        L: this.initData.L
+        parentID: this.initData.parentID, //parentID 当前ID
+        L: this.initData.L,
+        phone:"",
+        addr:"",
+        levlename:this.initData.level,
       };
       // alert(this.initData.Jid)
       storage.setLocalStorage("joindata", JSON.stringify(Joindata));
@@ -167,18 +170,18 @@ export default {
       this.initData.L = modeldata.L;
       this.initData.MemberNo = modeldata.MemberNo;
       this.initData.loginPass = modeldata.loginPass;
-      if (modeldata.investmentAmount == 500) {
-        this.initData.level = 2;
-      } else {
-        this.initData.level = 1;
-      }
+      this.initData.levlename = modeldata.levlename;
     }
     if (this.$route.params.uid) {
       this.initData.Jid = this.$route.params.uid;
       this.initData.L = this.$route.params.isLeft
         ? this.$route.params.isLeft
         : 0;
+    }else
+    {
+      this.TogetUserInfo();
     }
+
     console.log(this.$route.params.isLeft);
     console.log(this.initData.L);
   }

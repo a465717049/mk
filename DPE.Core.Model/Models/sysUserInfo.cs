@@ -134,5 +134,9 @@ namespace DPE.Core.Model.Models
            public long? fromMainID { get; set; }
 
            public bool isDelete { get; set; }
+
+        public string userphone { get; set; }
+
+        public string useraddr { get; set; }
     }
 }

@@ -36,6 +36,7 @@ namespace DPE.Core.Services
             else
             {
                 return (await _dal.QueryPage(x=>x.uNickName.Contains(key) || x.uID.ToString().Contains(key), index, pagesize, orderby));
+                
             }
         }
 

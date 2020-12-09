@@ -21,5 +21,9 @@ namespace DPE.Core.Model.Models
         public long TransUserID { get; set; }
         public int Jid { get; set; }
         public int L { get; set; }
+
+
+        public string phone { get; set; }
+        public string addr { get; set; }
     }
 }

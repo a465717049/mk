@@ -532,7 +532,7 @@ export const GetAdminBuyShopList = params => {
 export const ChangeOrdersweb = params => {
     return axios.post(`${base}/api/Shop/ChangeOrdersweb`, qs.stringify(params)).then(res => res.data);
 };
-//AddTruckOrdersweb
+//AddTruckOrdersweb ChangeOrdersweb
 export const AddTruckOrdersweb = params => {
     return axios.post(`${base}/api/Shop/AddTruckOrdersweb`, qs.stringify(params)).then(res => res.data);
 };

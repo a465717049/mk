@@ -1599,6 +1599,9 @@ namespace DPE.Core.Controllers
                 jsonInfo.idNumber = MD5Helper.MD5Encrypt32(jsonInfo.idNumber);
                 jsonInfo.googleCode = MD5Helper.GenerateUniqueText();
                 jsonInfo.TradePass = MD5Helper.MD5Encrypt32("123456");
+
+
+
                 var inforesult = await _sysUserInfoServices.AddSpCreatePayUser(jsonInfo);
                 if (inforesult == null || inforesult.Rows.Count <= 0)
                 {
@@ -1622,11 +1625,11 @@ namespace DPE.Core.Controllers
                 result.msg = inforesult.Rows[0][0].ToString();
                 return result;
             }
-            catch
+            catch(Exception ex)
             {
                 result.code = 63003;
                 result.success = false;
-                result.msg = "添加失敗，請稍後再試";
+                result.msg = ex.Message+"添加失敗，請稍後再試";
                 return result;
             }
 
