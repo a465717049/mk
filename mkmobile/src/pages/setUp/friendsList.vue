@@ -119,7 +119,7 @@ export default {
       this.loadinfo();
     },
     gofriend(uID) {
-      this.$router.push({ name: "relation", params: { uid: uID } });
+      //this.$router.push({ name: "relation", params: { uid: uID } });
     }
   },
   created() {
