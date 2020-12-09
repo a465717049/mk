@@ -27,7 +27,7 @@ let getAccessToken = () => {
 let headerOption = () => {
   return {
     Authorization: getAccessToken(),
-    "Access-Control-Allow-Origin": "https://api.dpepie.com/",
+    "Access-Control-Allow-Origin": "https://api.a8dog.top/",
     "Access-Control-Allow-Credentials": "true",
     "content-type": "application/json;"
   };
