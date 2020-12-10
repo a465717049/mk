@@ -43,7 +43,7 @@
         </li>
       </ul>
       <div class="bottom-part">
-        <div class="version1">MOKI MONKEY 摩奇候</div>
+        <div class="version1">MOKI MONKEY 摩奇猴</div>
         <div class="version2">MOKI MONKEY Co.,ltd.. Copyright 2020 (C) All right reserved</div>
       </div>
     </div>
@@ -57,22 +57,22 @@
 </template>
 
 <script>
-import YellowComfirm from "components/YellowComfirm";
-import TopBar from "components/TopBar";
-import { storage } from "util/storage";
-import { http } from "util/request";
-import { getVerificationCode, checkUser } from "util/netApi";
-import forgot from "@/assets/imgs/login/forgot.png";
+import YellowComfirm from 'components/YellowComfirm'
+import TopBar from 'components/TopBar'
+import { storage } from 'util/storage'
+import { http } from 'util/request'
+import { getVerificationCode, checkUser } from 'util/netApi'
+import forgot from '@/assets/imgs/login/head.png'
 export default {
   components: {
     TopBar,
     YellowComfirm
   },
-  data() {
+  data () {
     return {
       topBarOption: {
-        iconLeft: "back",
-        iconRight: ""
+        iconLeft: 'back',
+        iconRight: ''
       },
       passwordType: 0,
       id: null,
@@ -84,54 +84,54 @@ export default {
       //  receiptId: null,
       //  transPassword: null,
       //  verificationCode: null,
-      tips: "",
+      tips: '',
       passwordTypeList: [
-        { text: "登录密码", value: 0 }
+        { text: '登录密码', value: 0 }
         //      { text: "交易密码", value: 1 }
       ]
-    };
+    }
   },
-  mounted() {
-    //this.getVerificationCode();
+  mounted () {
+    // this.getVerificationCode();
   },
   methods: {
-    clickOk() {
-      this.showComfirm = false;
+    clickOk () {
+      this.showComfirm = false
     },
-    changeModel(v) {
-      this.showComfirm = v;
+    changeModel (v) {
+      this.showComfirm = v
     },
-    getVerificationCode() {
+    getVerificationCode () {
       http(getVerificationCode, null, json => {
         if (json.code === 0) {
-          console.log(json.response.vcode);
-          let img = json.response.vcode;
-          var tem1 = img.substring(0, img.length - 21);
-          var tem2 = img.substring(img.length - 16);
-          this.code = img.substring(img.length - 21, img.length - 16);
-          this.image = "data:image/png;base64," + tem1 + tem2;
+          console.log(json.response.vcode)
+          let img = json.response.vcode
+          var tem1 = img.substring(0, img.length - 21)
+          var tem2 = img.substring(img.length - 16)
+          this.code = img.substring(img.length - 21, img.length - 16)
+          this.image = 'data:image/png;base64,' + tem1 + tem2
         }
-      });
+      })
     },
-    gox() {
+    gox () {
       // if (this.verification.toLowerCase() != this.code.toLowerCase()) {
       //   this.tips = "验证码错误！请确认验证码是否正确！";
       //   this.showComfirm = true;
       //   return;
       // }
       http(checkUser, { uid: this.id }, json => {
-        console.log(this.id);
+        console.log(this.id)
         if (json.code === 0) {
-          this.isEnter = false;
+          this.isEnter = false
           this.$router.push({
-            name: "Verification",
+            name: 'Verification',
             params: { uid: this.id }
-          });
+          })
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -144,6 +144,7 @@ export default {
     color: #000403;
     font-weight: bolder;
     z-index: 2;
+    margin-top: 40px;
     position: relative;
   }
   .tipWrap {
@@ -160,13 +161,13 @@ export default {
     overflow-y: scroll;
     height: calc(100vh);
     background: #efb618 url("../../assets/imgs/login/ybj.png") no-repeat left
-      top / 100% 100%;
+      top / 100%;
     padding-top: 450px;
+    background-position-y: -300px;
     .head {
       display: block;
-      width: 370px;
-      height: 294px;
-      // margin: 80px auto 230px;
+      width: 360px;
+      height: 360px;
       position: absolute;
       top: 80px;
       left: calc(50vw - 185px);

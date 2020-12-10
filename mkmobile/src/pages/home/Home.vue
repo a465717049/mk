@@ -108,6 +108,7 @@
 import TopBar from 'components/TopBar'
 import banner1 from '../../assets/imgs/banner-00.png'
 import banner2 from '../../assets/imgs/banner-01.png'
+import banner3 from '../../assets/imgs/banner-02.png'
 import defaultImg from '@/assets/imgs/set/head02.png'
 import countTo from 'components/countTo'
 import { http } from 'util/request'
@@ -129,7 +130,7 @@ export default {
       startVal: 0,
       endVal: 11072,
       balanceTile: '余额',
-      images: [{image: banner1}, {image: banner2}],
+      images: [{image: banner1}, {image: banner2}, {image: banner3}],
       headerimg: null,
       balanceList: [
         {
@@ -243,7 +244,7 @@ export default {
   },
   mounted () {
     // this.ToGetBanner()
-     this.TogetUserInfo()
+    this.TogetUserInfo()
     // this.readloadinfo()
   }
 }
@@ -276,7 +277,7 @@ export default {
     /deep/ .van-swipe-item {
       border-radius: 24px;
       overflow: hidden;
-      border: 10px solid #fff;
+      // border: 10px solid #fff;
     }
     /deep/ .van-swipe__indicator {
       width: 20px;
