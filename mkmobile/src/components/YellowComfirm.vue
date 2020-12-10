@@ -7,7 +7,7 @@
   >
     <div class="brown-border clearfix">
       <div class="yellow-bg">
-        <img class="item-l" src="@/assets/imgs/googl-header.png" alt />
+        <img class="item-l" src="@/assets/imgs/login/head.png" alt />
         <i class="iconfont iconguanbi" @click="clickNo"></i>
         <div class="item-r">
           <h3 class="item-r-tit">提示：</h3>
@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  name: "YellowComfirm",
+  name: 'YellowComfirm',
   components: {},
   props: {
     show: {
@@ -35,7 +35,7 @@ export default {
     },
     tipTitle: {
       type: String,
-      default: "操作成功"
+      default: '操作成功'
     },
     showConfirmBtn: {
       type: Boolean,
@@ -43,40 +43,40 @@ export default {
     },
     first: {
       type: String,
-      default: "主農場"
+      default: '主農場'
     },
     second: {
       type: String,
-      default: "子農場"
+      default: '子農場'
     }
   },
-  data() {
+  data () {
     return {
       modelShow: false
-    };
+    }
   },
   watch: {
-    show(newV) {
-      this.modelShow = newV;
+    show (newV) {
+      this.modelShow = newV
     },
-    modelShow(newV) {
-      this.$emit("changeModel", newV);
+    modelShow (newV) {
+      this.$emit('changeModel', newV)
     }
   },
   methods: {
-    clickOver() {
-      this.$emit("clickOver", false);
+    clickOver () {
+      this.$emit('clickOver', false)
     },
-    //输入支付密码
-    clickOk() {
-      this.$emit("clickOk");
+    // 输入支付密码
+    clickOk () {
+      this.$emit('clickOk')
     },
-    clickNo() {
-       this.modelShow=false
-      this.$emit("clickNo");
+    clickNo () {
+      this.modelShow = false
+      this.$emit('clickNo')
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -86,7 +86,7 @@ export default {
   border-radius: 30px;
   padding: 5px;
   .brown-border {
-    padding: 40px 40px 20px 40px;
+    padding: 50px 40px;
     border: 12px solid #fff;
     width: 100%;
     border-radius: 30px;
@@ -139,8 +139,8 @@ export default {
   display: flex;
   position: relative;
   .item-l {
-    width: 98px;
-    height: 118px;
+    width: 108px;
+    height: 108px;
     margin-right: 60px;
   }
   .item-r {
@@ -151,6 +151,7 @@ export default {
       font-weight: bold;
       line-height: 60px;
       color: #410305;
+      margin-bottom: 10px;
     }
     .item-r-tip {
       font-size: 33px;

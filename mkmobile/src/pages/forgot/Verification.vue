@@ -31,7 +31,7 @@
         </li>
       </ul>
       <div class="bottom-part">
-        <div class="version1">MOKI MONKEY 摩奇候</div>
+        <div class="version1">MOKI MONKEY 摩奇猴</div>
         <div class="version2">MOKI MONKEY Co.,ltd.. Copyright 2020 (C) All right reserved</div>
       </div>
       <YellowComfirm
@@ -46,71 +46,71 @@
 </template>
 
 <script>
-import TopBar from "components/TopBar";
-import YellowComfirm from "components/YellowComfirm";
-import { GetQuestionListByID, GetCheckQuestionAll } from "util/netApi";
-import { http } from "util/request";
-import { storage } from "util/storage";
-import { accessToken, loginPro } from "util/const.js";
-import forgot from "@/assets/imgs/login/forgot.png";
+import TopBar from 'components/TopBar'
+import YellowComfirm from 'components/YellowComfirm'
+import { GetQuestionListByID, GetCheckQuestionAll } from 'util/netApi'
+import { http } from 'util/request'
+import { storage } from 'util/storage'
+import { accessToken, loginPro } from 'util/const.js'
+import forgot from '@/assets/imgs/login/head.png'
 export default {
   components: {
     TopBar,
     YellowComfirm,
-    tips: ""
+    tips: ''
   },
-  data() {
+  data () {
     return {
       forgotImg: forgot,
       isEnter: false,
       showConfirm: true,
       topBarOption: {
-        iconLeft: "back",
-        iconRight: ""
+        iconLeft: 'back',
+        iconRight: ''
       },
-      Q1: "q1",
-      Q2: "q2",
-      Q3: "q3",
+      Q1: 'q1',
+      Q2: 'q2',
+      Q3: 'q3',
       initData: {
         q1id: 0,
         q2id: 0,
         q3id: 0,
-        q1name: "",
-        q2name: "",
-        q3name: ""
+        q1name: '',
+        q2name: '',
+        q3name: ''
       },
       isfig: false
-    };
+    }
   },
-  mounted() {},
-  created() {
-    this.getVerificationCode();
+  mounted () {},
+  created () {
+    this.getVerificationCode()
   },
   methods: {
-    clickOk() {
-      this.isEnter = false;
+    clickOk () {
+      this.isEnter = false
       if (this.isfig) {
-        this.$router.push({ name: "/Login" });
+        this.$router.push({ name: '/Login' })
       }
       //  this.$router.push({ name: "/Login" });
     },
-    changeModel(v) {
-      this.isEnter = v;
+    changeModel (v) {
+      this.isEnter = v
     },
-    submit() {
-      var answerslist = new Array();
+    submit () {
+      var answerslist = new Array()
       answerslist.push({
         qID: this.initData.q1id,
         answer: this.initData.q1name
-      });
+      })
       answerslist.push({
         qID: this.initData.q2id,
         answer: this.initData.q2name
-      });
+      })
       answerslist.push({
         qID: this.initData.q3id,
         answer: this.initData.q3name
-      });
+      })
       http(
         GetCheckQuestionAll,
         {
@@ -119,33 +119,33 @@ export default {
         },
         json => {
           if (json.code === 0) {
-            this.isEnter = true;
-            //let img = json.response.vcode;
-            this.isfig = true;
-            this.tips = "密碼重置為123456,請儘快登錄修改！";
+            this.isEnter = true
+            // let img = json.response.vcode;
+            this.isfig = true
+            this.tips = '密碼重置為123456,請儘快登錄修改！'
           } else {
-            this.tips = json.msg;
-            this.isEnter = true;
+            this.tips = json.msg
+            this.isEnter = true
           }
         }
-      );
+      )
       //  this.isEnter = true;
     },
-    getVerificationCode() {
+    getVerificationCode () {
       http(GetQuestionListByID, { uid: this.$route.params.uid }, json => {
         if (json.code === 0) {
-          //let img = json.response.vcode;
-          this.initData.q1id = json.response[0].Id;
-          this.initData.q2id = json.response[1].Id;
-          this.initData.q3id = json.response[2].Id;
-          this.Q1 = json.response[0].Question_CN;
-          this.Q2 = json.response[1].Question_CN;
-          this.Q3 = json.response[2].Question_CN;
+          // let img = json.response.vcode;
+          this.initData.q1id = json.response[0].Id
+          this.initData.q2id = json.response[1].Id
+          this.initData.q3id = json.response[2].Id
+          this.Q1 = json.response[0].Question_CN
+          this.Q2 = json.response[1].Question_CN
+          this.Q3 = json.response[2].Question_CN
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -157,6 +157,7 @@ export default {
     font-size: 70px;
     color: #000403;
     font-weight: bolder;
+    margin-top: 40px;
     z-index: 2;
     position: relative;
   }
@@ -174,12 +175,13 @@ export default {
     overflow-y: scroll;
     height: calc(100vh);
     background: #efb618 url("../../assets/imgs/login/ybj.png") no-repeat left
-      top / 100% 100%;
+      top / 100% ;
+    background-position-y: -300px;
     padding-top: 450px;
     .head {
       display: block;
-      width: 370px;
-      height: 294px;
+      width: 360px;
+      height: 360px;
       position: absolute;
       top: 80px;
       left: calc(50vw - 185px);

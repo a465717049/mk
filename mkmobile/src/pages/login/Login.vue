@@ -3,13 +3,13 @@
     <div class="top-part">
       <div class="img-part">
         <div class="head">
-          <div class="eye eye1" v-show="time%7===1"></div>
+          <!-- <div class="eye eye1" v-show="time%7===1"></div>
           <div class="eye eye2" v-show="time%7===2"></div>
           <div class="eye eye3" v-show="time%7===3"></div>
           <div class="eye eye4" v-show="time%7===4"></div>
           <div class="eye eye5" v-show="time%7===5"></div>
           <div class="eye eye6" v-show="time%7===6"></div>
-          <div class="eye eye7" v-show="time%7===0"></div>
+          <div class="eye eye7" v-show="time%7===0"></div> -->
         </div>
       </div>
       <div class="label">
@@ -55,7 +55,7 @@
     </div>
 
     <div class="bottom-part">
-      <div class="version1">MOKI MONKEY 摩奇候 ver 1.0</div>
+      <div class="version1">MOKI MONKEY 摩奇猴 ver 1.0</div>
       <div class="version2">MOKI MONKEY Co.,ltd.. Copyright 2020 (C) All right reserved</div>
     </div>
     <YellowComfirm
@@ -68,153 +68,153 @@
   </div>
 </template>
 <script>
-import YellowComfirm from "components/YellowComfirm";
-import { http } from "util/request";
-import { getLogin } from "util/netApi";
-import { storage } from "util/storage";
-import { accessToken, loginPro } from "util/const.js";
+import YellowComfirm from 'components/YellowComfirm'
+import { http } from 'util/request'
+import { getLogin } from 'util/netApi'
+import { storage } from 'util/storage'
+import { accessToken, loginPro } from 'util/const.js'
 export default {
   components: {
     YellowComfirm
   },
-  data() {
+  data () {
     return {
       form: {
-        name: "",
-        pass: ""
+        name: '',
+        pass: ''
       },
       timer: null,
       time: 1,
       value: 0,
-      ifSave: false, //是否保存密码
+      ifSave: false, // 是否保存密码
       showP: false,
       showComfirm: false,
-      tips: "",
+      tips: '',
       redirect: null,
       tipsObj: {
-        noId: "用戶ID沒有輸入",
-        nolong: "用戶ID為5-18位",
-        noP: "密碼沒有輸入",
-        noRegister: "用戶ID不存在",
-        errorP: "登錄密碼不正確"
+        noId: '用戶ID沒有輸入',
+        nolong: '用戶ID為5-18位',
+        noP: '密碼沒有輸入',
+        noRegister: '用戶ID不存在',
+        errorP: '登錄密碼不正確'
       },
-      option: [{ text: "全部清除", value: "" }],
+      option: [{ text: '全部清除', value: '' }],
       clientWidth: document.documentElement.clientWidth
-    };
+    }
   },
 
   methods: {
-    login() {
+    login () {
       if (!this.form.name) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.noId;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.noId
+        return
       }
       if (this.form.name.length < 5 || this.form.name.length > 18) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.nolong;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.nolong
+        return
       }
       if (!this.form.pass) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.noP;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.noP
+        return
       }
-      let _this = this;
+      let _this = this
       http(getLogin, this.form, json => {
         if (json.code === 0) {
-          storage.setLocalStorage(accessToken, "Bearer " + json.response.token);
+          storage.setLocalStorage(accessToken, 'Bearer ' + json.response.token)
           if (_this.ifSave) {
             let str =
               '{"name":"' +
               _this.form.name +
               '","pass":"' +
               _this.form.name +
-              ":" +
+              ':' +
               _this.form.pass +
-              '"}';
-            let account = storage.getLocalStorage("accountList");
+              '"}'
+            let account = storage.getLocalStorage('accountList')
             if (!account) {
-              account = "[]";
+              account = '[]'
             }
-            let list = JSON.parse(account);
-            let add = false;
+            let list = JSON.parse(account)
+            let add = false
             list.forEach((item, index) => {
               if (item.name == _this.form.name) {
-                list.splice(index, 1);
-                list.push(JSON.parse(str));
-                add = true;
+                list.splice(index, 1)
+                list.push(JSON.parse(str))
+                add = true
               }
-            });
+            })
             if (!add) {
-              list.push(JSON.parse(str));
+              list.push(JSON.parse(str))
             }
-            storage.setLocalStorage("accountList", JSON.stringify(list));
+            storage.setLocalStorage('accountList', JSON.stringify(list))
           }
           if (_this.redirect) {
-            _this.$router.push(_this.redirect);
-            storage.delLocalStorage(loginPro);
+            _this.$router.push(_this.redirect)
+            storage.delLocalStorage(loginPro)
           } else {
             _this.$router.push({
-              name: "Home",
+              name: 'Home',
               params: { name: this.form.name }
-            });
+            })
           }
         } else {
-          this.showComfirm = true;
-          this.tips = json.msg == "" ? this.tipsObj.noRegister : json.msg;
+          this.showComfirm = true
+          this.tips = json.msg == '' ? this.tipsObj.noRegister : json.msg
         }
-      });
+      })
     },
-    loadstorage() {
-      let account = storage.getLocalStorage("accountList");
+    loadstorage () {
+      let account = storage.getLocalStorage('accountList')
 
       if (!account) {
-        account = "[]";
+        account = '[]'
       }
-      let list = JSON.parse(account);
-      var that = this;
-      that.option = [];
+      let list = JSON.parse(account)
+      var that = this
+      that.option = []
       list.forEach(element => {
-        that.option.push({ text: element.name, value: element.pass });
-      });
+        that.option.push({ text: element.name, value: element.pass })
+      })
       if (that.option.length > 0) {
-        that.option.push({ text: "全部清除", value: "" });
+        that.option.push({ text: '全部清除', value: '' })
       }
     },
-    clickOk() {
-      this.showComfirm = false;
+    clickOk () {
+      this.showComfirm = false
     },
-    changeModel(v) {
-      this.showComfirm = v;
+    changeModel (v) {
+      this.showComfirm = v
     },
-    onFocus() {},
-    dealChange(index) {
-      let val = this.option.filter(item => item.value === this.value)[0].value;
-      if (val == "") {
-        storage.delLocalStorage("accountList");
+    onFocus () {},
+    dealChange (index) {
+      let val = this.option.filter(item => item.value === this.value)[0].value
+      if (val == '') {
+        storage.delLocalStorage('accountList')
       } else {
-        console.log(val);
-        let list = val.split(":");
-        this.form.name = list[0];
-        this.form.pass = list[1];
+        console.log(val)
+        let list = val.split(':')
+        this.form.name = list[0]
+        this.form.pass = list[1]
       }
     }
   },
-  created() {
-    this.loadstorage();
+  created () {
+    this.loadstorage()
   },
-  mounted() {
-    this.redirect = storage.getLocalStorage(loginPro);
-    storage.delLocalStorage(accessToken);
+  mounted () {
+    this.redirect = storage.getLocalStorage(loginPro)
+    storage.delLocalStorage(accessToken)
     this.timer = setInterval(() => {
-      this.time++;
-    }, 2000);
+      this.time++
+    }, 2000)
   },
-  beforeDestroy() {
-    clearInterval(this.timer);
+  beforeDestroy () {
+    clearInterval(this.timer)
   }
-};
+}
 </script>
 <style lang="less" scoped>
 @keyframes myfirst {
@@ -238,8 +238,9 @@ export default {
   position: relative;
   background-color: #efb618;
   min-height: 1900px;
-  background: #efb618 url("../../assets/imgs/login/ybj.png") no-repeat left top /
-    100% 100%;
+  background: #efb618 url("../../assets/imgs/login/ybj.png") no-repeat left top/
+    100% ;
+    background-position-y: -160px;
   .top-part {
     height: 75%;
     position: relative;
@@ -248,50 +249,50 @@ export default {
       position: relative;
       height: 50%;
       .head {
-        height: 516px;
+        height: 360px;
         position: absolute;
-        width: 654px;
+        width: 360px;
         background: url("../../assets/imgs/login/head.png") no-repeat left top /
           100% 100%;
         left: 50%;
-        margin-left: -327px;
+        margin-left: -180px;
         top: 200px;
-        .eye {
-          animation: myfirst 2s linear 0s infinite;
-          position: absolute;
-          top: 150px;
-          left: 250px;
-          width: 160px;
-          height: 60px;
-        }
-        .eye1 {
-          background: url("../../assets/imgs/login/eye1.png") no-repeat left top /
-            100% 100%;
-        }
-        .eye2 {
-          background: url("../../assets/imgs/login/eye2.png") no-repeat left top /
-            100% 100%;
-        }
-        .eye3 {
-          background: url("../../assets/imgs/login/eye3.png") no-repeat left top /
-            100% 100%;
-        }
-        .eye4 {
-          background: url("../../assets/imgs/login/eye4.png") no-repeat left top /
-            100% 100%;
-        }
-        .eye5 {
-          background: url("../../assets/imgs/login/eye5.png") no-repeat left top /
-            100% 100%;
-        }
-        .eye6 {
-          background: url("../../assets/imgs/login/eye6.png") no-repeat left top /
-            100% 100%;
-        }
-        .eye7 {
-          background: url("../../assets/imgs/login/eye7.png") no-repeat left top /
-            100% 100%;
-        }
+        // .eye {
+        //   animation: myfirst 2s linear 0s infinite;
+        //   position: absolute;
+        //   top: 150px;
+        //   left: 250px;
+        //   width: 160px;
+        //   height: 60px;
+        // }
+        // .eye1 {
+        //   background: url("../../assets/imgs/login/eye1.png") no-repeat left top /
+        //     100% 100%;
+        // }
+        // .eye2 {
+        //   background: url("../../assets/imgs/login/eye2.png") no-repeat left top /
+        //     100% 100%;
+        // }
+        // .eye3 {
+        //   background: url("../../assets/imgs/login/eye3.png") no-repeat left top /
+        //     100% 100%;
+        // }
+        // .eye4 {
+        //   background: url("../../assets/imgs/login/eye4.png") no-repeat left top /
+        //     100% 100%;
+        // }
+        // .eye5 {
+        //   background: url("../../assets/imgs/login/eye5.png") no-repeat left top /
+        //     100% 100%;
+        // }
+        // .eye6 {
+        //   background: url("../../assets/imgs/login/eye6.png") no-repeat left top /
+        //     100% 100%;
+        // }
+        // .eye7 {
+        //   background: url("../../assets/imgs/login/eye7.png") no-repeat left top /
+        //     100% 100%;
+        // }
       }
     }
 
