@@ -90,7 +90,7 @@ export default {
   },
   computed: {
     itemWidth() {
-      return (document.documentElement.clientWidth - 60) / 2;
+      return (document.documentElement.clientWidth - 70) / 2;
     },
     gutterWidth() {
       return 30 * 0.5 * (document.documentElement.clientWidth / 375);
@@ -112,7 +112,19 @@ export default {
     ToGetShopList() {
       http(GetShopList, null, json => {
         if (json.code === 0) {
+
           this.data = json.response.list;
+          this.data.forEach(el=>{
+          let img = null;
+          try {
+          img = require('@/assets/imgs/shop/goods-'+el.id+'.png');
+          } catch (err) {//图片 不存在则使用默认的图片
+          img = require("@/assets/imgs/shop/camea.png");
+          }
+          return el.icon_url = img
+          })
+
+
         }
       });
     },
@@ -131,6 +143,15 @@ export default {
         if (json.code === 0) {
           console.log(json);
           this.data = json.response.list;
+            this.data.forEach(el=>{
+          let img = null;
+          try {
+          img = require('@/assets/imgs/shop/goods-'+el.id+'.png');
+          } catch (err) {//图片 不存在则使用默认的图片
+          img = require("@/assets/imgs/shop/camea.png");
+          }
+          return el.icon_url = img
+          })
           // this.username = json.response.nickname
         }
       });

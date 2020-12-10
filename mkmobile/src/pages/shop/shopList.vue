@@ -77,7 +77,7 @@ export default {
   },
   computed: {
     itemWidth() {
-      return (document.documentElement.clientWidth - 60) / 2;
+      return (document.documentElement.clientWidth - 70) / 2;
     },
     gutterWidth() {
       return 30 * 0.5 * (document.documentElement.clientWidth / 375);
