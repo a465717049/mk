@@ -11,11 +11,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      "/api": {
-        target: "https://api.dpepie.com",
+      '/api': {
+        target: 'https://api.a8dog.top',
         changeOrigin: true,
         pathRewrite: {
-          "^/api": "/api/"
+          '^/api': '/api/'
         }
       }
     },
