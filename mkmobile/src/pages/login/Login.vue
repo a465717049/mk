@@ -21,7 +21,7 @@
           </van-dropdown-menu>
         </div>
         <div class="label-info">
-          <span class="title">密碼</span>
+          <span class="title">密码</span>
           <i class="iconfont iconeye eye" @click="showP=!showP"></i>
           <input
             class="input"
@@ -43,20 +43,20 @@
         <div class="save">
           <van-field name="checkbox">
             <template #input>
-              <van-checkbox v-model="ifSave" shape="square">記住密碼</van-checkbox>
+              <van-checkbox v-model="ifSave" shape="square">记住密码</van-checkbox>
             </template>
           </van-field>
         </div>
         <div class="secret">
-          <router-link class="router" to="forgot">忘記密碼？</router-link>
+          <router-link class="router" to="forgot">忘记密码？</router-link>
         </div>
-        <van-button type="primary" @click="login" class="submit-btn">登 錄</van-button>
+        <van-button type="primary" @click="login" class="submit-btn">登 录</van-button>
       </div>
     </div>
 
     <div class="bottom-part">
       <div class="version1">MOKI MONKEY 摩奇猴 ver 1.0</div>
-      <div class="version2">MOKI MONKEY Co.,ltd.. Copyright 2020 (C) All right reserved</div>
+      <div class="version2">O2 MONSTER CO.,LTD. COPYRIGHT 2020 © ALL RIGHT RESERVED</div>
     </div>
     <YellowComfirm
       :show="showComfirm"
@@ -487,7 +487,7 @@ export default {
   }
   .version2 {
     color: #060000;
-    font-size: 28px;
+    font-size: 25px;
     margin-top: 40px;
     text-align: center;
     position: absolute;
@@ -503,7 +503,7 @@ export default {
     margin-top: 40px;
     text-align: center;
     position: absolute;
-    bottom: 160px;
+    bottom: 190px;
     width: 100%;
     left: 50%;
     transform: translate(-50%);

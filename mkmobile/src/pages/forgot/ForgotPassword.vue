@@ -9,7 +9,7 @@
       <h6 class="forgotTitle">重置您的密码</h6>
       <ul>
         <li>
-          <div class="title">請輸入您的ID</div>
+          <div class="title">请输入您的ID</div>
           <input type="text" v-model="id" />
         </li>
         <li>
@@ -44,7 +44,7 @@
       </ul>
       <div class="bottom-part">
         <div class="version1">MOKI MONKEY 摩奇猴</div>
-        <div class="version2">MOKI MONKEY Co.,ltd.. Copyright 2020 (C) All right reserved</div>
+        <div class="version2">O2 MONSTER CO.,LTD. COPYRIGHT 2020 © ALL RIGHT RESERVED</div>
       </div>
     </div>
     <YellowComfirm
@@ -92,7 +92,7 @@ export default {
     }
   },
   mounted () {
-    // this.getVerificationCode();
+    this.getVerificationCode();
   },
   methods: {
     clickOk () {
@@ -144,7 +144,7 @@ export default {
     color: #000403;
     font-weight: bolder;
     z-index: 2;
-    margin-top: 40px;
+    margin-top: 160px;
     position: relative;
   }
   .tipWrap {
@@ -250,7 +250,7 @@ export default {
 
         .verification {
           display: flex;
-          border-radius: 40px;
+          border-radius: 20px;
           overflow: hidden;
           padding: 20px 0;
           background-color: #fff;
