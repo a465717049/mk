@@ -327,7 +327,7 @@ export default {
     margin-top: 40px;
     text-align: center;
     position: absolute;
-    bottom: 160px;
+    bottom: 190px;
     width: 100%;
     left: 50%;
     transform: translate(-50%);
