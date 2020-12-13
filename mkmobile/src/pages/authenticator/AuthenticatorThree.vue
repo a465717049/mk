@@ -8,7 +8,7 @@
           <div class="auth-top-tit">Google 身份验证</div>
           <div class="auth-top-tip">
             只需2步，获取激活码用于您的帐号进行安全校验
-            <!-- 只需2步，獲取激活碼用於您的賬號進行安全校驗 -->
+            <!-- 只需2步，获取激活码用于您的账号进行安全校验 -->
           </div>
         </div>
       </div>

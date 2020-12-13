@@ -55,78 +55,78 @@ export default {
         iconRight: false
       },
       list: [
-        {
-          id: 1,
-          direction: "center",
-          time: "昨天  22:18",
-          image: defaultImg
-        },
-        {
-          id: 2,
-          direction: "left",
-          date: "6mel,2020",
-          image: defaultImg,
-          msg: "请问有什么可以帮到您"
-        },
-        {
-          id: 3,
-          image: require("@/assets/imgs/nick-1.png"),
-          direction: "right",
-          msg:
-            "请问最近的车奖是怎么一回事？？色极为关键是南方健身房是的封建时代和封建士大夫十分"
-        },
-        {
-          id: 4,
-          direction: "left",
-          date: "6mel,2020",
-          image: defaultImg,
-          msg: "请问有什么可以帮到您"
-        },
-        {
-          id: 5,
-          image: require("@/assets/imgs/nick-1.png"),
-          direction: "right",
-          msg: "请问最近的车奖是怎么一回事？"
-        },
-        {
-          id: 6,
-          direction: "left",
-          date: "6mel,2020",
-          image: defaultImg,
-          msg: "请问有什么可以帮到您"
-        },
-        {
-          id: 7,
-          image: require("@/assets/imgs/nick-1.png"),
-          direction: "right",
-          msg: "请问最近的车奖是怎么一回事？"
-        },
-        {
-          id: 8,
-          direction: "left",
-          date: "6mel,2020",
-          image: defaultImg,
-          msg: "请问有什么可以帮到您"
-        },
-        {
-          id: 9,
-          image: require("@/assets/imgs/nick-1.png"),
-          direction: "right",
-          msg: "请问最近的车奖是怎么一回事？"
-        },
-        {
-          id: 10,
-          direction: "left",
-          date: "6mel,2020",
-          image: defaultImg,
-          msg: "请问有什么可以帮到您"
-        },
-        {
-          id: 11,
-          image: require("@/assets/imgs/nick-1.png"),
-          direction: "right",
-          msg: "请问最近的车奖是怎么一回事？"
-        }
+        // {
+        //   id: 1,
+        //   direction: "center",
+        //   time: "昨天  22:18",
+        //   image: defaultImg
+        // },
+        // {
+        //   id: 2,
+        //   direction: "left",
+        //   date: "6mel,2020",
+        //   image: defaultImg,
+        //   msg: "请问有什么可以帮到您"
+        // },
+        // {
+        //   id: 3,
+        //   image: require("@/assets/imgs/nick-1.png"),
+        //   direction: "right",
+        //   msg:
+        //     "请问最近的车奖是怎么一回事？？色极为关键是南方健身房是的封建时代和封建士大夫十分"
+        // },
+        // {
+        //   id: 4,
+        //   direction: "left",
+        //   date: "6mel,2020",
+        //   image: defaultImg,
+        //   msg: "请问有什么可以帮到您"
+        // },
+        // {
+        //   id: 5,
+        //   image: require("@/assets/imgs/nick-1.png"),
+        //   direction: "right",
+        //   msg: "请问最近的车奖是怎么一回事？"
+        // },
+        // {
+        //   id: 6,
+        //   direction: "left",
+        //   date: "6mel,2020",
+        //   image: defaultImg,
+        //   msg: "请问有什么可以帮到您"
+        // },
+        // {
+        //   id: 7,
+        //   image: require("@/assets/imgs/nick-1.png"),
+        //   direction: "right",
+        //   msg: "请问最近的车奖是怎么一回事？"
+        // },
+        // {
+        //   id: 8,
+        //   direction: "left",
+        //   date: "6mel,2020",
+        //   image: defaultImg,
+        //   msg: "请问有什么可以帮到您"
+        // },
+        // {
+        //   id: 9,
+        //   image: require("@/assets/imgs/nick-1.png"),
+        //   direction: "right",
+        //   msg: "请问最近的车奖是怎么一回事？"
+        // },
+        // {
+        //   id: 10,
+        //   direction: "left",
+        //   date: "6mel,2020",
+        //   image: defaultImg,
+        //   msg: "请问有什么可以帮到您"
+        // },
+        // {
+        //   id: 11,
+        //   image: require("@/assets/imgs/nick-1.png"),
+        //   direction: "right",
+        //   msg: "请问最近的车奖是怎么一回事？"
+        // }
       ]
     };
   },

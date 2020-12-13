@@ -45,7 +45,7 @@ export default {
       flag: -1,
       address: "",
       headimg: "",
-      headurl: "",
+      headurl: photoList.head01,
       addList: [
         { img: photoList.head01, headimg: "head01" },
         { img: photoList.head02, headimg: "head02" },

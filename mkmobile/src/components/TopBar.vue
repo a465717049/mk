@@ -315,7 +315,7 @@ export default {
     .badge {
       display: block;
       position: absolute;
-      right: 0px;
+      right: -18px;
       top: 20px;
       width: 46px;
       height: 46px;

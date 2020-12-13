@@ -1,6 +1,8 @@
 <template>
   <div class="shop-part">
-    <TopBar class="center-one-search" :option="topBarOption" :badge="carNum">商品介绍</TopBar>
+    <TopBar class="center-one-search" :option="topBarOption" :badge="carNum"
+      >商品介绍</TopBar
+    >
     <ScrollRefresh
       @getData="ToGetShopDeatilList"
       :residualHeight="140"
@@ -9,7 +11,7 @@
     >
       <div class="scrollPart" ref="scrollPart">
         <div class="shop-detail font40 center relative">
-          <span class="tag" v-show="ptag">{{ptag}}</span>
+          <span class="tag" v-show="ptag">{{ ptag }}</span>
           <div class="monkey">
             <div class="monkeywrap">
               <img src="../../assets/imgs/login/head.png" alt class="head" />
@@ -22,14 +24,18 @@
               <img :src="image.pIcon" />
             </van-swipe-item>
             <template #indicator>
-              <div class="custom-indicator">{{ current + 1 }}/{{images.length}}</div>
+              <div class="custom-indicator">
+                {{ current + 1 }}/{{ images.length }}
+              </div>
             </template>
           </van-swipe>
           <!-- <img class="shop-img center mt-100 mb-100" :src="pIcon" alt /> -->
           <div class="buy border-top-radius mt-80">
             <!-- <div class="title Tleft font-weight pt-60 font60">{{pName}}</div> -->
             <ul class="detail-info pt-60 Tleft font42">
-              <li v-for="(item,index) in pInfo" :key="index" class="info-item">{{item}}</li>
+              <li v-for="(item, index) in pInfo" :key="index" class="info-item">
+                {{ item }}
+              </li>
             </ul>
             <div class="base-flex mt-40">
               <van-field name="stepper" class="font42">
@@ -43,16 +49,16 @@
                   />
                 </template>
               </van-field>
-              <span class="price">$ {{price}}</span>
+              <span class="price">$ {{ price }}</span>
             </div>
             <div class="base-flex mt-40">
               <div class="heart borderR">
                 <i class="iconfont icongouwucheman" @click="addshop"></i>
               </div>
-                 <router-link to="shopCar" class="router"> <!--@click="buyShop" -->
-                   <button class="buy-btn center borderR" >立即购买</button>
-                </router-link>
-            
+              <router-link to="shopCar" class="router">
+                <!--@click="buyShop" -->
+                <button class="buy-btn center borderR">立即购买</button>
+              </router-link>
             </div>
           </div>
         </div>
@@ -71,7 +77,13 @@
 import TopBar from "components/TopBar";
 import YellowComfirm from "components/YellowComfirm";
 import { http } from "util/request";
-import { GetShopDeatilList, GetUserInfo, BuyGoodsweb ,AddGoodsweb,GetShopCartsweb} from "util/netApi";
+import {
+  GetShopDeatilList,
+  GetUserInfo,
+  BuyGoodsweb,
+  AddGoodsweb,
+  GetShopCartsweb,
+} from "util/netApi";
 import { storage } from "util/storage";
 import banner1 from "../../assets/imgs/banner-00.png";
 import banner2 from "../../assets/imgs/banner-01.png";
@@ -82,20 +94,18 @@ export default {
   components: {
     TopBar,
     YellowComfirm,
-    ScrollRefresh
+    ScrollRefresh,
   },
   data() {
     return {
       showComfirm: false,
-      carNum:1,
+      carNum: 1,
       shopid: 0,
       images: [{ image: banner1 }, { image: banner2 }],
       current: 0,
       // pName: "促销中",
       // pDesc: "促销中促销中促销中",
-      pInfo: [
-        "品牌： ",
-      ],
+      pInfo: ["品牌： "],
       pIcon: require("@/assets/imgs/shop/camea.png"),
       ptag: "",
       price: 0,
@@ -105,10 +115,10 @@ export default {
       showChat: true,
       topBarOption: {
         iconLeft: "back",
-        iconRight: "icongouwucheman"
+        iconRight: "icongouwucheman",
       },
       tips: "",
-      tipsObj: {}
+      tipsObj: {},
     };
   },
   methods: {
@@ -131,41 +141,41 @@ export default {
     },
     buyShop() {
       //shopCar
-      http(BuyGoodsweb, {shopid: this.shopid,buynum:this.stepper }, json => {
+      http(
+        BuyGoodsweb,
+        { shopid: this.shopid, buynum: this.stepper },
+        (json) => {
+          if (json.code === 0) {
+          } else {
+            this.showComfirm = true;
+            this.tips = json.msg;
+          }
+        }
+      );
+    },
+    getshopcartnum() {
+      http(GetShopCartsweb, null, (json) => {
         if (json.code === 0) {
-        } else {
-          this.showComfirm = true;
-          this.tips = json.msg;
+          this.carNum = json.response.count;
         }
       });
     },
-    getshopcartnum()
-    {
-      http(GetShopCartsweb,null, json => {
-            if(json.code===0)
-            {
-              this.carNum=json.response.count;
-            }
+    addshop() {
+      http(AddGoodsweb, { shopid: this.shopid, num: this.stepper }, (json) => {
+        if (json.code === 0) {
+          this.getshopcartnum();
+        }
+        //  console.log("111");
       });
-    },
-    addshop(){
-       http(AddGoodsweb, {shopid: this.shopid,num:this.stepper }, json => {
-         if(json.code===0)
-         {
-           this.getshopcartnum();
-         }
-           //  console.log("111");
-      });
-
     },
     ToGetShopDeatilList(tmpshopid) {
-      http(GetShopDeatilList, { shopid: tmpshopid }, json => {
+      http(GetShopDeatilList, { shopid: tmpshopid }, (json) => {
         console.log(json);
         if (json.code === 0) {
           var shop = json.response.list[0];
-          console.log(shop)
+          console.log(shop);
           this.pName = shop.pName;
-          this.pInfo= [shop.pDesc]
+          this.pInfo = [shop.pDesc];
           this.pDesc = shop.pDesc;
           this.pIcon = shop.pIcon;
           this.price = shop.price;
@@ -173,8 +183,7 @@ export default {
           this.startmax = shop.pNum;
         }
       });
-      
-    }
+    },
   },
   created() {
     if (this.$route.query.id) {
@@ -185,7 +194,7 @@ export default {
   },
   mounted() {
     // this.scrollInit()
-  }
+  },
 };
 </script>
 <style lang='less' scoped>
@@ -197,6 +206,9 @@ export default {
         min-height: calc(100vh - 400px) !important;
       }
     }
+  }
+  /deep/.top-bar .img-r {
+    font-size: 70px;
   }
   .shop-detail {
     background: #c6d0de;

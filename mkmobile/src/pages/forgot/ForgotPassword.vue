@@ -78,7 +78,7 @@ export default {
       id: null,
       verification: null,
       code: null,
-      image: null,
+      image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3649178992,1821853682&fm=26&gp=0.jpg',
       showComfirm: false,
       forgotImg: forgot,
       //  receiptId: null,

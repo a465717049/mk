@@ -125,7 +125,7 @@ export default {
         line-height: 123px;
         font-size: 42px;
         width: 100%;
-        padding: 30px 20px;
+        padding: 30px 100px 30px 20px;
         border-radius: 20px;
         color: #6F6D72;
         font-weight: 600;
