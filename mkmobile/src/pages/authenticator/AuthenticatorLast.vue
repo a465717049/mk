@@ -17,14 +17,14 @@
         <div class="c-cell">
           <div class="c-cell-label">Android激活碼</div>
           <div class="c-cell-value">
-            {{ androidCode }}
+            {{androidCode}}
             <i class="iconfont iconcopy"></i>
           </div>
         </div>
         <div class="c-cell">
           <div class="c-cell-label">IOS激活碼</div>
           <div class="c-cell-value">
-            {{ iosCode }}
+            {{iosCode}}
             <i class="iconfont iconcopy"></i>
           </div>
         </div>
@@ -117,7 +117,7 @@ export default {
         line-height: 123px;
         font-size: 42px;
         width: 100%;
-        padding: 30px 20px;
+        padding: 30px 100px 30px 20px;
         border-radius: 20px;
         color: #6F6D72;
         font-weight: 600;

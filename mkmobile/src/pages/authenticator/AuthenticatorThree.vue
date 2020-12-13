@@ -70,7 +70,7 @@ export default {
             this.$router.push({name:'AuthenticatorLast',params:{googlekey:json.response}})
          
           } else {
-            this.tips = '校驗失敗1111111111111111111111111111111111111111111111111111!'
+            this.tips = '校驗失敗!'
 
           }
         });

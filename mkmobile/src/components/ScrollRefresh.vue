@@ -65,7 +65,9 @@ export default {
       let num = parseFloat(document.querySelector('html').style.fontSize)
       // console.log(num,'num')
       const windowHeight = document.body.clientHeight / num
+      console.log(windowHeight,9999)
       this.scrollHeight = windowHeight - this.residualHeight / num + 'rem'
+      console.log(this.scrollHeight,8888)
     },
     refreshalert () {
       // 刷新成功提示

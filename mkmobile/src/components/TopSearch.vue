@@ -43,7 +43,8 @@ export default {
   }
   .inputIcon {
     position: absolute;
-    top: 10px;
+    top: 50%;
+    transform: translateY(-50%);
     right: 40px;
     font-size: 65px;
     color: #4678BC;

@@ -3,7 +3,7 @@
     <TopBar class="center-one-search">头像设置</TopBar>
     <ScrollRefresh @getData="TogetUserInfo" :residualHeight="160" :isNeedUp="false">
       <div class="setUp-body">
-        <h5>設置昵稱</h5>
+        <h5>设置昵称</h5>
         <div class="t-img">
           <img :src="headurl" alt />
           <input type="text" v-model="username" />
@@ -45,7 +45,7 @@ export default {
       flag: -1,
       address: "",
       headimg: "",
-      headurl: "",
+      headurl: photoList.head01,
       addList: [
         { img: photoList.head01, headimg: "head01" },
         { img: photoList.head02, headimg: "head02" },

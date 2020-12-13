@@ -164,6 +164,11 @@ export default {
 };
 </script>
 <style lang='less' scoped>
+.shopWrap{
+   /deep/.top-bar .img-r {
+    font-size: 70px;
+  }
+}
 .shop {
   position: relative;
   padding: 0 58px;
@@ -175,6 +180,7 @@ export default {
     }
   }
 }
+
   .shop-info {
     // margin-top: 20px;
     padding-top: 50px;
@@ -213,6 +219,7 @@ export default {
         top: 0;
         width: 124px;
         height: 127px;
+        line-height: 127px;
         background: white;
         opacity: 0.32;
         border-top-right-radius: 70px;
