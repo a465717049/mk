@@ -3,7 +3,7 @@
     <TopBar class="center-one-search">头像设置</TopBar>
     <ScrollRefresh @getData="TogetUserInfo" :residualHeight="160" :isNeedUp="false">
       <div class="setUp-body">
-        <h5>設置昵稱</h5>
+        <h5>设置昵称</h5>
         <div class="t-img">
           <img :src="headurl" alt />
           <input type="text" v-model="username" />
@@ -134,7 +134,7 @@ export default {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
           this.username = json.response.nickname;
-          this.headurl = this.photoList[json.response.photo];
+          this.headurl =photoList[json.response.photo];
         }
       });
     }

@@ -21,7 +21,7 @@ namespace DPE.Core.Controllers
         readonly IRoleServices _roleServices;
         readonly IUser _user;
 
-     
+
         public RoleController(IRoleServices roleServices, IUser user)
         {
             _roleServices = roleServices;

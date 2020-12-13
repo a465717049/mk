@@ -13,7 +13,7 @@
       </div>
       <ul>
         <li>
-          <div class="title">出售數量</div>
+          <div class="title">出售数量</div>
           <input type="text" v-model="form.num" />
         </li>
         <!-- <li>
@@ -25,11 +25,11 @@
           <input type="password" v-model="form.tpwd" />
         </li>
         <li>
-          <div class="title">谷歌驗證碼</div>
+          <div class="title">谷歌验证码</div>
           <input type="text" v-model="form.gcode" />
         </li>
       </ul>
-      <button class="next" @click="ToSellStock">確認出售</button>
+      <button class="next" @click="ToSellStock">确认出售</button>
     </div>
     <YellowComfirm :show="showComfirm"  @clickOver="clickOverpay" :tipTitle="tips" @clickOk="clickOk()" @changeModel="changeModel" ></YellowComfirm>
   </div>
@@ -63,10 +63,10 @@ export default {
       verificationCode: null,
       tips: '',
       tipsObj: {
-        nosucceed: '出售失敗',
-        nonum: '請輸入出售數量',
-        nopwd: '請輸入交易密碼',
-        nocode: '請輸入谷歌驗證碼',
+        nosucceed: '出售失败',
+        nonum: '请输入出售数量',
+        nopwd: '输入交易密码',
+        nocode: '请输入谷歌验证码',
         succeed: '出售成功'
       }
     }

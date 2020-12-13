@@ -48,7 +48,7 @@ namespace DPE.Core.Controllers
         /// <param name="roleServices"></param>
         /// <param name="requirement"></param>
         /// <param name="roleModulePermissionServices"></param>
-        public LoginController(IRedisCacheManager irediscachemanager,ISysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices, IRoleServices roleServices, PermissionRequirement requirement, IRoleModulePermissionServices roleModulePermissionServices)
+        public LoginController(IRedisCacheManager irediscachemanager, ISysUserInfoServices sysUserInfoServices, IUserRoleServices userRoleServices, IRoleServices roleServices, PermissionRequirement requirement, IRoleModulePermissionServices roleModulePermissionServices)
         {
             this._sysUserInfoServices = sysUserInfoServices;
             this._userRoleServices = userRoleServices;
@@ -61,10 +61,10 @@ namespace DPE.Core.Controllers
 
 
         /// <summary>
-        /// 登錄
+        /// 登录
         /// </summary>
-        /// <param name="name">用戶名</param>
-        /// <param name="pass">密碼</param>
+        /// <param name="name">用户名</param>
+        /// <param name="pass">密码</param>
         /// <returns></returns>
         [HttpPost]
         [HttpGet]
@@ -88,27 +88,27 @@ namespace DPE.Core.Controllers
                 return new MessageModel<TokenInfoViewModel>()
                 {
                     success = false,
-                    msg = "用戶名或者密碼不能為空",
-                    code=1008
+                    msg = "用户名或者密码不能为空",
+                    code = 1008
                 };
             }
 
             pass = MD5Helper.MD5Encrypt32(pass);
 
-            var user = await _sysUserInfoServices.Query(d => d.uLoginName == name && d.uLoginPWD == pass && d.isDelete == false);  
+            var user = await _sysUserInfoServices.Query(d => d.uLoginName == name && d.uLoginPWD == pass && d.isDelete == false);
             long uid = 0;
-            if(user.Count==0&&long.TryParse(name,out uid))
+            if (user.Count == 0 && long.TryParse(name, out uid))
             {
                 user = await _sysUserInfoServices.Query(d => d.uID == uid && d.isDelete == false);
             }
             if (user.Count > 0)
             {
-                if(user.FindAll(a=>a.uLoginPWD== pass).Count==0)
+                if (user.FindAll(a => a.uLoginPWD == pass).Count == 0)
                 {
                     return new MessageModel<TokenInfoViewModel>()
                     {
                         success = false,
-                        msg = "用戶密碼不正確",
+                        msg = "用户密码不正确",
                         code = 1008
                     };
                 }
@@ -142,7 +142,8 @@ namespace DPE.Core.Controllers
 
                 var token = JwtToken.BuildJwtToken(claims.ToArray(), _requirement);
 
-                try {
+                try
+                {
                     string redisuid = "userid:" + user.FirstOrDefault().uID.ToString();
                     string redistoken = MD5Helper.MD5Encrypt32(token.token);
                     if (_redisCacheManager.Get(redisuid))
@@ -153,15 +154,17 @@ namespace DPE.Core.Controllers
                     }
                     _redisCacheManager.SetString(redisuid, redistoken, TimeSpan.FromMinutes(300));
                     _redisCacheManager.SetString(redistoken, redisuid, TimeSpan.FromMinutes(300));
-                } catch {
+                }
+                catch
+                {
 
                 }
-              
+
 
                 return new MessageModel<TokenInfoViewModel>()
                 {
                     success = true,
-                    msg = "登錄成功",
+                    msg = "登录成功",
                     response = token
                 };
             }
@@ -170,8 +173,8 @@ namespace DPE.Core.Controllers
                 return new MessageModel<TokenInfoViewModel>()
                 {
                     success = false,
-                    code= 1009,
-                    msg = "用戶登錄失敗",
+                    code = 1009,
+                    msg = "用户登录失败",
                 };
 
             }
@@ -231,7 +234,7 @@ namespace DPE.Core.Controllers
             };
         }
 
-   
+
 
     }
 }

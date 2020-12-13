@@ -41,8 +41,8 @@ namespace DPE.Core.Controllers
         readonly IBuyDPEListServices _ibuydpelistservices;
 
 
-        public DPEController(IBuyDPEListServices ibuydpelistservices,IBuyDPEHistoryServices ibuydpehistoryservices,IDPEServices dpeservices, 
-            IUser user, IUserInfoServices userInfoServices , IDPEexchangeServices idpeexchangeservices, IDPERecordsServices idperecordsservices)
+        public DPEController(IBuyDPEListServices ibuydpelistservices, IBuyDPEHistoryServices ibuydpehistoryservices, IDPEServices dpeservices,
+            IUser user, IUserInfoServices userInfoServices, IDPEexchangeServices idpeexchangeservices, IDPERecordsServices idperecordsservices)
         {
             _DPEServices = dpeservices;
             _user = user;
@@ -59,7 +59,7 @@ namespace DPE.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("GetDPEEexchange")]
-        public async Task<MessageModel<dynamic>> GetDPEEexchange(int pageIndex,int pageSize)
+        public async Task<MessageModel<dynamic>> GetDPEEexchange(int pageIndex, int pageSize)
         {
             MessageModel<dynamic> result = new MessageModel<dynamic>();
             try
@@ -68,13 +68,13 @@ namespace DPE.Core.Controllers
                 var data = await _idpeexchangeservices.QueryPage(a => a.amount > 0, pageIndex, pageSize, "createTime desc");
                 result.response = (from item in data.data
                                    select new
-                                    {
-                                        uid = item.uID,
-                                        item.amount,
-                                        lasttotal = item.amount*item.price,
-                                        date = Convert.ToDateTime(item.createTime).ToString("yy/MM/dd HH:mm")
-                                    });
-              
+                                   {
+                                       uid = item.uID,
+                                       item.amount,
+                                       lasttotal = item.amount * item.price,
+                                       date = Convert.ToDateTime(item.createTime).ToString("yy/MM/dd HH:mm")
+                                   });
+
 
             }
             catch
@@ -90,7 +90,7 @@ namespace DPE.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("GetBuyDPEHistory")]
-        public async Task<MessageModel<dynamic>> GetBuyDPEHistory(int pagesize=10,int pageindex=1)
+        public async Task<MessageModel<dynamic>> GetBuyDPEHistory(int pagesize = 10, int pageindex = 1)
         {
             MessageModel<dynamic> result = new MessageModel<dynamic>();
             try
@@ -103,7 +103,7 @@ namespace DPE.Core.Controllers
                     return result;
                 }
 
-                var spinfo = await _ibuydpehistoryservices.QueryPage(x => x.uID == _user.ID,pageindex,pagesize,"createTime");
+                var spinfo = await _ibuydpehistoryservices.QueryPage(x => x.uID == _user.ID, pageindex, pagesize, "createTime");
                 result.response = (from item in spinfo.data
                                    orderby item.createTime descending
                                    select new
@@ -154,7 +154,7 @@ namespace DPE.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("GetSerarchApple")]
-        public async Task<MessageModel<dynamic>> GetSerarchApple(long uid = 0,string option="")
+        public async Task<MessageModel<dynamic>> GetSerarchApple(long uid = 0, string option = "")
         {
             MessageModel<dynamic> result = new MessageModel<dynamic>();
             try
@@ -162,7 +162,7 @@ namespace DPE.Core.Controllers
                 if (uid == 0)
                 {
                     uid = _user.ID;
-                    result.response = await _DPEServices.QueryPage(x => x.uID == uid,1,1);
+                    result.response = await _DPEServices.QueryPage(x => x.uID == uid, 1, 1);
                 }
                 else
                 {
@@ -174,10 +174,11 @@ namespace DPE.Core.Controllers
                     {
                         result.response = await _DPEServices.QueryPage(x => x.uID < uid, 1, 1, " uID desc");
                     }
-                    else {
-                        result.response = await _DPEServices.QueryPage(x => x.uID == uid,1,1);
+                    else
+                    {
+                        result.response = await _DPEServices.QueryPage(x => x.uID == uid, 1, 1);
                     }
-                    
+
                 }
                 return result;
 
@@ -195,16 +196,16 @@ namespace DPE.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("GetBuyDPEList")]
-        public async Task<MessageModel<dynamic>> GetBuyDPEList(long uid=0,int pagesize = 10, int pageindex = 1)
+        public async Task<MessageModel<dynamic>> GetBuyDPEList(long uid = 0, int pagesize = 10, int pageindex = 1)
         {
             MessageModel<dynamic> result = new MessageModel<dynamic>();
             try
             {
-             
+
                 if (_user.ID == 0)
                 {
                     result.code = 10001;
-                    result.msg = "登錄已經過期，請重新登陸！";
+                    result.msg = "登录已经过期，请重新登陆！";
                     result.success = false;
                     return result;
                 }
@@ -218,17 +219,19 @@ namespace DPE.Core.Controllers
                 var response = new List<dynamic>();
                 foreach (var item in list)
                 {
-                    if (uid != 0&&item.uID==uid)
+                    if (uid != 0 && item.uID == uid)
                     {
                         response.Add(new
                         {
                             index,
                             id = item.uID,
                             invest = item.amount,
-                            total= list.Count,
+                            total = list.Count,
                             date = Convert.ToDateTime(item.createTime).ToString("yy/MM/dd HH:mm:ss")
                         });
-                    }else if (uid == 0){
+                    }
+                    else if (uid == 0)
+                    {
                         response.Add(new
                         {
                             index = index,
@@ -242,7 +245,7 @@ namespace DPE.Core.Controllers
                 }
 
                 result.response = response;
-               
+
 
                 return result;
 

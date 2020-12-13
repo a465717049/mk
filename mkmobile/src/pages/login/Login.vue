@@ -92,11 +92,11 @@ export default {
       tips: '',
       redirect: null,
       tipsObj: {
-        noId: '用戶ID沒有輸入',
-        nolong: '用戶ID為5-18位',
-        noP: '密碼沒有輸入',
-        noRegister: '用戶ID不存在',
-        errorP: '登錄密碼不正確'
+        noId: '用户ID沒有输入',
+        nolong: '用户ID为5-18位',
+        noP: '密码没有输入',
+        noRegister: '用户ID不存在',
+        errorP: '登录密码不正确'
       },
       option: [{ text: '全部清除', value: '' }],
       clientWidth: document.documentElement.clientWidth

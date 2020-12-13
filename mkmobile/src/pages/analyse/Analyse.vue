@@ -3,7 +3,7 @@
     <div>
       <TopBar :option="topBarOption" :hasNoRead="false" @clickR="goNews">
         <div class="center-two-search">
-          <div class="two-tit-t">排隊購買</div>
+          <div class="two-tit-t">排队购买</div>
           <div @click="goBuy()" class="two-tit-b">＄{{ totalData }}</div>
           <img class="img-yueliang" src="@/assets/imgs/yueliang.png" alt />
         </div>
@@ -13,7 +13,7 @@
           行情
           <div class="an-btn">
             <router-link to="search" class="router">
-              <i class="iconfont iconsearch"></i> 查詢
+              <i class="iconfont iconsearch"></i> 查询
             </router-link>
           </div>
         </h4>
@@ -26,10 +26,10 @@
             @blur="mouseleave"
           />
         </div>
-        <h4 class="an-bd-tit">概覽</h4>
+        <h4 class="an-bd-tit">概览</h4>
         <div class="categories-bd">
           <div class="cg-item">
-            <p>回報率</p>
+            <p>回报率</p>
             <v-chart id="binChart" ref="binChart" :options="this.drawPie()" />
           </div>
           <div class="cg-item cg-item-1">
@@ -39,7 +39,7 @@
           </div>
           <div class="cg-item cg-item-1 cg-item-2">
             <div class="top">+</div>
-            <p>纍計收益</p>
+            <p>累计收益</p>
             <span class="green">＄{{ withdrawVal || 0 }}</span>
           </div>
         </div>

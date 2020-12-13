@@ -7,7 +7,7 @@
         <div class="tips-part">
           <div class="tip-titl">提示</div>
           <div>EP可以提现，也可以兑换成为RP(注册分）</div>
-          <!-- <div>即將更新！</div> -->
+          <!-- <div>即将更新！</div> -->
         </div>
       </div>
       <div class="moneyWrap clearfix">
@@ -19,17 +19,17 @@
       </div>
       <ul>
         <li>
-          <div class="title">轉出數量</div>
+          <div class="title">转出数量</div>
           <input type="number" min="0" v-model="form.amount" />
         </li>
         <li>
-          <div class="title">接收類型</div>
+          <div class="title">接收类型</div>
           <van-dropdown-menu>
             <van-dropdown-item v-model="form.dType" :options="receiptTypeList" />
           </van-dropdown-menu>
         </li>
         <li>
-          <div class="title">交易密碼</div>
+          <div class="title">交易密码</div>
           <input type="password" v-model="form.tpwd" />
         </li>
         <!-- <li>
@@ -37,7 +37,7 @@
           <input type="text" v-model="form.gcode" />
         </li>-->
       </ul>
-      <button class="next" @click="ToTranWithMe">確認兑换</button>
+      <button class="next" @click="ToTranWithMe">确认兑换</button>
     </div>
     <YellowComfirm
       :show="showComfirm"
@@ -75,12 +75,12 @@ export default {
       verificationCode: null,
       tips: "",
       tipsObj: {
-        noamount: "請填寫轉換數量",
-        amount: "餘額不足！",
-        notype: "請選擇轉出類型",
-        notpwd: "請填寫交易密碼",
-        nosucceed: "轉換異常，稍後重試",
-        succeed: "轉換成功"
+        noamount: "请填写转换数量",
+        amount: "馀额不足！",
+        notype: "请选择转出类型",
+        notpwd: "请填写交易密码",
+        nosucceed: "转换异常，稍后重试",
+        succeed: "转换成功"
       }
     };
   },

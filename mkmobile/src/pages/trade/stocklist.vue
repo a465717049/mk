@@ -11,9 +11,9 @@
         <ul>
           <li class="title base-info">
             <span class="number">ID</span>
-            <span class="id-info">數量</span>
-            <span class="invest-info">金額</span>
-            <span class="date-info">時間</span>
+            <span class="id-info">数量</span>
+            <span class="invest-info">金额</span>
+            <span class="date-info">时间</span>
           </li>
         </ul>
         <ScrollRefresh @getData="ToGetDPEEexchange" :residualHeight="250">

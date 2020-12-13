@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBar class="center-one-search" :option="topBarOption">昵稱</TopBar>
+    <TopBar class="center-one-search" :option="topBarOption">昵称</TopBar>
 
     <div class="listWrap" ref="listWrap">
       <div class="set borderR bg-gray clearfix p-58">

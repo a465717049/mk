@@ -42,7 +42,7 @@ namespace DPE.Core.Controllers
         }
 
         /// <summary>
-        /// 获取家族賬號清單
+        /// 获取家族账号清单
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -77,7 +77,7 @@ namespace DPE.Core.Controllers
         }
 
         /// <summary>
-        /// 朋友清單
+        /// 朋友清单
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -113,14 +113,14 @@ namespace DPE.Core.Controllers
         }
 
         /// <summary>
-        /// 朋友關係
+        /// 朋友关係
         /// </summary>
         /// <returns></returns>
         [HttpPost]
         public async Task<MessageModel<dynamic>> GetRelationList(long uid)
         {
             MessageModel<dynamic> result = new MessageModel<dynamic>();
-          
+
             try
             {
                 if (uid == 0)
@@ -135,7 +135,7 @@ namespace DPE.Core.Controllers
                     }
                 }
                 if (uid == 0) uid = _user.ID;
-              
+
                 var friendData = await _sysUserInfoServices.GetRelationList(uid, _user.ID);
                 if (friendData == null || friendData.Rows.Count <= 0)
                 {

@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div class="activity-list">
-    <TopBar class="center-one-search" :option="option">活動</TopBar>
+    <TopBar class="center-one-search" :option="option">活动</TopBar>
     <div class="scrollPart" ref="scrollPart">
       <div class="activity borderR bg-gray p-58">
         <div class="tips base-flex flex-start p-58 bg-white borderR mb-80">

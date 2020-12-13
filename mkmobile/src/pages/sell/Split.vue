@@ -1,7 +1,7 @@
 <template>
   <div class="splitWrapper">
     <TopBar class="center-one-search" :option="topBarOption">
-     拆配記錄
+     拆配记录
     </TopBar>
     <div class="innerWrap">
       <ul>

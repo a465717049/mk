@@ -96,8 +96,8 @@ export default {
         succeed: "修改成功"
       },
       option1: [
-        { text: "登錄密碼", value: 0 },
-        { text: "交易密碼", value: 1 }
+        { text: "登录密码", value: 0 },
+        { text: "交易密码", value: 1 }
       ]
     };
   },

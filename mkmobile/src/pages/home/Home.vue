@@ -245,7 +245,7 @@ export default {
   mounted () {
     // this.ToGetBanner()
     this.TogetUserInfo()
-    // this.readloadinfo()
+     this.readloadinfo()
   }
 }
 </script>

@@ -50,7 +50,7 @@
           </div>
         </div>
         <div class="frind-title base-flex">
-          <div class="opa-text font60 mb-40">子賬號</div>
+          <div class="opa-text font60 mb-40">子账号</div>
           <div class="t-yellow font60 mb-40">
             <router-link to="myFamily" class="t-yellow">全部</router-link>
           </div>

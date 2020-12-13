@@ -10,7 +10,7 @@
       <div class="innerWrap" >
 
         <div class="goods base-flex flex-start p-58 borderR mb-80"  v-for="(key,value) in data" :key="value">
-          <img src="@/assets/imgs/tipimg.png" class="img" alt />
+          <img :src="key.shopdetail.pIcon" class="img" alt />
           <div class="goods-info">
             <div class="tip-titl">{{key.shopdetail.pName}}</div>
             <div>价格：{{key.shopdetail.price}}</div>  
@@ -147,6 +147,16 @@ export default {
         if(json.code===0)
         {
            this.data=json.response.data.list;
+            this.data.forEach(el=>{
+          let img = null;
+          try {
+            console.log(el.shopdetail.id)
+          img = require('@/assets/imgs/shop/goods-'+el.shopdetail.id+'.png');
+          } catch (err) {//图片 不存在则使用默认的图片
+          img = require("@/assets/imgs/shop/camea.png");
+          }
+          return el.shopdetail.pIcon = img
+          })
            this.sumallshop();
         }
              
@@ -167,7 +177,7 @@ export default {
     goNext() {
       if (this.totalrp<this.buytotalrp) {
         this.isEnter = true;
-        this.tips = "當前金額不足";
+        this.tips = "当前金额不足";
         return;
       }
       http(
@@ -183,7 +193,7 @@ export default {
     buyShop() {
         if (this.totalrp<this.buytotalrp) {
         this.isEnter = true;
-        this.tips = "當前金額不足";
+        this.tips = "当前金额不足";
         return;
       }
       http(BuyGoodsweb, { addr:this.buyaddr, phone:this.buyphone, name:this.buyname, remark:this.buyremark}, json => {

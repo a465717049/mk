@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBar class="center-one-search" >設置</TopBar>
+    <TopBar class="center-one-search" >设置</TopBar>
     <ScrollRefresh @getData="TogetUserInfo" :residualHeight="160" :isNeedUp="false" class="innerScroll">
       <div class="set clearfix p-58">
         <div class="relative">
@@ -90,16 +90,16 @@ export default {
           if (json.response.lv_name == 3) this.level = "10000会员";
 
           if (json.response.lv_name == 0) this.userlv = "玩家";
-          if (json.response.lv_name == 1) this.userlv = "達標社區";
-          if (json.response.lv_name == 2) this.userlv = "初級社區";
-          if (json.response.lv_name == 3) this.userlv = "中級社區";
-          if (json.response.lv_name == 4) this.userlv = "高級社區";
-          if (json.response.lv_name == 5) this.userlv = "超級社區";
+          if (json.response.lv_name == 1) this.userlv = "达标社區";
+          if (json.response.lv_name == 2) this.userlv = "初级社区";
+          if (json.response.lv_name == 3) this.userlv = "中级社区";
+          if (json.response.lv_name == 4) this.userlv = "高级社区";
+          if (json.response.lv_name == 5) this.userlv = "超级社区";
           if (json.response.lv_name == 6) this.userlv = "橘子派";
           if (json.response.lv_name == 7) this.userlv = "香瓜派";
-          if (json.response.lv_name == 8) this.userlv = "菠蘿派";
+          if (json.response.lv_name == 8) this.userlv = "菠萝派";
           if (json.response.lv_name == 9) this.userlv = "柚子派";
-          if (json.response.lv_name == 10) this.userlv = "蘋果派";
+          if (json.response.lv_name == 10) this.userlv = "苹果派";
           this.lv = json.response.lv_name;
           this.photo = photoList[json.response.photo];
         }

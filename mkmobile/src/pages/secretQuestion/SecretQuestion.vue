@@ -1,7 +1,7 @@
 <template>
   <div class="secretQuestionWrap">
     <TopBar class="center-one-search" :option="topBarOption">
-     安全問題
+     安全问题
     </TopBar>
     <div class="innerWrap">
       <ul>

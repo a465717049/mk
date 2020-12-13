@@ -136,7 +136,7 @@ namespace DPE.Core.Controllers
                 if (ss.Count <= 0)
                 {
                     result.code = 60002;
-                    result.msg = "請重新提交!";
+                    result.msg = "请重新提交!";
                     result.success = false;
                     return result;
                 }
@@ -147,7 +147,7 @@ namespace DPE.Core.Controllers
                 if (qisfig.Count < 3)
                 {
                     result.code = 60002;
-                    result.msg = "請先完善安全問題!";
+                    result.msg = "请先完善安全问题!";
                     result.success = false;
                     return result;
                 }
@@ -157,7 +157,7 @@ namespace DPE.Core.Controllers
                 if (resultlist.Count > 0)
                 {
                     result.code = 60002;
-                    result.msg = "驗證失敗，請重新輸入";
+                    result.msg = "验证失败，请重新输入";
                     result.success = false;
                     return result;
                 }
@@ -217,7 +217,7 @@ namespace DPE.Core.Controllers
                 if (ss.Count < 3)
                 {
                     result.code = 60002;
-                    result.msg = "請完善后提交!";
+                    result.msg = "请完善后提交!";
                     result.success = false;
                     return result;
                 }
@@ -228,7 +228,7 @@ namespace DPE.Core.Controllers
                     //交易密码错误
                     result.code = 61004;
                     result.success = false;
-                    result.msg = "交易密碼錯誤";
+                    result.msg = "交易密码错误";
                     return result;
                 }
 
@@ -238,7 +238,7 @@ namespace DPE.Core.Controllers
                     //交易密码错误
                     result.code = 61004;
                     result.success = false;
-                    result.msg = "身份證校驗失敗";
+                    result.msg = "身份证校验失败";
                     return result;
                 }
 
@@ -277,7 +277,7 @@ namespace DPE.Core.Controllers
             catch
             {
                 result.code = 60001;
-                result.msg = "請稍後再試!";
+                result.msg = "请稍后再试!";
                 result.success = false;
                 return result;
             }

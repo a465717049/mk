@@ -49,16 +49,16 @@ namespace DPE.Core.Controllers
 
 
         /// <summary>
-        /// 任务列表  0 不能领取 1 已领取 2 未領取
+        /// 任务列表  0 不能领取 1 已领取 2 未领取
         /// </summary>
         /// <param name="language">cn en</param>
         /// <returns></returns>
         [HttpPost]
         [Route("GetDPETask")]
-        public async Task<MessageModel<DPETaskViewModels>> GetDPETask(string language="cn")
+        public async Task<MessageModel<DPETaskViewModels>> GetDPETask(string language = "cn")
         {
             //_user.ID
-                var user = await _userInfoServices.GetUserInfo(_user.ID);
+            var user = await _userInfoServices.GetUserInfo(_user.ID);
             var spinfo = await _idpetaskservices.Query();
             return new MessageModel<DPETaskViewModels>()
             {
@@ -70,19 +70,19 @@ namespace DPE.Core.Controllers
                     list = (from item in spinfo
                             orderby item.minNum
                             select new DPETaskViewModelsList
-                           
+
                             {
                                 id = item.id,
                                 name = item.taskName,
                                 url = item.taskUrl,
                                 num = item.minNum,
-                                status = user.honorLevel < item.taskLevel ?  0 : _iusertaskservices.Query(x=> x.uID== user.uID && x.taskID==item.id).Result.Count==0 ? 2 :1,
+                                status = user.honorLevel < item.taskLevel ? 0 : _iusertaskservices.Query(x => x.uID == user.uID && x.taskID == item.id).Result.Count == 0 ? 2 : 1,
                                 value = item.taskvalue.ObjToInt()
                             }).ToList()
                 }
             };
 
-        
+
         }
 
     }

@@ -227,9 +227,9 @@ namespace DPE.Core.Controllers
                         // 然后再执行添加操作
                         var userRolsAdd = new List<UserRole>();
                         sysUserInfo.RIDs.ForEach(rid =>
-                       {
-                           userRolsAdd.Add(new UserRole(sysUserInfo.uID, rid));
-                       });
+                        {
+                            userRolsAdd.Add(new UserRole(sysUserInfo.uID, rid));
+                        });
 
                         await _userRoleServices.Add(userRolsAdd);
 
@@ -360,14 +360,14 @@ namespace DPE.Core.Controllers
         }
 
         /// <summary>
-        /// 设置金币地址 設置錢包地址
+        /// 设置金币地址 设置钱包地址
         /// 【无权限】
         /// </summary>
         /// <param name="uid">uid</param>
         /// <param name="location">金币地址</param>
         /// <returns>设置金币地址</returns>
         [HttpPost]
-        public async Task<MessageModel<dynamic>> SetUserlocation(string location,string addr)
+        public async Task<MessageModel<dynamic>> SetUserlocation(string location, string addr)
         {
 
             int tmpcode = 0;
@@ -380,7 +380,7 @@ namespace DPE.Core.Controllers
 
             if (tmpsuccess)
             {
-                var isfig = await _sysUserInfoServices.SetUserInfolocation(_user.ID, location,addr);
+                var isfig = await _sysUserInfoServices.SetUserInfolocation(_user.ID, location, addr);
             }
             else if (tmpcode != 1003)
             {
@@ -411,7 +411,7 @@ namespace DPE.Core.Controllers
                     //交易密码错误
                     result.code = 61004;
                     result.success = false;
-                    result.msg = "交易密碼錯誤";
+                    result.msg = "交易密码错误";
                     return result;
                 }
 
@@ -419,7 +419,7 @@ namespace DPE.Core.Controllers
                 if (idcarduser.Count == 0)
                 {
                     result.code = 10001;
-                    result.msg = "身份證號碼校驗失敗！";
+                    result.msg = "身份证号码校验失败！";
                     result.success = false;
                     return result;
                 }
@@ -432,7 +432,7 @@ namespace DPE.Core.Controllers
                     //谷歌验证错误
                     result.code = 61005;
                     result.success = false;
-                    result.msg = "谷歌驗證碼校驗失敗";
+                    result.msg = "谷歌验证码校验失败";
                     return result;
                 }
 
@@ -441,19 +441,19 @@ namespace DPE.Core.Controllers
                 if (_user.ID.ObjToInt() == 0)
                 {
                     tmpcode = 1003;
-                    result.msg = "當前用戶已經失效，請重新登陸！";
+                    result.msg = "当前用户已经失效，请重新登陆！";
                     tmpsuccess = false;
                     return result;
                 }
 
                 if (tmpsuccess)
                 {
-                    var isfig = await _sysUserInfoServices.SetUserInfolocation(_user.ID, location,addr);
+                    var isfig = await _sysUserInfoServices.SetUserInfolocation(_user.ID, location, addr);
                 }
                 else if (tmpcode != 1003)
                 {
                     tmpcode = 33001;
-                    result.msg = "修改失敗，請重試！";
+                    result.msg = "修改失败，请重试！";
                     tmpsuccess = false;
                     return result;
                 }
@@ -462,7 +462,7 @@ namespace DPE.Core.Controllers
             }
             catch
             {
-                result.msg = "修改失敗，請重試！";
+                result.msg = "修改失败，请重试！";
                 result.success = false;
                 return result;
             }
@@ -508,8 +508,8 @@ namespace DPE.Core.Controllers
         /// 修改密码
         /// 【无权限】
         /// </summary>
-        /// <param name="password">原密碼</param>
-        /// <param name="new_password">新密碼</param>
+        /// <param name="password">原密码</param>
+        /// <param name="new_password">新密码</param>
         /// <returns>修改密码</returns>
         [HttpPost]
         public async Task<MessageModel<dynamic>> Resetpwd(string password, string new_password)
@@ -626,7 +626,7 @@ namespace DPE.Core.Controllers
             if (idcarduser.Count == 0)
             {
                 result.code = 10001;
-                result.msg = "身份證或者護照輸入不正確請確認！";
+                result.msg = "身份证或者护照输入不正确请确认！";
                 result.success = false;
                 return result;
             }
@@ -635,7 +635,7 @@ namespace DPE.Core.Controllers
             if (answer.Count == 0)
             {
                 result.code = 10001;
-                result.msg = "問題答案校驗失敗，請重新輸入！";
+                result.msg = "问题答案校验失败，请重新输入！";
                 result.success = false;
                 return result;
             }
@@ -656,7 +656,7 @@ namespace DPE.Core.Controllers
                 else
                 {
                     result.code = 10001;
-                    result.msg = "原密碼校驗失敗,請重新輸入";
+                    result.msg = "原密码校验失败,请重新输入";
                     result.success = false;
                     return result;
                 }
@@ -678,7 +678,7 @@ namespace DPE.Core.Controllers
                 else
                 {
                     result.code = 10001;
-                    result.msg = "原密碼校驗失敗,請重新輸入";
+                    result.msg = "原密码校验失败,请重新输入";
                     result.success = false;
                     return result;
                 }
@@ -1505,7 +1505,7 @@ namespace DPE.Core.Controllers
                     //交易密码错误
                     result.code = 61004;
                     result.success = false;
-                    result.msg = "交易密碼錯誤";
+                    result.msg = "交易密码错误";
                     return result;
                 }
                 if (tranuser.Count == 0)
@@ -1513,7 +1513,7 @@ namespace DPE.Core.Controllers
                     //交易密码错误
                     result.code = 61004;
                     result.success = false;
-                    result.msg = "交易密碼錯誤";
+                    result.msg = "交易密码错误";
                     return result;
                 }
 
@@ -1523,7 +1523,7 @@ namespace DPE.Core.Controllers
                     //当前账号不存在推荐人
                     result.code = 61005;
                     result.success = false;
-                    result.msg = "當前賬號不存在推薦人";
+                    result.msg = "当前账号不存在推荐人";
                     return result;
                 }
                 //var fgooglekey = MD5Helper.GenerateMD5(fuser.googleKey);
@@ -1540,7 +1540,7 @@ namespace DPE.Core.Controllers
                     //邀请码错误
                     result.code = 61005;
                     result.success = false;
-                    result.msg = "邀請碼不正確";
+                    result.msg = "邀请码不正确";
                     return result;
                 }
             }
@@ -1549,7 +1549,7 @@ namespace DPE.Core.Controllers
 
                 result.code = -1;
                 result.success = false;
-                result.msg = "交易密碼校驗異常";
+                result.msg = "交易密码校验异常";
                 return result; ;
             }
         }
@@ -1607,7 +1607,7 @@ namespace DPE.Core.Controllers
                 {
                     result.code = 63001;
                     result.success = false;
-                    result.msg = "添加失敗，請稍後再試";
+                    result.msg = "添加失败，请稍后再试";
                     return result;
                 }
 
@@ -1615,7 +1615,7 @@ namespace DPE.Core.Controllers
                 {
                     result.code = 63002;
                     result.success = false;
-                    result.msg = "添加失敗，請稍後再試";
+                    result.msg = "添加失败，请稍后再试";
                     return result;
                 }
 
@@ -1625,11 +1625,11 @@ namespace DPE.Core.Controllers
                 result.msg = inforesult.Rows[0][0].ToString();
                 return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 result.code = 63003;
                 result.success = false;
-                result.msg = ex.Message+"添加失敗，請稍後再試";
+                result.msg = ex.Message + "添加失败，请稍后再试";
                 return result;
             }
 
@@ -1657,7 +1657,7 @@ namespace DPE.Core.Controllers
                 {
                     result.code = 63001;
                     result.success = false;
-                    result.msg = "操作失敗，請稍後再試";
+                    result.msg = "操作失败，请稍后再试";
                     return result;
                 }
 
@@ -1665,7 +1665,7 @@ namespace DPE.Core.Controllers
                 {
                     result.code = 63002;
                     result.success = false;
-                    result.msg = "操作失敗，請稍後再試";
+                    result.msg = "操作失败，请稍后再试";
                     return result;
                 }
 
@@ -1680,7 +1680,7 @@ namespace DPE.Core.Controllers
             {
                 result.code = 63003;
                 result.success = false;
-                result.msg = ex.Message + "添加失敗，請稍後再試";
+                result.msg = ex.Message + "添加失败，请稍后再试";
                 return result;
             }
 
@@ -1709,7 +1709,7 @@ namespace DPE.Core.Controllers
                     //交易密码错误
                     result.code = 61004;
                     result.success = false;
-                    result.msg = "交易密碼錯誤!";
+                    result.msg = "交易密码错误!";
                     return result;
                 }
 
@@ -1718,7 +1718,7 @@ namespace DPE.Core.Controllers
                 {
                     result.code = 63001;
                     result.success = false;
-                    result.msg = "添加失敗，請稍後再試";
+                    result.msg = "添加失败，请稍后再试";
                     return result;
                 }
 
@@ -1727,7 +1727,7 @@ namespace DPE.Core.Controllers
                 {
                     result.code = 63002;
                     result.success = false;
-                    result.msg = "添加失敗，請稍後再試";
+                    result.msg = "添加失败，请稍后再试";
                     return result;
                 }
 
@@ -1740,14 +1740,14 @@ namespace DPE.Core.Controllers
             {
                 result.code = 63006;
                 result.success = false;
-                result.msg = "添加失敗，請稍後再試";
+                result.msg = "添加失败，请稍后再试";
                 return result;
             }
 
         }
 
 
-        //一鍵歸集
+        //一键归集
         [HttpPost]
         public async Task<MessageModel<dynamic>> OneKeyReturn()
         {
@@ -1769,14 +1769,14 @@ namespace DPE.Core.Controllers
                 //{
                 //    result.code = 63001;
                 //    result.success = false;
-                //    result.msg = "添加失敗，請稍後再試";
+                //    result.msg = "添加失败，请稍后再试";
                 //    return result;
                 //}
                 //if (string.IsNullOrEmpty(inforesult.Rows[0][0].ToString()))
                 //{
                 //    result.code = 63002;
                 //    result.success = false;
-                //    result.msg = "添加失敗，請稍後再試";
+                //    result.msg = "添加失败，请稍后再试";
                 //    return result;
                 //}
 
@@ -1789,14 +1789,14 @@ namespace DPE.Core.Controllers
             {
                 result.code = 63006;
                 result.success = false;
-                result.msg = "添加失敗，請稍後再試";
+                result.msg = "添加失败，请稍后再试";
                 return result;
             }
 
         }
 
 
-        //Google驗證碼校驗
+        //Google验证码校验
         [HttpPost]
         public async Task<MessageModel<dynamic>> CheckGoogleKey(string gcode)
         {
@@ -1816,7 +1816,7 @@ namespace DPE.Core.Controllers
                 //请输入谷歌验证码
                 result.code = 61005;
                 result.success = false;
-                result.msg = "請輸入谷歌驗證碼";
+                result.msg = "请输入谷歌验证码";
                 return result;
             }
 
@@ -1842,7 +1842,7 @@ namespace DPE.Core.Controllers
             }
         }
 
-        //交易密碼校驗
+        //交易密码校验
         [HttpPost]
         public async Task<MessageModel<dynamic>> CheckUpwd(string pwd, string idcard, string idname)
         {
@@ -1853,7 +1853,7 @@ namespace DPE.Core.Controllers
                 //身份验证过期请重新登陆
                 result.code = 61005;
                 result.success = false;
-                result.msg = "身份驗證過期請重新登陸!";
+                result.msg = "身份验证过期请重新登陆!";
                 return result;
             }
 
@@ -1862,7 +1862,7 @@ namespace DPE.Core.Controllers
                 //请输入谷歌验证码
                 result.code = 61005;
                 result.success = false;
-                result.msg = "請輸入交易密碼！";
+                result.msg = "请输入交易密码！";
                 return result;
             }
 
@@ -1872,7 +1872,7 @@ namespace DPE.Core.Controllers
                 //请输入谷歌验证码
                 result.code = 61005;
                 result.success = false;
-                result.msg = "身份證驗證不通過！";
+                result.msg = "身份证验证不通过！";
                 return result;
             }
 
@@ -1883,7 +1883,7 @@ namespace DPE.Core.Controllers
                 //请输入谷歌验证码
                 result.code = 61006;
                 result.success = false;
-                result.msg = "身份證驗證已用于其他账号！";
+                result.msg = "身份证验证已用于其他账号！";
                 return result;
             }
 
@@ -1897,7 +1897,7 @@ namespace DPE.Core.Controllers
             {
                 result.code = 61005;
                 result.success = false;
-                result.msg = "請輸入正確交易密碼";
+                result.msg = "请输入正确交易密码";
                 return result;
             }
         }
@@ -1964,7 +1964,7 @@ namespace DPE.Core.Controllers
 
 
         /// <summary>
-        /// 獲取聊天token及客服ID
+        /// 获取聊天token及客服ID
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -2078,7 +2078,7 @@ namespace DPE.Core.Controllers
         }
 
 
-        //Google驗證碼校驗
+        //Google验证码校验
         [HttpPost]
         public async Task<MessageModel<dynamic>> UnBindGoogleKey()
         {
@@ -2596,10 +2596,10 @@ namespace DPE.Core.Controllers
                     result.msg = "用户信息已过期，请重新登陆";
                     result.success = false;
                     return result;
-                }   
+                }
                 string beginTime = HttpContext.Request.Form["beginTime"];
                 string endTime = HttpContext.Request.Form["endTime"];
-                    
+
                 beginTime = string.IsNullOrEmpty(beginTime) ? "" : beginTime;
                 endTime = string.IsNullOrEmpty(endTime) ? "" : endTime;
 

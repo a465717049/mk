@@ -38,7 +38,7 @@ namespace DPE.Core.Controllers
         private readonly IIRPServices _iirpservices;
 
 
-        public ADController(IADServices adspservices, IUser user,  IUserInfoServices userInfoServices, IIRPServices iirpservices)
+        public ADController(IADServices adspservices, IUser user, IUserInfoServices userInfoServices, IIRPServices iirpservices)
         {
             _adservices = adspservices;
             _user = user;
@@ -67,7 +67,7 @@ namespace DPE.Core.Controllers
             if (tmpsuccess)
             {
                 var isfig = await _iirpservices.SetAdSignIn(_user.ID);
-                if (!isfig) 
+                if (!isfig)
                 {
                     tmpcode = 2002;
                     tmpsuccess = false;

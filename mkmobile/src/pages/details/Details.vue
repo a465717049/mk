@@ -17,7 +17,7 @@
              class="img"
              alt="" />
         <van-cell class="cell-info borderR mb-40"
-                  title="中級農場" />
+                  title="中级农场" />
       </div>
       <div class="relative">
         <img src="@/assets/imgs/set/b-3.png"

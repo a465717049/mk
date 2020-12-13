@@ -1,7 +1,7 @@
 <template>
   <div class="sellEpWrapper">
     <TopBar class="center-one-search" :option="topBarOption">
-      創建子賬號
+      创建子账号
     </TopBar>
     <div class="innerWrap">
       <div class="moneyWrap clearfix">
@@ -17,14 +17,14 @@
           <input type="text" v-model="initData.positionId" readonly />
         </li>
         <li>
-          <div class="title">投資級別</div>
+          <div class="title">投资級別</div>
           <van-dropdown-menu>
             <van-dropdown-item v-model="initData.level" :options="levelList" />
           </van-dropdown-menu>
         </li>
 
         <li>
-          <div class="title">擴展區域</div>
+          <div class="title">扩展区域</div>
           <input type="text" v-model="initData.area" readonly />
         </li>
         <li>
@@ -33,7 +33,7 @@
         </li>
       </ul>
 
-      <button class="next" @click="goNext">確認提交</button>
+      <button class="next" @click="goNext">确认提交</button>
     </div>
     <YellowComfirm :show="isEnter" :tipTitle="tips" @clickOver="clickOverpay" @clickOk="clickOk()"></YellowComfirm>
   </div>
@@ -70,8 +70,8 @@ export default {
         area: ""
       },
       levelList: [
-        { text: '高級農場', value: 1 },
-        { text: '中級農場', value: 2 }
+        { text: '高级农场', value: 1 },
+        { text: '中级农场', value: 2 }
       ],
       tips: "",
       tipsObj: {

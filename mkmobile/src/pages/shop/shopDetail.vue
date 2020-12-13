@@ -19,7 +19,7 @@
           </div>
           <van-swipe :autoplay="4000" class="sweiper1" @change="onChangeSwiper">
             <van-swipe-item v-for="(image, index) in images" :key="index">
-              <img :src="image.image" />
+              <img :src="image.pIcon" />
             </van-swipe-item>
             <template #indicator>
               <div class="custom-indicator">{{ current + 1 }}/{{images.length}}</div>

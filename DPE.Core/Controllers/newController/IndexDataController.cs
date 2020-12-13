@@ -41,7 +41,7 @@ namespace DPE.Core.Controllers
 
 
         /// <summary>
-        ///  首頁數據
+        ///  首页数据
         /// </summary>
         /// <returns></returns>
         [HttpPost]

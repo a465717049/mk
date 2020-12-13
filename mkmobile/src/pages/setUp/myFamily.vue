@@ -2,7 +2,7 @@
   <div class="relative my-family">
     <TopBar class="center-one-search" :option="topBarOption" @onSearch="search">
       <div>
-        <div class="three-tit-t">子賬號</div>
+        <div class="three-tit-t">子账号</div>
         <div class="three-tit-b">{{familyList.length}}</div>
         <TopSearch></TopSearch>
       </div>
@@ -79,8 +79,8 @@ export default {
       isEnter: false,
       tips: "",
       tipsObj: {
-        success: "處理成功！",
-        nosuccess: "處理失败，請稍後再嘗試！"
+        success: "处理成功！",
+        nosuccess: "处理失败，请稍后尝试！"
       },
       familyList: [],
       uid: 0

@@ -27,7 +27,7 @@ namespace DPE.Core.Controllers
     [Produces("application/json")]
     [Route("api/DPEActivities")]
     [Authorize(Permissions.Name)]
-    public class DPEActivitiesController :Controller
+    public class DPEActivitiesController : Controller
     {
 
         private readonly IDPEActivitiesServices _idpeactivitiesservices;
@@ -68,7 +68,7 @@ namespace DPE.Core.Controllers
                                 id = item.id.ObjToInt(),
                                 name = item.context,
                                 num = item.qty.ObjToInt(),
-                                gold = Convert.ToInt32( item.amount),
+                                gold = Convert.ToInt32(item.amount),
                                 status = _iuseractivitiesservices.CkUserActivities(_user.ID, item.id).Result.ObjToInt()
                             }).ToList()
                 }

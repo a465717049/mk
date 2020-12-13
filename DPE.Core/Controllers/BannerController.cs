@@ -34,7 +34,7 @@ namespace DPE.Core.Controllers
         readonly IUser _user;
         readonly IUserInfoServices _userInfoServices;
 
-        public BannerController( IUser user, IBannerServices ibannerservices, IUserInfoServices userInfoServices)
+        public BannerController(IUser user, IBannerServices ibannerservices, IUserInfoServices userInfoServices)
         {
             this._user = user;
             _userInfoServices = userInfoServices;

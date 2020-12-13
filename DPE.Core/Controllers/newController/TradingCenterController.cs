@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace DPE.Core.Controllers
 {
 
-    ///  radingCenter 服務中心
+    ///  radingCenter 服务中心
     [Produces("application/json")]
     [Route("api/radingCenter")]
     [Authorize(Permissions.Name)]
@@ -38,7 +38,7 @@ namespace DPE.Core.Controllers
 
 
         /// <summary>
-        /// 服務中心
+        /// 服务中心
         /// </summary>
         /// <returns></returns>
         [HttpPost]

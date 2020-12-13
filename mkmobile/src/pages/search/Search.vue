@@ -12,7 +12,7 @@
         <TopSearch class="search-input" @onSearch="onSearch"></TopSearch>
         <div class="auth-card">
           <div :style="{ flex: 1 }">
-            <div class="auth-top-tip">用 戶 I D&nbsp;：{{ bNum }}</div>
+            <div class="auth-top-tip">用 户 I D&nbsp;：{{ bNum }}</div>
             <div class="auth-top-tip">持有股票：{{ sNum }}</div>
           </div>
         </div>
@@ -32,7 +32,7 @@
         <button class="button" @click="onPeoPle">
           <div>
             <p class="num">{{ queueNumder }}</p>
-            <p class="pai-title">正在排隊</p>
+            <p class="pai-title">正在排队</p>
           </div>
 
           <i class="jiantou iconfont iconarrow-right"></i>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBar class="center-one-search" :option="topBarOption">反 饋</TopBar>
+    <TopBar class="center-one-search" :option="topBarOption">反 馈</TopBar>
 
     <div class="feedback-body">
       <!-- <div class="innerScroll"></div> -->

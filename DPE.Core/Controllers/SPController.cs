@@ -37,7 +37,7 @@ namespace DPE.Core.Controllers
         readonly IUserInfoServices _userInfoServices;
 
         readonly ISplitRecordsServices _isplitrecordsservices;
-        public SPController(ISplitRecordsServices isplitrecordsservices,ISPServices ispservices, IUser user, ISPexchangeServices ispexchangeservices, IUserInfoServices userInfoServices)
+        public SPController(ISplitRecordsServices isplitrecordsservices, ISPServices ispservices, IUser user, ISPexchangeServices ispexchangeservices, IUserInfoServices userInfoServices)
         {
             this._user = user;
             _ISPServices = ispservices;
@@ -65,7 +65,7 @@ namespace DPE.Core.Controllers
                 data.response = userinfo;
                 data.success = true;
             }
-            else 
+            else
             {
                 data.code = 1;
             }
@@ -79,7 +79,7 @@ namespace DPE.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("GetSPExchange")]
-        public async Task<MessageModel<dynamic>> GetSPExchange(string language="cn")
+        public async Task<MessageModel<dynamic>> GetSPExchange(string language = "cn")
         {
 
             var spinfo = await _ispexchangeservices.GetSPExchange(_user.ID);
@@ -188,7 +188,7 @@ namespace DPE.Core.Controllers
                 pagesize = pagesize == 0 ? 20 : pagesize;
                 pageindex = pageindex == 0 ? 1 : pageindex;
                 var data = await _ispexchangeservices.QueryPage(x => x.stype.ToString().Contains(stype) &&
-              (x.uID.ToString().Contains(key)   || x.remark.Contains(key)), pageindex, pagesize, " createTime DESC ");
+              (x.uID.ToString().Contains(key) || x.remark.Contains(key)), pageindex, pagesize, " createTime DESC ");
 
                 result.response = data;
                 result.code = 200;
@@ -215,5 +215,5 @@ namespace DPE.Core.Controllers
 
 
 
-   
+
 

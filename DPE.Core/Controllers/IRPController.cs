@@ -49,13 +49,13 @@ namespace DPE.Core.Controllers
             var user = await _userInfoServices.GetUserInfo(_user.ID);
             var data = new MessageModel<IRP>();
 
-                    var userinfo = await _IIRPServices.QueryById(user.uID);
-                    if (userinfo != null)
-                    {
-                        data.response = userinfo;
-                        data.success = true;
-                    }
-               
+            var userinfo = await _IIRPServices.QueryById(user.uID);
+            if (userinfo != null)
+            {
+                data.response = userinfo;
+                data.success = true;
+            }
+
             return data;
         }
 

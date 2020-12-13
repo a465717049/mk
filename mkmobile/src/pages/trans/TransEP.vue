@@ -1,7 +1,7 @@
 <template>
   <div class="sellEpWrapper">
     <TopBar class="center-one-search">
-      EP轉出
+      EP转出
     </TopBar>
     <div class="innerWrap">
       <div class="moneyWrap clearfix">
@@ -13,7 +13,7 @@
       </div>
       <ul>
         <li>
-          <div class="title">轉出數量</div>
+          <div class="title">转出数量</div>
           <input type="number" v-model="form.amount" />
         </li>
         <li>
@@ -21,15 +21,15 @@
           <input type="text" v-model="form.touid" @blur="checkUser" />
         </li>
         <li>
-          <div class="title">交易密碼</div>
+          <div class="title">交易密码</div>
           <input type="password" v-model="form.tpwd" />
         </li>
         <li>
-          <div class="title">谷歌驗證碼</div>
+          <div class="title">谷歌验证码</div>
           <input type="text" v-model="form.gcode" />
         </li>
       </ul>
-      <button class="next" @click="ToEexchange">確認轉出</button>
+      <button class="next" @click="ToEexchange">确认转出</button>
     </div>
     <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk()" @changeModel="changeModel"></YellowComfirm>
   </div>
@@ -61,12 +61,12 @@ export default {
       tips: '',
       redirect: null,
       tipsObj: {
-        noep: '請填寫轉出數量',
-        notouid: '請填寫接收人ID',
-        notpwd: '請填寫交易密碼',
-        nogcode: '請填寫谷歌驗證碼',
-        nosucceed: '轉出異常請稍後',
-        succeed: 'EP轉出成功'
+        noep: '请填写转出数量',
+        notouid: '请填写接收人ID',
+        notpwd: '请填写交易密码',
+        nogcode: '请填写谷歌验证码',
+        nosucceed: '转出异常请稍后',
+        succeed: 'EP转出成功'
       }
     }
   },
@@ -100,7 +100,7 @@ export default {
            if (json.response.enable) {
               this.name=json.response.name
             }else{
-              this.tips = '無法轉賬到此ID'
+              this.tips = '无法转账到此ID'
               this.showComfirm = true
               this.form.touid = ''
               this.name=''

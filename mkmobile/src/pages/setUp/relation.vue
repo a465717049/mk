@@ -1,7 +1,7 @@
 <template>
 
   <div class="relative">
-    <TopBar class="center-one-search" :option="topBarOption">關係</TopBar>
+    <TopBar class="center-one-search" :option="topBarOption">关系</TopBar>
     <ScrollRefresh @getData="loadData" :residualHeight="160" :isNeedUp="false">
     <div class="relation-box p-58 border-top-radius relative bg-gray">
       <div class="relation">
@@ -25,7 +25,7 @@
               <div v-else-if="item.jid>0&&item.uID==0">
                 <div class="person1 center ver-center" @click="goJoin(item.jid,item.isLeft)">
                   <i class="author author-icon iconfont icondingwei"></i>
-                  <div class="name">入駐</div>
+                  <div class="name">入驻</div>
                 </div>
               </div>
               <div v-else-if="item.jid==0&&item.uID==0">
@@ -46,7 +46,7 @@
               <div v-if="item.jid>0&&item.uID==0">
                 <div class="person3 center ver-center" @click="goJoin(item.jid,item.isLeft)">
                   <i class="author author-icon iconfont icondingwei"></i>
-                  <div class="name">入駐</div>
+                  <div class="name">入驻</div>
                 </div>
               </div>
               <div v-if="item.jid==0&&item.uID==0">
@@ -64,7 +64,7 @@
               <div v-if="item.jid>0&&item.uID==0">
                 <div class="person3 center ver-center" @click="goJoin(item.jid,item.isLeft)">
                   <i class="author author-icon iconfont icondingwei"></i>
-                  <div class="name">入駐</div>
+                  <div class="name">入驻</div>
                 </div>
               </div>
               <div v-if="item.jid==0&&item.uID==0">
@@ -115,7 +115,7 @@ export default {
         iconLeft: "back",
         iconRight: ""
       },
-      tipTitle: "請選擇入駐方式",
+      tipTitle: "请选择入驻方式",
       isEnter: false,
       upID: 0,
       parentId: 0,

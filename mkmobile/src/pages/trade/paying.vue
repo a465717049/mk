@@ -26,12 +26,12 @@
             <div class="right fr">
               <div class="rightCount">{{ initData.name }}</div>
               <ul>
-                <li>次數: {{ initData.times }}</li>
+                <li>次数: {{ initData.times }}</li>
                 <li>完成 : {{ initData.finish }}</li>
-                <li>投訴{{ initData.complaint }}</li>
+                <li>投诉{{ initData.complaint }}</li>
               </ul>
               <div class="money">{{ initData.price }}</div>
-              <p class="time">出售時間 ：{{ initData.date }}</p>
+              <p class="time">出售时间 ：{{ initData.date }}</p>
               <p v-if="this.initData.status==2" class="tel">Tel:{{ initData.phone }}</p>
             </div>
           </div>
@@ -65,7 +65,7 @@
               class="confirm"
               v-if="this.initData.status==1&&this.initData.name!=this.uid"
               @click="epbuy"
-            >确认購買</div>
+            >确认购买</div>
             <div
               class="cancel"
               v-if="this.initData.status==2&&this.initData.name!=this.uid"

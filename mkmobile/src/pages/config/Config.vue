@@ -5,20 +5,20 @@
         
       <div class="cf-bd-item">
         <img src="@/assets/imgs/config/gg_1.png" alt />
-        <span>自由調配自己的資產</span>
+        <span>自由調配自己的资产</span>
       </div>
       <div class="group">
         <div class="group-item" @click="routerChagne('TransEP')">
           <img src="@/assets/imgs/EPimg.png" alt />
-           <span>EP轉出</span>
+           <span>EP转出</span>
         </div>
         <div class="group-item" @click="routerChagne('TransRP')">
           <img src="@/assets/imgs/RPimg.png" alt />
-           <span>RP轉出</span>
+           <span>RP转出</span>
         </div>
         <div class="group-item" @click="routerChagne('TransWithMe')">
           <img src="@/assets/imgs/TRimg.png" alt />
-           <span>資產轉換</span>
+           <span>资产转换</span>
         </div>
       </div>
       <div class="cf-bd-item">

@@ -356,7 +356,7 @@
         </member>
         <member name="M:DPE.Core.Controllers.DPETaskController.GetDPETask(System.String)">
             <summary>
-            任务列表  0 不能领取 1 已领取 2 未領取
+            任务列表  0 不能领取 1 已领取 2 未领取
             </summary>
             <param name="language">cn en</param>
             <returns></returns>
@@ -441,7 +441,7 @@
         </member>
         <member name="M:DPE.Core.Controllers.EPController.GetEPExchangeList(System.Int32,System.Int32,System.Int32,System.String)">
             <summary>
-            EP記錄
+            EP记录
             </summary>
             <param name="type"></param>
             <param name="pageSize">每页显示行数</param>
@@ -479,7 +479,7 @@
         </member>
         <member name="M:DPE.Core.Controllers.EPController.TransToUser(System.String,System.Int64,System.String,System.String,System.Decimal)">
             <summary>
-            EP/RP轉出
+            EP/RP转出
             </summary>
             <param name="oType">原类型:EP、RP</param>
             <param name="dType">目标类型:RP、SP</param>
@@ -545,10 +545,10 @@
         </member>
         <member name="M:DPE.Core.Controllers.LoginController.Login(System.String,System.String)">
             <summary>
-            登錄
+            登录
             </summary>
-            <param name="name">用戶名</param>
-            <param name="pass">密碼</param>
+            <param name="name">用户名</param>
+            <param name="pass">密码</param>
             <returns></returns>
         </member>
         <member name="M:DPE.Core.Controllers.LoginController.RefreshToken(System.String)">
@@ -649,13 +649,13 @@
         </member>
         <member name="M:DPE.Core.Controllers.ManureController.GetAppleRecord">
             <summary>
-            蘋果生成記錄
+            苹果生成记录
             </summary>
             <returns></returns>
         </member>
         <member name="M:DPE.Core.Controllers.ManureController.GetUserInfoAll">
             <summary>
-            游戲接口數據整合
+            游戏接口数据整合
             </summary>
             <returns>用户信息</returns>
         </member>
@@ -721,25 +721,25 @@
         <!-- Badly formed XML comment ignored for member "T:DPE.Core.Controllers.IndexDataController" -->
         <member name="M:DPE.Core.Controllers.IndexDataController.GetIndexData">
             <summary>
-             首頁數據
+             首页数据
             </summary>
             <returns></returns>
         </member>
         <member name="M:DPE.Core.Controllers.RelationController.GetFimalyList(System.Int64)">
             <summary>
-            获取家族賬號清單
+            获取家族账号清单
             </summary>
             <returns></returns>
         </member>
         <member name="M:DPE.Core.Controllers.RelationController.GetFriendsList(System.Int64)">
             <summary>
-            朋友清單
+            朋友清单
             </summary>
             <returns></returns>
         </member>
         <member name="M:DPE.Core.Controllers.RelationController.GetRelationList(System.Int64)">
             <summary>
-            朋友關係
+            朋友关係
             </summary>
             <returns></returns>
         </member>
@@ -748,16 +748,16 @@
         </member>
         <member name="M:DPE.Core.Controllers.StockPriceTrendController.GetStockPriceTrend">
             <summary>
-            價格曲綫
+            价格曲綫
             </summary>
             <returns></returns>
         </member>
         <member name="T:DPE.Core.Controllers.TradingCenterController">
-             radingCenter 服務中心
+             radingCenter 服务中心
         </member>
         <member name="M:DPE.Core.Controllers.TradingCenterController.GetTradingCenter">
             <summary>
-            服務中心
+            服务中心
             </summary>
             <returns></returns>
         </member>
@@ -766,7 +766,7 @@
         </member>
         <member name="M:DPE.Core.Controllers.WaitedsControllerController.GetWaiteds">
             <summary>
-            排隊清單
+            排队清单
             </summary>
             <returns></returns>
         </member>
@@ -906,9 +906,9 @@
             <summary>
             注册
             </summary>
-            <param name="name">用戶名</param>
-            <param name="pass">密碼</param>
-            <param name="code">邀請碼</param>
+            <param name="name">用户名</param>
+            <param name="pass">密码</param>
+            <param name="code">邀请码</param>
             <returns></returns>
         </member>
         <member name="T:DPE.Core.Controllers.RoleController">
@@ -969,7 +969,7 @@
         </member>
         <member name="M:DPE.Core.Controllers.ShopListController.GetShopList(System.String)">
             <summary>
-            商店列表 商品清單
+            商店列表 商品清单
             </summary>
             <returns></returns>
         </member>
@@ -981,7 +981,7 @@
         </member>
         <member name="M:DPE.Core.Controllers.ShopListController.BuyGoods(System.Int64,System.String,System.String,System.String)">
             <summary>
-            购买商品 商品購買
+            购买商品 商品购买
             </summary>
             <param name="id">id</param>
             <param name="name">姓名</param>
@@ -991,7 +991,7 @@
         </member>
         <member name="M:DPE.Core.Controllers.ShopListController.GetShopDeatilList(System.Int64)">
             <summary>
-            商品明細
+            商品明细
             </summary>
             <returns></returns>
         </member>
@@ -1168,7 +1168,7 @@
         </member>
         <member name="M:DPE.Core.Controllers.UserController.SetUserlocation(System.String,System.String)">
             <summary>
-            设置金币地址 設置錢包地址
+            设置金币地址 设置钱包地址
             【无权限】
             </summary>
             <param name="uid">uid</param>
@@ -1187,8 +1187,8 @@
             修改密码
             【无权限】
             </summary>
-            <param name="password">原密碼</param>
-            <param name="new_password">新密碼</param>
+            <param name="password">原密码</param>
+            <param name="new_password">新密码</param>
             <returns>修改密码</returns>
         </member>
         <member name="M:DPE.Core.Controllers.UserController.SetUseridcard(System.String,System.String)">
@@ -1316,7 +1316,7 @@
         </member>
         <member name="M:DPE.Core.Controllers.UserController.getMessgeToken">
             <summary>
-            獲取聊天token及客服ID
+            获取聊天token及客服ID
             </summary>
             <returns></returns>
         </member>

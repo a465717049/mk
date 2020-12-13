@@ -1,8 +1,8 @@
 <template>
   <div class="relative">
-    <TopBar class="center-one-search" :option="topBarOption" :showLocation="showLocation" @clickR='my' >正在排隊  
+    <TopBar class="center-one-search" :option="topBarOption" :showLocation="showLocation" @clickR='my' >正在排队  
       
-       <div class="count">排隊人數：{{ count }}</div>
+       <div class="count">排队人数：{{ count }}</div>
        <div class="id">最新 I D：{{ id }}</div>
 
       <div class='search-pos'>

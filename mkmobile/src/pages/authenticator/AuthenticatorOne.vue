@@ -5,9 +5,9 @@
       <div class="auth-card">
         <img src="@/assets/imgs/auth-header.png" alt />
         <div>
-          <div class="auth-top-tit">Google 身份驗證</div>
+          <div class="auth-top-tit">Google 身份验证</div>
           <div class="auth-top-tip">
-            只需2步，獲取激活碼用於您的賬號進行安全校驗
+            只需2步，获取激活码用于您的账号进行安全校验
           </div>
         </div>
       </div>
@@ -17,7 +17,7 @@
           <input type="text" v-model="activationCode" />
         </li>
         <li>
-          <div class="title">交易密碼</div>
+          <div class="title">交易密码</div>
           <input type="password" v-model="password" />
         </li>
       </ul>
@@ -54,10 +54,10 @@ export default {
       password: '',
       tips: '',
       tipsObj: {
-        nosucceed: '驗證失敗',
-        notpwd: '請輸入交易密碼',
-        nogcode: '請輸入邀請碼',
-        succeed: '驗證成功'
+        nosucceed: '检验失败',
+        notpwd: '请输入交易密码',
+        nogcode: '请输入邀请码',
+        succeed: '验证成功'
       }
     }
   },

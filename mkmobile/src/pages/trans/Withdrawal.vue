@@ -7,7 +7,7 @@
         <div class="tips-part">
           <div class="tip-titl">提示</div>
           <div>EP提现要扣除10%的手续费</div>
-          <!-- <div>即將更新！</div> -->
+          <!-- <div>即将更新！</div> -->
         </div>
       </div>
       <div class="moneyWrap clearfix">
@@ -29,7 +29,7 @@
           </van-dropdown-menu>
         </li>
         <li>
-          <div class="title">交易密碼</div>
+          <div class="title">交易密码</div>
           <input type="password" v-model="form.tpwd" />
         </li>
         <li>
@@ -75,12 +75,12 @@ export default {
       verificationCode: null,
       tips: "",
       tipsObj: {
-        noamount: "請填寫轉換數量",
-        amount: "餘額不足！",
-        notype: "請選擇轉出類型",
-        notpwd: "請填寫交易密碼",
-        nosucceed: "轉換異常，稍後重試",
-        succeed: "轉換成功"
+        noamount: "请填写转换数量",
+        amount: "馀额不足！",
+        notype: "请选择转出类型",
+        notpwd: "请填写交易密码",
+        nosucceed: "转换异常，稍后重试",
+        succeed: "转换成功"
       }
     };
   },

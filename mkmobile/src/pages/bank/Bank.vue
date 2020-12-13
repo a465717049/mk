@@ -59,8 +59,10 @@ export default {
         L: 0
       },
       option1: [
-        { text: "高級農場", value: 1 },
-        { text: "中級農場", value: 2 }
+      { text: "支付寶", value: 1 },
+      { text: "微信", value: 2 },
+      { text: "銀行卡", value: 3 },
+      { text: "USDT", value: 4 },
       ]
     };
   },
@@ -76,61 +78,8 @@ export default {
       this.showComfirm = false;
     },
     goEditData() {
-      if (this.initData.code === 0) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.nomember;
-        return;
-      }
-      if (!this.initData.nickName) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.nonickname;
-        return;
-      }
+   
 
-      if (!this.initData.level) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.nolevel;
-        return;
-      }
-
-      if (!this.initData.password) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.nopwd;
-        return;
-      }
-
-      if (!this.initData.comfirmPassword) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.norpwd;
-        return;
-      }
-
-      if (this.initData.password !== this.initData.comfirmPassword) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.nopwdreset;
-        return;
-      }
-
-      var Joindata = {
-        Jid: this.initData.Jid, // uid
-        idType: 2,
-        idNumber: "",
-        uRealName: "",
-        bankCardName: "",
-        loginPass: this.initData.password,
-        investmentAmount: this.initData.level == 1 ? 1000 : 500,
-        CountryPhoneCode: 86,
-        MemberNo: this.initData.code,
-        NickName: this.initData.nickName,
-        googleCode: "",
-        TradePass: "",
-        TransUserID: 0,
-        parentID: 0, //parentID 当前ID
-        L: this.initData.L
-      };
-      // alert(this.initData.Jid)
-      storage.setLocalStorage("joindata", JSON.stringify(Joindata));
-      this.$router.push({ name: "Additional" });
     }
   },
   created() {

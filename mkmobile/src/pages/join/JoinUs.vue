@@ -16,12 +16,12 @@
           <input type="text" v-model="initData.code" />
         </li>-->
         <li>
-          <div class="title">昵稱:</div>
+          <div class="title">昵称:</div>
           <input type="text" v-model="initData.nickName" />
           <i class="iconfont icondui"></i>
         </li>
         <li>
-          <div class="title">密碼:</div>
+          <div class="title">密码:</div>
           <input type="password" v-model="initData.password" />
           <i class="iconfont icondui"></i>
         </li>
@@ -68,11 +68,11 @@ export default {
       showComfirm: false,
       tips: "",
       tipsObj: {
-        nomember: "請輸入账号！",
-        nonickname: "請輸入昵稱！",
-        nolevel: "請選擇級別！",
-        nopwd: "請輸入密碼！",
-        nopwdreset: "兩次密碼不一致請重新確認！"
+        nomember: "请输入账号！",
+        nonickname: "请输入昵称！",
+        nolevel: "请选择级别！",
+        nopwd: "请输入密码！",
+        nopwdreset: "两次密码不一致请重新确认！"
       },
       initData: {
         Jid: 0,

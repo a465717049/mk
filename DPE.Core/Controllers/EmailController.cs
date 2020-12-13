@@ -53,7 +53,7 @@ namespace DPE.Core.Controllers
         [Route("GetEamilList")]
         public async Task<MessageModel<EmailListViewModels>> GetEamilList(string language = "cn")
         {
-            var emaillist  = await _iemailservices.QuerySql(string.Format("select  a.* from Email a where not  exists (select 1 from UserEmail b where a.id=b.eid and b.isDelete=1 and b.uid={0}) ", _user.ID));
+            var emaillist = await _iemailservices.QuerySql(string.Format("select  a.* from Email a where not  exists (select 1 from UserEmail b where a.id=b.eid and b.isDelete=1 and b.uid={0}) ", _user.ID));
 
             return new MessageModel<EmailListViewModels>()
             {
@@ -68,7 +68,7 @@ namespace DPE.Core.Controllers
                                 content = item.context,
                                 id = item.id,
                                 title = item.title,
-                                status =  _iuseremailservices.ckUserEmailStatus(_user.ID,item.id).Result.ObjToInt(),
+                                status = _iuseremailservices.ckUserEmailStatus(_user.ID, item.id).Result.ObjToInt(),
                                 time = DateHelper.GetCreatetime(Convert.ToDateTime(item.createTime)),
                                 source = "系统"
                             }).ToList()
@@ -93,8 +93,8 @@ namespace DPE.Core.Controllers
             int tmpcode = 0;
 
 
-            UserEmail userEmail = new UserEmail() { eid=0,status=0, isDelete=0, uId=0 };
-            if (email.Count == 0 ) 
+            UserEmail userEmail = new UserEmail() { eid = 0, status = 0, isDelete = 0, uId = 0 };
+            if (email.Count == 0)
             {
                 if (_user.ID != 0)
                 {
@@ -104,18 +104,18 @@ namespace DPE.Core.Controllers
                     userEmail.uId = _user.ID;
                     await _iuseremailservices.Add(userEmail);
                 }
-                else 
+                else
                 {
                     tmpcode = 8001;
                 }
-            
+
             }
             else
             {
                 userEmail = email.First();
                 userEmail.status = 1;
-                //已讀
-                await  _iuseremailservices.Update(userEmail," uId="+_user.ID);
+                //已读
+                await _iuseremailservices.Update(userEmail, " uId=" + _user.ID);
             }
 
             return new MessageModel<dynamic>()
@@ -141,13 +141,13 @@ namespace DPE.Core.Controllers
         [Route("DeleteEmail")]
         public async Task<MessageModel<dynamic>> DeleteEmail(int id)
         {
-            
-            var isfig = await _iuseremailservices.DeleteEmail(id,_user.ID);
+
+            var isfig = await _iuseremailservices.DeleteEmail(id, _user.ID);
             return new MessageModel<dynamic>()
             {
                 success = true,
                 msg = "",
-                code=0,
+                code = 0,
                 response = new
                 {
                     id = id
@@ -166,17 +166,17 @@ namespace DPE.Core.Controllers
         {
             var user = await _userInfoServices.GetUserInfo(_user.ID);
 
-            var myemaillist = (await _iuseremailservices.Query(x=>x.uId==_user.ID)).Select(x=>x.eid);
+            var myemaillist = (await _iuseremailservices.Query(x => x.uId == _user.ID)).Select(x => x.eid);
 
             var emaillist = (await _iemailservices.Query(x => !(myemaillist).Contains(x.id))).ToList();
 
             List<UserEmail> list = new List<UserEmail>();
             foreach (var item in emaillist)
             {
-                list.Add(new UserEmail() { eid = item.id, isDelete = 1, status = 1 , uId=_user.ID }) ;
+                list.Add(new UserEmail() { eid = item.id, isDelete = 1, status = 1, uId = _user.ID });
 
             }
-            await  _iuseremailservices.Add(list);
+            await _iuseremailservices.Add(list);
             var isfig = await _iuseremailservices.DeleteEmailAll(user.uID);
             return new MessageModel<dynamic>()
             {
