@@ -59,69 +59,6 @@ export default {
       },
       ntype: null,
       newsList: [
-        {
-          title:
-            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
-          name: "zzzznnnn",
-          time: "13小时前",
-          num: "12124"
-        },
-        {
-          title:
-            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
-          name: "zzzznnnn",
-          time: "13小时前",
-          num: "12124"
-        },
-        {
-          title:
-            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
-          name: "zzzznnnn",
-          time: "13小时前",
-          num: "12124"
-        },
-        {
-          title:
-            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
-          name: "zzzznnnn",
-          time: "13小时前",
-          num: "12124"
-        },
-        {
-          title:
-            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
-          name: "zzzznnnn",
-          time: "13小时前",
-          num: "12124"
-        },
-        {
-          title:
-            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
-          name: "zzzznnnn",
-          time: "13小时前",
-          num: "12124"
-        },
-        {
-          title:
-            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
-          name: "zzzznnnn",
-          time: "13小时前",
-          num: "12124"
-        },
-        {
-          title:
-            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
-          name: "zzzznnnn",
-          time: "13小时前",
-          num: "12124"
-        },
-        {
-          title:
-            "We are very happ are very happy that the DPE zhengzhou club can be set up in such a serious situatio",
-          name: "zzzznnnn",
-          time: "13小时前",
-          num: "12124"
-        }
       ]
     };
   },

@@ -67,11 +67,7 @@ const router = new Router({
           path: "/friendsList",
           component: resolve => require(["@/pages/setUp/friendsList"], resolve)
         },
-        {
-          name: "relation",
-          path: "/relation",
-          component: resolve => require(["@/pages/setUp/relation"], resolve)
-        },
+       
         {
           name: "friends",
           path: "/friends",
@@ -102,11 +98,7 @@ const router = new Router({
           path: "/sellEp",
           component: resolve => require(["@/pages/sell/SellEp"], resolve)
         },
-        {
-          name: "SellStock",
-          path: "/sellStock",
-          component: resolve => require(["@/pages/sell/SellStock"], resolve)
-        },
+      
         {
           name: "TransEP",
           path: "/transEp",
@@ -231,11 +223,7 @@ const router = new Router({
           path: "/stocklist",
           component: resolve => require(["@/pages/trade/stocklist"], resolve)
         },
-        {
-          name: "Split",
-          path: "/Split",
-          component: resolve => require(["@/pages/sell/Split"], resolve)
-        },
+      
         {
           name: "Config",
           path: "/config",
@@ -283,11 +271,7 @@ const router = new Router({
           path: "/setRelation",
           component: resolve => require(["@/pages/setUp/setRelation"], resolve)
         },
-        {
-          name: "myFamily",
-          path: "/myFamily",
-          component: resolve => require(["@/pages/setUp/myFamily"], resolve)
-        },
+     
         {
           name: "task",
           path: "/task",

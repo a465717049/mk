@@ -16,7 +16,7 @@ namespace DPE.Core
              {
                  webBuilder
                  .UseStartup<Startup>()
-                 .UseUrls(new string[] { "http://localhost:8081", "http://localhost:8082" })
+                 .UseUrls(new string[] { "http://localhost:8083"})
                  .ConfigureLogging((hostingContext, builder) =>
                  {
                      //过滤掉系统默认的一些日志

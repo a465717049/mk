@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBar class="center-one-search" >設置</TopBar>
+    <TopBar class="center-one-search" >设置</TopBar>
     <ScrollRefresh @getData="TogetUserInfo" :residualHeight="160" :isNeedUp="false" class="innerScroll">
       <div class="set clearfix p-58">
         <div class="relative">

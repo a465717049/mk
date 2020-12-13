@@ -136,12 +136,12 @@ export default {
         {
           name: '奖金',
           type: 'ep',
-          count: 6666666
+          count: 0
         },
         {
           name: '注册分',
           type: 'rp',
-          count: 33333
+          count: 0
         }
       ],
       listOne: [

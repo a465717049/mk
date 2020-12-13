@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBar class="center-one-search">設置語言</TopBar>
+    <TopBar class="center-one-search">设置语言</TopBar>
     <div class="lan-set border-top-radius relative">
       <div class="set borderR clearfix p-58">
         <div class="relative special">
@@ -8,7 +8,7 @@
           <van-cell class="cell-info borderR mb-40" title="语言" arrow-direction="down" is-link url />
         </div>
         <div class="relative cell-special">
-          <van-cell class="cell-info borderR mb-40 active" title="中文繁体" is-link url >
+          <van-cell class="cell-info borderR mb-40 active" title="中文" is-link url >
             <i class="iconfont icondui"></i>
           </van-cell>
         </div>

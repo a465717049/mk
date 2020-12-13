@@ -9,7 +9,7 @@
           <div class="top">RP</div>
           <div class="bottom">ACCOUNT</div>
         </div>
-        <div class="right fr">{{account}}888888</div>
+        <div class="right fr">{{account}}</div>
       </div>
       <ul>
         <li>
