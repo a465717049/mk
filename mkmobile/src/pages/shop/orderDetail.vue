@@ -287,7 +287,7 @@ export default {
     border-radius: 36px;
     .img {
       width: 151px;
-      height: 184px;
+      // height: 184px;
       margin-right: 70px;
     }
   }

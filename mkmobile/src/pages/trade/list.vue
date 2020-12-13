@@ -148,8 +148,8 @@ export default {
       tmpcktype: "EP",
       showLocation: true,
       listOne: [
-        { remark: "销售奖", date: "11-20 20:08:02", amount: 450 },
-        { remark: "销售奖", date: "11-20 20:08:02", amount: -450 }
+        // { remark: "销售奖", date: "11-20 20:08:02", amount: 450 },
+        // { remark: "销售奖", date: "11-20 20:08:02", amount: -450 }
       ],
       listTwo: [],
       listThree: [],

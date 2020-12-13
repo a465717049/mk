@@ -84,7 +84,7 @@ export default {
   background: #efb618;
   width: 76vw;
   border-radius: 30px;
-  padding: 5px;
+  padding: 8px;
   .brown-border {
     padding: 50px 40px;
     border: 12px solid #fff;

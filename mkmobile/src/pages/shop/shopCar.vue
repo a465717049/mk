@@ -1,70 +1,81 @@
 <template>
   <div class="shopCarWrapper">
-    <TopBar class="center-one-search" :option="topBarOption" :badge="carNum">购物车</TopBar>
+    <TopBar class="center-one-search" :option="topBarOption" :badge="carNum"
+      >购物车</TopBar
+    >
     <ScrollRefresh
       @getData="TogetUserInfo"
       :residualHeight="160"
       :isNeedUp="false"
       class="innerScroll"
     >
-      <div class="innerWrap" >
-
-        <div class="goods base-flex flex-start p-58 borderR mb-80"  v-for="(key,value) in data" :key="value">
+      <div class="innerWrap">
+        <div
+          class="goods base-flex p-58 borderR mb-80"
+          v-for="(key, value) in data"
+          :key="value"
+        >
           <img src="@/assets/imgs/tipimg.png" class="img" alt />
           <div class="goods-info">
-            <div class="tip-titl">{{key.shopdetail.pName}}</div>
-            <div>价格：{{key.shopdetail.price}}</div>  
-           <!-- <div>赠送：面膜+修复水</div>    v-model="stepper"  @plus="onPlus" @minus="onMinus" -->
+            <div class="tip-titl">{{ key.shopdetail.pName }}</div>
+            <div>价格：{{ key.shopdetail.price }}</div>
+            <!-- <div>赠送：面膜+修复水</div>    v-model="stepper"  @plus="onPlus" @minus="onMinus" -->
           </div>
           <van-field name="stepper" class="font42">
             <template #input>
               <van-stepper
-                v-model="key.shopnum" 
+                v-model="key.shopnum"
                 @plus="onPlus(key.id)"
-                 @minus="onMinus(key.id)"
+                @minus="onMinus(key.id)"
                 class="font42"
               />
             </template>
           </van-field>
         </div>
 
-
-
         <div class="distribution">
           <div class="dTitle">配送信息：</div>
-          <ul class="dInfo">
-          <input type="text" placeholder="地址" v-model="buyaddr"/>
-          <input type="text" placeholder="联系人" v-model="buyname"/> 
-          <input type="text" placeholder="手机号" v-model="buyphone"/>
-         <!--<li>广东省深圳市龙华福龙大厦530室</li>
+          <div class="dInfo">
+            <input type="text" placeholder="地址" v-model="buyaddr" />
+            <input type="text" placeholder="联系人" v-model="buyname" />
+            <input type="text" placeholder="手机号" v-model="buyphone" />
+            <!--<li>广东省深圳市龙华福龙大厦530室</li>
             <li>150****890 李红</li>  -->
-          </ul>
+          </div>
         </div>
 
         <div class="remarkTitle">备注：</div>
         <ul class="remarkInfo">
-             <li> <input type="text"  v-model="buyremark"/></li> 
-       <!--   <li>摩奇猴套装系列（A001) 尺寸：XL 码</li> -->
+          <li><textarea type="text" v-model="buyremark" /></li>
+          <!--   <li>摩奇猴套装系列（A001) 尺寸：XL 码</li> -->
         </ul>
         <div class="sumTitle">合计</div>
         <div class="sumInfo">
           <span class="tit">需扣除您的RP：</span>
-          <span class="num">{{buytotalrp}}</span>
+          <span class="num">{{ buytotalrp }}</span>
           <span class="unit">（RMB)</span>
-        </div>  
+        </div>
         <div class="sumInfo">
-          <span class="tit">您目前帐户可购买商品的余额为：{{totalrp}}（RMB)</span>
+          <span class="tit"
+            >您目前帐户可购买商品的余额为：{{ totalrp }}（RMB)</span
+          >
         </div>
         <div class="buttonWrap">
-        <router-link to="shop" class="router"> <!--@click="buyShop" -->
-        <button class="back">继续购物</button>
-        </router-link>
+          <router-link to="shop" class="router">
+            <!--@click="buyShop" -->
+            <button class="back">继续购物</button>
+          </router-link>
           <button class="sure" @click="buyShop">立即购买</button>
         </div>
         <!-- <button class="next" @click="goNext">确认提交</button> -->
       </div>
     </ScrollRefresh>
-    <YellowComfirm :show="isEnter" :tipTitle="tips" @clickOver="clickOverpay" @clickOk="clickOk()"></YellowComfirm>
+    <YellowComfirm
+      :show="isEnter"
+      :tipTitle="tips"
+      @clickOver="clickOverpay"
+      @clickOk="clickOk()"
+    ></YellowComfirm>
   </div>
 </template>
 <script type="text/javascript">
@@ -73,29 +84,35 @@ import headerImg from "../../assets/imgs/headerImg.png";
 import YellowComfirm from "components/YellowComfirm";
 import ScrollRefresh from "components/ScrollRefresh";
 import { http } from "util/request";
-import { CreateNewAccount, GetUserInfo ,GetShopCartsweb,AddGoodsweb,BuyGoodsweb,GetShopaddr} from "util/netApi";
+import {
+  CreateNewAccount,
+  GetUserInfo,
+  GetShopCartsweb,
+  AddGoodsweb,
+  BuyGoodsweb,
+  GetShopaddr,
+} from "util/netApi";
 import { storage } from "util/storage";
 import { accessToken, loginPro } from "util/const.js";
 export default {
   components: {
     TopBar,
     YellowComfirm,
-    ScrollRefresh
+    ScrollRefresh,
   },
   data() {
     return {
-      totalrp:0,
-      buytotalrp:0,
-       buyaddr:"",
-       buyname:"",
-       buyphone:"",
-       buyremark:"",
-       data: [
+      totalrp: 0,
+      buytotalrp: 0,
+      buyaddr: "",
+      buyname: "",
+      buyphone: "",
+      buyremark: "",
+      data: [
         {
           icon_url: require("@/assets/imgs/shop/camea.png"),
           id: 1,
-          shopdetail:
-          {
+          shopdetail: {
             createTime: "",
             id: 0,
             minLevel: 0,
@@ -109,14 +126,14 @@ export default {
           },
           shopid: 8,
           shopnum: 8,
-          uid: 8
-        }
+          uid: 8,
+        },
       ],
       topBarOption: {
         iconLeft: "back",
-        iconRight: "icongouwucheman"
+        iconRight: "icongouwucheman",
       },
-      carNum:1,
+      carNum: 1,
       tips:
         "恭喜！注册成功了！登录ID: 100012登录密码：123456交易密码：123456请尽快登录修改并完善个人资料",
       isEnter: false,
@@ -130,42 +147,37 @@ export default {
       initData: {
         price: "",
         positionId: "",
-        area: ""
+        area: "",
       },
       option1: [
         { text: "1000", value: 1 },
-        { text: "500", value: 2 }
-      ]
+        { text: "500", value: 2 },
+      ],
     };
   },
   mounted() {},
   computed: {},
   methods: {
-      getshopcartnum()
-    {
-      http(GetShopCartsweb,null, json => {
-        if(json.code===0)
-        {
-           this.data=json.response.data.list;
-           this.sumallshop();
+    getshopcartnum() {
+      http(GetShopCartsweb, null, (json) => {
+        if (json.code === 0) {
+          this.data = json.response.data.list;
+          this.sumallshop();
         }
-             
       });
     },
-      sumallshop()
-    {
-         var trp =0;
-         var totalnum=0;
-         this.data.forEach(function(item)
-         {
-             trp += item.shopnum * item.shopdetail.price;
-             totalnum+= item.shopnum;
-         })
-         this.buytotalrp=trp;
-         this.carNum=totalnum;
+    sumallshop() {
+      var trp = 0;
+      var totalnum = 0;
+      this.data.forEach(function (item) {
+        trp += item.shopnum * item.shopdetail.price;
+        totalnum += item.shopnum;
+      });
+      this.buytotalrp = trp;
+      this.carNum = totalnum;
     },
     goNext() {
-      if (this.totalrp<this.buytotalrp) {
+      if (this.totalrp < this.buytotalrp) {
         this.isEnter = true;
         this.tips = "當前金額不足";
         return;
@@ -173,29 +185,38 @@ export default {
       http(
         CreateNewAccount,
         { jsondata: JSON.stringify(this.addmodel) },
-        json => {
+        (json) => {
           if (json.code === 0) {
-            this.totalrp=json.response.rp;
+            this.totalrp = json.response.rp;
           }
         }
       );
     },
     buyShop() {
-        if (this.totalrp<this.buytotalrp) {
+      if (this.totalrp < this.buytotalrp) {
         this.isEnter = true;
         this.tips = "當前金額不足";
         return;
       }
-      http(BuyGoodsweb, { addr:this.buyaddr, phone:this.buyphone, name:this.buyname, remark:this.buyremark}, json => {
-        if (json.code === 0) {
-           this.isEnter=true;
-           this.tips=json.msg;
-           this.getshopcartnum();
-        } else {
-          this.isEnter = true;
-          this.tips = json.msg;
+      http(
+        BuyGoodsweb,
+        {
+          addr: this.buyaddr,
+          phone: this.buyphone,
+          name: this.buyname,
+          remark: this.buyremark,
+        },
+        (json) => {
+          if (json.code === 0) {
+            this.isEnter = true;
+            this.tips = json.msg;
+            this.getshopcartnum();
+          } else {
+            this.isEnter = true;
+            this.tips = json.msg;
+          }
         }
-      });
+      );
     },
     changeModel(v) {
       this.isEnter = v;
@@ -205,50 +226,46 @@ export default {
       if (this.isreturn == 1) {
         this.$router.push({
           name: "relation",
-          params: { uid: this.addmodel.Jid }
+          params: { uid: this.addmodel.Jid },
         });
       }
     },
     TogetUserInfo() {
-      http(GetUserInfo, null, json => {
+      http(GetUserInfo, null, (json) => {
         if (json.code === 0) {
-          this.totalrp=json.response.rp;
+          this.totalrp = json.response.rp;
         }
       });
     },
     onPlus(id) {
       //增加
       this.price += this.shopprice;
-      this.addshop(id,1,"");
+      this.addshop(id, 1, "");
     },
     onMinus(id) {
       //减少
       this.price -= this.shopprice;
-      this.addshop(id,1,"-");
+      this.addshop(id, 1, "-");
     },
-    addshop(id,num,option){
-       http(AddGoodsweb, {shopid: id,num:num ,option:option}, json => {
-         if(json.code === 0)
-         {
-           this.sumallshop();
-         }
+    addshop(id, num, option) {
+      http(AddGoodsweb, { shopid: id, num: num, option: option }, (json) => {
+        if (json.code === 0) {
+          this.sumallshop();
+        }
       });
-
-    }
+    },
   },
   created() {
-     this.TogetUserInfo();
-     this.getshopcartnum();
-       http(GetShopaddr, null, json => {
-         if(json.code === 0)
-         {
-           this.buyaddr=json.response.data.buyaddr;
-           this.buyphone=json.response.data.buyphone;
-           this.buyname=json.response.data.buyname;
-         }
-      });
-
-  }
+    this.TogetUserInfo();
+    this.getshopcartnum();
+    http(GetShopaddr, null, (json) => {
+      if (json.code === 0) {
+        this.buyaddr = json.response.data.buyaddr;
+        this.buyphone = json.response.data.buyphone;
+        this.buyname = json.response.data.buyname;
+      }
+    });
+  },
 };
 </script>
 
@@ -258,94 +275,113 @@ export default {
     min-height: calc(100vh - 420px);
   }
 }
-   input {
-        height: 130px;
-         margin: 0 auto 50px;
-        line-height: 130px;
-        color: #9E9E9F;
-        width: 100%;
-        padding: 0 30px;
-        border-radius: 20px;
-        font-size: 60px;
-        font-weight: 600;
-        letter-spacing: 10px;
-      }
+
 .shopCarWrapper {
+  /deep/.top-bar .img-r {
+    font-size: 70px;
+  }
+  input,textarea {
+    height: 130px;
+    margin: 0 auto 50px;
+    line-height: 130px;
+    color: #6F6D72;
+    width: 100%;
+    padding: 0 30px;
+    border-radius: 20px;
+    font-size: 48px;
+    font-weight: 600;
+    letter-spacing: 10px;
+  }
+  textarea{
+    height: auto;
+    line-height: 60px;
+    margin: 0;
+  }
+  input::-webkit-input-placeholder {
+    color: #9e9e9f;
+    font-size: 48px;
+  }
+    textarea::-webkit-input-placeholder {
+    color: #9e9e9f;
+    font-size: 48px;
+  }
   .innerWrap {
     width: 100vw;
     margin-top: 0px;
     padding-top: 30px;
     padding-bottom: 100px;
     /deep/.van-stepper__plus {
-    width: 58px;
-    height: 58px;
-    // margin-left: 15px;
-    background: #b3bdbe;
-  }
-  /deep/.van-stepper__plus::after {
-    color: black;
-  }
-  /deep/.van-stepper__plus::before {
-    color: black;
-    height: 4px;
-  }
-  /deep/.van-stepper__plus::after {
-    color: black;
-    width: 4px;
-  }
-  /deep/.van-stepper__minus::before {
-    color: black;
-    height: 4px;
-  }
-  /deep/.van-stepper__minus::after {
-    color: black;
-    width: 4px;
-  }
-  /deep/.van-stepper__minus {
-    width: 58px;
-    height: 58px;
-    // margin-right: 15px;
-    background: #b3bdbe;
-  }
-  /deep/.van-stepper__input {
-    font-size: 42px;
+      width: 58px;
+      height: 58px;
+      // margin-left: 15px;
+      background: #b3bdbe;
+    }
+    /deep/.van-stepper__plus::after {
+      color: black;
+    }
+    /deep/.van-stepper__plus::before {
+      color: black;
+      height: 4px;
+    }
+    /deep/.van-stepper__plus::after {
+      color: black;
+      width: 4px;
+    }
+    /deep/.van-stepper__minus::before {
+      color: black;
+      height: 4px;
+    }
+    /deep/.van-stepper__minus::after {
+      color: black;
+      width: 4px;
+    }
+    /deep/.van-stepper__minus {
+      width: 58px;
+      height: 58px;
+      // margin-right: 15px;
+      background: #b3bdbe;
+    }
+    /deep/.van-stepper__input {
+      font-size: 42px;
 
-    font-weight: bold;
-    color: #010000;
-    line-height: 50px;
-    height: 50px;
-    background: #b3bdbe;
-    width: 100px;
+      font-weight: bold;
+      color: #010000;
+      line-height: 50px;
+      height: 50px;
+      background: #b3bdbe;
+      width: 100px;
+    }
+
+    /deep/.van-cell {
+      width: 220px;
+      background: #b3bdbe;
+      border-radius: 30px;
+      height: 60px;
+      padding: 0;
+    }
   }
 
-  /deep/.van-cell {
-    width: 220px;
-    background: #b3bdbe;
-    border-radius: 30px;
-    height: 60px;
-    padding: 0;
-  }
-
-  }
-  
   .goods-info {
     font-weight: bold;
     font-size: 33px;
     color: #000000;
     opacity: 0.75;
     flex: 1;
+    div {
+      line-height: 60px;
+    }
   }
   .goods {
     width: 90%;
     min-height: 158px;
-    align-items: center;
+    align-items: flex-end;
     padding: 30px;
     margin: 0 auto 50px;
     background-color: #dee3ee;
     border-radius: 36px;
     .img {
       width: 151px;
-      height: 184px;
+      // height: 184px;
       margin-right: 70px;
     }
   }
@@ -501,7 +537,7 @@ export default {
     .right {
       font-size: 104px;
       font-weight: 600;
-     color: #4678BC;
+      color: #4678bc;
     }
   }
   .buttonWrap {

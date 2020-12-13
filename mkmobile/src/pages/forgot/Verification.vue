@@ -27,12 +27,12 @@
           <div class="tip">验证成功后将密码重置。</div>
         </li>
         <li>
-          <button class="next" @click="submit">驗證</button>
+          <button class="next" @click="submit">验证</button>
         </li>
       </ul>
       <div class="bottom-part">
         <div class="version1">MOKI MONKEY 摩奇猴</div>
-        <div class="version2">MOKI MONKEY Co.,ltd.. Copyright 2020 (C) All right reserved</div>
+        <div class="version2">O2 MONSTER CO.,LTD. COPYRIGHT 2020 © ALL RIGHT RESERVED</div>
       </div>
       <YellowComfirm
         @clickOver="clickOverpay"
@@ -157,7 +157,7 @@ export default {
     font-size: 70px;
     color: #000403;
     font-weight: bolder;
-    margin-top: 40px;
+    margin-top: 160px;
     z-index: 2;
     position: relative;
   }
@@ -263,7 +263,7 @@ export default {
 
         .verification {
           display: flex;
-          border-radius: 40px;
+          border-radius: 20px;
           overflow: hidden;
           padding: 20px 0;
           background-color: #fff;
@@ -341,7 +341,7 @@ export default {
     margin-top: 40px;
     text-align: center;
     position: absolute;
-    bottom: 160px;
+    bottom: 190px;
     width: 100%;
     left: 50%;
     transform: translate(-50%);
