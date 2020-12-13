@@ -1,7 +1,7 @@
 <template>
   <div class="task">
     <TopBar class="center-one-search" :option="option">
-      任務
+      任务
     </TopBar>
     <div class="scrollPart" ref="scrollPart">
       <div class="content-part borderR bg-gray p-58">

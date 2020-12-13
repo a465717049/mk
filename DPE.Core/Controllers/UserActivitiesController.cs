@@ -28,7 +28,7 @@ namespace DPE.Core.Controllers
     [Produces("application/json")]
     [Route("api/UserActivities")]
     [Authorize(Permissions.Name)]
-    public class UserActivitiesController :Controller
+    public class UserActivitiesController : Controller
     {
 
         private readonly IUserActivitiesServices _iUseractivitiesservices;
@@ -44,7 +44,7 @@ namespace DPE.Core.Controllers
 
         private readonly IUnitOfWork _unitOfWork;
 
-        public UserActivitiesController(IEPServices iepservices, IUnitOfWork unitOfWork,IUserTaskServices iusertaskservices, IEPexchangeServices iepexchangeservices, IUser user, IUserActivitiesServices iUseractivitiesservices, IUserInfoServices userInfoServices, IDPEActivitiesServices iDpeactivitiesservices)
+        public UserActivitiesController(IEPServices iepservices, IUnitOfWork unitOfWork, IUserTaskServices iusertaskservices, IEPexchangeServices iepexchangeservices, IUser user, IUserActivitiesServices iUseractivitiesservices, IUserInfoServices userInfoServices, IDPEActivitiesServices iDpeactivitiesservices)
         {
             this._user = user;
             _userInfoServices = userInfoServices;
@@ -90,7 +90,7 @@ namespace DPE.Core.Controllers
 
                 //判断当前是否足够EP
                 var user = await _userInfoServices.GetUserInfo(_user.ID);
-                if (user.EP < dpeact.amount) 
+                if (user.EP < dpeact.amount)
                 {
                     //金币不足
                     remsg.code = 36003;
@@ -98,7 +98,7 @@ namespace DPE.Core.Controllers
                 }
 
                 var usersstatus = await _iUseractivitiesservices.Query(x => x.uid == _user.ID && x.actID == id);
-             
+
                 if (usersstatus.Count <= 0)
                 {
                     await _iUseractivitiesservices.Add(new UserActivities { uid = _user.ID, actID = id, status = 1 });
@@ -121,8 +121,20 @@ namespace DPE.Core.Controllers
                 EP modelep = await _iepservices.QueryById(_user.ID);
 
                 //插入ep
-                await _iepexchangeservices.Add(new EPexchange { amount=dpeact.amount, fromID=_user.ID, createTime=DateTime.Now, lastTotal=user.EP
-                ,price=dpeact.amount, recordID=_user.ID, remark="参加活动", scount=0, uID=_user.ID, stype=98});
+                await _iepexchangeservices.Add(new EPexchange
+                {
+                    amount = dpeact.amount,
+                    fromID = _user.ID,
+                    createTime = DateTime.Now,
+                    lastTotal = user.EP
+                ,
+                    price = dpeact.amount,
+                    recordID = _user.ID,
+                    remark = "参加活动",
+                    scount = 0,
+                    uID = _user.ID,
+                    stype = 98
+                });
 
                 modelep.amount = modelep.amount - dpeact.amount;
                 await _iepservices.Update(modelep);

@@ -49,8 +49,8 @@ namespace DPE.Core.Controllers
         readonly IUserInfoServices _iuserinfoservices;
         private readonly ISysUserInfoServices _isysuserinfoservices;
         private readonly ISplitRecordsServices _isplitrecordsservices;
-        
-        public ManureController(ISysUserInfoServices isysuserinfoservices,IUnitOfWork unitOfWork, IUser user, IManureexchangeServices imanureexchangeservices, IManureServices imanureservices, IDPEServices idpeservices,
+
+        public ManureController(ISysUserInfoServices isysuserinfoservices, IUnitOfWork unitOfWork, IUser user, IManureexchangeServices imanureexchangeservices, IManureServices imanureservices, IDPEServices idpeservices,
             IUserAppleStatusServices iuserapplestatusservices, IUserAppleConsumeServices iuserappleconsumeservices, ISplitServices isplitservices,
             IFriendsServices ifriendsservices, ISettingsServices isettingsservices, IStockServices istockservices, ISplitRecordsServices isplitrecordsservices, IUserInfoServices iuserinfoservices)
         {
@@ -79,7 +79,7 @@ namespace DPE.Core.Controllers
         [Route("GetManureExchange")]
         public async Task<MessageModel<ExchangeViewModels>> GetManureExchange()
         {
-            
+
             MessageModel<ExchangeViewModels> result = new MessageModel<ExchangeViewModels>();
 
             try
@@ -190,7 +190,7 @@ namespace DPE.Core.Controllers
         [Route("ApplyFEData")]
         public async Task<MessageModel<ApplyFEDataViewModels>> ApplyFEData()
         {
-            
+
             MessageModel<ApplyFEDataViewModels> result = new MessageModel<ApplyFEDataViewModels>();
 
             try
@@ -314,7 +314,8 @@ namespace DPE.Core.Controllers
         public async Task<MessageModel<dynamic>> ApplyAppleCountAndPrice()
         {
             long uid = _user.ID;
-            MessageModel<dynamic> result = new MessageModel<dynamic>() {
+            MessageModel<dynamic> result = new MessageModel<dynamic>()
+            {
                 success = false,
                 code = 0,
                 response = null
@@ -362,7 +363,7 @@ namespace DPE.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("FriendsFertilizer")]
-        public async Task<MessageModel<FriendsFertilizerViewModel>> FriendsFertilizer(string uid,int idx)
+        public async Task<MessageModel<FriendsFertilizerViewModel>> FriendsFertilizer(string uid, int idx)
         {
             MessageModel<FriendsFertilizerViewModel> result = new MessageModel<FriendsFertilizerViewModel>();
             int errCount = 0;
@@ -370,7 +371,7 @@ namespace DPE.Core.Controllers
             {
                 _iunitofwork.BeginTran();//开始事务
                 long selfUId = _user.ID;
-                
+
                 if (selfUId == 0)
                 {
                     result.success = false;
@@ -410,15 +411,15 @@ namespace DPE.Core.Controllers
                 int manurechangeAdd = await _imanureexchangeservices.AddManureExchange(new Manureexchange()
                 {
                     uID = selfUId,
-                    amount = - 1,
+                    amount = -1,
                     lastTotal = manure.amount + 1,
                     fromID = long.Parse(uid),
                     createTime = DateTime.Now,
                     stype = 1,
-                    remark =string.Format("幫{0}施肥了", (await _iuserinfoservices.GetUserInfo(long.Parse(uid))).uNickName )
+                    remark = string.Format("帮{0}施肥了", (await _iuserinfoservices.GetUserInfo(long.Parse(uid))).uNickName)
                 });
                 if (!manureUpdate) errCount++; //更新失败，记录+1
-                if(manurechangeAdd <= 0) errCount++; //新增记录失败，记录+1
+                if (manurechangeAdd <= 0) errCount++; //新增记录失败，记录+1
 
                 //更新好友被施肥次数并记录
                 bool splitUpdate = await _isplitservices.UpdateSplit(split);
@@ -430,7 +431,7 @@ namespace DPE.Core.Controllers
                     fromID = selfUId,
                     createTime = DateTime.Now,
                     stype = 2,
-                    remark = string.Format("{0}幫你施肥了", (await _iuserinfoservices.GetUserInfo(long.Parse(uid))).uNickName)
+                    remark = string.Format("{0}帮你施肥了", (await _iuserinfoservices.GetUserInfo(long.Parse(uid))).uNickName)
                 });
 
                 if (!splitUpdate) errCount++; //更新失败，记录+1
@@ -448,7 +449,7 @@ namespace DPE.Core.Controllers
                     friends = (await _ifriendsservices.GetFriends(selfUId)).Find(c => c.uId == split.uID);
                 }
 
-                if (friends == null) 
+                if (friends == null)
                 {
                     result.success = false;
                     result.code = 19003; //未找到好友
@@ -482,7 +483,7 @@ namespace DPE.Core.Controllers
                 result.msg = ex.Message;
                 return result;
             }
-            
+
 
         }
 
@@ -517,7 +518,7 @@ namespace DPE.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("ApplySellApple")]
-        public async Task<MessageModel<dynamic>> ApplySellApple(long uid,int num)
+        public async Task<MessageModel<dynamic>> ApplySellApple(long uid, int num)
         {
             MessageModel<dynamic> result = new MessageModel<dynamic>();
             if (uid == 0)
@@ -534,7 +535,7 @@ namespace DPE.Core.Controllers
                 {
                     num = num,
                     coin = num,
-                    gold = num 
+                    gold = num
                 };
                 result.code = 0;
                 return result;
@@ -557,12 +558,13 @@ namespace DPE.Core.Controllers
             string name = "ApplySellApple";
             string str = uid + "," + num;
             RabbitMQClient client = new RabbitMQClient();
-            client.PushMessage(name,str);
+            client.PushMessage(name, str);
             #endregion
 
             result.code = 0;
             result.success = true;
-            result.response = new {
+            result.response = new
+            {
                 num = num,
                 coin = num * setting.SPRate,
                 gold = num * setting.EPRate
@@ -579,7 +581,7 @@ namespace DPE.Core.Controllers
         public async Task<MessageModel<dynamic>> SellStock(long uid, int num, string tpwd, string gcode)
         {
             MessageModel<dynamic> result = new MessageModel<dynamic>();
-            
+
             try
             {
                 if (_user.ID == 0)
@@ -587,26 +589,26 @@ namespace DPE.Core.Controllers
                     //用户不存在
                     result.code = 61001;
                     result.success = false;
-                    result.msg = "登錄已經過期，請重新登陸";
+                    result.msg = "登录已经过期，请重新登陆";
                     return result;
                 }
                 var userinfo = await _isysuserinfoservices.QueryById(uid);
 
-                if(userinfo.fromMainID!=_user.ID&& _user.ID!=uid)
+                if (userinfo.fromMainID != _user.ID && _user.ID != uid)
                 {
                     result.code = 61001;
                     result.success = false;
-                    result.msg = "登錄已經過期，請重新登陸";
+                    result.msg = "登录已经过期，请重新登陆";
                     return result;
                 }
 
                 var dpe = await _idpeservices.GetDPEData(uid);
-                if (dpe.amount< num)
+                if (dpe.amount < num)
                 {
                     //用户不存在
                     result.code = 61001;
                     result.success = false;
-                    result.msg = "賬戶金額不足！請重試！";
+                    result.msg = "账户金额不足！请重试！";
                     return result;
                 }
                 //判断交易密码
@@ -614,9 +616,9 @@ namespace DPE.Core.Controllers
                 if (tranpwd == null)
                 {
                     //交易密码错误
-                   result.code = 61004;
+                    result.code = 61004;
                     result.success = false;
-                    result.msg = "交易密碼錯誤";
+                    result.msg = "交易密码错误";
                     return result;
                 }
 
@@ -627,17 +629,17 @@ namespace DPE.Core.Controllers
                     //谷歌验证错误
                     result.code = 61005;
                     result.success = false;
-                    result.msg = "谷歌驗證碼校驗錯誤";
+                    result.msg = "谷歌验证码校验错误";
                     return result;
                 }
 
-                var tmpapply=await ApplySellApple(uid,num);
+                var tmpapply = await ApplySellApple(uid, num);
 
-                if (tmpapply.code != 0) 
+                if (tmpapply.code != 0)
                 {
                     result.code = 61006;
                     result.success = false;
-                    result.msg = "服務器繁忙，請稍後再試";
+                    result.msg = "服务器繁忙，请稍后再试";
                     return result;
 
                 }
@@ -668,7 +670,7 @@ namespace DPE.Core.Controllers
                 return result;
             }
 
-            var appleConsumeData = await _iuserappleconsumeservices.GetUserAppleConsumeByType(uid,1);
+            var appleConsumeData = await _iuserappleconsumeservices.GetUserAppleConsumeByType(uid, 1);
             if (appleConsumeData == null || appleConsumeData.status == null)
             {
                 result.code = 22001;
@@ -746,8 +748,9 @@ namespace DPE.Core.Controllers
                 return result;
             }
             appStatusData.Status = status;
-            bool b= await _iuserapplestatusservices.UpdateUserAppleStatus(appStatusData);
-            if (!b) {
+            bool b = await _iuserapplestatusservices.UpdateUserAppleStatus(appStatusData);
+            if (!b)
+            {
                 result.code = -1;
                 result.success = false;
                 result.response = new
@@ -797,10 +800,11 @@ namespace DPE.Core.Controllers
                 return result;
             }
 
-            int num = await _iuserapplestatusservices.AddUserAppleStatus(new UserAppleStatus() { 
+            int num = await _iuserapplestatusservices.AddUserAppleStatus(new UserAppleStatus()
+            {
                 uID = uid,
                 amount = 1,
-                Status = 1 
+                Status = 1
             });
 
             if (num <= 0)
@@ -847,7 +851,7 @@ namespace DPE.Core.Controllers
 
 
         /// <summary>
-        /// 蘋果生成記錄
+        /// 苹果生成记录
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -855,7 +859,7 @@ namespace DPE.Core.Controllers
         public async Task<MessageModel<dynamic>> GetAppleRecord()
         {
 
-            var result = await _isplitrecordsservices.Query(x=> x.uID == _user.ID);
+            var result = await _isplitrecordsservices.Query(x => x.uID == _user.ID);
             return new MessageModel<dynamic>
             {
                 success = true,
@@ -864,15 +868,15 @@ namespace DPE.Core.Controllers
                 response = (from item in result
                             select new
                             {
-                               item
+                                item
                             })
             };
-            
+
         }
 
 
         /// <summary>
-        /// 游戲接口數據整合
+        /// 游戏接口数据整合
         /// </summary>
         /// <returns>用户信息</returns>
         [HttpPost]

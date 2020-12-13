@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TopBar class="center-one-search" :option="topBarOption" >拆分紀錄</TopBar>
+    <TopBar class="center-one-search" :option="topBarOption" >拆分纪录</TopBar>
     
     <div class="bg-gray p-58">
       <div class="queue relative">

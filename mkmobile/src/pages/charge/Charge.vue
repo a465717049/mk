@@ -6,7 +6,7 @@
     <div class="innerWrap">
       <div class="homeWrap">
         <img src="../../assets/imgs/homeIcon.png" alt />
-        <span>服務中心專用</span>
+        <span>服务中心专用</span>
       </div>
       <div class="qrCodeWrap">
         <p class="copy">（ 长按二维码可复制地址 ）</p>

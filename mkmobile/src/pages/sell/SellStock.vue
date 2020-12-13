@@ -1,27 +1,27 @@
 <template>
   <div class="sellEpWrapper">
-    <TopBar class="center-one-search">
-      EP转出
+    <TopBar class="center-one-search" >
+          出售股票
     </TopBar>
     <div class="innerWrap">
       <div class="moneyWrap clearfix">
         <div class="left fl">
-          <div class="top">EP</div>
+          <div class="top">STOCK</div>
           <div class="bottom">ACCOUNT</div>
         </div>
-        <div class="right fr">{{account}}123</div>
+        <div class="right fr">{{account}}</div>
       </div>
       <ul>
         <li>
-          <div class="title">转出数量</div>
-          <input type="number" v-model="form.amount" />
+          <div class="title">出售数量</div>
+          <input type="text" v-model="form.num" />
         </li>
+        <!-- <li>
+          <div class="title">交易金额</div>
+          <input type="text" v-model="transamount" />
+        </li> -->
         <li>
-          <div class="title">接收ID:{{name===''?'':name+'('+form.touid+')'}}</div>
-          <input type="text" v-model="form.touid" @blur="checkUser" />
-        </li>
-        <li>
-          <div class="title">交易密码</div>
+          <div class="title">交易密碼</div>
           <input type="password" v-model="form.tpwd" />
         </li>
         <li>
@@ -29,15 +29,15 @@
           <input type="text" v-model="form.gcode" />
         </li>
       </ul>
-      <button class="next" @click="ToEexchange">确认转出</button>
+      <button class="next" @click="ToSellStock">确认出售</button>
     </div>
-    <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk()" @changeModel="changeModel"></YellowComfirm>
+    <YellowComfirm :show="showComfirm"  @clickOver="clickOverpay" :tipTitle="tips" @clickOk="clickOk()" @changeModel="changeModel" ></YellowComfirm>
   </div>
 </template>
 <script type="text/javascript">
 import YellowComfirm from 'components/YellowComfirm'
 import { http } from 'util/request'
-import { EPToEexchange, GetUserInfo,checkEPUser } from 'util/netApi'
+import { SellStock, GetUserInfo } from 'util/netApi'
 import { storage } from 'util/storage'
 import { accessToken, loginPro } from 'util/const.js'
 import TopBar from 'components/TopBar'
@@ -46,27 +46,28 @@ export default {
   data() {
     return {
       form: {
-        touid: null,
-        amount: null,
+        num: null,
         tpwd: '',
         gcode: ''
       },
-      name: '',
+      topBarOption: {
+        iconLeft: 'back',
+        iconRight: '',
+      //  image: headerImg
+      },
       account: null,
-      // transferNumber: null,
+      sellNumber: null,
+      transamount: '$',
+      transPassword: null,
       showComfirm: false,
-      //  receiptId: null,
-      //  transPassword: null,
-      //  verificationCode: null,
+      verificationCode: null,
       tips: '',
-      redirect: null,
       tipsObj: {
-        noep: '请填写转出数量',
-        notouid: '请填写接收人ID',
-        notpwd: '请填写交易密码',
-        nogcode: '请填写谷歌验证码',
-        nosucceed: '转出异常请稍后',
-        succeed: 'EP转出成功'
+        nosucceed: '出售失败',
+        nonum: '请输入出售数量',
+        nopwd: '输入交易密码',
+        nocode: '请输入谷歌验证码',
+        succeed: '出售成功'
       }
     }
   },
@@ -80,66 +81,40 @@ export default {
     clickOk() {
       this.showComfirm = false
     },
-    changeModel(v) {
-      this.showComfirm = v;
+    changeModel(v){
+      this.showComfirm = v 
     },
     TogetUserInfo() {
       http(GetUserInfo, null, json => {
-        console.log(json)
         if (json.code === 0) {
-          this.account = json.response.gold
+          this.account = json.response.apple
         }
       })
     },
-    checkUser() {
-      if(this.form.touid!=""&&this.form.touid!=0&&this.form.touid!=null)
-      {
-        http(checkEPUser, {uid:this.form.touid,type:"ep"}, json => {
-          console.log(json)
-          if (json.code === 0) {
-           if (json.response.enable) {
-              this.name=json.response.name
-            }else{
-              this.tips = '无法转账到此ID'
-              this.showComfirm = true
-              this.form.touid = ''
-              this.name=''
-            }
-          }
-        })
-      }
-    },
-    ToEexchange() {
-      if (this.form.amount === 0) {
+    ToSellStock() {
+      if (this.form.num === 0) {
         this.showComfirm = true
-        this.tips = this.tipsObj.noep
-        return
-      }
-
-      if (this.form.touid === 0) {
-        this.showComfirm = true
-        this.tips = this.tipsObj.notouid
+        this.tips = this.tipsObj.nonum
         return
       }
 
       if (!this.form.tpwd) {
         this.showComfirm = true
-        this.tips = this.tipsObj.notpwd
+        this.tips = this.tipsObj.nopwd
         return
       }
 
       if (!this.form.gcode) {
         this.showComfirm = true
-        this.tips = this.tipsObj.nogcode
+        this.tips = this.tipsObj.nocode
         return
       }
 
       let _this = this
-      http(EPToEexchange, this.form, json => {
+      http(SellStock, this.form, json => {
         if (json.code === 0) {
           this.showComfirm = true
           this.tips = this.tipsObj.succeed
-          this.account = this.account - this.form.amount
         } else {
           this.showComfirm = true
           if (!json.success) {
@@ -172,7 +147,7 @@ export default {
     width: 90%;
     margin: 0 auto;
     li {
-    .title {
+      .title {
         color: #FFFFFF;
         font-size: 42px;
         margin: 60px 0 22px;
@@ -278,7 +253,7 @@ export default {
     font-weight: 600;
     letter-spacing: 4px;
   }
- .moneyWrap {
+  .moneyWrap {
     height: 214px;
     line-height: 214px;
     width: 90%;
@@ -307,7 +282,7 @@ export default {
     .right {
       font-size: 104px;
       font-weight: 600;
-      color: #113D79;
+      color: #4678BC;
     }
   }
 }

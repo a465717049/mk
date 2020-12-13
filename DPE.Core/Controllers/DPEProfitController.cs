@@ -59,7 +59,7 @@ namespace DPE.Core.Controllers
                 msg = "",
                 response = new DPEProfitViewModels()
                 {
-                    list = list.Select(x => string.Format("{0}.{1}", x.mouth.ToString(),Convert.ToInt32(x.rate).ToString())).ToList()
+                    list = list.Select(x => string.Format("{0}.{1}", x.mouth.ToString(), Convert.ToInt32(x.rate).ToString())).ToList()
                 }
             };
         }

@@ -6,15 +6,15 @@
       <div class="group">
         <div class="group-item" @click="routerChagne('epList','ep')">
           <img src="@/assets/imgs/EPimg.png" alt />
-             <span>EP記錄</span>
+             <span>EP记录</span>
         </div>
         <div class="group-item" @click="routerChagne('epList','rp')">
           <img src="@/assets/imgs/RPimg.png" alt />
-           <span>RP記錄</span>
+           <span>RP记录</span>
         </div>
         <div class="group-item" @click="routerChagne('epList','sp')">
           <img src="@/assets/imgs/SPimg.png" alt />
-           <span>SP記錄</span>
+           <span>SP记录</span>
         </div>
       </div>
       <div class="group">

@@ -78,7 +78,7 @@ namespace DPE.Core.Controllers
         public async Task<MessageModel<dynamic>> GetNewsWeb(int type)
         {
             //_user.ID
-            var spinfo = await _inewsservices.Query(x => x.isDelete != 1&&x.ntype.Value==type);
+            var spinfo = await _inewsservices.Query(x => x.isDelete != 1 && x.ntype.Value == type);
 
 
             return new MessageModel<dynamic>()
@@ -92,8 +92,8 @@ namespace DPE.Core.Controllers
                                 item.id,
                                 item.title,
                                 item.message,
-                                img =item.newsimg,
-                                detail= item.context,
+                                img = item.newsimg,
+                                detail = item.context,
                                 date = Convert.ToDateTime(item.createTime).ToString("yyyy-MM-dd HH:mm:ss")
                             })
             };
@@ -115,7 +115,7 @@ namespace DPE.Core.Controllers
             {
                 success = true,
                 msg = "",
-                response = 
+                response =
                              new
                              {
                                  spinfo.id,

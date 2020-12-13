@@ -11,14 +11,14 @@
         <div class="trade borderR bg-gray clearfix p-58">
           <!-- 详细信息 -->
           <div class="items">
-            <div class="title base-text">賣家信息</div>
+            <div class="title base-text">卖家信息</div>
             <div class="detail">
               <div class="info">
                 <img src="@/assets/imgs/set/person.png" alt />
                 <div class="num">
                   <div class="font50">{{epuid}}</div>
                   <div class="sub-num">
-                    纍計出售:
+                    累计出售:
                     <span class="base-purple">{{eptcount}}</span> 完成交易:
                     <span class="base-purple">{{epfcount}}</span>
                   </div>
@@ -42,7 +42,7 @@
 
           <!-- 详细信息 -->
           <div class="items mt-80 ep-date">
-            <div class="title base-text">詳情</div>
+            <div class="title base-text">详情</div>
             <div class="relative special-date">
               <div class="info">
                 <div class="ok">ok</div>
@@ -56,7 +56,7 @@
           </div>
           <!-- 详细信息 -->
           <div class="items mt-80 e-price-info">
-            <div class="title base-text">價格</div>
+            <div class="title base-text">价格</div>
             <div class="payBox">
               <ul>
                 <li class="box left">
@@ -72,7 +72,7 @@
               <div class="bottom">1 EP = {{EPRate}}CNY 1 USDT = {{USDTRate}}CNY</div>
             </div>
           </div>
-          <p class="closedTime">關閉時間: {{epdate}}</p>
+          <p class="closedTime">关闭时间: {{epdate}}</p>
         </div>
       </div>
     </ScrollRefresh>

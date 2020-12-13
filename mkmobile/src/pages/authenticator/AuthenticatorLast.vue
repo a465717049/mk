@@ -5,24 +5,24 @@
       <div class="auth-card">
         <img src="@/assets/imgs/auth-header.png" alt />
         <div>
-          <div class="auth-top-tit">Google 身份驗證激活碼</div>
+          <div class="auth-top-tit">Google 身份验证激活码</div>
           <div class="auth-top-tip">
-            僅用於被推薦人激活Google身份驗證
+            仅用于被推荐人激活Google身份验证
             <br />
-            請勿外泄！
+            请勿外泄！
           </div>
         </div>
       </div>
       <div class="code-body">
         <div class="c-cell">
-          <div class="c-cell-label">Android激活碼</div>
+          <div class="c-cell-label">Android激活码</div>
           <div class="c-cell-value">
             {{androidCode}}
             <i class="iconfont iconcopy"></i>
           </div>
         </div>
         <div class="c-cell">
-          <div class="c-cell-label">IOS激活碼</div>
+          <div class="c-cell-label">IOS激活码</div>
           <div class="c-cell-value">
             {{iosCode}}
             <i class="iconfont iconcopy"></i>

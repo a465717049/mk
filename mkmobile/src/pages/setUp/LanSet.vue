@@ -11,6 +11,15 @@
           <van-cell class="cell-info borderR mb-40 active" title="中文" is-link url >
             <i class="iconfont icondui"></i>
           </van-cell>
+              <van-cell class="cell-info borderR mb-40" title="ENGLISH" is-link url >
+            <i class="iconfont icondui"></i>
+          </van-cell>
+              <van-cell class="cell-info borderR mb-40" title="日文" is-link url >
+            <i class="iconfont icondui"></i>
+          </van-cell>
+              <van-cell class="cell-info borderR mb-40" title="韩文" is-link url >
+            <i class="iconfont icondui"></i>
+          </van-cell>
         </div>
         <!-- <div class="relative cell-special">
           <van-cell class="cell-info borderR mb-40"

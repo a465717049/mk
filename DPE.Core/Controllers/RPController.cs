@@ -89,7 +89,7 @@ namespace DPE.Core.Controllers
 
                 var user = await _userInfoServices.GetUserInfo(_user.ID);
 
-                
+
 
                 if (user.RP < amount)
                 {
@@ -132,7 +132,7 @@ namespace DPE.Core.Controllers
                     return result;
                 }
 
-                
+
                 return await _irpexchangeservices.ProcessTransformToUser(_user.ID, "RP", amount, touser.uID);
             }
             catch
@@ -226,7 +226,7 @@ namespace DPE.Core.Controllers
                 pagesize = pagesize == 0 ? 20 : pagesize;
                 pageindex = pageindex == 0 ? 1 : pageindex;
                 var data = await _irpexchangeservices.QueryPage(x => x.stype.ToString().Contains(stype) &&
-              (x.uID.ToString().Contains(key)  || x.remark.Contains(key)), pageindex, pagesize, " createTime DESC ");
+              (x.uID.ToString().Contains(key) || x.remark.Contains(key)), pageindex, pagesize, " createTime DESC ");
 
                 result.response = data;
                 result.code = 200;

@@ -86,7 +86,7 @@ namespace DPE.Core.Controllers
                     autonym = user.isSetIDNumber.Value ? 1 : 0,
                     coin = user.IRP.Value,
                     coin_location = user.addr,
-                    trc_address=user.trcAddress,
+                    trc_address = user.trcAddress,
                     create_time = DateHelper.GetCreatetime(user.uCreateTime),
                     farmers = user.uStatus,
                     gold = user.EP.Value,
@@ -207,7 +207,7 @@ namespace DPE.Core.Controllers
 
         //获取用户所有信息
         [Route("GetALLUserInfo")]
-        public async Task<MessageModel<dynamic>> GetALLUserInfo(int pageindex,int pagesize,string key="")
+        public async Task<MessageModel<dynamic>> GetALLUserInfo(int pageindex, int pagesize, string key = "")
         {
             pageindex = pageindex == 0 ? 1 : pageindex;
             pagesize = pagesize == 0 ? 20 : pagesize;
@@ -221,17 +221,17 @@ namespace DPE.Core.Controllers
                     msg = "",
                 };
             }
-            var user = await _userInfoServices.GetAllUserInfo(pageindex,pagesize, key, "uID");
+            var user = await _userInfoServices.GetAllUserInfo(pageindex, pagesize, key, "uID");
 
             return new MessageModel<dynamic>()
             {
                 success = true,
                 msg = "",
-                response = 
-                
+                response =
+
                 new
                 {
-                    datacount=user.dataCount,
+                    datacount = user.dataCount,
                     data = (from item in user.data
                             orderby item.uID
                             select new
@@ -259,10 +259,10 @@ namespace DPE.Core.Controllers
                                 rp = item.RP.Value,
                                 lprofit = item.LProfit.Value,
                                 rprofit = item.RProfit.Value,
-                                ison  = item.isSon,
-                                jid=item.jid,
-                                tid=item.tid,
-                                isDelete=item.isDelete
+                                ison = item.isSon,
+                                jid = item.jid,
+                                tid = item.tid,
+                                isDelete = item.isDelete
                             }).ToList<dynamic>()
                 }
             };
@@ -274,7 +274,7 @@ namespace DPE.Core.Controllers
         [Route("GetUserInfoWeek")]
         public async Task<MessageModel<dynamic>> GetUserInfoWeek()
         {
-           
+
             if (_user.ID == 0)
             {
                 return new MessageModel<dynamic>()
@@ -298,12 +298,12 @@ namespace DPE.Core.Controllers
 
 
             return new MessageModel<dynamic>()
-            {   
+            {
                 success = true,
                 msg = "",
                 response = new
                 {
-                    list = new 
+                    list = new
                     {
                         total = result.Rows[0]["total"],
                         maintotal = result.Rows[0]["maintotal"],

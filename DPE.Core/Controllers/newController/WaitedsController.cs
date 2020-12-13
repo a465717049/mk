@@ -38,7 +38,7 @@ namespace DPE.Core.Controllers
 
 
         /// <summary>
-        /// 排隊清單
+        /// 排队清单
         /// </summary>
         /// <returns></returns>
         [HttpPost]

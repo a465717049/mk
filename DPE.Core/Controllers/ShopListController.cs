@@ -69,7 +69,7 @@ namespace DPE.Core.Controllers
 
 
         /// <summary>
-        /// 商店列表 商品清單
+        /// 商店列表 商品清单
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -136,7 +136,7 @@ namespace DPE.Core.Controllers
 
 
         /// <summary>
-        /// 购买商品 商品購買
+        /// 购买商品 商品购买
         /// </summary>
         /// <param name="id">id</param>
         /// <param name="name">姓名</param>
@@ -175,19 +175,19 @@ namespace DPE.Core.Controllers
                 }
 
                 shop = result.First();
-                //查詢商品貨量是否足夠
+                //查询商品货量是否足够
                 if (shop.pNum <= 0)
                 {
                     tmpcode = 16001;
                 }
 
-                //查詢是否有貨品
+                //查询是否有货品
                 if (result.Count == 0)
                 {
                     tmpcode = 16002;
                 }
 
-                //金幣不足
+                //金币不足
                 if (user.EP < shop.price)
                 {
                     tmpcode = 16003;
@@ -199,7 +199,7 @@ namespace DPE.Core.Controllers
                     return returnresult;
                 }
 
-                //金幣 EP
+                //金币 EP
                 UserGoodsList usergood = new UserGoodsList()
                 {
                     num = 1,
@@ -216,17 +216,17 @@ namespace DPE.Core.Controllers
 
                 if (goodresult > 0)
                 {
-                    //商品適量減1
+                    //商品适量减1
                     shop.pNum = shop.pNum - 1;
                     await _ishoplistservices.Update(shop);
 
-                    //更新EP記錄 
+                    //更新EP记录 
                     var myep = await _iepservices.QueryById(_user.ID);
                     decimal tmpepamount = myep.amount.ObjToDecimal();
                     myep.amount = myep.amount - shop.price;
                     await _iepservices.Update(myep);
 
-                    //插入ep記錄
+                    //插入ep记录
                     await _iepexchangeservices.Add(new EPexchange()
                     {
                         amount = shop.price,
@@ -235,7 +235,7 @@ namespace DPE.Core.Controllers
                         uID = _user.ID,
                         lastTotal = tmpepamount,
                         recordID = _user.ID,
-                        remark = "購買商品",
+                        remark = "购买商品",
                         price = shop.price,
                         scount = 0,
                         stype = 99
@@ -417,12 +417,12 @@ namespace DPE.Core.Controllers
 
         }
 
-        public string creatOrderNumber() 
+        public string creatOrderNumber()
         {
 
             Random ran = new Random();
             string tmpordernumber = string.Format("MK" + DateTime.Now.ToString("yyyyMMdd") + ran.Next(1000, 10000).ToString());
-            if (_ishopbuydetailserivces.Query(x => x.shopordernumber.Equals(tmpordernumber)).Result.Count > 0)  
+            if (_ishopbuydetailserivces.Query(x => x.shopordernumber.Equals(tmpordernumber)).Result.Count > 0)
             {
                 creatOrderNumber();
             }
@@ -432,7 +432,7 @@ namespace DPE.Core.Controllers
 
 
         /// <summary>
-        /// 商品明細
+        /// 商品明细
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -441,12 +441,12 @@ namespace DPE.Core.Controllers
         {
             //_user.ID
             //     var user = await _userInfoServices.GetUserInfo(_user.ID);
-            var spinfo = await _ishoplistservices.Query(x=>x.id== shopid );
+            var spinfo = await _ishoplistservices.Query(x => x.id == shopid);
             return new MessageModel<dynamic>()
             {
                 success = true,
                 msg = "",
-                response = new 
+                response = new
                 {
                     list = spinfo
                 }
@@ -470,13 +470,13 @@ namespace DPE.Core.Controllers
             {
                 spinfo = await _ishoplistservices.Query(x => x.pName.Contains(key) || x.pDesc.Contains(key) || x.id.ToString().Contains(key));
             }
-            else 
+            else
             {
-                spinfo =await _ishoplistservices.Query();
+                spinfo = await _ishoplistservices.Query();
             }
-           
-             
-      
+
+
+
             return new MessageModel<dynamic>()
             {
                 success = true,
@@ -537,17 +537,17 @@ namespace DPE.Core.Controllers
 
                 result.response = new
                 {
-                     dataCount=data.dataCount,
-                     page=data.page,
-                     pageCount=data.pageCount,
-                     data= (from item in data.data
-                           select new
-                           {
-                             item,
-                             shopname=_ishoplistservices.QueryById(item.shopid).Result.pName
+                    dataCount = data.dataCount,
+                    page = data.page,
+                    pageCount = data.pageCount,
+                    data = (from item in data.data
+                            select new
+                            {
+                                item,
+                                shopname = _ishoplistservices.QueryById(item.shopid).Result.pName
 
-                           })
-            };
+                            })
+                };
                 result.code = 200;
                 result.success = true;
                 return result;
@@ -642,7 +642,7 @@ namespace DPE.Core.Controllers
         //添加购物车
         [HttpPost]
         [Route("AddGoodsweb")]
-        public async Task<MessageModel<dynamic>> AddGoodsweb(int shopid,int num,string option="")
+        public async Task<MessageModel<dynamic>> AddGoodsweb(int shopid, int num, string option = "")
         {
             MessageModel<dynamic> result = new MessageModel<dynamic>();
             try
@@ -667,30 +667,30 @@ namespace DPE.Core.Controllers
                         {
                             await _ishoppingcartserivces.Delete(model);
                         }
-                        else 
+                        else
                         {
                             await _ishoppingcartserivces.Update(model);
                         }
                     }
-                    else 
+                    else
                     {
-                        await _ishoppingcartserivces.Add(new ShoppingCart() { shopid = shopid, shoptotalnum = num, uid=_user.ID }); ;
+                        await _ishoppingcartserivces.Add(new ShoppingCart() { shopid = shopid, shoptotalnum = num, uid = _user.ID }); ;
                     }
                     result.code = 0;
                     result.msg = "添加成功";
                     result.success = true;
 
                 }
-                else 
+                else
                 {
                     result.code = 10001;
                     result.msg = "商品信息有误";
                     result.success = false;
                 }
-                  
+
                 return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 string a = ex.Message;
                 result.code = 10001;
@@ -705,12 +705,12 @@ namespace DPE.Core.Controllers
         //获取我的订单
         [HttpPost]
         [Route("GetMyShopList")]
-        public async Task<MessageModel<dynamic>> GetMyShopList(string ordernumber="")
+        public async Task<MessageModel<dynamic>> GetMyShopList(string ordernumber = "")
         {
             MessageModel<dynamic> result = new MessageModel<dynamic>();
             try
             {
-                var data = await _ishopbuydetailserivces.Query(x => x.buyuid == _user.ID );
+                var data = await _ishopbuydetailserivces.Query(x => x.buyuid == _user.ID);
                 result.code = 0;
                 result.response = new
                 {
@@ -736,7 +736,7 @@ namespace DPE.Core.Controllers
             MessageModel<dynamic> result = new MessageModel<dynamic>();
             try
             {
-                var data = await _ishopbuydetailserivces.Query(x => x.buyuid == _user.ID && x.id==id);
+                var data = await _ishopbuydetailserivces.Query(x => x.buyuid == _user.ID && x.id == id);
                 result.code = 0;
                 result.response = new
                 {
@@ -786,17 +786,17 @@ namespace DPE.Core.Controllers
                 result.response = new
                 {
                     count = data.Count() > 0 ? data.Sum(x => x.shoptotalnum) : 0,
-                    data = new 
+                    data = new
                     {
                         list = (from item in data
                                 orderby item.id descending
-                                select new 
+                                select new
                                 {
-                                   uid = item.uid,
-                                   id=item.id,
-                                   shopid =item.shopid,
-                                   shopnum=item.shoptotalnum,
-                                   shopdetail= _ishoplistservices.QueryById(item.shopid).Result
+                                    uid = item.uid,
+                                    id = item.id,
+                                    shopid = item.shopid,
+                                    shopnum = item.shoptotalnum,
+                                    shopdetail = _ishoplistservices.QueryById(item.shopid).Result
                                 }).ToList()
                     }
                 };

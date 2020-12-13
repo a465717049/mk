@@ -1,16 +1,16 @@
 <template>
   <div>
-    <TopBar class="center-one-search" :option="topBarOption">錢包地址</TopBar>
+    <TopBar class="center-one-search" :option="topBarOption">钱包地址</TopBar>
     <ScrollRefresh @getData="TogetUserInfo" :residualHeight="160" :isNeedUp="false">
       <div class="wallet-body">
         <ul>
           <li>
-            <div class="title">您的錢包地址</div>
+            <div class="title">您的钱包地址</div>
             <div class="t-img">
               <img src="@/assets/imgs/T.png" alt />
               <input
                 type="text"
-                placeholder="請輸入ERC20地址"
+                placeholder="请输入ERC20地址"
                 :disabled="this.address!==''"
                 v-model="form.location"
               />
@@ -21,20 +21,20 @@
             <input type="password" v-show="this.address==''" v-model="form.tpwd" />
           </li>
           <li>
-            <div class="title" v-show="this.address==''">身份證號碼</div>
+            <div class="title" v-show="this.address==''">身份证号码</div>
             <input type="password" v-show="this.address==''" v-model="form.idnum" />
           </li>
           <li>
-            <div class="title" v-show="this.address==''">谷歌驗證碼</div>
+            <div class="title" v-show="this.address==''">谷歌验证码</div>
             <input type="number" v-show="this.address==''" v-model="form.google" />
           </li>
         </ul>
-        <button class="button" v-show="this.address==''" @click="goNext">確定</button>
+        <button class="button" v-show="this.address==''" @click="goNext">确定</button>
         <div class="auth-card">
           <img src="@/assets/imgs/two-persion.png" alt />
           <div>
-            <div class="auth-top-tit">溫馨提示：</div>
-            <div class="auth-top-tip">錢包地址一經綁定將無法修改！</div>
+            <div class="auth-top-tit">温馨提示：</div>
+            <div class="auth-top-tip">钱包地址一经绑定将无法修改！</div>
           </div>
         </div>
       </div>
@@ -82,10 +82,10 @@ export default {
       },
       tips: "",
       tipsObj: {
-        nosucceed: "設置錢包地址失敗",
-        nolong: "請設置正確的錢包地址",
-        noex: "錢包地址長度不正確",
-        succeed: "設置錢包地址成功"
+        nosucceed: "设置钱包地址失败",
+        nolong: "请设置正确的钱包地址",
+        noex: "钱包地址长度不正确",
+        succeed: "设置钱包地址成功"
       }
     };
   },

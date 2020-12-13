@@ -81,10 +81,10 @@ export default {
       verificationCode: null,
       tips: "",
       tipsObj: {
-        amount: "餘額不足！",
-        notype: "請選擇升級類型",
-        nosucceed: "升級異常，稍後重試",
-        succeed: "升級成功"
+        amount: "余额不足！",
+        notype: "请选择升级类型",
+        nosucceed: "升级异常，请稍后重试",
+        succeed: "升级成功"
       }
     };
   },

@@ -134,7 +134,7 @@ export default {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
           this.username = json.response.nickname;
-          this.headurl = this.photoList[json.response.photo];
+          this.headurl =photoList[json.response.photo];
         }
       });
     }

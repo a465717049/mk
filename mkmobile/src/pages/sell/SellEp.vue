@@ -13,28 +13,28 @@
       </div>
       <ul>
         <li class='usdt' >
-          <div class="title">USDT地址：請再次核對錢包地址是否正確</div>
+          <div class="title">USDT地址：请再次核对钱包地址是否正确</div>
           <input type="text" disabled v-model="form.usdtAddress" />
         </li>
         <li>
-          <div class="title">出售數量</div>
+          <div class="title">出售数量</div>
           <input type="number" v-model="form.epAmount" />
         </li>
         <li>
-          <div class="title">聯係電話</div>
+          <div class="title">联系电话</div>
           <input type="text" v-model="form.phone" />
         </li>
         
         <li>
-          <div class="title">交易密碼</div>
+          <div class="title">交易密码</div>
           <input type="password" v-model="form.password" />
         </li>
         <li>
-          <div class="title">谷歌驗證碼</div>
+          <div class="title">谷歌验证码</div>
           <input type="text" v-model="form.gCode" />
         </li>
       </ul>
-      <button class="next" @click="ToEPSell">確認出售</button>
+      <button class="next" @click="ToEPSell">确认出售</button>
     </div>
     <YellowComfirm
       :show="showComfirm"
@@ -70,14 +70,14 @@ export default {
       tips: "",
       redirect: null,
       tipsObj: {
-        nosucceed: "轉出異常請重試",
-        nonum: "請填寫出售數量",
-        nophone: "請輸入電話",
-        noaddr: "請綁定USDT地址",
-        nopwd: "請輸入交易密碼",
-        nocode: "請輸入谷歌驗證碼",
-        succeed: "轉出EP成功",
-        noamount: "出售數量必須為100的整數倍",
+        nosucceed: "转出异常请重试",
+        nonum: "请填写出售数量",
+        nophone: "请输入电话",
+        noaddr: "请绑定USDT地址",
+        nopwd: "请输入交易密码",
+        nocode: "请输入谷歌验证码",
+        succeed: "转出EP成功",
+        noamount: "出售数量必须为100的整数倍",
       }
     };
   },
@@ -90,7 +90,7 @@ export default {
   methods: {
     clickOk() {
       
-      if(this.tips=='請先綁定錢包地址！')
+      if(this.tips=='请先绑定钱包地址！')
       {
           this.$router.push({
           name: "Wallet"
@@ -108,12 +108,12 @@ export default {
           this.form.usdtAddress = json.response.coin_location
           if(this.form.usdtAddress&& this.form.usdtAddress=='')
           {
-              this.tips='請先綁定錢包地址！'
+              this.tips='请先绑定钱包地址！'
               this.showComfirm = true;
           }
           if(!this.form.usdtAddress)
           {
-              this.tips='請先綁定錢包地址！'
+              this.tips='请先绑定钱包地址！'
               this.showComfirm = true;
           }
         }

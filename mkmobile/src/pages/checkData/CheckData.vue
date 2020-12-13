@@ -104,7 +104,7 @@ export default {
     goNext() {
       if (this.account < this.addmodel.investmentAmount) {
         this.isEnter = true;
-        this.tips = "當前金額不足";
+        this.tips = "当前金额不足";
         return;
       }
       http(

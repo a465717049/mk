@@ -1,7 +1,7 @@
 <template>
   <div class="sellEpWrapper">
     <TopBar  class="center-one-search" >
-    轉出
+    转出
     </TopBar>
     <div class="innerWrap">
       <div class="moneyWrap clearfix">
@@ -13,7 +13,7 @@
       </div>
       <ul>
         <li>
-          <div class="title">轉出數量</div>
+          <div class="title">转出数量</div>
           <input type="number" v-model="form.amount" />
         </li>
         <li>
@@ -21,11 +21,11 @@
           <input type="text" v-model="form.touid" @blur="checkUser" />
         </li>
         <li>
-          <div class="title">交易密碼</div>
+          <div class="title">交易密码</div>
           <input type="password" v-model="form.tpwd" />
         </li>
         <li>
-          <div class="title">谷歌驗證碼</div>
+          <div class="title">谷歌验证码</div>
           <input type="text" v-model="form.gcode" />
         </li>
       </ul>
@@ -101,7 +101,7 @@ export default {
             if (json.response.enable) {
               this.name=json.response.name
             }else{
-              this.tips = '無法轉賬到此ID'
+              this.tips = '无法转账到此ID'
               this.showComfirm = true
               this.form.touid = ''
               this.name=''

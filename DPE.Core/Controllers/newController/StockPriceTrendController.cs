@@ -36,7 +36,7 @@ namespace DPE.Core.Controllers
 
         readonly IDPEexchangeServices _idpeexchangeservices;
 
-        public StockPriceTrendController(IDPEexchangeServices idpeexchangeservices,IEPexchangeServices iepexchangeservices,IBuyDPEListServices ibuydpelistservices,IUser user, IUserInfoServices userInfoServices, IStockServices istockservices)
+        public StockPriceTrendController(IDPEexchangeServices idpeexchangeservices, IEPexchangeServices iepexchangeservices, IBuyDPEListServices ibuydpelistservices, IUser user, IUserInfoServices userInfoServices, IStockServices istockservices)
         {
             _user = user;
             _userInfoServices = userInfoServices;
@@ -48,7 +48,7 @@ namespace DPE.Core.Controllers
 
 
         /// <summary>
-        /// 價格曲綫
+        /// 价格曲綫
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -56,25 +56,25 @@ namespace DPE.Core.Controllers
         public async Task<MessageModel<dynamic>> GetStockPriceTrend()
         {
             var totalamount = (await _ibuydpelistservices.Query()).Sum(x => x.amount);
-            var totalwithdraw =(await _iepexchangeservices.Query(x=> x.uID == _user.ID && ( x.stype== 1 ||  x.stype == 2 ||  x.stype == 3))).Sum(x => x.amount);
-            var invest = (await _idpeexchangeservices.Query(x => x.uID == _user.ID && x.stype == 11 && x.amount>0)).Sum(x => x.amount);
+            var totalwithdraw = (await _iepexchangeservices.Query(x => x.uID == _user.ID && (x.stype == 1 || x.stype == 2 || x.stype == 3))).Sum(x => x.amount);
+            var invest = (await _idpeexchangeservices.Query(x => x.uID == _user.ID && x.stype == 11 && x.amount > 0)).Sum(x => x.amount);
 
             var resull = await _istockservices.QuerySql(
-                string.Format("select top 30 CAST(a.createTime as date)createTime,max(price)price from stock a join("+
-                        " select  max(createTime)createTime from stock group by CAST(createTime as date) ) b on a.createTime = b.createTime"+
-                        " group by  CAST(a.createTime as date)"+
+                string.Format("select top 30 CAST(a.createTime as date)createTime,max(price)price from stock a join(" +
+                        " select  max(createTime)createTime from stock group by CAST(createTime as date) ) b on a.createTime = b.createTime" +
+                        " group by  CAST(a.createTime as date)" +
                         " order by CAST(a.createTime as date)  desc")
-                ) ;
-   
+                );
+
             return new MessageModel<dynamic>()
             {
                 success = true,
                 msg = "",
                 response = new
                 {
-                    totalamount= totalamount,
-                    totalwithdraw= totalwithdraw,
-                    invest= invest,
+                    totalamount = totalamount,
+                    totalwithdraw = totalwithdraw,
+                    invest = invest,
                     list = resull
                 }
             };

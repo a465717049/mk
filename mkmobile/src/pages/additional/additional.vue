@@ -12,12 +12,12 @@
       </div>
       <ul>
         <li>
-          <div class="title">真實姓名</div>
+          <div class="title">真实姓名</div>
           <input type="text" v-model="initData.name" />
           <i class="iconfont iconlock"></i>
         </li>
           <li>
-          <div class="title">身份證</div>
+          <div class="title">身份证</div>
           <input type="text" v-model="initData.typeNumber" />
           <i class="iconfont iconlock"></i>
         </li>
@@ -81,11 +81,11 @@ export default {
       showComfirm: false,
       tips: "",
       tipsObj: {
-        norealname: "請輸入真實姓名！",
-        nocountry: "請選擇國家！",
-        noidtype: "請選擇身份類型!",
-        noidcard: "請輸入身份證號碼！",
-        notpwd: "請輸入交易密碼！"
+        norealname: "请输入真实姓名！",
+        nocountry: "請选择国家！",
+        noidtype: "请选择身份证类型!",
+        noidcard: "请输入身份证号码！",
+        notpwd: "请输入交易密碼！"
       },
       topBarOption: {
         iconLeft: "back",

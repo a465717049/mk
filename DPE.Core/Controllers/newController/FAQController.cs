@@ -35,7 +35,7 @@ namespace DPE.Core.Controllers
         readonly IFAQServices _ifaqservices;
 
 
-        public FAQController( IUser user, IUserInfoServices userInfoServices, IFAQServices ifaqservices)
+        public FAQController(IUser user, IUserInfoServices userInfoServices, IFAQServices ifaqservices)
         {
             _user = user;
             _userInfoServices = userInfoServices;
@@ -58,9 +58,9 @@ namespace DPE.Core.Controllers
                 msg = "",
                 code = 0,
                 response = (from item in result
-                            select new 
+                            select new
                             {
-                                id=item.id,
+                                id = item.id,
                                 questions = item.Questions,
                                 answer = item.Answer
                             })
@@ -74,7 +74,7 @@ namespace DPE.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("AddFAQ")]
-        public async Task<MessageModel<dynamic>> AddFAQ(string questions ,string answer)
+        public async Task<MessageModel<dynamic>> AddFAQ(string questions, string answer)
         {
             FAQ faq = new FAQ() { Questions = questions, Answer = answer };
             var result = await _ifaqservices.Add(faq);

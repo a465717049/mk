@@ -145,7 +145,7 @@ namespace DPE.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("EPSell")]
-      public async Task<MessageModel<string>> EPSell(string jsondata)
+        public async Task<MessageModel<string>> EPSell(string jsondata)
         {
 
             var ePSellParams = JsonConvert.DeserializeObject<EPSellParamsModel>(jsondata);
@@ -153,7 +153,7 @@ namespace DPE.Core.Controllers
 
             MessageModel<string> result = new MessageModel<string>();
             //判断交易密码
-       
+
             return await _EPServices.EPSell(ePSellParams);
         }
 
@@ -169,8 +169,9 @@ namespace DPE.Core.Controllers
         public async Task<MessageModel<string>> EPBuy(long eid)
         {
             var result = new MessageModel<string>();
-       
-            if (string.IsNullOrEmpty(eid.ToString())) {
+
+            if (string.IsNullOrEmpty(eid.ToString()))
+            {
                 string tmpeid = HttpContext.Request.Form["eid"];
                 eid = int.Parse(tmpeid);
             }
@@ -315,7 +316,7 @@ namespace DPE.Core.Controllers
                 result.msg = "交易失败";
             }
 
-           
+
             return result;
         }
 
@@ -329,7 +330,7 @@ namespace DPE.Core.Controllers
             if (_user.ID == 0)
             {
                 result.code = 60001;
-                result.msg = "用戶身份已過期，請重新登錄";
+                result.msg = "用户身份已过期，请重新登录";
                 result.success = false;
                 return result;
             }
@@ -375,10 +376,10 @@ namespace DPE.Core.Controllers
                     ex.recordID = eprecord.id;
                     ex.lastTotal = ep[0].amount;
                     ex.stype = 15;
-                    ex.remark = "購買EP";
-                   var exc= await _iepexchangeservices.Add(ex);
+                    ex.remark = "购买EP";
+                    var exc = await _iepexchangeservices.Add(ex);
                     //更新ep
-                    if (exc>0)
+                    if (exc > 0)
                     {
                         ep[0].amount = ep[0].amount + Math.Abs(eprecord.amount.Value);
                         await _EPServices.Update(ep[0]);
@@ -393,7 +394,7 @@ namespace DPE.Core.Controllers
 
 
         /// <summary>
-        /// EP記錄
+        /// EP记录
         /// </summary>
         /// <param name="type"></param>
         /// <param name="pageSize">每页显示行数</param>
@@ -450,7 +451,7 @@ namespace DPE.Core.Controllers
                             orderby item.createTime descending
                             select new
                             {
-                                datacount=result.dataCount,
+                                datacount = result.dataCount,
                                 id = item.uid,
                                 img = "head01",
                                 date = item.createTime.Value.ToString("yy/MM/dd HH:mm:ss"),
@@ -479,7 +480,7 @@ namespace DPE.Core.Controllers
             if (_user.ID == 0)
             {
                 results.code = 60001;
-                results.msg = "用戶身份已過期，請重新登錄";
+                results.msg = "用户身份已过期，请重新登录";
                 results.success = false;
                 return results;
             }
@@ -488,7 +489,7 @@ namespace DPE.Core.Controllers
             bool isfig = (type == 4 || type == 2) ? true : false;
 
 
-          var   result = new PageModel<EPRecords>();
+            var result = new PageModel<EPRecords>();
             var userinfo = await _isysuserinfoservice.QueryById(_user.ID);
 
             if (isfig)
@@ -496,8 +497,8 @@ namespace DPE.Core.Controllers
                 result = await _ieprecordsservices.QueryPage(x => (x.buyId == _user.ID || x.uID == _user.ID) && (x.status == 2 || x.status == 4), pageIndex, pageSize, " createTime desc");
             }
             else
-           {
-                //判斷當前是否為服務中心
+            {
+                //判断当前是否为服务中心
                 if (userinfo.isService.ObjToBool())
                 {
                     if (type == 8)
@@ -555,7 +556,7 @@ namespace DPE.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("GetEPUserSell")]
-        public async Task<MessageModel<dynamic>> GetEPUserSell( int pageSize, int pageIndex)
+        public async Task<MessageModel<dynamic>> GetEPUserSell(int pageSize, int pageIndex)
         {
             pageSize = pageSize == 0 ? 10 : pageSize;
             pageIndex = pageIndex == 0 ? 1 : pageIndex;
@@ -563,9 +564,9 @@ namespace DPE.Core.Controllers
             result = await _iexchangetotalservices.QueryPage(null, pageIndex, pageSize, " createTime desc");
             return new MessageModel<dynamic>
             {
-                
+
                 response =
-                new 
+                new
                 {
                     datacount = result.dataCount,
                     data = (from item in result.data
@@ -587,13 +588,13 @@ namespace DPE.Core.Controllers
         //财务管理 财务挂单
         [HttpPost]
         [Route("GetEPFinanceSell")]
-        public async Task<MessageModel<dynamic>> GetEPFinanceSell( int pageSize, int pageIndex)
+        public async Task<MessageModel<dynamic>> GetEPFinanceSell(int pageSize, int pageIndex)
         {
             pageSize = pageSize == 0 ? 10 : pageSize;
             pageIndex = pageIndex == 0 ? 1 : pageIndex;
             var result = new PageModel<EP>();
-            result = await _EPServices.QueryPage(null,pageIndex, pageSize," uID ");
-            
+            result = await _EPServices.QueryPage(null, pageIndex, pageSize, " uID ");
+
             return new MessageModel<dynamic>
             {
                 response =
@@ -603,9 +604,9 @@ namespace DPE.Core.Controllers
                     data = (from item in result.data
                             select new
                             {
-                                uid=item.uID,
-                                amount = _ieprecordsservices.Query(x=>x.uID==item.uID).Result.Sum(x=>x.amount),
-                                epamount= item.amount
+                                uid = item.uID,
+                                amount = _ieprecordsservices.Query(x => x.uID == item.uID).Result.Sum(x => x.amount),
+                                epamount = item.amount
                             })
                 }
             };
@@ -634,10 +635,10 @@ namespace DPE.Core.Controllers
                 //交易密码错误
                 result.code = 61004;
                 result.success = false;
-                result.msg = "交易密碼錯誤";
+                result.msg = "交易密码错误";
                 return result;
             }
-           
+
 
             //判断谷歌验证
             //var trangode = await _isysuserinfoservice.checkGoogleKey(_user.ID, gcode);
@@ -654,7 +655,7 @@ namespace DPE.Core.Controllers
             return await _EPServices.EPTransOtherType(oType, dType, tpwd, gcode, amount, _user.ID);
         }
         /// <summary>
-        /// EP/RP轉出
+        /// EP/RP转出
         /// </summary>
         /// <param name="oType">原类型:EP、RP</param>
         /// <param name="dType">目标类型:RP、SP</param>
@@ -690,7 +691,7 @@ namespace DPE.Core.Controllers
                     //用户不存在
                     result.code = 61001;
                     result.success = false;
-                    result.msg = "登錄失效，請重新登陸！";
+                    result.msg = "登录失效，请重新登陆！";
                     return result;
                 }
 
@@ -700,7 +701,7 @@ namespace DPE.Core.Controllers
                     //不能往自己的账户转EP
                     result.code = 61007;
                     result.success = false;
-                    result.msg = "不能往自己賬號轉EP";
+                    result.msg = "不能往自己账号转EP";
                     return result;
                 }
 
@@ -722,7 +723,7 @@ namespace DPE.Core.Controllers
                     //RP转出用户不存在
                     result.code = 61002;
                     result.success = false;
-                    result.msg = "EP轉出用戶不存在";
+                    result.msg = "EP转出用户不存在";
                     return result;
                 }
 
@@ -733,7 +734,7 @@ namespace DPE.Core.Controllers
                     //交易密码错误
                     result.code = 61004;
                     result.success = false;
-                    result.msg = "交易密碼錯誤";
+                    result.msg = "交易密码错误";
                     return result;
                 }
 
@@ -744,7 +745,7 @@ namespace DPE.Core.Controllers
                     //谷歌验证错误
                     result.code = 61005;
                     result.success = false;
-                    result.msg = "谷歌驗證碼錯誤";
+                    result.msg = "谷歌验证码错误";
                     return result;
                 }
 
@@ -755,14 +756,14 @@ namespace DPE.Core.Controllers
             {
                 result.code = 61006;
                 result.success = false;
-                result.msg = "服務器繁忙，請稍後重試";
+                result.msg = "服务器繁忙，请稍后重试";
                 return result;
             }
 
         }
 
 
-        //獲取待售信息
+        //获取待售信息
         [HttpPost]
         [Route("GetEPExchangeById")]
         public async Task<MessageModel<dynamic>> GetEPExchangeById(int id)
@@ -797,7 +798,7 @@ namespace DPE.Core.Controllers
                            item.buyTime,
                            item.payTime,
                            item.confirmTime
-                           
+
                        }).ToList<dynamic>();
 
             List<dynamic> response = new List<dynamic>();
@@ -840,7 +841,7 @@ namespace DPE.Core.Controllers
         [Route("GetAdminEPExchangeList")]
         public async Task<MessageModel<dynamic>> GetAdminEPExchangeList()
         {
-          
+
 
             MessageModel<dynamic> result = new MessageModel<dynamic>();
             try
@@ -865,8 +866,8 @@ namespace DPE.Core.Controllers
                 pagesize = pagesize == 0 ? 20 : pagesize;
                 pageindex = pageindex == 0 ? 1 : pageindex;
 
-                var data =  await  _iepexchangeservices.QueryPage(x => x.stype == 14 && x.amount < 0 &&
-                ( x.uID.ToString().Contains(key) || x.fromID.ToString().Contains(key) || x.recordID.ToString().Contains(key) || x.remark.Contains(key) ) , pageindex, pagesize, " createTime DESC ");
+                var data = await _iepexchangeservices.QueryPage(x => x.stype == 14 && x.amount < 0 &&
+              (x.uID.ToString().Contains(key) || x.fromID.ToString().Contains(key) || x.recordID.ToString().Contains(key) || x.remark.Contains(key)), pageindex, pagesize, " createTime DESC ");
 
                 result.response = data;
                 result.code = 200;
@@ -954,7 +955,7 @@ namespace DPE.Core.Controllers
                 string id = HttpContext.Request.Form["id"];
                 string type = HttpContext.Request.Form["type"];
 
-                if (string.IsNullOrEmpty(id)) 
+                if (string.IsNullOrEmpty(id))
                 {
                     result.code = 10001;
                     result.msg = "无法找到记录";
@@ -963,7 +964,7 @@ namespace DPE.Core.Controllers
                 }
 
                 var data = await _iepexchangeservices.RoolBackThisTran(Convert.ToInt64(id), type);
-                result.code = data?200 :500;
+                result.code = data ? 200 : 500;
                 result.success = data ? true : false;
                 return result;
             }
@@ -987,7 +988,7 @@ namespace DPE.Core.Controllers
             if (_user.ID == 0)
             {
                 results.code = 60001;
-                results.msg = "用戶身份已過期，請重新登錄";
+                results.msg = "用户身份已过期，请重新登录";
                 results.success = false;
                 return results;
             }
@@ -1004,7 +1005,7 @@ namespace DPE.Core.Controllers
             pagesize = pagesize == 0 ? 20 : pagesize;
             pageindex = pageindex == 0 ? 1 : pageindex;
 
-            var data = await _ieprecordsservices.QueryPage(x => 
+            var data = await _ieprecordsservices.QueryPage(x =>
            (x.status.ToString().Contains(status) && (x.uID.ToString().Contains(key) || x.buyId.ToString().Contains(key) || x.id.ToString().Contains(key))), pageindex, pagesize, " createTime DESC ");
 
             return new MessageModel<dynamic>
@@ -1017,7 +1018,7 @@ namespace DPE.Core.Controllers
         //投诉
         [HttpPost]
         [Route("Usercomplaint")]
-        public async Task<MessageModel<dynamic>> AdminUsercomplaint(int id,long complaintuid)
+        public async Task<MessageModel<dynamic>> AdminUsercomplaint(int id, long complaintuid)
         {
             MessageModel<dynamic> result = new MessageModel<dynamic>();
             try
@@ -1029,7 +1030,7 @@ namespace DPE.Core.Controllers
                     result.success = false;
                     return result;
                 }
-                if (id==0)
+                if (id == 0)
                 {
                     result.code = 10001;
                     result.msg = "无法找到记录";
@@ -1046,7 +1047,7 @@ namespace DPE.Core.Controllers
                 }
                 else
                 {
-                    await _iusercomplaintservices.Add(new UserComplaint {  uid=_user.ID, complaintuid= complaintuid, complaintuidtype="ep交易", createtime=DateTime.Now });
+                    await _iusercomplaintservices.Add(new UserComplaint { uid = _user.ID, complaintuid = complaintuid, complaintuidtype = "ep交易", createtime = DateTime.Now });
                 }
                 result.code = 200;
                 result.success = true;

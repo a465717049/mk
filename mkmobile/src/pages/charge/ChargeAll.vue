@@ -1,7 +1,7 @@
 <template>
   <div class="chargeAllWrapper">
     <TopBar class="center-one-search" :option="topBarOption">
-      充值記錄
+      充值记录
     </TopBar>
     <div class="innerWrap">
       <div class="chargeBox">

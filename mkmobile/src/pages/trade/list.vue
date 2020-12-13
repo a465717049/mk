@@ -148,8 +148,6 @@ export default {
       tmpcktype: "EP",
       showLocation: true,
       listOne: [
-        // { remark: "销售奖", date: "11-20 20:08:02", amount: 450 },
-        // { remark: "销售奖", date: "11-20 20:08:02", amount: -450 }
       ],
       listTwo: [],
       listThree: [],
@@ -214,7 +212,7 @@ export default {
   created() {
     // console.log(this.$route.params);
     // this.tmpcktype = this.$route.params.cktype.toUpperCase();
-    // this.load(1);
+     this.load(1);
   }
 };
 </script>

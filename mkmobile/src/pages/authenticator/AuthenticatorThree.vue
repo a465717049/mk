@@ -5,10 +5,10 @@
       <div class="auth-card">
         <img src="@/assets/imgs/auth-header.png" alt />
         <div>
-          <div class="auth-top-tit">Google 身份驗證</div>
+          <div class="auth-top-tit">Google 身份验证</div>
           <div class="auth-top-tip">
             只需2步，获取激活码用于您的帐号进行安全校验
-            <!-- 只需2步，獲取激活碼用於您的賬號進行安全校驗 -->
+            <!-- 只需2步，获取激活码用于您的账号进行安全校验 -->
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@ export default {
             this.$router.push({name:'AuthenticatorLast',params:{googlekey:json.response}})
          
           } else {
-            this.tips = '校驗失敗!'
+            this.tips = '校验失败'
 
           }
         });

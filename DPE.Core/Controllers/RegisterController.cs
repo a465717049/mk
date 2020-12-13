@@ -28,7 +28,7 @@ namespace DPE.Core.Controllers
     public class RegisterController : Controller
     {
         readonly ISysUserInfoServices _sysUserInfoServices;
-    
+
 
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace DPE.Core.Controllers
         public RegisterController(ISysUserInfoServices sysUserInfoServices)
         {
             this._sysUserInfoServices = sysUserInfoServices;
-         
+
         }
 
 
@@ -46,9 +46,9 @@ namespace DPE.Core.Controllers
         /// <summary>
         /// 注册
         /// </summary>
-        /// <param name="name">用戶名</param>
-        /// <param name="pass">密碼</param>
-        /// <param name="code">邀請碼</param>
+        /// <param name="name">用户名</param>
+        /// <param name="pass">密码</param>
+        /// <param name="code">邀请码</param>
         /// <returns></returns>
         [HttpPost]
         [Route("Register")]
@@ -56,7 +56,7 @@ namespace DPE.Core.Controllers
         {
             string jwtStr = string.Empty;
 
-            if (string.IsNullOrEmpty(name) )
+            if (string.IsNullOrEmpty(name))
             {
                 return new MessageModel<sysUserInfoViewModel>()
                 {
@@ -82,12 +82,12 @@ namespace DPE.Core.Controllers
                     success = false,
                     code = 1001
                 };
-              
+
             }
             else
             {
                 long yid = 0;
-                bool hasUser= long.TryParse(code, out yid);
+                bool hasUser = long.TryParse(code, out yid);
 
                 var yuser = await _sysUserInfoServices.Query(d => d.uID == yid);
                 if (yuser.Count > 0 || string.IsNullOrEmpty(code))
@@ -108,7 +108,7 @@ namespace DPE.Core.Controllers
                 }
                 else
                 {
-                   
+
                     var s = await _sysUserInfoServices.Register(name, pass, yid);
                     if (s.uID > 0)
                     {
@@ -126,7 +126,7 @@ namespace DPE.Core.Controllers
                             success = false
                         };
                     }
-                    
+
                 }
             }
         }

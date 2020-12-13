@@ -1,7 +1,7 @@
 <template>
   <div class="activityWrap">
     <TopBar class="center-one-search" :option="topBarOption">
-      活動報名
+      活动报名
     </TopBar>
     <div class="innerWrap">
       <ul>
@@ -10,7 +10,7 @@
             <img class="photo" src="../../assets/imgs/forgot1-img1.png" alt />
             <span>
               提示：
-              <br />報名成功后，請注意查收短信回執。
+              <br />报名成功后，请注意查收短信回执。
             </span>
           </div>
         </li>
@@ -18,23 +18,23 @@
           <p class="activityName">{{ activityName }}</p>
         </li>
         <li>
-          <div class="title">聯係人</div>
+          <div class="title">联系人</div>
           <input type="text" :v-model="contacts" />
         </li>
         <li>
-          <div class="title">手機</div>
+          <div class="title">手机</div>
           <input type="text" :v-model="phone" />
         </li>
         <li>
-          <div class="title">人數</div>
+          <div class="title">人数</div>
           <input type="text" :v-model="peopleNumber" />
         </li>
         <li>
-          <div class="title">費用</div>
+          <div class="title">费用</div>
           <input type="text" :v-model="cost" />
         </li>
       </ul>
-      <button class="next">確定參加</button>
+      <button class="next">确定参加</button>
     </div>
   </div>
 </template>

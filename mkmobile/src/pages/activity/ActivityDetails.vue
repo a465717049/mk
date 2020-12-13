@@ -1,7 +1,7 @@
 <template>
   <div class="newsDetailsWrapper">
     <TopBar :option="topBarOption" class="center-one-search">
-      活動詳情
+      活动详情
     </TopBar>
     <div class="innerWrap">
       <div class="w90">
