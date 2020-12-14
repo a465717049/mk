@@ -525,6 +525,7 @@ export default {
 </style>
 <style lang="less" scoped>
 .topbar-wrap{
+  position: relative;
   /deep/ .van-overlay {
     background-color: transparent !important;
   }
