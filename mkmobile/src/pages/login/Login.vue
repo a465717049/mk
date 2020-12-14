@@ -122,6 +122,7 @@ export default {
       }
       let _this = this
       http(getLogin, this.form, json => {
+        console.log(json)
         if (json.code === 0) {
           storage.setLocalStorage(accessToken, 'Bearer ' + json.response.token)
           if (_this.ifSave) {

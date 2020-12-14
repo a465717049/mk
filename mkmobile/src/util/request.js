@@ -27,7 +27,7 @@ let getAccessToken = () => {
 let headerOption = () => {
   return {
     Authorization: getAccessToken(),
-    "Access-Control-Allow-Origin": "https://api.a8dog.top/",
+    "Access-Control-Allow-Origin": "https://api.a8dog.top",
     "Access-Control-Allow-Credentials": "true",
     "content-type": "application/json;"
   };
@@ -136,7 +136,7 @@ export const http = (opts, params, success, noLoading, error) => {
     xhr.setRequestHeader("Authorization", token);
     xhr.setRequestHeader(
       "Access-Control-Allow-Origin",
-      "https://api.dpepie.com/,https://api.dpepie.com,*"
+      "https://api.a8dog.top,https://api.a8dog.top,*"
     );
     xhr.setRequestHeader("Access-Control-Allow-Credentials", "true");
     xhr.onreadystatechange = function () {
