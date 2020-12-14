@@ -9,17 +9,17 @@
           <p class="detailsTile">{{detailsTile}}</p>
           <div class="bottom">
             <div class="times">{{timeZone}}</div>
-            
+
             <div class="ago">{{time}}</div>
             <div class="eyes">
               <i class="iconfont iconeye"></i>
               <span>{{seeNumber}}</span>
             </div>
-           
+
           </div>
         </div>
         <div class="article" v-html='details'>
-      
+
         </div>
       </div>
     </div>
@@ -33,7 +33,7 @@ import { GetNewsDeatilWeb } from 'util/netApi'
 import { storage } from 'util/storage'
 import { accessToken, loginPro } from 'util/const.js'
 export default {
-  data() {
+  data () {
     return {
       topBarOption: {
         iconLeft: 'back',
@@ -42,7 +42,7 @@ export default {
       detailsTile: '年假很低级啊很大声',
       timeZone: '方式方式的',
       details: 'Money is like water, and precision control means not only "injecting fresh water", but also "repairing drainage channels". In the guarantee "current" abundant at the same time, the diversion water into the canal, can "fish" raise, raise well Recently, on the basis of the previous structural monetary policy tools, the Peoples Bank of China has created two more monetary policy tools that are direct to the real economy -- the loan extension support Tool for inclusive small and micro businesses and the Credit loan Support Plan, so as to continuously enhance the targeted and valuable policies serving small and micro businesses. These two innovative policy tools directly link the operation of monetary policy with the financial support provided by financial institutions to small and micro enterprises, so as to ensure the continuous and accurate flow of financial water to the real economy, especially to small and micro enterprises, along the "canal". Precision regulation has been a major feature of recent macro policies. Not only monetary policy, but fiscal policy also emphasizes precision.',
-       time: '13小时前',
+      time: '13小时前',
       seeNumber: '45,000',
       banner: banner,
       detailid: 0
@@ -53,7 +53,7 @@ export default {
   },
   computed: {},
   methods: {
-    ToGetNewsDeatilWeb(value) {
+    ToGetNewsDeatilWeb (value) {
       http(GetNewsDeatilWeb, { id: value }, json => {
         if (json.code === 0) {
           this.detailsTile = json.response.title
@@ -64,7 +64,7 @@ export default {
       })
     }
   },
-  created() {
+  created () {
     if (this.$route.query.id) {
       this.detailid = this.$route.query.id
       this.ToGetNewsDeatilWeb(this.detailid)
@@ -105,11 +105,11 @@ export default {
       line-height: 60px;
       overflow: hidden;
       text-overflow: ellipsis;
-      text-align: center!important;
+      text-align: left!important;
       margin-top: 60px;
     }
     .bottom {
-       text-align: center;
+       text-align: left;
        font-size: 40px;
        line-height: 40px;
        margin: 0;
@@ -126,7 +126,8 @@ export default {
         font-size: 24px;
       }
       .eyes {
-        float: right;
+        // float: right;
+        margin-left: 100px;
         color: #000;
         font-weight: 600;
       }
@@ -138,13 +139,13 @@ export default {
     }
   }
   .article {
-    
+
       margin-top:80px;
       font-size: 40px;
       line-height: 60px;
       color: #111;
       margin-bottom: 60px;
-  
+
   }
 }
 </style>

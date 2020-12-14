@@ -1,5 +1,5 @@
 <template>
-  <div class="xptabbar">
+  <div class="xptabbar" ref="bottomTabBar">
     <span
       v-for="item in tabItemData"
       @click="link(item)"
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import Store from '@/store'
 export default {
   name: 'Tabbar',
   data () {
@@ -42,7 +43,7 @@ export default {
           id: 'tabbar1',
           to: '/home',
           className: 'iconcl-icon-Home iconfont',
-          text: '首頁',
+          text: '首页',
           selected: true
         },
         {
@@ -78,6 +79,9 @@ export default {
     logout () {
       this.sheetShow = false
     }
+  },
+  mounted () {
+    Store.commit('changeBottomTabBarHeight', this.$refs.bottomTabBar.offsetHeight)
   }
 }
 </script>

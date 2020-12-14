@@ -5,7 +5,7 @@
     >
     <ScrollRefresh
       @getData="TogetUserInfo"
-      :residualHeight="160"
+      :residualHeight="topbarHeight+bottomTabBarHeight+10"
       :isNeedUp="false"
       class="innerScroll"
     >
@@ -75,65 +75,65 @@
   </div>
 </template>
 <script type="text/javascript">
-import TopBar from "components/TopBar";
-import headerImg from "../../assets/imgs/headerImg.png";
-import YellowComfirm from "components/YellowComfirm";
-import ScrollRefresh from "components/ScrollRefresh";
-import { http } from "util/request";
+import TopBar from 'components/TopBar'
+import headerImg from '../../assets/imgs/headerImg.png'
+import YellowComfirm from 'components/YellowComfirm'
+import ScrollRefresh from 'components/ScrollRefresh'
+import { http } from 'util/request'
 import {
   CreateNewAccount,
   GetUserInfo,
   GetShopCartsweb,
   AddGoodsweb,
   BuyGoodsweb,
-  GetShopaddr,
-} from "util/netApi";
-import { storage } from "util/storage";
-import { accessToken, loginPro } from "util/const.js";
+  GetShopaddr
+} from 'util/netApi'
+import { storage } from 'util/storage'
+import { accessToken, loginPro } from 'util/const.js'
 export default {
   components: {
     TopBar,
     YellowComfirm,
-    ScrollRefresh,
+    ScrollRefresh
   },
-  data() {
+  data () {
     return {
       totalrp: 0,
       buytotalrp: 0,
-      buyaddr: "",
-      buyname: "",
-      buyphone: "",
-      buyremark: "",
+      buyaddr: '',
+      buyname: '',
+      buyphone: '',
+      buyremark: '',
       data: [
         {
-          icon_url: require("@/assets/imgs/shop/camea.png"),
+          icon_url: require('@/assets/imgs/shop/camea.png'),
           id: 1,
           shopdetail: {
-            createTime: "",
+            createTime: '',
             id: 0,
             minLevel: 0,
-            pDesc: "",
-            pIcon: "",
-            pName: "",
+            pDesc: '',
+            pIcon: '',
+            pName: '',
             pNum: 0,
             price: 0,
             priceType: 0,
-            status: 0,
+            status: 0
           },
           shopid: 8,
           shopnum: 8,
-          uid: 8,
-        },
+          uid: 8
+        }
       ],
       topBarOption: {
-        iconLeft: "back",
-        iconRight: "icongouwucheman",
+        iconLeft: 'back',
+        iconRight: 'icongouwucheman'
       },
       carNum: 1,
       tips:
-        "恭喜！注册成功了！登录ID: 100012登录密码：123456交易密码：123456请尽快登录修改并完善个人资料",
+        '恭喜！注册成功了！登录ID: 100012登录密码：123456交易密码：123456请尽快登录修改并完善个人资料',
       isEnter: false,
-      account: "2,000",
+      account: '2,000',
       price: 0,
       shopprice: 0,
       stepper: 1,
@@ -141,70 +141,68 @@ export default {
       isreturn: 0,
       addmodel: {},
       initData: {
-        price: "",
-        positionId: "",
-        area: "",
+        price: '',
+        positionId: '',
+        area: ''
       },
       option1: [
-        { text: "1000", value: 1 },
-        { text: "500", value: 2 },
-      ],
-    };
+        { text: '1000', value: 1 },
+        { text: '500', value: 2 }
+      ]
+    }
   },
-  mounted() {},
+  mounted () {},
   computed: {},
   methods: {
-      getshopcartnum()
-    {
-      http(GetShopCartsweb,null, json => {
-        if(json.code===0)
-        {
-           this.data=json.response.data.list;
-            this.data.forEach(el=>{
-          let img = null;
-          try {
-            console.log(el.shopdetail.id)
-          img = require('@/assets/imgs/shop/goods-'+el.shopdetail.id+'.png');
-          } catch (err) {//图片 不存在则使用默认的图片
-          img = require("@/assets/imgs/shop/camea.png");
-          }
-          return el.shopdetail.pIcon = img
+    getshopcartnum () {
+      http(GetShopCartsweb, null, json => {
+        if (json.code === 0) {
+          this.data = json.response.data.list
+          this.data.forEach(el => {
+            let img = null
+            try {
+              console.log(el.shopdetail.id)
+              img = require('@/assets/imgs/shop/goods-' + el.shopdetail.id + '.png')
+            } catch (err) { // 图片 不存在则使用默认的图片
+              img = require('@/assets/imgs/shop/camea.png')
+            }
+            return el.shopdetail.pIcon = img
           })
-           this.sumallshop();
+          this.sumallshop()
         }
-      });
+      })
     },
-    sumallshop() {
-      var trp = 0;
-      var totalnum = 0;
+    sumallshop () {
+      var trp = 0
+      var totalnum = 0
       this.data.forEach(function (item) {
-        trp += item.shopnum * item.shopdetail.price;
-        totalnum += item.shopnum;
-      });
-      this.buytotalrp = trp;
-      this.carNum = totalnum;
+        trp += item.shopnum * item.shopdetail.price
+        totalnum += item.shopnum
+      })
+      this.buytotalrp = trp
+      this.carNum = totalnum
     },
-    goNext() {
+    goNext () {
       if (this.totalrp < this.buytotalrp) {
-        this.isEnter = true;
-        this.tips = "当前金额不足";
-        return;
+        this.isEnter = true
+        this.tips = '当前金额不足'
+        return
       }
       http(
         CreateNewAccount,
         { jsondata: JSON.stringify(this.addmodel) },
         (json) => {
           if (json.code === 0) {
-            this.totalrp = json.response.rp;
+            this.totalrp = json.response.rp
           }
         }
-      );
+      )
     },
-    buyShop() {
+    buyShop () {
       if (this.totalrp < this.buytotalrp) {
-        this.isEnter = true;
-        this.tips = "当前金额不足";
-        return;
+        this.isEnter = true
+        this.tips = '当前金额不足'
+        return
       }
       http(
         BuyGoodsweb,
@@ -212,69 +210,69 @@ export default {
           addr: this.buyaddr,
           phone: this.buyphone,
           name: this.buyname,
-          remark: this.buyremark,
+          remark: this.buyremark
         },
         (json) => {
           if (json.code === 0) {
-            this.isEnter = true;
-            this.tips = json.msg;
-            this.getshopcartnum();
+            this.isEnter = true
+            this.tips = json.msg
+            this.getshopcartnum()
           } else {
-            this.isEnter = true;
-            this.tips = json.msg;
+            this.isEnter = true
+            this.tips = json.msg
           }
         }
-      );
+      )
     },
-    changeModel(v) {
-      this.isEnter = v;
+    changeModel (v) {
+      this.isEnter = v
     },
-    clickOk() {
-      this.isEnter = false;
+    clickOk () {
+      this.isEnter = false
       if (this.isreturn == 1) {
         this.$router.push({
-          name: "relation",
-          params: { uid: this.addmodel.Jid },
-        });
+          name: 'relation',
+          params: { uid: this.addmodel.Jid }
+        })
       }
     },
-    TogetUserInfo() {
+    TogetUserInfo () {
       http(GetUserInfo, null, (json) => {
         if (json.code === 0) {
-          this.totalrp = json.response.rp;
+          this.totalrp = json.response.rp
         }
-      });
+      })
     },
-    onPlus(id) {
-      //增加
-      this.price += this.shopprice;
-      this.addshop(id, 1, "");
+    onPlus (id) {
+      // 增加
+      this.price += this.shopprice
+      this.addshop(id, 1, '')
     },
-    onMinus(id) {
-      //减少
-      this.price -= this.shopprice;
-      this.addshop(id, 1, "-");
+    onMinus (id) {
+      // 减少
+      this.price -= this.shopprice
+      this.addshop(id, 1, '-')
     },
-    addshop(id, num, option) {
+    addshop (id, num, option) {
       http(AddGoodsweb, { shopid: id, num: num, option: option }, (json) => {
         if (json.code === 0) {
-          this.sumallshop();
+          this.sumallshop()
         }
-      });
-    },
+      })
+    }
   },
-  created() {
-    this.TogetUserInfo();
-    this.getshopcartnum();
+  created () {
+    this.TogetUserInfo()
+    this.getshopcartnum()
     http(GetShopaddr, null, (json) => {
       if (json.code === 0) {
-        this.buyaddr = json.response.data.buyaddr;
-        this.buyphone = json.response.data.buyphone;
-        this.buyname = json.response.data.buyname;
+        this.buyaddr = json.response.data.buyaddr
+        this.buyphone = json.response.data.buyphone
+        this.buyname = json.response.data.buyname
       }
-    });
-  },
-};
+    })
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -573,4 +571,3 @@ export default {
   }
 }
 </style>
-

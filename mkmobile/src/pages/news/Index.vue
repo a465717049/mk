@@ -3,7 +3,7 @@
     <TopBar class="center-one-search">资 讯</TopBar>
      <ScrollRefresh
       @getData="ToGetNewsWeb"
-      :residualHeight="180"
+      :residualHeight="topbarHeight+bottomTabBarHeight+10"
       :isNeedUp="false"
     >
     <div class="innerWrap">
@@ -44,62 +44,62 @@
   </div>
 </template>
 <script type="text/javascript">
-import TopBar from "components/TopBar";
-import { http } from "util/request";
-import { GetNewsWeb } from "util/netApi";
-import ScrollRefresh from "components/ScrollRefresh";
-import { storage } from "util/storage";
-import { accessToken, loginPro } from "util/const.js";
+import TopBar from 'components/TopBar'
+import { http } from 'util/request'
+import { GetNewsWeb } from 'util/netApi'
+import ScrollRefresh from 'components/ScrollRefresh'
+import { storage } from 'util/storage'
+import { accessToken, loginPro } from 'util/const.js'
 export default {
-  data() {
+  data () {
     return {
       topBarOption: {
-        iconLeft: "iconShapecopy",
-        iconRight: ""
+        iconLeft: 'iconShapecopy',
+        iconRight: ''
       },
       ntype: null,
       newsList: [
       ]
-    };
+    }
   },
   watch: {
-    ntype(val) {
-      this.value = this.ntype;
+    ntype (val) {
+      this.value = this.ntype
 
-      this.ToGetNewsWeb();
+      this.ToGetNewsWeb()
     }
   },
   components: {
     TopBar,
-        ScrollRefresh
+    ScrollRefresh
   },
   computed: {},
-  mounted() {
-    this.ntype = this.$route.query.type;
-    this.ToGetNewsWeb();
+  mounted () {
+    this.ntype = this.$route.query.type
+    this.ToGetNewsWeb()
   },
   methods: {
-    onNext(value) {
-      this.$router.push("./NewsDetail?id=" + value);
+    onNext (value) {
+      this.$router.push('./NewsDetail?id=' + value)
     },
-    ToGetNewsWeb() {
+    ToGetNewsWeb () {
       http(GetNewsWeb, { type: 0 }, json => {
         if (json.code === 0) {
-          this.newsList = json.response;
+          this.newsList = json.response
         }
-      });
+      })
     },
-    
-    getTabbar() {
+
+    getTabbar () {
       http(goodscollectionList).then(res => {
-        console.log("11");
-      });
+        console.log('11')
+      })
     }
   },
-  created() {
-    this.ToGetNewsWeb();
+  created () {
+    this.ToGetNewsWeb()
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -107,7 +107,7 @@ export default {
   /deep/.wrapper {
     padding-top: 20px;
     .bscroll-container {
-      min-height: calc(100vh - 500px);
+      min-height: calc(100vh - 400px);
     }
   }
   .w90 {

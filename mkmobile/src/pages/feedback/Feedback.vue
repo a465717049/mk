@@ -6,7 +6,7 @@
       <!-- <div class="innerScroll"></div> -->
       <ScrollRefresh
         @getData="ToGetUserFeedBack"
-        :residualHeight="240"
+        :residualHeight="topbarHeight+bottomTabBarHeight+85"
         :isNeedUp="false"
         class="innerScroll"
       >
@@ -34,24 +34,24 @@
 </template>
 
 <script>
-import TopBar from "components/TopBar";
-import { http } from "util/request";
-import { GetUserFeedBack, AddUserFeedBack } from "util/netApi";
-import { storage } from "util/storage";
-import ScrollRefresh from "components/ScrollRefresh";
-import defaultImg from "@/assets/imgs/set/head02.png";
-import { accessToken, loginPro } from "util/const.js";
+import TopBar from 'components/TopBar'
+import { http } from 'util/request'
+import { GetUserFeedBack, AddUserFeedBack } from 'util/netApi'
+import { storage } from 'util/storage'
+import ScrollRefresh from 'components/ScrollRefresh'
+import defaultImg from '@/assets/imgs/set/head02.png'
+import { accessToken, loginPro } from 'util/const.js'
 
 export default {
   components: {
     TopBar,
     ScrollRefresh
   },
-  data() {
+  data () {
     return {
-      msg: "",
+      msg: '',
       topBarOption: {
-        iconLeft: "iconShapecopy",
+        iconLeft: 'iconShapecopy',
         iconRight: false
       },
       list: [
@@ -128,38 +128,38 @@ export default {
         //   msg: "请问最近的车奖是怎么一回事？"
         // }
       ]
-    };
+    }
   },
   methods: {
-    ToGetUserFeedBack() {
+    ToGetUserFeedBack () {
       http(GetUserFeedBack, null, json => {
         if (json.code === 0) {
-          console.log(json.response);
-          this.list = json.response;
+          console.log(json.response)
+          this.list = json.response
         }
-      });
+      })
     },
-    sendMessage() {
+    sendMessage () {
       http(AddUserFeedBack, { content: this.msg }, json => {
         if (json.code == 0) {
           this.list.push({
             id: 2,
-            direction: "right",
-            date: "6mel,2020",
-            image: require("@/assets/imgs/nick-1.png"),
+            direction: 'right',
+            date: '6mel,2020',
+            image: require('@/assets/imgs/nick-1.png'),
             msg: this.msg
-          });
-          this.msg = "";
+          })
+          this.msg = ''
         } else {
-          console.log("2");
+          console.log('2')
         }
-      });
+      })
     }
   },
-  created() {
-    this.ToGetUserFeedBack();
+  created () {
+    this.ToGetUserFeedBack()
   }
-};
+}
 </script>
 
 <style lang="less" scope>
@@ -193,7 +193,7 @@ export default {
       padding: 10px 0;
       img {
         width: 146px;
-        height: 156px;
+        height: 154px;
       }
       .chat_left_img {
         margin-right: 40px;

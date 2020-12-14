@@ -1,5 +1,5 @@
 <template>
-  <div class="search">
+  <div class="toptab_search">
     <input type="text" v-model="value" :placeholder="placeinputValue" />
     <div class="inputIcon iconfont iconsearch" @click="onSearch"></div>
   </div>
@@ -27,7 +27,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.search {
+.toptab_search {
   width: 100%;
   height: 110px;
   display: flex;

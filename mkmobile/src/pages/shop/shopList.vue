@@ -1,19 +1,24 @@
 <template>
   <div class="shopListWrap">
-    <TopBar class="center-one-search" :option="topBarOption">订 单</TopBar>
+    <TopBar class="center-one-search" :option="topBarOption">
+      <div>
+        <div class="three-tit-t">订 单</div>
+         <TopSearch @click="search" placeinputValue=""></TopSearch>
+      </div>
+    </TopBar>
     <div>
       <div class="shop clearfix">
-        <TopSearch @click="search" :placeinputValue="''"></TopSearch>
+
         <ScrollRefresh
           @getData="ToGetShopList"
-          :residualHeight="200"
+          :residualHeight="topbarHeight+bottomTabBarHeight+10"
           :isNeedUp="false"
           class="innerScroll"
         >
           <div class="innerWrap">
             <ul class="info">
               <li v-for="(item,index) in data" :key="index">
-                <span @click="goDetail(item.id)">{{item.shopordernumber}}</span>  
+                <span @click="goDetail(item.id)">{{item.shopordernumber}}</span>
                 <div class="tag ytag" v-if="item.status===1">未发货</div>
                 <div class="tag gtag" v-else-if="item.status===2">配送中</div>
                 <div class="tag rtag" v-else-if="item.status===3">确认收货</div>
@@ -28,99 +33,98 @@
   </div>
 </template>
 <script>
-import TopBar from "components/TopBar";
-import TopSearch from "components/TopSearch";
-import { http } from "util/request";
-import { GetShopList, GetUserInfo, GetShopDeatilLike,GetMyShopList } from "util/netApi";
-import { storage } from "util/storage";
-import { accessToken, loginPro } from "util/const.js";
-import YellowComfirm from "components/YellowComfirm";
-import ScrollRefresh from "components/ScrollRefresh";
+import TopBar from 'components/TopBar'
+import TopSearch from 'components/TopSearch'
+import { http } from 'util/request'
+import { GetShopList, GetUserInfo, GetShopDeatilLike, GetMyShopList } from 'util/netApi'
+import { storage } from 'util/storage'
+import { accessToken, loginPro } from 'util/const.js'
+import YellowComfirm from 'components/YellowComfirm'
+import ScrollRefresh from 'components/ScrollRefresh'
 export default {
-  name: "shopList",
+  name: 'shopList',
   components: {
     TopBar,
     TopSearch,
     YellowComfirm,
     ScrollRefresh
   },
-  data() {
+  data () {
     return {
       showChat: false,
-      placeinputValue: "",
+      placeinputValue: '',
       topBarOption: {
-        iconLeft: "iconShapecopy",
-        iconRight: "iconxiaoxi1"
+        iconLeft: 'iconShapecopy',
+        iconRight: 'iconxiaoxi1'
       },
       showComfirm: true,
-      tips: "即將更新！",
+      tips: '即將更新！',
       data: [
         {
-          shopordernumber: "MT000000043432",
+          shopordernumber: 'MT000000043432',
           status: 2
         },
         {
-          shopordernumber: "MT000000043433",
+          shopordernumber: 'MT000000043433',
           status: 1
         },
         {
-          shopordernumber: "MT000000043434",
+          shopordernumber: 'MT000000043434',
           status: 3
         },
         {
-          shopordernumber: "MT000000043435",
+          shopordernumber: 'MT000000043435',
           status: 4
         }
       ],
       col: 2
-    };
+    }
   },
   computed: {
-    itemWidth() {
-      return (document.documentElement.clientWidth - 70) / 2;
+    itemWidth () {
+      return (document.documentElement.clientWidth - 70) / 2
     },
-    gutterWidth() {
-      return 30 * 0.5 * (document.documentElement.clientWidth / 375);
+    gutterWidth () {
+      return 30 * 0.5 * (document.documentElement.clientWidth / 375)
     }
   },
   methods: {
-    onSearch(value) {
+    onSearch (value) {
       console.log(value)
-        this.ToGetShopList(value);
+      this.ToGetShopList(value)
     },
-    goDetail(shopid) {
-      this.$router.push("./orderDetail?id=" + shopid);
+    goDetail (shopid) {
+      this.$router.push('./orderDetail?id=' + shopid)
     },
-    scroll(scrollData) {
-      console.log(scrollData);
+    scroll (scrollData) {
+      console.log(scrollData)
     },
-    loadmore(index) {
-      this.data = this.data.concat(this.data);
+    loadmore (index) {
+      this.data = this.data.concat(this.data)
     },
-    ToGetShopList(ordernumber) {
-       http(GetMyShopList, {ordernumber:ordernumber}, json => {
-         if(json.code===0)
-         {
-            this.data=json.response.list
-         }
-           //  console.log("111");
-      });
+    ToGetShopList (ordernumber) {
+      http(GetMyShopList, {ordernumber: ordernumber}, json => {
+        if (json.code === 0) {
+          this.data = json.response.list
+        }
+        //  console.log("111");
+      })
     },
-    ToGetShopDeatilLike(value) {
-      //1  未发货    2 配送中  3确认收货   4己完成
+    ToGetShopDeatilLike (value) {
+      // 1  未发货    2 配送中  3确认收货   4己完成
       http(GetShopDeatilLike, { key: value }, json => {
         if (json.code === 0) {
-          console.log(json);
-          this.data = json.response.list;
+          console.log(json)
+          this.data = json.response.list
           // this.username = json.response.nickname
         }
-      });
+      })
     }
   },
-  created() {
-   this.ToGetShopList("");
+  created () {
+    this.ToGetShopList('')
   }
-};
+}
 </script>
 <style lang='less' scoped>
 .innerScroll {
@@ -132,6 +136,9 @@ export default {
 }
 .shopListWrap {
   position: relative;
+   /deep/.toptab_search {
+     margin-top: 80px;
+   }
   .shop{
  padding: 0 58px;
   }

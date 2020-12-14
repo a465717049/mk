@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <TopBar class="center-one-search" :option="topBarOption">
+    <TopBar class="center-one-search">
       <div>
         <div class="three-tit-t">我的朋友</div>
         <div class="three-tit-b">{{friendsList.length}}</div>
@@ -9,7 +9,7 @@
     </TopBar>
     <ScrollRefresh
       @getData="loadinfo"
-      :residualHeight="260"
+      :residualHeight="topbarHeight+bottomTabBarHeight+10"
       :isNeedUp="false"
       class="relativeScroll"
     >
@@ -32,100 +32,100 @@
   </div>
 </template>
 <script>
-import TopBar from "components/TopBar";
-import { http } from "util/request";
-import { photoList } from "util/const.js";
-import TopSearch from "components/TopSearch";
-import ScrollRefresh from "components/ScrollRefresh";
-import defaultImg from "@/assets/imgs/set/head02.png";
-import { GetFriendsList, GetSearchFimaly, GetUserInfo } from "util/netApi";
+import TopBar from 'components/TopBar'
+import { http } from 'util/request'
+import { photoList } from 'util/const.js'
+import TopSearch from 'components/TopSearch'
+import ScrollRefresh from 'components/ScrollRefresh'
+import defaultImg from '@/assets/imgs/set/head02.png'
+import { GetFriendsList, GetSearchFimaly, GetUserInfo } from 'util/netApi'
+// import getHeightPX from "../../mixins/getHeightPX";
 export default {
   components: {
     TopBar,
     TopSearch,
     ScrollRefresh
   },
-  data() {
+  data () {
     return {
       friendsList: [
         {
           photo: defaultImg,
-          NickName: "Totay cyels",
-          uID: "10001",
-          friendsNum: "34"
+          NickName: 'Totay cyels',
+          uID: '10001',
+          friendsNum: '34'
         },
         {
           photo: defaultImg,
-          NickName: "Totay cyels",
-          uID: "10002"
+          NickName: 'Totay cyels',
+          uID: '10002'
         },
         {
           photo: defaultImg,
-          NickName: "Totay cyels",
-          uID: "10003",
-          friendsNum: "34"
+          NickName: 'Totay cyels',
+          uID: '10003',
+          friendsNum: '34'
         },
         {
           photo: defaultImg,
-          NickName: "Totay cyels",
-          uID: "10004"
+          NickName: 'Totay cyels',
+          uID: '10004'
         },
         {
           photo: defaultImg,
-          NickName: "Totay cyels",
-          uID: "10005",
-          friendsNum: "34"
+          NickName: 'Totay cyels',
+          uID: '10005',
+          friendsNum: '34'
         },
         {
           photo: defaultImg,
-          NickName: "Totay cyels",
-          uID: "10006"
+          NickName: 'Totay cyels',
+          uID: '10006'
         },
         {
           photo: defaultImg,
-          NickName: "Totay cyels",
-          uID: "10007",
-          friendsNum: "34"
+          NickName: 'Totay cyels',
+          uID: '10007',
+          friendsNum: '34'
         },
         {
           photo: defaultImg,
-          NickName: "Totay cyels",
-          uID: "10008"
+          NickName: 'Totay cyels',
+          uID: '10008'
         }
       ],
       uid: 0
-    };
-  },
-  mounted() {},
-  computed: {},
-  methods: {
-    loadinfo() {
-      var _this = this;
-      http(GetFriendsList, { uid: this.uid }, json => {
-        if (json.response) {
-          _this.friendsList = json.response;
-          _this.friendsList.forEach(element => {
-            element.photo = photoList[element.photo];
-          });
-        }
-      });
-    },
-    search(uid) {
-      if (uid == "") {
-        this.uid = 0;
-      } else {
-        this.uid = uid;
-      }
-      this.loadinfo();
-    },
-    gofriend(uID) {
-      //this.$router.push({ name: "relation", params: { uid: uID } });
     }
   },
-  created() {
-    this.loadinfo();
+  computed: {},
+  methods: {
+    loadinfo () {
+      var _this = this
+      http(GetFriendsList, { uid: this.uid }, json => {
+        if (json.response) {
+          _this.friendsList = json.response
+          _this.friendsList.forEach(element => {
+            element.photo = photoList[element.photo]
+          })
+        }
+      })
+    },
+    search (uid) {
+      if (uid == '') {
+        this.uid = 0
+      } else {
+        this.uid = uid
+      }
+      this.loadinfo()
+    },
+    gofriend (uID) {
+      // this.$router.push({ name: "relation", params: { uid: uID } });
+    }
+  },
+  created () {
+    this.loadinfo()
   }
-};
+}
 </script>
 <style lang='less' scoped>
 .relativeScroll {

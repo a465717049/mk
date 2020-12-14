@@ -15,14 +15,14 @@
         <div class="c-cell">
           <div class="c-cell-label">Android( 安卓手机 ）</div>
           <div class="c-cell-value">
-            {{ androidCode }}
+           <span>{{androidCode}}</span>
             <i class="iconfont iconcopy"></i>
           </div>
         </div>
         <div class="c-cell">
           <div class="c-cell-label">IPHONE（苹果手机）</div>
           <div class="c-cell-value">
-            {{ iosCode }}
+            <span> {{iosCode}}</span>
             <i class="iconfont iconcopy"></i>
           </div>
         </div>
@@ -45,17 +45,17 @@ export default {
   components: {
     TopBar
   },
-  data() {
+  data () {
     return {
       androidCode: '',
-      iosCode: '',
+      iosCode: ''
     }
   },
   methods: {
-    goNext() {
+    goNext () {
       this.$router.push({ name: 'AuthenticatorThree' })
     },
-    ToSetAuthenticatorGooglekey() {
+    ToSetAuthenticatorGooglekey () {
       http(SetAuthenticatorGooglekey, null, json => {
         if (json.code === 0) {
           this.androidCode = json.response.code
@@ -64,7 +64,7 @@ export default {
       })
     }
   },
-  created() {
+  created () {
     this.ToSetAuthenticatorGooglekey()
   }
 }
@@ -121,11 +121,11 @@ export default {
         font-weight: bold;
       }
       .c-cell-value {
-       height: 123px;
-        line-height: 123px;
+        // height: 123px;
+        // line-height: 123px;
         font-size: 42px;
         width: 100%;
-        padding: 30px 100px 30px 20px;
+        padding: 20px ;
         border-radius: 20px;
         color: #6F6D72;
         font-weight: 600;
@@ -133,10 +133,20 @@ export default {
         overflow: hidden;
         background: #fff;
         position: relative;
+        display: flex;
+        align-items: center;
+        span{
+          flex: 1;
+          word-wrap: break-word;
+          white-space: normal;
+          word-break: break-all;
+        }
         i {
-          position: absolute;
-          right: 20px;
-          top: 8px;
+          // position: absolute;
+          // right: 20px;
+          // top: 8px;
+          height: 80px;
+          line-height: 80px;
           font-size: 80px;
           font-weight: normal;
           color: #b6b6b6;

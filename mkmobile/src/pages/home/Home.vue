@@ -2,7 +2,7 @@
   <div class="homeWrapper ">
     <ScrollRefresh
       @getData="getData"
-      :residualHeight="70"
+      :residualHeight="bottomTabBarHeight+10"
       :isNeedUp="false"
       class="innerScroll">
     <TopBar  @clickR="goNews">

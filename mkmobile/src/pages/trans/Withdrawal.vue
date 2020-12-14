@@ -49,125 +49,125 @@
   </div>
 </template>
 <script type="text/javascript">
-import YellowComfirm from "components/YellowComfirm";
-import { http } from "util/request";
-import { TransOtherType, GetUserInfo } from "util/netApi";
-import { storage } from "util/storage";
-import TopBar from "components/TopBar";
+import YellowComfirm from 'components/YellowComfirm'
+import { http } from 'util/request'
+import { TransOtherType, GetUserInfo } from 'util/netApi'
+import { storage } from 'util/storage'
+import TopBar from 'components/TopBar'
 export default {
-  data() {
+  data () {
     return {
       form: {
-        oType: "EP",
-        dType: "",
+        oType: 'EP',
+        dType: '',
         amount: 0,
-        tpwd: "",
-        gcode: ""
+        tpwd: '',
+        gcode: ''
       },
       account: 0,
       showComfirm: false,
 
       receiptTypeList: [
-        { text: "RP", value: "RP" },
-        { text: "SP", value: "SP" }
+        { text: 'RP', value: 'RP' },
+        { text: 'SP', value: 'SP' }
       ],
       transPassword: null,
       verificationCode: null,
-      tips: "",
+      tips: '',
       tipsObj: {
-        noamount: "请填写转换数量",
-        amount: "馀额不足！",
-        notype: "请选择转出类型",
-        notpwd: "请填写交易密码",
-        nosucceed: "转换异常，稍后重试",
-        succeed: "转换成功"
+        noamount: '请填写转换数量',
+        amount: '余额不足！',
+        notype: '请选择转出类型',
+        notpwd: '请填写交易密码',
+        nosucceed: '转换异常，稍后重试',
+        succeed: '转换成功'
       }
-    };
+    }
   },
   components: {
     TopBar,
     YellowComfirm
   },
-  mounted() {},
+  mounted () {},
   computed: {},
   methods: {
-    clickOk() {
-      this.showComfirm = false;
+    clickOk () {
+      this.showComfirm = false
     },
-    changeModel(v) {
-      this.showComfirm = v;
+    changeModel (v) {
+      this.showComfirm = v
     },
-    ChangeTransType() {
-      this.TogetUserInfo();
-      if (this.form.oType == "EP") {
-        this.form.oType = "RP";
-        this.receiptTypeList = [{ text: "SP", value: "SP" }];
+    ChangeTransType () {
+      this.TogetUserInfo()
+      if (this.form.oType == 'EP') {
+        this.form.oType = 'RP'
+        this.receiptTypeList = [{ text: 'SP', value: 'SP' }]
       } else {
-        this.form.oType = "EP";
+        this.form.oType = 'EP'
         this.receiptTypeList = [
-          { text: "RP", value: "RP" },
-          { text: "SP", value: "SP" }
-        ];
+          { text: 'RP', value: 'RP' },
+          { text: 'SP', value: 'SP' }
+        ]
       }
     },
-    TogetUserInfo() {
+    TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          console.log(json);
-          if (this.form.oType == "EP") {
-            this.account = json.response.gold;
-          } else if (this.form.oType == "RP") {
-            this.account = json.response.rp;
+          console.log(json)
+          if (this.form.oType == 'EP') {
+            this.account = json.response.gold
+          } else if (this.form.oType == 'RP') {
+            this.account = json.response.rp
           }
         }
-      });
+      })
     },
-    ToTranWithMe() {
+    ToTranWithMe () {
       if (this.form.amount <= 0) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.noamount;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.noamount
+        return
       }
       if (this.form.amount > this.account) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.amount;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.amount
+        return
       }
 
       if (!this.form.dType) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.notype;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.notype
+        return
       }
 
       if (!this.form.tpwd) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.notpwd;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.notpwd
+        return
       }
 
-      console.log(this.form);
-      let _this = this;
+      console.log(this.form)
+      let _this = this
       http(TransOtherType, this.form, json => {
         if (json.code === 0) {
-          this.showComfirm = true;
-          this.tips = this.tipsObj.succeed;
-          this.TogetUserInfo();
+          this.showComfirm = true
+          this.tips = this.tipsObj.succeed
+          this.TogetUserInfo()
         } else {
-          this.showComfirm = true;
+          this.showComfirm = true
           if (!json.success) {
-            this.tips = json.msg;
+            this.tips = json.msg
           } else {
-            this.tips = this.tipsObj.nosucceed;
+            this.tips = this.tipsObj.nosucceed
           }
         }
-      });
+      })
     }
   },
-  created() {
-    this.TogetUserInfo();
+  created () {
+    this.TogetUserInfo()
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

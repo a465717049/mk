@@ -8,21 +8,23 @@
             <div class="listWrap" ref="listWrap">
               <ScrollRefresh
                 @getData="load"
-                :residualHeight="200"
+                :residualHeight="topbarHeight+bottomTabBarHeight+60"
                 :active="active"
                 :isNone="isNone"
               >
-                <div class="detail" v-for="(item,index) in listOne" :key="'ONE'+index">
-                  <div class="info">
-                    <img :src="photoList[tmpcktype]" alt />
-                    <div class="num">
-                      <div class="font50">{{ item.remark }}</div>
-                      <div class="sub-num">{{ item.date }}</div>
+                <div class="detailWrap">
+                  <div class="detail" v-for="(item,index) in listOne" :key="'ONE'+index">
+                    <div class="info">
+                      <img :src="photoList[tmpcktype]" alt />
+                      <div class="num">
+                        <div class="font50">{{ item.remark }}</div>
+                        <div class="sub-num">{{ item.date }}</div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="price">
-                    <div :class="item.amount>0?'':'special-price'">{{ item.fromID }}</div>
-                    <div :class="item.amount>0?'':'special-price'">{{ item.amount.toFixed(2) }}</div>
+                    <div class="price">
+                      <div :class="item.amount>0?'':'special-price'">{{ item.fromID }}</div>
+                      <div :class="item.amount>0?'':'special-price'">{{ item.amount.toFixed(2) }}</div>
+                    </div>
                   </div>
                 </div>
               </ScrollRefresh>
@@ -49,21 +51,23 @@
             <div class="listWrap">
               <ScrollRefresh
                 @getData="load"
-                :residualHeight="200"
+                :residualHeight="topbarHeight+bottomTabBarHeight+60"
                 :active="active"
                 :isNone="isNone"
               >
-                <div class="detail" v-for="(item,index)  in listTwo" :key="'TWO'+index">
-                  <div class="info">
-                    <img :src="photoList[tmpcktype]" alt />
-                    <div class="num">
-                      <div class="font50">{{ item.remark }}</div>
-                      <div class="sub-num">{{ item.date }}</div>
+                <div class="detailWrap">
+                  <div class="detail" v-for="(item,index)  in listTwo" :key="'TWO'+index">
+                    <div class="info">
+                      <img :src="photoList[tmpcktype]" alt />
+                      <div class="num">
+                        <div class="font50">{{ item.remark }}</div>
+                        <div class="sub-num">{{ item.date }}</div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="price">
-                    <div>{{ item.fromID }}</div>
-                    <div>{{ item.amount.toFixed(2) }}</div>
+                    <div class="price">
+                      <div>{{ item.fromID }}</div>
+                      <div>{{ item.amount.toFixed(2) }}</div>
+                    </div>
                   </div>
                 </div>
               </ScrollRefresh>
@@ -90,22 +94,24 @@
               <div class="container">
                 <ScrollRefresh
                   @getData="load"
-                  :residualHeight="200"
+                  :residualHeight="topbarHeight+bottomTabBarHeight+60"
                   :active="active"
                   :isNone="isNone"
                 >
-                  <div class="detail" v-for="(item,index) in listThree" :key="'THR'+index">
-                    <div class="info">
-                      <img :src="photoList[tmpcktype]" alt />
-                      <div class="num">
-                        <div class="font50">{{ item.remark }}</div>
-                        <div class="sub-num">{{ item.date }}</div>
+                  <div class="detailWrap">
+                    <div class="detail" v-for="(item,index) in listThree" :key="'THR'+index">
+                      <div class="info">
+                        <img :src="photoList[tmpcktype]" alt />
+                        <div class="num">
+                          <div class="font50">{{ item.remark }}</div>
+                          <div class="sub-num">{{ item.date }}</div>
+                        </div>
                       </div>
-                    </div>
 
-                    <div class="price special-price">
-                      <div class="special-price">{{ item.fromID }}</div>
-                      <div class="special-price">{{ item.amount.toFixed(2) }}</div>
+                      <div class="price special-price">
+                        <div class="special-price">{{ item.fromID }}</div>
+                        <div class="special-price">{{ item.amount.toFixed(2) }}</div>
+                      </div>
                     </div>
                   </div>
                 </ScrollRefresh>
@@ -118,24 +124,24 @@
   </div>
 </template>
 <script>
-import TopBar from "components/TopBar";
-import ScrollRefresh from "components/ScrollRefresh";
-import { http } from "util/request";
-import { storage } from "util/storage";
-import { accessToken, loginPro } from "util/const.js";
-import { getEpexchange } from "util/netApi";
-import EP from "@/assets/imgs/EPimg.png";
-import SP from "@/assets/imgs/SPimg.png";
-import RP from "@/assets/imgs/RPimg.png";
-import DPE from "@/assets/imgs/DPimg.png";
+import TopBar from 'components/TopBar'
+import ScrollRefresh from 'components/ScrollRefresh'
+import { http } from 'util/request'
+import { storage } from 'util/storage'
+import { accessToken, loginPro } from 'util/const.js'
+import { getEpexchange } from 'util/netApi'
+import EP from '@/assets/imgs/EPimg.png'
+import SP from '@/assets/imgs/SPimg.png'
+import RP from '@/assets/imgs/RPimg.png'
+import DPE from '@/assets/imgs/DPimg.png'
 
 export default {
-  name: "EpList",
+  name: 'EpList',
   components: {
     TopBar,
     ScrollRefresh
   },
-  data() {
+  data () {
     return {
       active: 0,
       showChat: true,
@@ -145,18 +151,17 @@ export default {
         RP: RP,
         DPE: DPE
       },
-      tmpcktype: "EP",
+      tmpcktype: 'EP',
       showLocation: true,
-      listOne: [
-      ],
+      listOne: [],
       listTwo: [],
       listThree: [],
       pageSize: 10,
-      isNone: false //数据是否加载完毕
-    };
+      isNone: false // 数据是否加载完毕
+    }
   },
   methods: {
-    readloadinfo(pageIndex = 1) {
+    readloadinfo (pageIndex = 1) {
       // var choiceindex = 1;
       // if (this.active == 0) {
       //   choiceindex = 1;
@@ -165,12 +170,12 @@ export default {
       // } else if (this.active == 2) {
       //   choiceindex = 3;
       // }
-      this.load(1);
+      this.load(1)
     },
-    load(pageIndex) {
-      let stype = this.active + 1;
+    load (pageIndex) {
+      let stype = this.active + 1
       //  return
-      console.log(pageIndex, ",pageSize,pageIndex");
+      console.log(pageIndex, ',pageSize,pageIndex')
       http(
         getEpexchange,
         {
@@ -180,41 +185,41 @@ export default {
           cktype: this.tmpcktype
         },
         json => {
-          if (json.response != "undefined") {
+          if (json.response != 'undefined') {
             if (pageIndex !== 1 && json.response.length === 0) {
-              this.isNone = true;
+              this.isNone = true
             } else {
-              console.log(777777);
-              this.isNone = false;
+              console.log(777777)
+              this.isNone = false
               if (pageIndex === 1) {
                 if (stype == 1) {
-                  this.listOne = json.response;
+                  this.listOne = json.response
                 } else if (stype == 2) {
-                  this.listTwo = json.response;
+                  this.listTwo = json.response
                 } else if (stype == 3) {
-                  this.listThree = json.response;
+                  this.listThree = json.response
                 }
               } else {
                 if (stype == 1) {
-                  this.listOne = [...this.listOne, ...json.response];
+                  this.listOne = [...this.listOne, ...json.response]
                 } else if (stype == 2) {
-                  this.listTwo = [...this.listTwo, ...json.response];
+                  this.listTwo = [...this.listTwo, ...json.response]
                 } else if (stype == 3) {
-                  this.listThree = [...this.listThree, ...json.response];
+                  this.listThree = [...this.listThree, ...json.response]
                 }
               }
             }
           }
         }
-      );
+      )
     }
   },
-  created() {
+  created () {
     // console.log(this.$route.params);
     // this.tmpcktype = this.$route.params.cktype.toUpperCase();
-     this.load(1);
+    this.load(1)
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .ep-list {
@@ -255,6 +260,9 @@ export default {
       // min-height: calc(100vh - 600px);
       padding-top: 20px;
       // overflow: scroll;
+    }
+    .detailWrap {
+      padding-bottom: 80px;
     }
     .detail {
       display: flex;

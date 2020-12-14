@@ -5,7 +5,7 @@
     >
     <ScrollRefresh
       @getData="ToGetShopDeatilList"
-      :residualHeight="140"
+      :residualHeight="topbarHeight+bottomTabBarHeight-10"
       :isNeedUp="false"
       class="innerScroll"
     >
@@ -74,29 +74,29 @@
   </div>
 </template>
 <script>
-import TopBar from "components/TopBar";
-import YellowComfirm from "components/YellowComfirm";
-import { http } from "util/request";
+import TopBar from 'components/TopBar'
+import YellowComfirm from 'components/YellowComfirm'
+import { http } from 'util/request'
 import {
   GetShopDeatilList,
   GetUserInfo,
   BuyGoodsweb,
   AddGoodsweb,
-  GetShopCartsweb,
-} from "util/netApi";
-import { storage } from "util/storage";
-import banner1 from "../../assets/imgs/banner-00.png";
-import banner2 from "../../assets/imgs/banner-01.png";
-import { accessToken, loginPro } from "util/const.js";
-import ScrollRefresh from "components/ScrollRefresh";
+  GetShopCartsweb
+} from 'util/netApi'
+import { storage } from 'util/storage'
+import banner1 from '../../assets/imgs/banner-00.png'
+import banner2 from '../../assets/imgs/banner-01.png'
+import { accessToken, loginPro } from 'util/const.js'
+import ScrollRefresh from 'components/ScrollRefresh'
 export default {
-  name: "shopDetail",
+  name: 'shopDetail',
   components: {
     TopBar,
     YellowComfirm,
-    ScrollRefresh,
+    ScrollRefresh
   },
-  data() {
+  data () {
     return {
       showComfirm: false,
       carNum: 1,
@@ -105,103 +105,103 @@ export default {
       current: 0,
       // pName: "促销中",
       // pDesc: "促销中促销中促销中",
-      pInfo: ["品牌： "],
-      pIcon: require("@/assets/imgs/shop/camea.png"),
-      ptag: "",
+      pInfo: ['品牌： '],
+      pIcon: require('@/assets/imgs/shop/camea.png'),
+      ptag: '',
       price: 0,
       shopprice: 0,
       stepper: 1,
       startmax: 8,
       showChat: true,
       topBarOption: {
-        iconLeft: "back",
-        iconRight: "icongouwucheman",
+        iconLeft: 'back',
+        iconRight: 'icongouwucheman'
       },
-      tips: "",
-      tipsObj: {},
-    };
+      tips: '',
+      tipsObj: {}
+    }
   },
   methods: {
-    onChangeSwiper(index) {
-      this.current = index;
+    onChangeSwiper (index) {
+      this.current = index
     },
-    clickOk() {
-      this.showComfirm = false;
+    clickOk () {
+      this.showComfirm = false
     },
-    changeModel(v) {
-      this.showComfirm = v;
+    changeModel (v) {
+      this.showComfirm = v
     },
-    onPlus() {
-      //增加
-      this.price += this.shopprice;
+    onPlus () {
+      // 增加
+      this.price += this.shopprice
     },
-    onMinus() {
-      //减少
-      this.price -= this.shopprice;
+    onMinus () {
+      // 减少
+      this.price -= this.shopprice
     },
-    buyShop() {
-      //shopCar
+    buyShop () {
+      // shopCar
       http(
         BuyGoodsweb,
         { shopid: this.shopid, buynum: this.stepper },
         (json) => {
           if (json.code === 0) {
           } else {
-            this.showComfirm = true;
-            this.tips = json.msg;
+            this.showComfirm = true
+            this.tips = json.msg
           }
         }
-      );
+      )
     },
-    getshopcartnum() {
+    getshopcartnum () {
       http(GetShopCartsweb, null, (json) => {
         if (json.code === 0) {
-          this.carNum = json.response.count;
+          this.carNum = json.response.count
         }
-      });
+      })
     },
-    addshop() {
+    addshop () {
       http(AddGoodsweb, { shopid: this.shopid, num: this.stepper }, (json) => {
         if (json.code === 0) {
-          this.getshopcartnum();
+          this.getshopcartnum()
         }
         //  console.log("111");
-      });
+      })
     },
-    ToGetShopDeatilList(tmpshopid) {
+    ToGetShopDeatilList (tmpshopid) {
       http(GetShopDeatilList, { shopid: tmpshopid }, (json) => {
-        console.log(json);
+        console.log(json)
         if (json.code === 0) {
-          var shop = json.response.list[0];
-          console.log(shop);
-          this.pName = shop.pName;
-          this.pInfo = [shop.pDesc];
-          this.pDesc = shop.pDesc;
-          this.pIcon = shop.pIcon;
-          this.price = shop.price;
-          this.shopprice = shop.price;
-          this.startmax = shop.pNum;
+          var shop = json.response.list[0]
+          console.log(shop)
+          this.pName = shop.pName
+          this.pInfo = [shop.pDesc]
+          this.pDesc = shop.pDesc
+          this.pIcon = shop.pIcon
+          this.price = shop.price
+          this.shopprice = shop.price
+          this.startmax = shop.pNum
         }
-      });
-    },
-  },
-  created() {
-    if (this.$route.query.id) {
-      this.shopid = this.$route.query.id;
-      this.ToGetShopDeatilList(this.shopid);
-      this.getshopcartnum();
+      })
     }
   },
-  mounted() {
-    // this.scrollInit()
+  created () {
+    if (this.$route.query.id) {
+      this.shopid = this.$route.query.id
+      this.ToGetShopDeatilList(this.shopid)
+      this.getshopcartnum()
+    }
   },
-};
+  mounted () {
+    // this.scrollInit()
+  }
+}
 </script>
 <style lang='less' scoped>
 .shop-part {
   .innerScroll {
     /deep/.wrapper {
-      background: #dce2eb;
+      background: ;
       .bscroll-container {
         min-height: calc(100vh - 400px) !important;
       }
@@ -213,12 +213,13 @@ export default {
   .shop-detail {
     background: #c6d0de;
     padding-top: 200px;
+    border-radius: 56px 56px 0 0;
     .shop-img {
       width: 652px;
       height: 882px;
     }
     .buy {
-      // height: 45vh;
+      height: 50vh;
       padding: 0 58px;
       background: #dce2eb;
       border-radius: 56px 56px 0 0;

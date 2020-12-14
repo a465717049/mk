@@ -55,100 +55,100 @@
 </template>
 
 <script>
-import TopBar from "components/TopBar";
-import YellowComfirm from "components/YellowComfirm";
-import { SetUpdatePassword, GetMyQuestion } from "util/netApi";
-import { http } from "util/request";
-import { storage } from "util/storage";
-import { accessToken, loginPro } from "util/const.js";
+import TopBar from 'components/TopBar'
+import YellowComfirm from 'components/YellowComfirm'
+import { SetUpdatePassword, GetMyQuestion } from 'util/netApi'
+import { http } from 'util/request'
+import { storage } from 'util/storage'
+import { accessToken, loginPro } from 'util/const.js'
 
 export default {
   components: {
     TopBar,
     YellowComfirm
   },
-  data() {
+  data () {
     return {
       form: {
         type: 0,
-        password: "",
-        new_password: "",
+        password: '',
+        new_password: '',
         qid: 0,
-        qanswer: "",
-        idcard: ""
+        qanswer: '',
+        idcard: ''
       },
-      DataQuestion: "問題",
+      DataQuestion: '问题',
       showChat: true,
       topBarOption: {
-        iconLeft: "back"
+        iconLeft: 'back'
       },
       isEnter: false,
       initData: {
-        password: "",
-        newPassword: "",
-        comfirmPassword: "",
-        farterName: "",
-        codoNumber: ""
+        password: '',
+        newPassword: '',
+        comfirmPassword: '',
+        farterName: '',
+        codoNumber: ''
       },
-      tips: "",
+      tips: '',
       tipsObj: {
-        nosucceed: "修改失敗",
-        succeed: "修改成功"
+        nosucceed: '修改失败',
+        succeed: '修改成功'
       },
       option1: [
-        { text: "登录密码", value: 0 },
-        { text: "交易密码", value: 1 }
+        { text: '登录密码', value: 0 },
+        { text: '交易密码', value: 1 }
       ]
-    };
-  },
-  mounted() {
-    this.ToGetMyQuestion();
-  },
-  methods: {
-    goNext() {
-      http(SetUpdatePassword, this.form, json => {
-        //console.log(json)
-        if (json.code === 0) {
-          this.isEnter = true;
-          this.tips = this.tipsObj.succeed;
-        } else {
-          this.isEnter = true;
-          if (!json.success) {
-            this.tips = json.msg;
-          } else {
-            this.tips = this.tipsObj.nosucceed;
-          }
-        }
-      });
-    },
-    ToGetMyQuestion() {
-      http(GetMyQuestion, null, json => {
-        if (json.code === 0) {
-          //farterName   codeNumber
-          this.DataQuestion = json.response.question;
-          this.form.qid = json.response.qId;
-        }
-      });
-    },
-    clickOk() {
-      this.isEnter = false;
-    },
-    changeModel(v) {
-      this.isEnter = v;
-    },
-    loadQuestion() {
-      http(loadQuestion, {}, json => {
-        if (json.code === 0) {
-          this.isEnter = true;
-          this.form.qId = this.response.qID;
-          this.initData.Question = this.response.Question_CN;
-        }
-      });
-      this.isEnter = v;
     }
   },
-  created() {}
-};
+  mounted () {
+    this.ToGetMyQuestion()
+  },
+  methods: {
+    goNext () {
+      http(SetUpdatePassword, this.form, json => {
+        // console.log(json)
+        if (json.code === 0) {
+          this.isEnter = true
+          this.tips = this.tipsObj.succeed
+        } else {
+          this.isEnter = true
+          if (!json.success) {
+            this.tips = json.msg
+          } else {
+            this.tips = this.tipsObj.nosucceed
+          }
+        }
+      })
+    },
+    ToGetMyQuestion () {
+      http(GetMyQuestion, null, json => {
+        if (json.code === 0) {
+          // farterName   codeNumber
+          this.DataQuestion = json.response.question
+          this.form.qid = json.response.qId
+        }
+      })
+    },
+    clickOk () {
+      this.isEnter = false
+    },
+    changeModel (v) {
+      this.isEnter = v
+    },
+    loadQuestion () {
+      http(loadQuestion, {}, json => {
+        if (json.code === 0) {
+          this.isEnter = true
+          this.form.qId = this.response.qID
+          this.initData.Question = this.response.Question_CN
+        }
+      })
+      this.isEnter = v
+    }
+  },
+  created () {}
+}
 </script>
 
 <style lang="less" scoped>

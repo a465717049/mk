@@ -1,7 +1,7 @@
 <template>
   <div>
     <TopBar class="center-one-search" >设置</TopBar>
-    <ScrollRefresh @getData="TogetUserInfo" :residualHeight="160" :isNeedUp="false" class="innerScroll">
+    <ScrollRefresh @getData="TogetUserInfo" :residualHeight="topbarHeight+bottomTabBarHeight+10" :isNeedUp="false" class="innerScroll">
       <div class="set clearfix p-58">
         <div class="relative">
           <img :src="photo?photo:defaultImg" class="img" alt />
@@ -54,75 +54,75 @@
   </div>
 </template>
 <script>
-import TopBar from "components/TopBar";
-import { http } from "util/request";
-import { GetUserInfo } from "util/netApi";
-import { storage } from "util/storage";
-import { accessToken, photoList } from "util/const.js";
-import ScrollRefresh from "components/ScrollRefresh";
-import defaultImg from "@/assets/imgs/set/head02.png";
+import TopBar from 'components/TopBar'
+import { http } from 'util/request'
+import { GetUserInfo } from 'util/netApi'
+import { storage } from 'util/storage'
+import { accessToken, photoList } from 'util/const.js'
+import ScrollRefresh from 'components/ScrollRefresh'
+import defaultImg from '@/assets/imgs/set/head02.png'
 export default {
-  name: "Set",
+  name: 'Set',
   components: {
     TopBar,
     ScrollRefresh
   },
-  data() {
+  data () {
     return {
       defaultImg,
-      photo: "",
-      userlv: "总监",
+      photo: '',
+      userlv: '总监',
       lv: 0,
-      username: "Totay cyels",
+      username: 'Totay cyels',
       isBindGoogle: false,
-      level: "666会员",
-      registerTime: "2020-09-10 15:04"
-    };
+      level: '666会员',
+      registerTime: '2020-09-10 15:04'
+    }
   },
   methods: {
-    TogetUserInfo() {
+    TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          this.username = json.response.nickname;
-          this.isBindGoogle = json.response.isBindGoogle;
-          if (json.response.lv_name == 1) this.level = "666会员";
-          if (json.response.lv_name == 2) this.level = "2000会员";
-          if (json.response.lv_name == 3) this.level = "10000会员";
+          this.username = json.response.nickname
+          this.isBindGoogle = json.response.isBindGoogle
+          if (json.response.lv_name == 1) this.level = '666会员'
+          if (json.response.lv_name == 2) this.level = '2000会员'
+          if (json.response.lv_name == 3) this.level = '10000会员'
 
-          if (json.response.lv_name == 0) this.userlv = "玩家";
-          if (json.response.lv_name == 1) this.userlv = "达标社區";
-          if (json.response.lv_name == 2) this.userlv = "初级社区";
-          if (json.response.lv_name == 3) this.userlv = "中级社区";
-          if (json.response.lv_name == 4) this.userlv = "高级社区";
-          if (json.response.lv_name == 5) this.userlv = "超级社区";
-          if (json.response.lv_name == 6) this.userlv = "橘子派";
-          if (json.response.lv_name == 7) this.userlv = "香瓜派";
-          if (json.response.lv_name == 8) this.userlv = "菠萝派";
-          if (json.response.lv_name == 9) this.userlv = "柚子派";
-          if (json.response.lv_name == 10) this.userlv = "苹果派";
-          this.lv = json.response.lv_name;
-          this.photo = photoList[json.response.photo];
+          if (json.response.lv_name == 0) this.userlv = '玩家'
+          if (json.response.lv_name == 1) this.userlv = '达标社區'
+          if (json.response.lv_name == 2) this.userlv = '初级社区'
+          if (json.response.lv_name == 3) this.userlv = '中级社区'
+          if (json.response.lv_name == 4) this.userlv = '高级社区'
+          if (json.response.lv_name == 5) this.userlv = '超级社区'
+          if (json.response.lv_name == 6) this.userlv = '橘子派'
+          if (json.response.lv_name == 7) this.userlv = '香瓜派'
+          if (json.response.lv_name == 8) this.userlv = '菠萝派'
+          if (json.response.lv_name == 9) this.userlv = '柚子派'
+          if (json.response.lv_name == 10) this.userlv = '苹果派'
+          this.lv = json.response.lv_name
+          this.photo = photoList[json.response.photo]
         }
-      });
+      })
     },
-    GoAuthenticator() {
-      console.log(this.isBindGoogle);
+    GoAuthenticator () {
+      console.log(this.isBindGoogle)
       if (this.isBindGoogle) {
         this.$router.push({
-          name: "AuthenticatorThree"
-        });
+          name: 'AuthenticatorThree'
+        })
       } else {
         this.$router.push({
-          name: "AuthenticatorOne"
-        });
+          name: 'AuthenticatorOne'
+        })
       }
     }
   },
-  created() {
-    this.TogetUserInfo();
+  created () {
+    this.TogetUserInfo()
   },
-  mounted() {}
-};
+  mounted () {}
+}
 </script>
 <style lang="less" scoped>
 .innerScroll{

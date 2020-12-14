@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="top-bar">
+    <div class="top-bar" ref="topBar">
       <i
         v-if="option.iconLeft!=='back'"
         class="iconfont icon-l"
@@ -144,13 +144,13 @@
           <div class="menu-item-self">
             <router-link to="feedback" class="router">
               <i class="iconfont iconyijianfankui"></i>
-              <span>意見</span>
+              <span>意见</span>
             </router-link>
           </div>
           <div class="menu-item-self">
             <router-link to="setting" class="router">
               <i class="iconfont iconshezhi1"></i>
-              <span>設置</span>
+              <span>设置</span>
             </router-link>
           </div>
           <div class="menu-item-self">
@@ -171,9 +171,9 @@
 </template>
 
 <script>
-import TopBar from "components/TopBar";
-
-import { storage } from "@/util/storage";
+import TopBar from 'components/TopBar'
+import Store from '@/store'
+import { storage } from '@/util/storage'
 export default {
   components: {
     TopBar
@@ -181,11 +181,11 @@ export default {
   props: {
     option: {
       type: Object,
-      default: function() {
+      default: function () {
         return {
-          iconLeft: "iconShapecopy",
-          iconRight: "iconxiaoxi1"
-        };
+          iconLeft: 'iconShapecopy',
+          iconRight: 'iconxiaoxi1'
+        }
       }
     },
     showLocation: {
@@ -201,40 +201,41 @@ export default {
       default: false
     },
     badge: {
-      //角标
+      // 角标
       type: Number,
       default: 0
     }
   },
-  data() {
+  data () {
     return {
       menuShow: false,
       service: false,
-      activeNames: ["1"]
-    };
-  },
-  methods: {
-    clickPopup() {
-      this.menuShow = true;
-    },
-    clickR() {
-      this.$emit("clickR", this);
-    },
-    back() {
-      this.$router.go(-1);
-    },
-    goSetting() {
-      this.$router.push({ name: "setting" });
-    },
-    goFeedBack() {
-      console.log(1212)
-      this.$router.push('Feedback');
+      activeNames: ['1']
     }
   },
-  mounted() {
-    this.service = storage.getLocalStorage("service");
+  methods: {
+    clickPopup () {
+      this.menuShow = true
+    },
+    clickR () {
+      this.$emit('clickR', this)
+    },
+    back () {
+      this.$router.go(-1)
+    },
+    goSetting () {
+      this.$router.push({ name: 'setting' })
+    },
+    goFeedBack () {
+      console.log(1212)
+      this.$router.push('Feedback')
+    }
+  },
+  mounted () {
+    this.service = storage.getLocalStorage('service')
+    Store.commit('changeTopbarHeight', this.$refs.topBar.offsetHeight)
   }
-};
+}
 </script>
 <style lang="less" scoped>
 @keyframes myfirst {

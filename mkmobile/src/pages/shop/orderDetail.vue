@@ -6,7 +6,7 @@
         <!--<TopSearch @onSearch="search" placeinputValue="输入订单号查询"></TopSearch>-->
         <ScrollRefresh
           @getData="ToGetShopList"
-          :residualHeight="200"
+          :residualHeight="topbarHeight+bottomTabBarHeight+10"
           :isNeedUp="false"
           class="innerScroll"
         >
@@ -23,7 +23,7 @@
               <div class="goods-info">
                 <div class="tip-titl">{{data.shopname}}</div>
                 <div>数量:{{data.shopnum}}    总价:{{data.shopprice}}</div>
-              
+
               </div>
             </div>
             <div class="distribution">
@@ -56,164 +56,164 @@
   </div>
 </template>
 <script>
-import TopBar from "components/TopBar";
-import TopSearch from "components/TopSearch";
-import { http } from "util/request";
-import { GetShopList, GetUserInfo, GetShopDeatilLike,GetShopDetailsMyweb } from "util/netApi";
-import { storage } from "util/storage";
-import { accessToken, loginPro } from "util/const.js";
-import YellowComfirm from "components/YellowComfirm";
-import ScrollRefresh from "components/ScrollRefresh";
+import TopBar from 'components/TopBar'
+import TopSearch from 'components/TopSearch'
+import { http } from 'util/request'
+import { GetShopList, GetUserInfo, GetShopDeatilLike, GetShopDetailsMyweb } from 'util/netApi'
+import { storage } from 'util/storage'
+import { accessToken, loginPro } from 'util/const.js'
+import YellowComfirm from 'components/YellowComfirm'
+import ScrollRefresh from 'components/ScrollRefresh'
 export default {
-  name: "orderDetail",
+  name: 'orderDetail',
   components: {
     TopBar,
     TopSearch,
     YellowComfirm,
     ScrollRefresh
   },
-  data() {
+  data () {
     return {
       showChat: false,
-      placeinputValue: "",
+      placeinputValue: '',
       topBarOption: {
-        iconLeft: "iconShapecopy",
-        iconRight: "iconxiaoxi1"
+        iconLeft: 'iconShapecopy',
+        iconRight: 'iconxiaoxi1'
       },
       data:
       {
-      shopid:0,
-      showComfirm: true,
-      tips: "即將更新！",
-      trackingnumber:"",
-      buyaddr:"",
-      phonename:"",
-      shopname:"",
-      shopnum:0,
-      shopprice:0,
-      shopordernumber: "MT000000043432",
-      status: 2,
-      remark:"",
+        shopid: 0,
+        showComfirm: true,
+        tips: '即將更新！',
+        trackingnumber: '',
+        buyaddr: '',
+        phonename: '',
+        shopname: '',
+        shopnum: 0,
+        shopprice: 0,
+        shopordernumber: 'MT000000043432',
+        status: 2,
+        remark: ''
       },
       col: 2,
-      company: "顺丰快递",
-      icons: ["dot", "iconlist", "iconcangku", "iconjiantoushang", "icongoodswhoutStock",'iconfahuo', "iconcar", "iconyunshu", "iconperson", "iconchaibaoguoqujian-xianxing",'iconright'],
+      company: '顺丰快递',
+      icons: ['dot', 'iconlist', 'iconcangku', 'iconjiantoushang', 'icongoodswhoutStock', 'iconfahuo', 'iconcar', 'iconyunshu', 'iconperson', 'iconchaibaoguoqujian-xianxing', 'iconright'],
       steps: [
-        //type:0 点  type:1 已下单
+        // type:0 点  type:1 已下单
         {
-          time: "11-12 12:11",
-          title: "已签收",
-          subInfo: "店完成取件，感谢使用菜鸟驿站，期待再次为您服务。",
+          time: '11-12 12:11',
+          title: '已签收',
+          subInfo: '店完成取件，感谢使用菜鸟驿站，期待再次为您服务。',
           type: 10
         },
         {
-          time: "11-12 12:11",
-          title: "代取件",
-          subInfo: "请凭取货码及时领取。如有疑问请联系19925322056",
+          time: '11-12 12:11',
+          title: '代取件',
+          subInfo: '请凭取货码及时领取。如有疑问请联系19925322056',
           type: 9
         },
         {
-          time: "11-12 12:11",
-          title: "派送中",
+          time: '11-12 12:11',
+          title: '派送中',
           subInfo:
-            "深圳观兰D站派件员：葛细球 电话：18575590297 当前正在为您派件",
+            '深圳观兰D站派件员：葛细球 电话：18575590297 当前正在为您派件',
           type: 8
         },
         {
-          time: "11-12 12:11",
-          title: "运输中",
+          time: '11-12 12:11',
+          title: '运输中',
           subInfo:
-            "深圳观兰D站派件员：葛细球 电话：18575590297 当前正在为您派件",
+            '深圳观兰D站派件员：葛细球 电话：18575590297 当前正在为您派件',
           type: 7
         },
         {
-          time: "11-12 12:11",
-          subInfo: "您的包裹已到达【深圳观兰D站】，准备分配派送员",
+          time: '11-12 12:11',
+          subInfo: '您的包裹已到达【深圳观兰D站】，准备分配派送员',
           type: 0
         },
         {
-          time: "11-12 12:11",
-          subInfo: "您的包裹已到达1",
+          time: '11-12 12:11',
+          subInfo: '您的包裹已到达1',
           type: 0
         },
         {
-          time: "11-12 11:11",
-          title: "已揽件",
-          subInfo: "您的包裹已由物流公司揽收",
+          time: '11-12 11:11',
+          title: '已揽件',
+          subInfo: '您的包裹已由物流公司揽收',
           type: 6
         },
         {
-          time: "11-12 12:11",
-          title: "已发货",
-          subInfo: "包裹正在等待揽收",
+          time: '11-12 12:11',
+          title: '已发货',
+          subInfo: '包裹正在等待揽收',
           type: 5
         },
         {
-          time: "11-12 12:11",
-          title: "已出库",
-          subInfo: "包裹已出库",
-          type:4
+          time: '11-12 12:11',
+          title: '已出库',
+          subInfo: '包裹已出库',
+          type: 4
         },
         {
-          time: "11-12 11:11",
-          title: "仓库处理中",
-          subInfo: "商品已打包",
+          time: '11-12 11:11',
+          title: '仓库处理中',
+          subInfo: '商品已打包',
           type: 3
         },
         {
-          time: "11-12 12:11",
-          subInfo: "订单已打印",
+          time: '11-12 12:11',
+          subInfo: '订单已打印',
           type: 0
         },
         {
-          time: "11-12 12:11",
-          title: "仓库已接单",
-          subInfo: "订单已入库",
+          time: '11-12 12:11',
+          title: '仓库已接单',
+          subInfo: '订单已入库',
           type: 2
         },
         {
-          time: "11-12 11:11",
-          title: "已下单",
-          subInfo: "商品已经下单",
+          time: '11-12 11:11',
+          title: '已下单',
+          subInfo: '商品已经下单',
           type: 1
         }
       ]
-    };
+    }
   },
   computed: {
-    itemWidth() {
-      return (document.documentElement.clientWidth - 60) / 2;
+    itemWidth () {
+      return (document.documentElement.clientWidth - 60) / 2
     },
-    gutterWidth() {
-      return 30 * 0.5 * (document.documentElement.clientWidth / 375);
+    gutterWidth () {
+      return 30 * 0.5 * (document.documentElement.clientWidth / 375)
     }
   },
   methods: {
-    onSearch(value) {
-      this.ToGetShopDeatilLike(value);
+    onSearch (value) {
+      this.ToGetShopDeatilLike(value)
     },
-    goDetail(shopid) {
-      this.$router.push("./shopDetail?id=" + shopid);
+    goDetail (shopid) {
+      this.$router.push('./shopDetail?id=' + shopid)
     },
-    scroll(scrollData) {
-      console.log(scrollData);
+    scroll (scrollData) {
+      console.log(scrollData)
     },
-    loadmore(index) {
-      this.data = this.data.concat(this.data);
+    loadmore (index) {
+      this.data = this.data.concat(this.data)
     },
-    ToGetShopList() {
-      http(GetShopDetailsMyweb, {id:this.shopid}, json => {
+    ToGetShopList () {
+      http(GetShopDetailsMyweb, {id: this.shopid}, json => {
         if (json.code === 0) {
-         this.data=json.response.datainfo[0]   
+          this.data = json.response.datainfo[0]
         }
-      });
+      })
     }
   },
-  created() {
-  this.shopid = this.$route.query.id;
-    this.ToGetShopList();
+  created () {
+    this.shopid = this.$route.query.id
+    this.ToGetShopList()
   }
-};
+}
 </script>
 <style lang='less' scoped>
 .innerScroll {

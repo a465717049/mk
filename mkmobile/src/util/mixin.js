@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { mapState } from 'vuex'
 Vue.mixin({
   data () {
     return {
@@ -6,6 +7,10 @@ Vue.mixin({
       showComfirm: false
     }
   },
+  computed: mapState({
+    topbarHeight: state => state.topbarHeight,
+    bottomTabBarHeight: state => state.bottomTabBarHeight
+  }),
   methods: {
     clickOverpay (val) {
       this.isEnter = val

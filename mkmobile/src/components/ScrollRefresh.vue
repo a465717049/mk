@@ -80,6 +80,9 @@ export default {
   watch: {
     active () {
       this.pageIndex = 1
+    },
+    residualHeight () {
+      this.getHeight()
     }
   },
   created () {
@@ -148,7 +151,7 @@ export default {
     line-height: 100px;
     text-align: center;
     font-size: 42px;
-    color: #555;
+    color: #fff;
   }
 
   .bottom-tip {
@@ -157,7 +160,7 @@ export default {
     line-height: 100px;
     font-size: 42px;
     text-align: center;
-    color: #777;
+    color: #fff;
     position: absolute;
     bottom: -100px;
     left: 0;
