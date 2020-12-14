@@ -172,8 +172,8 @@ export default {
   }
   .innerWrap {
     width: 100vw;
-    overflow-y: scroll;
-    height: calc(100vh);
+    // overflow-y: scroll;
+    // height: calc(100vh);
     background: #efb618 url("../../assets/imgs/login/ybj.png") no-repeat left
       top / 100% ;
     background-position-y: -300px;
@@ -318,10 +318,11 @@ export default {
     color: #fff;
     font-weight: 900;
   }
-  .bottom-part {
+   .bottom-part {
     position: relative;
     height: 25vh;
     font-family: HYYakuHei;
+    background: #efb618;
   }
   .version2 {
     color: #060000;

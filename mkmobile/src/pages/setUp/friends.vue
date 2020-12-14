@@ -97,7 +97,7 @@ export default {
       Lpercentage: 0,
       Rpercentage: 0,
       topBarOption: {
-        iconLeft: 'iconShapecopy',
+        iconLeft: 'iconlist2f',
         iconRight: ''
       },
       count:null,

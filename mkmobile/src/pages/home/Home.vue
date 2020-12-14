@@ -24,23 +24,24 @@
         </van-swipe>
         <div class="swiper2Box">
           <van-swipe :autoplay="4000" class="sweiper2" @change="onSwiperChange">
-            <van-swipe-item v-for="(item, index) in balanceList" @click='goinfo(item.type)' :key="index">
+            <van-swipe-item v-for="(item, index) in balanceList" :key="index">
               <!-- <img src="../../assets/imgs/yellowBg.png" alt /> -->
+               <div class="countBox" @click='goinfo(item.type)' >
+                <p>{{ balanceTile }}</p>
+                <countTo
+                  ref="count"
+                  :startVal="0"
+                  :endVal="endVal"
+                  :duration="1000"
+                  separator=","
+                  prefix=""
+                  :useEasing="true"
+                  class="countNum"
+                ></countTo>
+              </div>
             </van-swipe-item>
           </van-swipe>
-          <div class="countBox">
-            <p>{{ balanceTile }}</p>
-            <countTo
-              ref="count"
-              :startVal="0"
-              :endVal="endVal"
-              :duration="1000"
-              separator=","
-              prefix=""
-              :useEasing="true"
-              class="countNum"
-            ></countTo>
-          </div>
+         
           <!-- <countTo
               ref="count"
               :startVal="0"
@@ -123,8 +124,8 @@ export default {
       username: '',
       uid: '',
       // topBarOption: {
-      //   iconLeft: 'iconShapecopy',
-      //   iconRight: 'iconxiaoxi1'
+      //   iconLeft: 'iconlist2f',
+      //   iconRight: 'iconmessage'
       // },
       active: 0,
       startVal: 0,
@@ -277,7 +278,7 @@ export default {
     /deep/ .van-swipe-item {
       border-radius: 24px;
       overflow: hidden;
-      // border: 10px solid #fff;
+      border: 10px solid #fff;
     }
     /deep/ .van-swipe__indicator {
       width: 20px;
@@ -351,7 +352,7 @@ export default {
 .four-tit-b{
   position:absolute;
   color: #0C0100;
-  top:230px;
+  top:250px;
   font-size: 70px!important;
   z-index: 2;
   margin-left: -100px !important;

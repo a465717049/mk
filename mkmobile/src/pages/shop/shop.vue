@@ -80,7 +80,7 @@ export default {
       showChat: false,
       placeinputValue: '',
       topBarOption: {
-        iconLeft: 'iconShapecopy',
+        iconLeft: 'iconlist2f',
         iconRight: 'icongouwucheman'
       },
       showComfirm: true,

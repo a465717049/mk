@@ -51,7 +51,7 @@ export default {
     return {
       msg: '',
       topBarOption: {
-        iconLeft: 'iconShapecopy',
+        iconLeft: 'iconlist2f',
         iconRight: false
       },
       list: [

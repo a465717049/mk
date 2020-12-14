@@ -15,8 +15,8 @@
         <img class="img-header img-photo" :src="option.image" alt />
       </i>
       <i
-        v-else-if="option.iconRight==='iconxiaoxi1'"
-        class="iconfont img-r iconxiaoxi1"
+        v-else-if="option.iconRight==='iconmessage'"
+        class="iconfont img-r iconmessage"
         @click="goFeedBack"
       ></i>
       <i v-else class="iconfont img-r" :class="option.iconRight" @click="clickR">
@@ -183,8 +183,8 @@ export default {
       type: Object,
       default: function () {
         return {
-          iconLeft: 'iconShapecopy',
-          iconRight: 'iconxiaoxi1'
+          iconLeft: 'iconlist2f',
+          iconRight: 'iconmessage'
         }
       }
     },
@@ -261,6 +261,7 @@ export default {
   width: auto;
   z-index: -1;
 }
+
 .menu-title {
   font-size: 50px;
   font-weight: bold;
@@ -301,6 +302,7 @@ export default {
       height: 56px;
       animation: myfirst 4s 2s infinite;
     }
+ 
     .weidu {
       display: block;
       position: absolute;
@@ -330,7 +332,10 @@ export default {
       color: #ffffff;
     }
   }
-
+  .iconmessage{
+    top: 68px;
+    right: 60px;
+  }
   @keyframes myfirst {
     from {
       transform: rotate(0deg);
@@ -342,9 +347,9 @@ export default {
   .icon-l {
     left: 60px;
   }
-  .iconShapecopy {
+  .iconlist2f {
     // width: 100px;
-    font-size: 60px;
+    font-size: 80px;
   }
   .loc-p {
     font-size: 80px;
@@ -502,7 +507,7 @@ export default {
   .header-back {
     position: absolute;
     right: -73px;
-    top: 160px;
+    top: 180px;
     width: 146px;
     height: 146px;
     background-color: #fff;

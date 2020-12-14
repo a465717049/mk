@@ -48,7 +48,7 @@ export default {
       searchvalue: 0,
       showLocation: true,
       topBarOption: {
-        iconLeft: 'iconShapecopy',
+        iconLeft: 'iconlist2f',
         iconRight: ''
       },
       count: 0,
