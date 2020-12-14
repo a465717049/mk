@@ -71,7 +71,7 @@ export default {
     return {
       topBarOption: {
        // image: headerImg,
-        iconLeft: 'iconShapecopy',
+        iconLeft: 'iconlist2f',
         iconRight: ''
       }
     }

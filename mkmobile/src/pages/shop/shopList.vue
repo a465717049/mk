@@ -54,8 +54,8 @@ export default {
       showChat: false,
       placeinputValue: '',
       topBarOption: {
-        iconLeft: 'iconShapecopy',
-        iconRight: 'iconxiaoxi1'
+        iconLeft: 'iconlist2f',
+        iconRight: 'iconmessage'
       },
       showComfirm: true,
       tips: '即將更新！',

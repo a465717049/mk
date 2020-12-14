@@ -65,7 +65,7 @@ export default {
   data () {
     return {
       topBarOption: {
-        iconLeft: "iconShapecopy",
+        iconLeft: "iconlist2f",
         iconRight: ""
       }
     };

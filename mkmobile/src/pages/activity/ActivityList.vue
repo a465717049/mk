@@ -66,7 +66,7 @@ export default {
     return {
       currentImg: 0,
       option: {
-        iconLeft: "iconShapecopy"
+        iconLeft: "iconlist2f"
       },
       activityList: []
     };
