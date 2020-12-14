@@ -1,7 +1,7 @@
 <template>
   <div>
     <TopBar class="center-one-search" :option="topBarOption" >拆分纪录</TopBar>
-    
+
     <div class="bg-gray p-58">
       <div class="queue relative">
         <div class="queue-name">Split</div>
@@ -43,7 +43,7 @@ export default {
     TopSearch,
     BScroll
   },
-  data() {
+  data () {
     return {
       searchvalue: 0,
       showLocation: true,
@@ -55,15 +55,15 @@ export default {
       dataList: []
     }
   },
-  mounted() {
+  mounted () {
     this.scrollInit()
   },
   computed: {},
   methods: {
-    onSearch(value) {
+    onSearch (value) {
       this.ToGetSplitRecords(value)
     },
-    scrollInit() {
+    scrollInit () {
       if (!this.scroll) {
         this.scroll = new BScroll(this.$refs.listWrap, {
           scrollY: true,
@@ -77,7 +77,7 @@ export default {
         this.scroll.refresh()
       }
     },
-    ToGetSplitRecords(value) {
+    ToGetSplitRecords (value) {
       http(GetSplitRecords, { uid: value }, json => {
         if (json.code === 0) {
           this.dataList = json.response
@@ -86,7 +86,7 @@ export default {
       })
     }
   },
-  created() {
+  created () {
     if (this.$route.query.id != 'undefined') {
       this.ToGetSplitRecords(this.$route.query.id)
     } else {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="topbar-wrap">
     <div class="top-bar" ref="topBar">
       <i
         v-if="option.iconLeft!=='back'"
@@ -227,7 +227,6 @@ export default {
       this.$router.push({ name: 'setting' })
     },
     goFeedBack () {
-      console.log(1212)
       this.$router.push('Feedback')
     }
   },
@@ -274,8 +273,8 @@ export default {
   min-height: 240px;
   text-align: center;
   position: relative;
-  border-radius: 0 0 60px 60px;
-  overflow: hidden;
+  // border-radius: 0 0 60px 60px;
+  // overflow: hidden;
 
   .iconfont,
   .iconfont1 {
@@ -389,7 +388,7 @@ export default {
   position: relative;
   z-index: 999;
   border-radius: 0 0 60px 60px;
-  overflow: hidden;
+  // overflow: hidden;
 }
 </style>
 <style lang="less" scoped>
@@ -403,7 +402,7 @@ export default {
   height: 500px;
   font-weight: bold;
   position: relative;
-  overflow: hidden;
+  // overflow: hidden;
   .two-tit-t {
     font-weight: normal;
     letter-spacing: 6px;
@@ -443,7 +442,7 @@ export default {
   height: 580px;
   font-weight: bold;
   position: relative;
-  overflow: hidden;
+  // overflow: hidden;
   .three-tit-t {
     font-weight: normal;
     letter-spacing: 6px;
@@ -525,15 +524,17 @@ export default {
 }
 </style>
 <style lang="less" scoped>
-/deep/ .van-overlay {
-  background-color: transparent !important;
-}
-/deep/ .van-collapse-item__title--expanded::after {
-  display: none;
-}
-/deep/ .van-popup--left {
-  opacity: 0.89;
-  z-index: 9999999;
+.topbar-wrap{
+  /deep/ .van-overlay {
+    background-color: transparent !important;
+  }
+  /deep/ .van-collapse-item__title--expanded::after {
+    display: none;
+  }
+  /deep/ .van-popup--left {
+    opacity: 0.89;
+    z-index: 9999999;
+  }
 }
 .menu-tree {
   height: 100vh;
@@ -542,6 +543,7 @@ export default {
   font-weight: normal;
   overflow: scroll;
   z-index: 99999;
+
   p {
     width: 60vw;
     text-align: left;
@@ -647,7 +649,7 @@ export default {
     margin-right: 20px;
     margin-left: -8px;
   }
-  .icontuichu{
+  .icontuichu {
     font-size: 50px !important;
     margin-left: 5px;
   }

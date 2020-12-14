@@ -433,6 +433,7 @@ export default {
         background: #efb618;
         padding: 0 20px;
         border-radius: 20px;
+        box-shadow: none;
       }
       /deep/ .van-ellipsis {
         font-weight: 600;
