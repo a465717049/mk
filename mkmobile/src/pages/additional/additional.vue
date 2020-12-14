@@ -14,17 +14,17 @@
         <li>
           <div class="title">真实姓名</div>
           <input type="text" v-model="initData.name" />
-          <i class="iconfont iconlock"></i>
+          <i class="iconfont iconlock" v-show="initData.name.length"></i>
         </li>
           <li>
           <div class="title">身份证</div>
           <input type="text" v-model="initData.typeNumber" />
-          <i class="iconfont iconlock"></i>
+          <i class="iconfont iconlock" v-show="initData.typeNumber.length"></i>
         </li>
-              <li>
+        <li>
           <div class="title">手机：</div>
           <input type="text" v-model="initData.phone" />
-          <i class="iconfont iconlock"></i>
+          <i class="iconfont iconlock" v-show="initData.phone.length"></i>
         </li>
         <!-- <li>
           <div class="title">國家</div>
@@ -32,7 +32,7 @@
             <van-dropdown-item v-model="initData.country" :options="option1" />
           </van-dropdown-menu>
         </li> -->
-        
+
         <!-- <li>
           <div class="title">身份類型</div>
           <van-dropdown-menu>
@@ -53,7 +53,7 @@
           <li>
           <div class="title">配送地址：</div>
           <input type="text" v-model="initData.addr" />
-          <i class="iconfont iconlock"></i>
+          <i class="iconfont iconlock" v-show="initData.addr.length"></i>
         </li>
         <li>
           <div class="title">密码验证(交易密码）:</div>
@@ -66,90 +66,90 @@
   </div>
 </template>
 <script type="text/javascript">
-import TabBar from "components/TabBar";
-import TopBar from "components/TopBar";
-import headerImg from "../../assets/imgs/headerImg.png";
-import YellowComfirm from "components/YellowComfirm";
-import { http } from "util/request";
-import { CheckUpwd } from "util/netApi";
-import { storage } from "util/storage";
-import { accessToken, loginPro } from "util/const.js";
+import TabBar from 'components/TabBar'
+import TopBar from 'components/TopBar'
+import headerImg from '../../assets/imgs/headerImg.png'
+import YellowComfirm from 'components/YellowComfirm'
+import { http } from 'util/request'
+import { CheckUpwd } from 'util/netApi'
+import { storage } from 'util/storage'
+import { accessToken, loginPro } from 'util/const.js'
 export default {
-  data() {
-    var addmodel;
+  data () {
+    var addmodel
     return {
       showComfirm: false,
-      tips: "",
+      tips: '',
       tipsObj: {
-        norealname: "请输入真实姓名！",
-        nocountry: "請选择国家！",
-        noidtype: "请选择身份证类型!",
-        noidcard: "请输入身份证号码！",
-        notpwd: "请输入交易密碼！"
+        norealname: '请输入真实姓名！',
+        nocountry: '請选择国家！',
+        noidtype: '请选择身份证类型!',
+        noidcard: '请输入身份证号码！',
+        notpwd: '请输入交易密碼！'
       },
       topBarOption: {
-        iconLeft: "back",
-        iconRight: ""
+        iconLeft: 'back',
+        iconRight: ''
       },
       initData: {
-        phone:"",
-        addr:"",
-        name: "",
-        country: "",
+        phone: '',
+        addr: '',
+        name: '',
+        country: '',
         type: 2,
-        password: "",
-        typeNumber: "",
-        radioValue: "0"
+        password: '',
+        typeNumber: '',
+        radioValue: '0'
       },
       option1: [
-        { text: "中国", value: 86 }
+        { text: '中国', value: 86 }
         //   { text: '东南亚', value: 2 }
       ],
       option2: [
-        { text: "身份证", value: 2 }
+        { text: '身份证', value: 2 }
         //     { text: '港澳通行证', value: 2 }
       ]
-    };
+    }
   },
   components: {
     TabBar,
     TopBar,
     YellowComfirm
   },
-  mounted() {},
+  mounted () {},
   computed: {},
   methods: {
-    clickOk() {
-      this.showComfirm = false;
+    clickOk () {
+      this.showComfirm = false
     },
-    goCheckData() {
+    goCheckData () {
       if (!this.initData.name) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.norealname;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.norealname
+        return
       }
       if (!this.initData.country) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.nocountry;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.nocountry
+        return
       }
 
       if (!this.initData.type) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.noidtype;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.noidtype
+        return
       }
 
       if (!this.initData.typeNumber) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.noidcard;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.noidcard
+        return
       }
 
       if (!this.initData.password) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.notpwd;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.notpwd
+        return
       }
       http(
         CheckUpwd,
@@ -160,41 +160,41 @@ export default {
         },
         json => {
           if (json.code === 0) {
-            this.addmodel.uRealName = this.initData.name;
-            this.addmodel.idType = this.initData.type;
-            this.addmodel.CountryPhoneCode = this.initData.country;
-            this.addmodel.idNumber = this.initData.typeNumber;
-            this.addmodel.TradePass = this.initData.password;
-            this.addmodel.phone = this.initData.phone;
-            this.addmodel.addr = this.initData.addr;
-            storage.setLocalStorage("joindata", JSON.stringify(this.addmodel));
-            this.$router.push({ name: "CheckData" });
+            this.addmodel.uRealName = this.initData.name
+            this.addmodel.idType = this.initData.type
+            this.addmodel.CountryPhoneCode = this.initData.country
+            this.addmodel.idNumber = this.initData.typeNumber
+            this.addmodel.TradePass = this.initData.password
+            this.addmodel.phone = this.initData.phone
+            this.addmodel.addr = this.initData.addr
+            storage.setLocalStorage('joindata', JSON.stringify(this.addmodel))
+            this.$router.push({ name: 'CheckData' })
           } else {
-            this.showComfirm = true;
-            this.tips = json.msg;
+            this.showComfirm = true
+            this.tips = json.msg
           }
         }
-      );
+      )
     }
   },
-  created() {
-    if (storage.getLocalStorage("joindata")) {
-      this.addmodel = JSON.parse(storage.getLocalStorage("joindata"));
-      this.initData.name = this.addmodel.uRealName;
-      this.initData.type = this.addmodel.idType;
-      this.initData.country = this.addmodel.CountryPhoneCode;
-      this.initData.typeNumber = this.addmodel.idNumber;
-      this.initData.password = this.addmodel.TradePass;
-      this.initData.phone=this.addmodel.phone;
-      this.initData.addr=this.addmodel.addr;
+  created () {
+    if (storage.getLocalStorage('joindata')) {
+      this.addmodel = JSON.parse(storage.getLocalStorage('joindata'))
+      this.initData.name = this.addmodel.uRealName
+      this.initData.type = this.addmodel.idType
+      this.initData.country = this.addmodel.CountryPhoneCode
+      this.initData.typeNumber = this.addmodel.idNumber
+      this.initData.password = this.addmodel.TradePass
+      this.initData.phone = this.addmodel.phone
+      this.initData.addr = this.addmodel.addr
       if (this.addmodel.L == 0) {
-        this.initData.radioValue = "0";
+        this.initData.radioValue = '0'
       } else {
-        this.initData.radioValue = "1";
+        this.initData.radioValue = '1'
       }
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -246,6 +246,7 @@ export default {
         color: #6f6d72;
         font-weight: 600;
         letter-spacing: 4px;
+        padding-right: 100px;
       }
       .iconfont {
         position: absolute;

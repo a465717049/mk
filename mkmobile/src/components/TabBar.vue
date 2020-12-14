@@ -34,52 +34,52 @@
 
 <script>
 export default {
-  name: "Tabbar",
-  data() {
+  name: 'Tabbar',
+  data () {
     return {
       tabItemData: [
         {
-          id: "tabbar1",
-          to: "/home",
-          className: "iconcl-icon-Home iconfont",
-          text: "首頁",
+          id: 'tabbar1',
+          to: '/home',
+          className: 'iconcl-icon-Home iconfont',
+          text: '首頁',
           selected: true
         },
         {
-          id: "tabbar2",
-          to: "/",
-          className: "icon21 iconfont",
-          text: "",
+          id: 'tabbar2',
+          to: '/',
+          className: 'icon21 iconfont',
+          text: '',
           selected: false
         },
         {
-          id: "tabbar3",
-          to: "/friendsList",
-          className: "icontuandui iconfont",
-          text: "朋友",
+          id: 'tabbar3',
+          to: '/friendsList',
+          className: 'icontuandui iconfont',
+          text: '朋友',
           selected: false
         }
       ],
       sheetShow: false
-    };
+    }
   },
   methods: {
-    link(item) {
-      if (item.id !== "tabbar2") {
-        this.$router.push(item.to);
+    link (item) {
+      if (item.id !== 'tabbar2') {
+        this.$router.push(item.to)
       } else {
-        this.sheetShow = true;
+        this.sheetShow = true
       }
     },
-    goPage(href) {
-      this.sheetShow = false;
-      this.$router.push(href);
+    goPage (href) {
+      this.sheetShow = false
+      this.$router.push(href)
     },
-    logout() {
-      this.sheetShow = false;
+    logout () {
+      this.sheetShow = false
     }
   }
-};
+}
 </script>
 <style lang="less" scoped>
 .xptabbar {
@@ -109,17 +109,23 @@ export default {
     }
   }
   .tabIcon {
-    width: 82px;
+    width: 88px;
     height: 82px;
     display: block;
     margin: 0 auto;
     line-height: 82px;
-  }
-  .tabIcon::before {
+    text-align: center;
     font-size: 90px;
     color: #fff;
   }
-  span {
+  // .tabIcon::before {
+  //   font-size: 90px;
+  //   color: #fff;
+  // }
+  .tabItem{
+     display: block;
+    text-align: center;
+      span {
     display: block;
     text-align: center;
     font-size: 40px;
@@ -127,6 +133,8 @@ export default {
     height: 56px;
     line-height: 56px;
   }
+  }
+
   &.active {
     color: #ba825a;
   }

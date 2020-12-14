@@ -245,7 +245,7 @@ export default {
   mounted () {
     // this.ToGetBanner()
     this.TogetUserInfo()
-     this.readloadinfo()
+    this.readloadinfo()
   }
 }
 </script>
@@ -453,14 +453,14 @@ export default {
     .price {
       color: #09b216;
       margin-top: 30px;
-      font-size: 70px;
+      font-size: 54px;
       font-weight: 600;
       width: 40%;
       text-align: right;
       padding-right: 20px;
     }
      .price.red {
-      color: #ff3300;
+      color: #FB3D42;
      }
     .info {
       width: 60%;
@@ -470,10 +470,12 @@ export default {
       .num {
         margin-top: 20px;
         font-weight: 600;
-        opacity: 0.62;
+        font-size: 46px;
+        color: #212227;
+        // opacity: 0.62;
         .sub-num {
-           margin-top: 10px;
-          color: #767c8f;
+          margin-top: 20px;
+          color: #777E8F;
           font-size: 40px;
         }
         > div {
