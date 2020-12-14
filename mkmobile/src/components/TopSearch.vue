@@ -14,13 +14,13 @@ export default {
       default: '输入朋友ID进行查询 '
     }
   },
-  data() {
+  data () {
     return {
       value: ''
     }
   },
   methods: {
-    onSearch() {
+    onSearch () {
       this.$emit('onSearch', this.value)
     }
   }
@@ -30,24 +30,22 @@ export default {
 .search {
   width: 100%;
   height: 110px;
-  font-size: 40px;
-  color: #767C8F;
-  position: relative;
+  display: flex;
   margin-top: 20px;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 30px ;
+  align-items: center;
   input {
-    height: 100%;
-    background-color: #fff;
+    height: 50px;
+    line-height: 50px;
     width: 100%;
-    padding: 30px 106px 30px 30px;
-    border-radius: 20px;
+    font-size: 40px;
+    color: #767c8f;
   }
   .inputIcon {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 40px;
     font-size: 65px;
-    color: #4678BC;
+    color: #4678bc;
   }
 }
 </style>
