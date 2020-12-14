@@ -127,15 +127,16 @@ export default {
 }
 </script>
 <style lang='less' scoped>
-.innerScroll {
+
+.shopListWrap {
+  position: relative;
+  .innerScroll {
   /deep/.wrapper {
     .bscroll-container {
       min-height: calc(100vh - 400px) !important;
     }
   }
 }
-.shopListWrap {
-  position: relative;
    /deep/.toptab_search {
      margin-top: 80px;
    }

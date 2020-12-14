@@ -541,7 +541,7 @@ export default {
   background: #000;
   font-weight: normal;
   overflow: scroll;
-  z-index: 9999;
+  z-index: 99999;
   p {
     width: 60vw;
     text-align: left;

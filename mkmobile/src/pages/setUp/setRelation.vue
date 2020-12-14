@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="set-relation">
     <TopBar class="center-one-search" :option="topBarOption">昵称</TopBar>
 
     <div class="listWrap" ref="listWrap">
@@ -24,34 +24,34 @@
   </div>
 </template>
 <script>
-import TopBar from "components/TopBar";
-import { photoList } from "util/const.js";
-import ScrollRefresh from "components/ScrollRefresh";
+import TopBar from 'components/TopBar'
+import { photoList } from 'util/const.js'
+import ScrollRefresh from 'components/ScrollRefresh'
 export default {
-  name: "Set",
+  name: 'Set',
   components: {
     TopBar,
     ScrollRefresh
   },
-  data() {
+  data () {
     return {
       topBarOption: {
-        iconLeft: "iconShapecopy",
-        iconRight: ""
+        iconLeft: 'iconShapecopy',
+        iconRight: ''
       },
-      name: "",
+      name: '',
       photoList
-    };
+    }
   },
-  mounted() {},
+  mounted () {},
   computed: {},
   methods: {
-    getData() {}
+    getData () {}
   }
-};
+}
 </script>
 <style lang='less' scoped>
-.innerScroll {
+.set-relation .innerScroll {
   /deep/ .wrapper {
        background: #fff;
     border-radius: 42px;
@@ -114,7 +114,7 @@ export default {
     font-size: 50px;
   }
   .protainer-box {
- 
+
     height: 100%;
     display: flex;
     flex-direction: row;
