@@ -1,5 +1,5 @@
-// let baseUrl = "https://api.dpepie.com/api/";
-// let url = "https://api.dpepie.com/api"; // 域名
+ let baseUrl = "https://api.a8dog.top/api/";
+ let url = "https://api.a8dog.top"; // 域名
 // if (
 //   process.env.NODE_ENV === "development" ||
 //   process.env.NODE_ENV === "testing"
@@ -25,8 +25,8 @@
 //   config
 // };
 // 如果要跨域修改这里和 config/index的proxyTable 修改成实际要请求的地址
-let baseUrl = '/api/'
-let url = 'https://manage.dpeplus.com' // 域名
+// let baseUrl = '/api/'
+// let url = 'https://api.a8dog.top' // 域名
 
 const config = {
   imageUrl: 'https://resource.upinstar.com',
