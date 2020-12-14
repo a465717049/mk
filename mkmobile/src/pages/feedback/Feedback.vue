@@ -18,7 +18,7 @@
               <div class="chat_left_msg">{{ item.msg }}</div>
             </div>
             <div v-else class="chat_item chat-right">
-              <img class="chat_right_img" :src="item.image" />
+              <img class="chat_right_img" :src="defaultimg" />
               <div class="chat_right_msg">{{ item.msg }}</div>
             </div>
           </li>
@@ -36,11 +36,11 @@
 <script>
 import TopBar from 'components/TopBar'
 import { http } from 'util/request'
-import { GetUserFeedBack, AddUserFeedBack } from 'util/netApi'
+import { GetUserFeedBack, AddUserFeedBack,GetUserInfo } from 'util/netApi'
 import { storage } from 'util/storage'
 import ScrollRefresh from 'components/ScrollRefresh'
-import defaultImg from '@/assets/imgs/set/head02.png'
-import { accessToken, loginPro } from 'util/const.js'
+import defaultImg from '@/assets/imgs/set/head03.png'
+import { accessToken, loginPro,photoList } from 'util/const.js'
 
 export default {
   components: {
@@ -54,6 +54,7 @@ export default {
         iconLeft: 'iconlist2f',
         iconRight: false
       },
+      defaultimg:"",
       list: [
         // {
         //   id: 1,
@@ -131,10 +132,18 @@ export default {
     }
   },
   methods: {
+    TogetUserInfo () {
+      http(GetUserInfo, null, json => {
+        if (json.code === 0) {
+          console.log(json)
+           this.defaultimg = photoList[json.response.photo]
+        }
+      })
+    },
     ToGetUserFeedBack () {
       http(GetUserFeedBack, null, json => {
         if (json.code === 0) {
-          console.log(json.response)
+        //  console.log(json.response)
           this.list = json.response
         }
       })
@@ -157,6 +166,7 @@ export default {
     }
   },
   created () {
+    this.TogetUserInfo()
     this.ToGetUserFeedBack()
   }
 }

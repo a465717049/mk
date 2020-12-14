@@ -30,7 +30,7 @@
         </li>
         <li>
           <div class="title">
-            您的父亲叫什么名字？
+            {{DataQuestion}}
             <!-- {{DataQuestion}} -->
           </div>
           <input type="text" hidden v-model="form.qid" />
@@ -64,6 +64,7 @@
 import TopBar from 'components/TopBar'
 import YellowComfirm from 'components/YellowComfirm'
 import { SetUpdatePassword, GetMyQuestion } from 'util/netApi'
+import ScrollRefresh from 'components/ScrollRefresh'
 import { http } from 'util/request'
 import { storage } from 'util/storage'
 import { accessToken, loginPro } from 'util/const.js'
@@ -108,15 +109,17 @@ export default {
     }
   },
   mounted () {
-    this.ToGetMyQuestion()
+    this.loadQuestion()
   },
   methods: {
     goNext () {
       http(SetUpdatePassword, this.form, json => {
         // console.log(json)
+        let self = this;
         if (json.code === 0) {
           this.isEnter = true
-          this.tips = this.tipsObj.succeed
+          this.tips ='修改成功5s后返回登录'
+          setTimeout(function(){self.$router.push("Login") },5000)
         } else {
           this.isEnter = true
           if (!json.success) {
@@ -127,15 +130,6 @@ export default {
         }
       })
     },
-    ToGetMyQuestion () {
-      http(GetMyQuestion, null, json => {
-        if (json.code === 0) {
-          // farterName   codeNumber
-          this.DataQuestion = json.response.question
-          this.form.qid = json.response.qId
-        }
-      })
-    },
     clickOk () {
       this.isEnter = false
     },
@@ -143,17 +137,17 @@ export default {
       this.isEnter = v
     },
     loadQuestion () {
-      http(loadQuestion, {}, json => {
+      http(GetMyQuestion, {}, json => {
         if (json.code === 0) {
-          this.isEnter = true
-          this.form.qId = this.response.qID
-          this.initData.Question = this.response.Question_CN
+          this.form.qid = json.response.qId
+          this.DataQuestion = json.response.question
         }
       })
-      this.isEnter = v
     }
   },
-  created () {}
+  created () {
+    
+  }
 }
 </script>
 
