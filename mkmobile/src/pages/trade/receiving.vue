@@ -1,5 +1,5 @@
 <template>
-  <div class="chargeWrapper">
+  <div class="receivingWrapper">
     <TopBar class="center-one-search" :option="topBarOption">
       <div>EP Trade</div>
     </TopBar>
@@ -73,110 +73,110 @@
   </div>
 </template>
 <script type="text/javascript">
-import TopBar from "components/TopBar";
-import ScrollRefresh from "components/ScrollRefresh";
-import headerImg from "../../assets/imgs/headerImg.png";
-import { http } from "util/request";
-import { GetEPExchangeById, GetUserInfo, EPFinish } from "util/netApi";
-import { storage } from "util/storage";
-import { accessToken, photoList } from "util/const.js";
+import TopBar from 'components/TopBar'
+import ScrollRefresh from 'components/ScrollRefresh'
+import headerImg from '../../assets/imgs/headerImg.png'
+import { http } from 'util/request'
+import { GetEPExchangeById, GetUserInfo, EPFinish } from 'util/netApi'
+import { storage } from 'util/storage'
+import { accessToken, photoList } from 'util/const.js'
 export default {
-  data() {
+  data () {
     return {
       showChat: true,
       topBarOption: {
-        iconLeft: "back",
-        iconRight: ""
+        iconLeft: 'back',
+        iconRight: ''
       },
       epid: 0,
       uid: 0,
       rate: 3,
       initData: {
-        name: "1122",
+        name: '1122',
         Img: null,
         buyId: null,
-        times: "3",
-        finish: "3",
-        complaint: "0",
-        price: "500 EP",
-        phone: " +86 130 4567 1234",
-        date: "2020-06-15 23:46:12",
+        times: '3',
+        finish: '3',
+        complaint: '0',
+        price: '500 EP',
+        phone: ' +86 130 4567 1234',
+        date: '2020-06-15 23:46:12',
         receiveMoneyCNY: 0.0,
         receiveMoneyUSDT: 0.0,
-        EPRate: "6.175",
-        USDTRate: "7.01",
-        priceCode: "0xeC333554c4d410899D6dBaBE4ED885ade4bE275F",
+        EPRate: '6.175',
+        USDTRate: '7.01',
+        priceCode: '0xeC333554c4d410899D6dBaBE4ED885ade4bE275F',
         status: 1
       }
-    };
+    }
   },
   components: {
     TopBar,
     ScrollRefresh
   },
-  mounted() {},
+  mounted () {},
   computed: {},
   methods: {
-    onEPFinish() {
+    onEPFinish () {
       http(EPFinish, { eid: this.epid }, json => {
         if (json.code == 0) {
-          this.$router.go(-1);
+          this.$router.go(-1)
         }
-      });
+      })
     },
 
-    TogetUserInfo() {
+    TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          this.uid = json.response.uid;
+          this.uid = json.response.uid
         }
-      });
+      })
     },
-    toeppay() {},
-    ToGetEPExchangeById() {
+    toeppay () {},
+    ToGetEPExchangeById () {
       if (!this.$route.query.id) {
-        return false;
+        return false
       }
-      this.TogetUserInfo();
-      this.epid = this.$route.query.id;
+      this.TogetUserInfo()
+      this.epid = this.$route.query.id
       http(GetEPExchangeById, { id: this.epid }, json => {
         if (json.code === 0) {
           // initData.name  times  finish  complaint  price  date phone
-          var model = json.response[0];
-          this.initData.name = model.uid;
-          this.initData.buyId = model.buyId;
-          this.initData.Img = photoList[model.img];
-          this.initData.times = model.tcount;
-          this.initData.receiveMoneyCNY = model.MoneyCNY;
-          this.initData.receiveMoneyUSDT = model.MoneyUSDT;
-          this.initData.EPRate = model.RMBrate;
-          this.initData.USDTRate = model.USDTrate;
-          this.initData.times = model.tcount;
-          this.initData.finish = model.fcount;
-          this.initData.complaint = model.appealcount;
-          this.initData.price = model.amount;
-          this.initData.date = model.createTime;
-          this.initData.phone = model.phone;
-          this.initData.priceCode = model.usdtAddress;
-          this.initData.status = model.status;
+          var model = json.response[0]
+          this.initData.name = model.uid
+          this.initData.buyId = model.buyId
+          this.initData.Img = photoList[model.img]
+          this.initData.times = model.tcount
+          this.initData.receiveMoneyCNY = model.MoneyCNY
+          this.initData.receiveMoneyUSDT = model.MoneyUSDT
+          this.initData.EPRate = model.RMBrate
+          this.initData.USDTRate = model.USDTrate
+          this.initData.times = model.tcount
+          this.initData.finish = model.fcount
+          this.initData.complaint = model.appealcount
+          this.initData.price = model.amount
+          this.initData.date = model.createTime
+          this.initData.phone = model.phone
+          this.initData.priceCode = model.usdtAddress
+          this.initData.status = model.status
         }
-      });
+      })
     }
   },
 
-  created() {
-    this.ToGetEPExchangeById();
+  created () {
+    this.ToGetEPExchangeById()
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
-.innerScroll{
-  /deep/ .wrapper  .bscroll-container{
-    min-height: calc(100vh - 400px);
+.receivingWrapper {
+  .innerScroll {
+    /deep/ .wrapper .bscroll-container {
+      min-height: calc(100vh - 400px);
+    }
   }
-}
-.chargeWrapper {
   .innerWrap {
     width: 100vw;
     background-color: #ebeaf0;

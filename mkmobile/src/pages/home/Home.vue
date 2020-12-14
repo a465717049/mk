@@ -1,5 +1,5 @@
 <template>
-  <div class="homeWrapper ">
+  <div class="homeWrapper">
     <ScrollRefresh
       @getData="getData"
       :residualHeight="bottomTabBarHeight+10"
@@ -251,7 +251,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.innerScroll {
+.homeWrapper .innerScroll {
   /deep/.wrapper {
     .bscroll-container {
       min-height: calc(100vh + 10px) !important;

@@ -276,13 +276,13 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.innerScroll {
-  /deep/ .wrapper .bscroll-container {
-    min-height: calc(100vh - 420px);
-  }
-}
 
 .shopCarWrapper {
+  .innerScroll {
+    /deep/ .wrapper .bscroll-container {
+      min-height: calc(100vh - 420px);
+    }
+  }
   /deep/.top-bar .img-r {
     font-size: 70px;
   }

@@ -4,8 +4,8 @@
 //   process.env.NODE_ENV === "development" ||
 //   process.env.NODE_ENV === "testing"
 // ) {
-// let baseUrl = 'https://api.a8dog.top/api/' // 开发 "http://localhost:8081/api/"
-// let url = 'https://manage.dpeplus.com' // 开发
+//let baseUrl = 'https://api.a8dog.top/api/' // 开发 "http://localhost:8081/api/"
+//let url = 'https://manage.dpeplus.com' // 开发
 //   // baseUrl = 'http://192.168.1.8:8888/' // 开发
 // } else if (process.env.NODE_ENV === "preview") {
 //   baseUrl = "https://api.dpepie.com/api/"; // 预发布
@@ -26,7 +26,6 @@
 // };
 // 如果要跨域修改这里和 config/index的proxyTable 修改成实际要请求的地址
 // let baseUrl = '/api/'
-// let url = 'https://api.a8dog.top' // 域名
 
 const config = {
   imageUrl: 'https://resource.upinstar.com',

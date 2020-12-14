@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="set-wrap">
     <TopBar class="center-one-search" >设置</TopBar>
     <ScrollRefresh @getData="TogetUserInfo" :residualHeight="topbarHeight+bottomTabBarHeight+10" :isNeedUp="false" class="innerScroll">
       <div class="set clearfix p-58">
@@ -125,7 +125,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.innerScroll{
+.set-wrap .innerScroll{
   /deep/ .wrapper  .bscroll-container{
     min-height: calc(100vh - 420px);
   }

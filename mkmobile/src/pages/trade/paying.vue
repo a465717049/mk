@@ -83,123 +83,124 @@
   </div>
 </template>
 <script type="text/javascript">
-import TopBar from "components/TopBar";
-import ScrollRefresh from "components/ScrollRefresh";
-import headerImg from "../../assets/imgs/headerImg.png";
-import { http } from "util/request";
-import { GetEPExchangeById, EPBuy, EPPay,GetUserInfo } from "util/netApi";
+import TopBar from 'components/TopBar'
+import ScrollRefresh from 'components/ScrollRefresh'
+import headerImg from '../../assets/imgs/headerImg.png'
+import { http } from 'util/request'
+import { GetEPExchangeById, EPBuy, EPPay, GetUserInfo } from 'util/netApi'
 
-import { storage } from "util/storage";
-import { accessToken, photoList } from "util/const.js";
+import { storage } from 'util/storage'
+import { accessToken, photoList } from 'util/const.js'
 
 export default {
-  data() {
+  data () {
     return {
       epid: 0,
       topBarOption: {
-        iconLeft: "back"
+        iconLeft: 'back'
         // iconRight: '11',
         //  image: headerImg
       },
       rate: 3,
       uid: 0,
       initData: {
-        name: "",
+        name: '',
         Img: null,
         times: 0,
         finish: 0,
         complaint: 0,
-        price: "",
-        phone: "",
-        date: "",
+        price: '',
+        phone: '',
+        date: '',
         receiveMoneyCNY: 0.0,
         receiveMoneyUSDT: 0.0,
-        EPRate: "6.175",
-        USDTRate: "7.01",
-        priceCode: "",
+        EPRate: '6.175',
+        USDTRate: '7.01',
+        priceCode: '',
         status: 1
       }
-    };
+    }
   },
   components: {
     TopBar,
     ScrollRefresh
   },
-  mounted() {},
+  mounted () {},
   computed: {},
   methods: {
-    cancebuy() {
-      this.$router.push({ name: "epTrade" });
+    cancebuy () {
+      this.$router.push({ name: 'epTrade' })
     },
-    TogetUserInfo() {
+    TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          this.uid = json.response.uid;
+          this.uid = json.response.uid
         }
-      });
+      })
     },
-    epbuy() {
+    epbuy () {
       if (this.initData.status == 1) {
         http(EPBuy, { eid: this.epid }, json => {
-          this.ToGetEPExchangeById(this.epid);
-          this.$router.go(0);
-        });
+          this.ToGetEPExchangeById(this.epid)
+          this.$router.go(0)
+        })
       } else if (this.initData.status == 2) {
         http(EPPay, { eid: this.epid }, json => {
-          this.ToGetEPExchangeById(this.epid);
-          this.$router.go(0);
-        });
+          this.ToGetEPExchangeById(this.epid)
+          this.$router.go(0)
+        })
       }
     },
-    ToGetEPExchangeById() {
+    ToGetEPExchangeById () {
       http(GetEPExchangeById, { id: this.epid }, json => {
         if (json.code === 0) {
           // initData.name  times  finish  complaint  price  date phone
 
-          var model = json.response[0];
-          this.initData.name = model.uid;
-          this.initData.Img = photoList[model.img];
-          this.initData.times = model.tcount;
-          this.initData.receiveMoneyCNY = model.MoneyCNY;
-          this.initData.receiveMoneyUSDT = model.MoneyUSDT;
-          this.initData.EPRate = model.RMBrate;
-          this.initData.USDTRate = model.USDTrate;
-          this.initData.times = model.tcount;
-          this.initData.finish = model.fcount;
-          this.initData.complaint = model.appealcount;
-          this.initData.price = model.amount;
-          this.initData.date = model.createTime;
-          this.initData.phone = model.phone;
-          this.initData.priceCode = model.usdtAddress;
-          this.initData.status = model.status;
+          var model = json.response[0]
+          this.initData.name = model.uid
+          this.initData.Img = photoList[model.img]
+          this.initData.times = model.tcount
+          this.initData.receiveMoneyCNY = model.MoneyCNY
+          this.initData.receiveMoneyUSDT = model.MoneyUSDT
+          this.initData.EPRate = model.RMBrate
+          this.initData.USDTRate = model.USDTrate
+          this.initData.times = model.tcount
+          this.initData.finish = model.fcount
+          this.initData.complaint = model.appealcount
+          this.initData.price = model.amount
+          this.initData.date = model.createTime
+          this.initData.phone = model.phone
+          this.initData.priceCode = model.usdtAddress
+          this.initData.status = model.status
         }
-      });
+      })
     },
-    getAllData() {
+    getAllData () {
       if (this.$route.query.id) {
-        this.epid = this.$route.query.id;
-        this.ToGetEPExchangeById();
+        this.epid = this.$route.query.id
+        this.ToGetEPExchangeById()
       }
-      this.TogetUserInfo();
+      this.TogetUserInfo()
     }
   },
-  created() {
+  created () {
     if (this.$route.query.id) {
-      this.epid = this.$route.query.id;
-      this.ToGetEPExchangeById(this.epid);
+      this.epid = this.$route.query.id
+      this.ToGetEPExchangeById(this.epid)
     }
-    this.TogetUserInfo();
+    this.TogetUserInfo()
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
-.innerScroll{
-  /deep/ .wrapper  .bscroll-container{
-    min-height: calc(100vh - 400px);
-  }
-}
+
 .chargeWrapper {
+  .innerScroll{
+    /deep/ .wrapper  .bscroll-container{
+      min-height: calc(100vh - 400px);
+    }
+  }
   .innerWrap {
     width: 100vw;
     background-color: #ebeaf0;

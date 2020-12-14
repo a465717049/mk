@@ -216,7 +216,7 @@ export default {
 }
 </script>
 <style lang='less' scoped>
-.innerScroll {
+.orderDetailWrap .innerScroll {
   /deep/.wrapper {
     padding-top: 80px;
     .bscroll-container {

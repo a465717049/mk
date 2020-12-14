@@ -169,7 +169,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.innerScroll {
+.CheckDataWrapper .innerScroll {
   /deep/ .wrapper .bscroll-container {
     min-height: calc(100vh - 420px);
   }

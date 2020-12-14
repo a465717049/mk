@@ -163,7 +163,7 @@ export default {
 </script>
 
 <style lang="less" scope>
-.innerScroll {
+.feedback-body .innerScroll {
   /deep/.wrapper {
     // background: #ece5cc;
     max-height: calc(100vh - 700px) !important;;
