@@ -55,141 +55,142 @@
   </div>
 </template>
 <script type="text/javascript">
-import TabBar from "components/TabBar";
-import TopBar from "components/TopBar";
+import TabBar from 'components/TabBar'
+import TopBar from 'components/TopBar'
 import { http } from 'util/request'
-import {  GetUserInfo } from 'util/netApi'
+import { GetUserInfo } from 'util/netApi'
 import { accessToken, loginPro } from 'util/const.js'
-import { storage } from "util/storage";
-import YellowComfirm from "components/YellowComfirm";
+import { storage } from 'util/storage'
+import YellowComfirm from 'components/YellowComfirm'
 export default {
-  data() {
+  data () {
     return {
       showComfirm: false,
-      tips: "",
+      tips: '',
       tipsObj: {
-        nomember: "请输入账号！",
-        nonickname: "请输入昵称！",
-        nolevel: "请选择级别！",
-        nopwd: "请输入密码！",
-        nopwdreset: "两次密码不一致请重新确认！"
+        nomember: '请输入账号！',
+        nonickname: '请输入昵称！',
+        nolevel: '请选择级别！',
+        nopwd: '请输入密码！',
+        nopwdreset: '两次密码不一致请重新确认！'
       },
       initData: {
         Jid: 0,
-        code: "",
-        nickName: "",
+        code: '',
+        nickName: '',
         level: 666,
-        password: "",
-        comfirmPassword: "",
-        radioValue: "1",
+        password: '',
+        comfirmPassword: '',
+        radioValue: '1',
         parentID: 0,
         L: 0
       },
       option1: [
-        { text: "666", value: 666 },
-        { text: "2000", value: 2000 },
-        { text: "10000", value: 10000 }
+        { text: '666', value: 666 },
+        { text: '2000', value: 2000 },
+        { text: '10000', value: 10000 }
       ]
-    };
+    }
   },
   components: {
     TabBar,
     TopBar,
     YellowComfirm
   },
-  mounted() {},
+  mounted () {},
   computed: {},
   methods: {
-     TogetUserInfo() {
+    TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-           this.initData.parentID = json.response.uid;
+          this.initData.parentID = json.response.uid
           console.log(json)
-         // this.account = json.response.apple
+          // this.account = json.response.apple
         }
       })
     },
-    clickOk() {
-      this.showComfirm = false;
+    clickOk () {
+      this.showComfirm = false
     },
-    goEditData() {
+    goEditData () {
       if (this.initData.code === 0) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.nomember;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.nomember
+        return
       }
       if (!this.initData.nickName) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.nonickname;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.nonickname
+        return
       }
 
       if (!this.initData.level) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.nolevel;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.nolevel
+        return
       }
 
       if (!this.initData.password) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.nopwd;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.nopwd
+        return
       }
 
       var Joindata = {
         Jid: this.initData.Jid, // uid
         idType: 2,
-        idNumber: "",
-        uRealName: "",
-        bankCardName: "",
+        idNumber: '',
+        uRealName: '',
+        bankCardName: '',
         loginPass: this.initData.password,
         investmentAmount: this.initData.level,
         CountryPhoneCode: 86,
         MemberNo: this.initData.code,
         NickName: this.initData.nickName,
-        googleCode: "",
-        TradePass: "",
+        googleCode: '',
+        TradePass: '',
         TransUserID: 0,
-        parentID: this.initData.parentID, //parentID 当前ID
+        parentID: this.initData.parentID, // parentID 当前ID
         L: this.initData.L,
-        phone:"",
-        addr:"",
-        levlename:this.initData.level,
-      };
+        phone: '',
+        addr: '',
+        levlename: this.initData.level
+      }
       // alert(this.initData.Jid)
-      storage.setLocalStorage("joindata", JSON.stringify(Joindata));
-      this.$router.push({ name: "Additional" });
+      storage.setLocalStorage('joindata', JSON.stringify(Joindata))
+      this.$router.push({ name: 'Additional' })
     }
   },
-  created() {
-    if (storage.getLocalStorage("joindata")) {
-      var modeldata = JSON.parse(storage.getLocalStorage("joindata"));
-      this.initData.code = modeldata.MemberNo;
-      this.initData.Jid = modeldata.Jid;
-      this.initData.nickName = modeldata.NickName;
-      this.initData.L = modeldata.L;
-      this.initData.MemberNo = modeldata.MemberNo;
-      this.initData.loginPass = modeldata.loginPass;
-      this.initData.levlename = modeldata.levlename;
+  created () {
+    if (storage.getLocalStorage('joindata')) {
+      var modeldata = JSON.parse(storage.getLocalStorage('joindata'))
+      this.initData.code = modeldata.MemberNo
+      this.initData.Jid = modeldata.Jid
+      this.initData.nickName = modeldata.NickName
+      this.initData.L = modeldata.L
+      this.initData.MemberNo = modeldata.MemberNo
+      this.initData.loginPass = modeldata.loginPass
+      this.initData.levlename = modeldata.levlename
     }
     if (this.$route.params.uid) {
-      this.initData.Jid = this.$route.params.uid;
+      this.initData.Jid = this.$route.params.uid
       this.initData.L = this.$route.params.isLeft
         ? this.$route.params.isLeft
-        : 0;
-    }else
-    {
-      this.TogetUserInfo();
+        : 0
+    } else {
+      this.TogetUserInfo()
     }
 
-    console.log(this.$route.params.isLeft);
-    console.log(this.initData.L);
+    console.log(this.$route.params.isLeft)
+    console.log(this.initData.L)
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
 .joinWrapper {
+  height: 100vh;
+  overflow: auto;
   .innerWrap {
     width: 100vw;
     margin-top: -20px;

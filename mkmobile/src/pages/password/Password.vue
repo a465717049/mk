@@ -41,8 +41,14 @@
           <input type="text" v-model="form.idcard" />
         </li>
       </ul>
-
-      <button class="submit" @click="goNext">提交</button>
+      <div class="buttonWrap">
+        <router-link to="login" class="router">
+          <!--@click="buyShop" -->
+          <button class="back"><i class="iconfont iconfanhui"></i>返回登录</button>
+        </router-link>
+        <button class="sure" @click="goNext">提交</button>
+      </div>
+      <!-- <button class="submit" @click="goNext">提交</button> -->
     </div>
     <YellowComfirm
       :show="isEnter"
@@ -182,8 +188,8 @@ export default {
           font-weight: 600;
           letter-spacing: 4px;
         }
-        input[type="password"]{
-          color: #4678BC;
+        input[type="password"] {
+          color: #4678bc;
         }
         .iconfont {
           position: absolute;
@@ -195,7 +201,7 @@ export default {
         /deep/ .van-dropdown-menu__bar {
           height: 120px;
           line-height: 120px;
-          color: #6F6D72;
+          color: #6f6d72;
           font-weight: 600;
           width: 100%;
           padding: 0 20px;
@@ -204,7 +210,7 @@ export default {
         }
         /deep/ .van-ellipsis {
           font-size: 42px;
-          color: #6F6D72;
+          color: #6f6d72;
           font-weight: 600;
           letter-spacing: 10px;
         }
@@ -337,6 +343,36 @@ export default {
     font-weight: 600;
     letter-spacing: 4px;
     position: relative;
+  }
+  .buttonWrap {
+    margin-top: 60px;
+    padding: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    button {
+      width: 40vw;
+      height: 130px;
+      line-height: 130px;
+      border-radius: 20px;
+      text-align: center;
+      position: relative;
+      color: #fff;
+      font-size: 40px;
+    }
+    .back {
+      background-color: #0b41dc;
+      position: relative;
+      .iconfont{
+        position: absolute;
+        font-size: 64px;
+        color: #fff;
+        left: 40px;
+      }
+    }
+    .sure {
+      background-color: #eeb20a;
+    }
   }
 }
 </style>

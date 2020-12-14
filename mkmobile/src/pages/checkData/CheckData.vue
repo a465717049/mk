@@ -3,7 +3,7 @@
     <TopBar class="center-one-search">注册成为会员</TopBar>
     <ScrollRefresh
       @getData="TogetUserInfo"
-      :residualHeight="160"
+      :residualHeight="topbarHeight+bottomTabBarHeight+10"
       :isNeedUp="false"
       class="innerScroll"
     >
@@ -50,7 +50,9 @@
           <span class="num">{{initData.addprice}}</span>
         </div>
         <div class="buttonWrap">
+          <router-link to="VipUpgrade" class="router">
           <button class="back" @click="goNext"><i class="iconfont iconfanhui"></i> 返回修改</button>
+          </router-link>
           <button class="sure" @click="goNext">确认注册</button>
         </div>
         <!-- <button class="next" @click="goNext">确认提交</button> -->
@@ -60,111 +62,110 @@
   </div>
 </template>
 <script type="text/javascript">
-import TopBar from "components/TopBar";
-import headerImg from "../../assets/imgs/headerImg.png";
-import YellowComfirm from "components/YellowComfirm";
-import ScrollRefresh from "components/ScrollRefresh";
-import { http } from "util/request";
-import { CreateNewAccount, GetUserInfo } from "util/netApi";
-import { storage } from "util/storage";
-import { accessToken, loginPro } from "util/const.js";
+import TopBar from 'components/TopBar'
+import headerImg from '../../assets/imgs/headerImg.png'
+import YellowComfirm from 'components/YellowComfirm'
+import ScrollRefresh from 'components/ScrollRefresh'
+import { http } from 'util/request'
+import { CreateNewAccount, GetUserInfo } from 'util/netApi'
+import { storage } from 'util/storage'
+import { accessToken, loginPro } from 'util/const.js'
 export default {
   components: {
     TopBar,
     YellowComfirm,
     ScrollRefresh
   },
-  data() {
+  data () {
     return {
-      tips: "恭喜！注册成功了！<br/> 登录ID: 100012<br/>登录密码：123456<br/>交易密码：123456<br/>请尽快登录修改并完善个人资料",
+      tips: '恭喜！注册成功了！<br/> 登录ID: 100012<br/>登录密码：123456<br/>交易密码：123456<br/>请尽快登录修改并完善个人资料',
       isEnter: false,
-      account: "2,000",
+      account: '2,000',
       isreturn: 0,
-     
+
       addmodel: {},
       initData: {
-      price: "",
-      positionId: "",
-      area: "",
-      addname:"",
-      addpid:0,
-      addtid:0,
-      addlevle:"",
-      addprice:0,
+        price: '',
+        positionId: '',
+        area: '',
+        addname: '',
+        addpid: 0,
+        addtid: 0,
+        addlevle: '',
+        addprice: 0
       },
       option1: [
-        { text: "1000", value: 1 },
-        { text: "500", value: 2 }
+        { text: '1000', value: 1 },
+        { text: '500', value: 2 }
       ]
-    };
+    }
   },
-  mounted() {},
+  mounted () {},
   computed: {},
   methods: {
-    goNext() {
+    goNext () {
       if (this.account < this.addmodel.investmentAmount) {
-        this.isEnter = true;
-        this.tips = "当前金额不足";
-        return;
+        this.isEnter = true
+        this.tips = '当前金额不足'
+        return
       }
       http(
         CreateNewAccount,
         { jsondata: JSON.stringify(this.addmodel) },
         json => {
           if (json.code === 0) {
-            //"恭喜！注册成功了！<br/> 登录ID: 100012<br/>登录密码：123456<br/>交易密码：123456<br/>请尽快登录修改并完善个人资料"
-            this.isEnter = true;
-            this.tips = "恭喜！注册成功了！<br/> 登录ID:"+json.msg+"<br/>登录密码："+this.addmodel.loginPass+"<br/>交易密码："+this.addmodel.TradePass+"<br/>请尽快登录修改并完善个人资料"
-            this.account = this.account - this.addmodel.investmentAmount;
-            this.isreturn = 1;
+            // "恭喜！注册成功了！<br/> 登录ID: 100012<br/>登录密码：123456<br/>交易密码：123456<br/>请尽快登录修改并完善个人资料"
+            this.isEnter = true
+            this.tips = '恭喜！注册成功了！<br/> 登录ID:' + json.msg + '<br/>登录密码：' + this.addmodel.loginPass + '<br/>交易密码：' + this.addmodel.TradePass + '<br/>请尽快登录修改并完善个人资料'
+            this.account = this.account - this.addmodel.investmentAmount
+            this.isreturn = 1
           } else {
-            this.isEnter = true;
+            this.isEnter = true
           }
         }
-      );
+      )
     },
-    changeModel(v) {
-      this.isEnter = v;
+    changeModel (v) {
+      this.isEnter = v
     },
-    clickOk() {
-      this.isEnter = false;
+    clickOk () {
+      this.isEnter = false
       if (this.isreturn == 1) {
         this.$router.push({
-          name: "relation",
+          name: 'relation',
           params: { uid: this.addmodel.Jid }
-        });
+        })
       }
     },
-    TogetUserInfo() {
+    TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          this.account = json.response.rp;
+          this.account = json.response.rp
         }
-      });
+      })
     }
   },
-  created() {
- 
-    this.TogetUserInfo();
-    if (storage.getLocalStorage("joindata")) {
-      this.addmodel = JSON.parse(storage.getLocalStorage("joindata"));
-         console.log(this.addmodel)
-      this.initData.price = this.addmodel.investmentAmount;
-      this.initData.addname = this.addmodel.NickName;
-      this.initData.addtid = this.addmodel.Jid;
-      this.initData.addpid = this.addmodel.parentID;
-      this.initData.addprice=this.addmodel.investmentAmount;
-      this.initData.addlevle =this.addmodel.levlename;
+  created () {
+    this.TogetUserInfo()
+    if (storage.getLocalStorage('joindata')) {
+      this.addmodel = JSON.parse(storage.getLocalStorage('joindata'))
+      console.log(this.addmodel)
+      this.initData.price = this.addmodel.investmentAmount
+      this.initData.addname = this.addmodel.NickName
+      this.initData.addtid = this.addmodel.Jid
+      this.initData.addpid = this.addmodel.parentID
+      this.initData.addprice = this.addmodel.investmentAmount
+      this.initData.addlevle = this.addmodel.levlename
 
       if (this.addmodel.L == 0) {
-        this.initData.area = "蔬菜區";
+        this.initData.area = '蔬菜區'
       } else {
-        this.initData.area = "水果區";
+        this.initData.area = '水果區'
       }
     }
-    this.isEnter = false;
+    this.isEnter = false
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

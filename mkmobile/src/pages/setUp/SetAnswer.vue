@@ -50,58 +50,58 @@
 </template>
 
 <script>
-import TopBar from "components/TopBar";
-import YellowComfirm from "components/YellowComfirm";
-import { GetAllQuestionList, GetSetQuestionList } from "util/netApi";
-import { http } from "util/request";
-import { storage } from "util/storage";
-import { accessToken, loginPro } from "util/const.js";
+import TopBar from 'components/TopBar'
+import YellowComfirm from 'components/YellowComfirm'
+import { GetAllQuestionList, GetSetQuestionList } from 'util/netApi'
+import { http } from 'util/request'
+import { storage } from 'util/storage'
+import { accessToken, loginPro } from 'util/const.js'
 
 export default {
   components: {
     TopBar,
     YellowComfirm
   },
-  data() {
+  data () {
     return {
       showChat: true,
       q1id: 0,
       q2id: 0,
       q3id: 0,
-      Q1: "1",
-      Q2: "2",
-      Q3: "3",
+      Q1: '1',
+      Q2: '2',
+      Q3: '3',
       form: {
-        idcard: "",
-        tpwd: "",
-        q1answer: "",
-        q2answer: "",
-        q3answer: ""
+        idcard: '',
+        tpwd: '',
+        q1answer: '',
+        q2answer: '',
+        q3answer: ''
       },
       isEnter: false,
-      tips: "",
+      tips: '',
       tipsObj: {
-        nosucceed: "提交失败",
-        succeed: "提交成功"
+        nosucceed: '提交失败',
+        succeed: '提交成功'
       }
-    };
+    }
   },
-  mounted() {},
+  mounted () {},
   methods: {
-    goNext() {
-      var answerslist = new Array();
+    goNext () {
+      var answerslist = new Array()
       answerslist.push({
         qID: this.q1id,
         answer: this.form.q1answer
-      });
+      })
       answerslist.push({
         qID: this.q2id,
         answer: this.form.q2answer
-      });
+      })
       answerslist.push({
         qID: this.q3id,
         answer: this.form.q3answer
-      });
+      })
 
       http(
         GetSetQuestionList,
@@ -112,49 +112,49 @@ export default {
         },
         json => {
           if (json.code === 0) {
-            this.$router.push({ name: "setting" });
+            this.$router.push({ name: 'setting' })
           } else {
-            this.tips = json.msg;
-            this.isEnter = true;
+            this.tips = json.msg
+            this.isEnter = true
           }
         }
-      );
+      )
     },
-    ToGetAllQuestionList() {
+    ToGetAllQuestionList () {
       http(GetAllQuestionList, null, json => {
-        console.log(json);
-        let max = json.response.length - 1;
+        console.log(json)
+        let max = json.response.length - 1
         if (json.code === 0) {
-          let q1 = Math.ceil(Math.random() * max);
-          let q2 = Math.ceil(Math.random() * max);
+          let q1 = Math.ceil(Math.random() * max)
+          let q2 = Math.ceil(Math.random() * max)
           while (q1 == q2) {
-            q2 = Math.ceil(Math.random() * max);
+            q2 = Math.ceil(Math.random() * max)
           }
-          let q3 = Math.ceil(Math.random() * max);
+          let q3 = Math.ceil(Math.random() * max)
           while (q3 == q2 || q3 == q1) {
-            q3 = Math.ceil(Math.random() * max);
+            q3 = Math.ceil(Math.random() * max)
           }
 
-          this.Q1 = json.response[q1].Question_CN;
-          this.Q2 = json.response[q2].Question_CN;
-          this.Q3 = json.response[q3].Question_CN;
-          this.q1id = json.response[q1].Id;
-          this.q2id = json.response[q2].Id;
-          this.q3id = json.response[q3].Id;
+          this.Q1 = json.response[q1].Question_CN
+          this.Q2 = json.response[q2].Question_CN
+          this.Q3 = json.response[q3].Question_CN
+          this.q1id = json.response[q1].Id
+          this.q2id = json.response[q2].Id
+          this.q3id = json.response[q3].Id
         }
-      });
+      })
     },
-    clickOk() {
-      this.isEnter = false;
+    clickOk () {
+      this.isEnter = false
     },
-    changeModel(v) {
-      this.isEnter = v;
+    changeModel (v) {
+      this.isEnter = v
     }
   },
-  created() {
-    this.ToGetAllQuestionList();
+  created () {
+    this.ToGetAllQuestionList()
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
