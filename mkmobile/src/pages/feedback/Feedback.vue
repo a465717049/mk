@@ -36,11 +36,12 @@
 <script>
 import TopBar from 'components/TopBar'
 import { http } from 'util/request'
-import { GetUserFeedBack, AddUserFeedBack,GetUserInfo } from 'util/netApi'
+import { GetUserFeedBack, AddUserFeedBack, GetUserInfo } from 'util/netApi'
 import { storage } from 'util/storage'
 import ScrollRefresh from 'components/ScrollRefresh'
 import defaultImg from '@/assets/imgs/set/head03.png'
-import { accessToken, loginPro,photoList } from 'util/const.js'
+import { accessToken, loginPro, photoList } from 'util/const.js'
+import Store from '@/store'
 
 export default {
   components: {
@@ -54,7 +55,7 @@ export default {
         iconLeft: 'iconlist2f',
         iconRight: false
       },
-      defaultimg:"",
+      defaultimg: '',
       list: [
         // {
         //   id: 1,
@@ -136,7 +137,7 @@ export default {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
           console.log(json)
-           this.defaultimg = photoList[json.response.photo]
+          this.defaultimg = photoList[json.response.photo]
         }
       })
     },
@@ -168,6 +169,7 @@ export default {
   created () {
     this.TogetUserInfo()
     this.ToGetUserFeedBack()
+    Store.commit('changeRead', true)
   }
 }
 </script>

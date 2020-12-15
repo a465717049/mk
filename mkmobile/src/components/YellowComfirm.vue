@@ -7,7 +7,10 @@
   >
     <div class="brown-border clearfix">
       <div class="yellow-bg">
-        <img class="item-l" src="@/assets/imgs/login/head.png" alt />
+        <div class="imgCont">
+          <img class="item-l" src="@/assets/imgs/login/head1.png" alt />
+          <img class="eye" src="@/assets/imgs/login/eye2.png" alt />
+        </div>
         <i class="iconfont iconguanbi" @click="clickNo"></i>
         <div class="item-r">
           <h3 class="item-r-tit">提示：</h3>
@@ -138,11 +141,24 @@ export default {
   width: 100%;
   display: flex;
   position: relative;
-  .item-l {
-    width: 108px;
-    height: 108px;
+  .imgCont {
+    width: 145px;
+    height: 115px;
     margin-right: 60px;
+    position: relative;
+    .item-l {
+      width: 100%;
+      height: 100%;
+    }
+    .eye{
+      position: absolute;
+      width: 30%;
+      top: 34px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
+
   .item-r {
     flex: 1;
     color: #3f1008;
