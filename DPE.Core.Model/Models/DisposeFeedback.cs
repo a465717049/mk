@@ -21,6 +21,8 @@ namespace DPE.Core.Model.Models
 
            public long? MessageUid { get; set; }
 
+           public long? Messageid { get; set; }
+
            public string Message { get; set; }
 
            public string MessageImgUrl { get; set; }

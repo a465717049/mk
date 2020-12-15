@@ -2515,7 +2515,8 @@ namespace DPE.Core.Controllers
                     return result;
                 }
 
-                var data = await _idisposefeedbackservices.Add(new DisposeFeedback { IReply = true, CreateTime = DateTime.Now, IsDelete = false, Message = msg, MessageImgUrl = "", MessageUid = Id });
+                var userfeedback = await _iuserfeedbackservices.QueryById(Id);
+                var data = await _idisposefeedbackservices.Add(new DisposeFeedback { IReply = true, CreateTime = DateTime.Now, IsDelete = false, Message = msg, MessageImgUrl = "", MessageUid= userfeedback.uId, Messageid = Id });
 
                 if (data > 0)
                 {
