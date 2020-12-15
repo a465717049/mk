@@ -8,7 +8,7 @@
       <img :src="forgotImg" alt class="head" />
       <h6 class="forgotTitle">重置您的密码</h6>
       <ul>
-        <li>
+        <li> 
           <div class="title">请输入您的ID</div>
           <input type="text" v-model="id" />
         </li>
@@ -114,21 +114,53 @@ export default {
       })
     },
     gox () {
-      if (this.verification.toLowerCase() != this.code.toLowerCase()) {
-        this.tips = "验证码错误！请确认验证码是否正确！";
-        this.showComfirm = true;
+      //id  passwordType verification
+
+      if(!this.id)
+      {
+        this.showComfirm=true;
+        this.tips="请输入您的ID";
         return;
       }
-      http(checkUser, { uid: this.id }, json => {
+
+      if(!this.verification)
+      {
+        this.showComfirm=true;
+        this.tips="请输入验证码";
+        return;
+      }
+
+      // if (this.verification.toLowerCase() != this.code.toLowerCase()) {
+      //   this.tips = "验证码错误！请确认验证码是否正确！";
+      //   this.showComfirm = true;
+      //   return;
+      // }
+
+  try
+  {
+  http(checkUser, { uid: this.id }, json => {
         console.log(this.id)
         if (json.code === 0) {
-          this.isEnter = false
           this.$router.push({
             name: 'Verification',
             params: { uid: this.id }
           })
+        }else
+        {
+          this.showComfirm = true;
+          this.tips="不存在该ID请重新输入";
+          this.id="";
         }
       })
+
+  }catch(err)
+  {
+     this.showComfirm = true;
+          this.tips="不存在该ID请重新输入";
+          this.id="";
+  }
+      
+   
     }
   }
 }

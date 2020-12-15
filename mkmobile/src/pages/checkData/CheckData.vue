@@ -1,12 +1,12 @@
 <template>
   <div class="CheckDataWrapper">
     <TopBar class="center-one-search">注册成为会员</TopBar>
-    <ScrollRefresh
+    <!-- <ScrollRefresh
       @getData="TogetUserInfo"
       :residualHeight="topbarHeight+bottomTabBarHeight+10"
       :isNeedUp="false"
       class="innerScroll"
-    >
+    > -->
       <div class="innerWrap">
         <div class="tips base-flex flex-start p-58 bg-white borderR mb-80">
           <img src="@/assets/imgs/tipimg.png" class="img" alt />
@@ -57,8 +57,8 @@
         </div>
         <!-- <button class="next" @click="goNext">确认提交</button> -->
       </div>
-    </ScrollRefresh>
-    <YellowComfirm :show="isEnter" :tipTitle="tips" @clickOver="clickOverpay" @clickOk="clickOk()"></YellowComfirm>
+    <!-- </ScrollRefresh> -->
+    <YellowComfirm :show="isEnter" :tipTitle="tips"  @clickNo="clickNo()" @clickOk="clickOk()"></YellowComfirm>
   </div>
 </template>
 <script type="text/javascript">
@@ -103,6 +103,15 @@ export default {
   mounted () {},
   computed: {},
   methods: {
+    clickNo()
+    {
+     if (this.isreturn == 1) {
+        this.$router.push({
+          name: 'friendsList',
+          params: { uid: this.addmodel.Jid }
+        })
+      }  
+    },
     goNext () {
       if (this.account < this.addmodel.investmentAmount) {
         this.isEnter = true
@@ -114,11 +123,19 @@ export default {
         { jsondata: JSON.stringify(this.addmodel) },
         json => {
           if (json.code === 0) {
-            // "恭喜！注册成功了！<br/> 登录ID: 100012<br/>登录密码：123456<br/>交易密码：123456<br/>请尽快登录修改并完善个人资料"
-            this.isEnter = true
-            this.tips = '恭喜！注册成功了！<br/> 登录ID:' + json.msg + '<br/>登录密码：' + this.addmodel.loginPass + '<br/>交易密码：' + this.addmodel.TradePass + '<br/>请尽快登录修改并完善个人资料'
-            this.account = this.account - this.addmodel.investmentAmount
-            this.isreturn = 1
+            var n = Number(json.msg)
+          if (!isNaN(n)) {  // 数字
+          // "恭喜！注册成功了！<br/> 登录ID: 100012<br/>登录密码：123456<br/>交易密码：123456<br/>请尽快登录修改并完善个人资料"
+          this.isEnter = true
+          this.tips = '恭喜！注册成功了！<br/> 登录ID:' + json.msg + '<br/>登录密码：' + this.addmodel.loginPass + '<br/>交易密码：' + this.addmodel.TradePass + '<br/>请尽快登录修改并完善个人资料'
+          this.account = this.account - this.addmodel.investmentAmount
+          this.isreturn = 1
+          }
+          else // 字符
+          {
+          this.isEnter = true
+          this.tips=json.msg
+          }           
           } else {
             this.isEnter = true
           }
@@ -130,9 +147,9 @@ export default {
     },
     clickOk () {
       this.isEnter = false
-      if (this.isreturn == 1) {
+      if (this.isreturn === 1) {
         this.$router.push({
-          name: 'relation',
+          name: 'friendsList',
           params: { uid: this.addmodel.Jid }
         })
       }
@@ -146,6 +163,7 @@ export default {
     }
   },
   created () {
+     
     this.TogetUserInfo()
     if (storage.getLocalStorage('joindata')) {
       this.addmodel = JSON.parse(storage.getLocalStorage('joindata'))
@@ -163,27 +181,37 @@ export default {
         this.initData.area = '水果區'
       }
     }
-    this.isEnter = false
+    //this.isEnter = false
+    
   }
 }
 </script>
 
 <style lang="less" scoped>
-.CheckDataWrapper .innerScroll {
-  /deep/ .wrapper .bscroll-container {
-    min-height: calc(100vh - 420px);
-  }
-}
+// .CheckDataWrapper .innerScroll {
+//   /deep/ .wrapper .bscroll-container {
+//     min-height: calc(100vh - 420px);
+//   }
+// }
 .CheckDataWrapper {
+  // max-height: 100vh;
+  // overflow: scroll;
+  // padding-bottom: 130px;
   .innerWrap {
     width: 100vw;
     margin-top: 0px;
     padding-top: 30px;
-    padding-bottom: 100px;
+    padding-bottom: 300px;
+    height: calc(100vh - 260px);
+    overflow-y: scroll;
   }
   .tips-part {
     font-weight: bold;
     color: rgba(52, 52, 52, 1);
+      div{
+          font-size: 40px;
+          line-height: 60px;
+       }
   }
   .tips {
     width: 90%;

@@ -158,7 +158,12 @@ export default {
       }
       // alert(this.initData.Jid)
       storage.setLocalStorage('joindata', JSON.stringify(Joindata))
+<<<<<<< HEAD
          this.$router.push({ name: 'CheckData' })
+=======
+     // this.$router.push({ name: 'Additional' })
+      this.$router.push({ name: 'CheckData' })
+>>>>>>> 24770ab35bf43928a928440cb856da89ff6bb404
     }
   },
   created () {
@@ -198,6 +203,10 @@ export default {
     .tips-part {
       font-weight: bold;
       color: rgba(52, 52, 52, 1);
+      div{
+          font-size: 40px;
+          line-height: 60px;
+       }
     }
     .tips {
       width: 90%;

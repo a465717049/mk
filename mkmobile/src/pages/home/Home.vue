@@ -103,10 +103,13 @@
         </div>
       </div>
     </div>
+    <YellowComfirm :show="isEnter" :tipTitle="tips"  @clickNo="clickNo()" @clickOk="clickOk()"></YellowComfirm>
     </ScrollRefresh>
+ 
   </div>
 </template>
 <script type="text/javascript">
+import YellowComfirm from 'components/YellowComfirm'
 import TopBar from 'components/TopBar'
 import banner1 from '../../assets/imgs/banner-00.png'
 import banner2 from '../../assets/imgs/banner-01.png'
@@ -118,9 +121,13 @@ import { GetBanner, GetUserInfo, getEpexchange } from 'util/netApi'
 import ScrollRefresh from 'components/ScrollRefresh'
 import { storage } from 'util/storage'
 import { photoList } from 'util/const.js'
+
 export default {
+
   data () {
     return {
+      tips: '',
+      isEnter: false,
       defaultImg,
       username: '',
       uid: '',
@@ -158,10 +165,15 @@ export default {
   components: {
     TopBar,
     countTo,
-    ScrollRefresh
+    ScrollRefresh,
+    YellowComfirm
   },
   computed: {},
   methods: {
+    clickNo()
+    {
+      this.$router.push({name: 'setting'})
+    },
     readloadinfo () {
       var choiceindex = 1
       if (this.active == 0) {
@@ -218,6 +230,12 @@ export default {
               count: json.response.rp
             }
           ]
+          
+            if(!json.response.isSetIDNumber)
+            {
+              this.tips='您还未完善资料，请前去完善资料!'
+              this.isEnter=true;
+            }
         } else {
           //  this.$router.push({ path: "/login" });
         }

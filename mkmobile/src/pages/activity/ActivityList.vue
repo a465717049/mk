@@ -55,28 +55,28 @@
 </template>
 
 <script>
-import TopBar from "components/TopBar";
-import BScroll from "better-scroll";
+import TopBar from 'components/TopBar'
+import BScroll from 'better-scroll'
 export default {
-  name: "Activity",
+  name: 'Activity',
   components: {
     TopBar
   },
-  data() {
+  data () {
     return {
       currentImg: 0,
       option: {
-        iconLeft: "iconmenu2"
+        iconLeft: 'iconmenu2'
       },
       activityList: []
-    };
+    }
   },
   methods: {
-    onChange(item, index) {
+    onChange (item, index) {
       // 此时的index指的是当前images数组里面显示图片的index
       item.images.forEach(element => {
-        this.$set(item, "currentImg", index);
-      });
+        this.$set(item, 'currentImg', index)
+      })
     }
     // scrollInit() {
     //   if (!this.scroll) {
@@ -93,11 +93,11 @@ export default {
     //   }
     // }
   },
-  created() {},
-  mounted() {
+  created () {},
+  mounted () {
     // this.scrollInit();
   }
-};
+}
 </script>
 <style lang='less' scoped>
 .activity-list {
@@ -113,6 +113,10 @@ export default {
       .tips-part {
         font-weight: bold;
         color: rgba(52, 52, 52, 1);
+        div{
+          font-size: 40px;
+          line-height: 60px;
+        }
       }
       .tips {
         min-height: 158px;

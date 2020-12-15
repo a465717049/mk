@@ -40,11 +40,12 @@ namespace DPE.Core.Controllers
         readonly ISPexchangeServices _SPexchangeServices;
         readonly IUser _user;
         readonly PermissionRequirement _requirement;
+        readonly ISysUserInfoServices _isysuserinfoservices;
         /// <summary>
         /// 构造函数注入
         /// </summary>
 
-        public UserInfoController(IEPServices EPServices, IUserInfoServices userInfoServices, IEPexchangeServices ePexchangeServices, ISPexchangeServices spexchangeServices, PermissionRequirement requirement, IUser user)
+        public UserInfoController(ISysUserInfoServices isysuserinfoservices,IEPServices EPServices, IUserInfoServices userInfoServices, IEPexchangeServices ePexchangeServices, ISPexchangeServices spexchangeServices, PermissionRequirement requirement, IUser user)
         {
             _userInfoServices = userInfoServices;
             _user = user;
@@ -52,6 +53,7 @@ namespace DPE.Core.Controllers
             _EPServices = EPServices;
             _EPexchangeServices = ePexchangeServices;
             _SPexchangeServices = spexchangeServices;
+            _isysuserinfoservices = isysuserinfoservices;
         }
 
 
@@ -107,7 +109,8 @@ namespace DPE.Core.Controllers
                     sum = user.Sum.Value,
                     dynamicTotal = user.DynamicTotal.Value,
                     lprofit = user.LProfit.Value,
-                    rprofit = user.RProfit.Value
+                    rprofit = user.RProfit.Value,
+                    isSetIDNumber = user.isSetIDNumber
                 }
             };
         }
@@ -146,26 +149,34 @@ namespace DPE.Core.Controllers
         [Route("checkUser")]
         public async Task<MessageModel<dynamic>> checkUser(long uid)
         {
+            
             var data = new MessageModel<dynamic>();
-
-
-            var userinfo = await _userInfoServices.GetUserInfo(uid);
-            if (userinfo.uID > 0)
+            try
             {
-                data.response = new { enable = true };
-                data.success = true;
-                data.code = 0;
+                var userinfo = await _userInfoServices.GetUserInfo(uid);
+                if (userinfo.uID > 0)
+                {
+                    data.response = new { enable = true };
+                    data.success = true;
+                    data.code = 0;
 
+                }
+                else
+                {
+
+                    data.response = new { enable = false };
+                    data.success = true;
+                    data.code = -1;
+                }
+                return data;
             }
-            else
+            catch
             {
-
                 data.response = new { enable = false };
                 data.success = true;
                 data.code = -1;
+                return data;
             }
-
-            return data;
         }
 
         /// <summary>

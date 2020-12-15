@@ -35,5 +35,7 @@ namespace DPE.Core.Model.ViewModels
         public decimal weekly { get; set; }
         public decimal sum { get; set; }
         public decimal dynamicTotal { get; set; }
+
+        public bool? isSetIDNumber { get; set; }
     }
 }
