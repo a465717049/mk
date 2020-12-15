@@ -175,14 +175,16 @@ export default {
 //   }
 // }
 .CheckDataWrapper {
-  max-height: 100vh;
-  overflow: scroll;
-  padding-bottom: 130px;
+  // max-height: 100vh;
+  // overflow: scroll;
+  // padding-bottom: 130px;
   .innerWrap {
     width: 100vw;
     margin-top: 0px;
     padding-top: 30px;
-    padding-bottom: 100px;
+    padding-bottom: 300px;
+    height: calc(100vh - 260px);
+    overflow-y: scroll;
   }
   .tips-part {
     font-weight: bold;
