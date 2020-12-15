@@ -48,7 +48,7 @@ export default {
       searchvalue: 0,
       showLocation: true,
       topBarOption: {
-        iconLeft: 'iconlist2f',
+        iconLeft: 'iconmenu2',
         iconRight: ''
       },
       count: 0,

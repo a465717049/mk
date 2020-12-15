@@ -15,14 +15,15 @@
         <img class="img-header img-photo" :src="option.image" alt />
       </i>
       <i
-        v-else-if="option.iconRight==='iconmessage'"
-        class="iconfont img-r iconmessage"
+        v-else-if="option.iconRight==='iconxinxi2'"
+        class="iconfont img-r iconxinxi2"
         @click="goFeedBack"
-      ></i>
+      >
+        <div v-if="hasNoRead" class="weidu"></div>
+      </i>
       <i v-else class="iconfont img-r" :class="option.iconRight" @click="clickR">
         <!-- <img v-if="!option.iconRight" class="img-fangxing" src="@/assets/imgs/fangxing.png" alt /> -->
         <!-- 未读图标  -->
-        <div v-if="hasNoRead" class="weidu"></div>
         <div v-if="badge" class="badge">{{badge}}</div>
       </i>
       <div class="clear"></div>
@@ -173,6 +174,7 @@
 <script>
 import TopBar from 'components/TopBar'
 import Store from '@/store'
+import { mapState } from 'vuex'
 import { storage } from '@/util/storage'
 export default {
   components: {
@@ -183,8 +185,8 @@ export default {
       type: Object,
       default: function () {
         return {
-          iconLeft: 'iconlist2f',
-          iconRight: 'iconmessage'
+          iconLeft: 'iconmenu2',
+          iconRight: 'iconxinxi2'
         }
       }
     },
@@ -193,10 +195,6 @@ export default {
       default: false
     },
     showChat: {
-      type: Boolean,
-      default: false
-    },
-    hasNoRead: {
       type: Boolean,
       default: false
     },
@@ -213,6 +211,9 @@ export default {
       activeNames: ['1']
     }
   },
+  computed: mapState({
+    hasNoRead: state => state.hasNoRead
+  }),
   methods: {
     clickPopup () {
       this.menuShow = true
@@ -302,11 +303,11 @@ export default {
       height: 56px;
       animation: myfirst 4s 2s infinite;
     }
- 
+
     .weidu {
       display: block;
       position: absolute;
-      right: 8px;
+      right: 0px;
       top: 30px;
       width: 30px;
       height: 30px;
@@ -326,15 +327,15 @@ export default {
       background: red;
       border-radius: 50%;
       z-index: 999;
-
       font-size: 32px;
       font-weight: bold;
       color: #ffffff;
     }
   }
-  .iconmessage{
-    top: 68px;
-    right: 60px;
+  .iconxinxi2{
+    top: 38px;
+    right: 50px;
+    font-size: 100px;
   }
   @keyframes myfirst {
     from {
@@ -347,7 +348,7 @@ export default {
   .icon-l {
     left: 60px;
   }
-  .iconlist2f {
+  .iconmenu2 {
     // width: 100px;
     font-size: 80px;
   }
@@ -467,7 +468,7 @@ export default {
   margin: 0 auto;
   padding-top: 100px;
   font-size: 60px;
-  height: 440px;
+  height: 360px;
   position: relative;
   .four-tit-t {
     font-weight: normal;

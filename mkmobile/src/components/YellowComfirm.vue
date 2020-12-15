@@ -7,7 +7,10 @@
   >
     <div class="brown-border clearfix">
       <div class="yellow-bg">
-        <img class="item-l" src="@/assets/imgs/login/head.png" alt />
+        <div class="imgCont">
+          <img class="item-l" src="@/assets/imgs/login/head.png" alt />
+          <!-- <img class="eye" src="@/assets/imgs/login/eye2.png" alt /> -->
+        </div>
         <i class="iconfont iconguanbi" @click="clickNo"></i>
         <div class="item-r">
           <h3 class="item-r-tit">提示：</h3>
@@ -83,13 +86,13 @@ export default {
 .yellow-wrap {
   background: #efb618;
   width: 76vw;
-  border-radius: 30px;
-  padding: 8px;
+  border-radius: 50px;
+  // padding: 4px;
   .brown-border {
     padding: 50px 40px;
     border: 12px solid #fff;
     width: 100%;
-    border-radius: 30px;
+    border-radius: 50px;
   }
   .btn {
     color: #fff;
@@ -138,23 +141,37 @@ export default {
   width: 100%;
   display: flex;
   position: relative;
-  .item-l {
-    width: 108px;
-    height: 108px;
+  .imgCont {
+    width: 155px;
+    height: 155px;
     margin-right: 60px;
+    position: relative;
+    .item-l {
+      width: 100%;
+      height: 100%;
+    }
+    .eye{
+      position: absolute;
+      width: 30%;
+      top: 34px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
+
   .item-r {
     flex: 1;
     color: #3f1008;
     .item-r-tit {
-      font-size: 33px;
+      font-size: 36px;
       font-weight: bold;
       line-height: 60px;
       color: #410305;
-      margin-bottom: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
     }
     .item-r-tip {
-      font-size: 33px;
+      font-size: 36px;
       line-height: 60px;
       color: #410305;
       display: block;

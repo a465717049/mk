@@ -1,11 +1,6 @@
 <template>
   <div class="homeWrapper">
-    <ScrollRefresh
-      @getData="getData"
-      :residualHeight="bottomTabBarHeight+10"
-      :isNeedUp="false"
-      class="innerScroll">
-    <TopBar  @clickR="goNews">
+    <TopBar >
       <div class="center-four-search">
         <div class="four-tit-t">Hello</div>
         <div class="four-tit-b">{{username}}</div>
@@ -15,18 +10,24 @@
         <img  @click="goSetting" class="header-back" :src="headerimg?headerimg:defaultImg" alt />
       </div>
     </TopBar>
+    <ScrollRefresh
+      @getData="getData"
+      :residualHeight="bottomTabBarHeight+topbarHeight+10"
+      :isNeedUp="false"
+      class="innerScroll">
+
     <div class="mainWrap">
       <div class="innerWrap">
-        <van-swipe :autoplay="4000" class="sweiper1" :show-indicators="false">
+        <van-swipe :autoplay="4000" class="sweiper1" :show-indicators="false" >
           <van-swipe-item v-for="(image, index) in images" :key="index">
             <img :src="image.image" />
           </van-swipe-item>
         </van-swipe>
         <div class="swiper2Box">
-          <van-swipe :autoplay="4000" class="sweiper2" @change="onSwiperChange">
-            <van-swipe-item v-for="(item, index) in balanceList" :key="index">
+          <van-swipe  class="sweiper2" @change="onSwiperChange" :stop-propagation="false" >
+            <van-swipe-item v-for="(item, index) in balanceList" :key="index" @click='goinfo(item.type)'>
               <!-- <img src="../../assets/imgs/yellowBg.png" alt /> -->
-               <div class="countBox" @click='goinfo(item.type)' >
+               <div class="countBox"  >
                 <p>{{ balanceTile }}</p>
                 <countTo
                   ref="count"
@@ -41,7 +42,7 @@
               </div>
             </van-swipe-item>
           </van-swipe>
-         
+
           <!-- <countTo
               ref="count"
               :startVal="0"
@@ -124,8 +125,8 @@ export default {
       username: '',
       uid: '',
       // topBarOption: {
-      //   iconLeft: 'iconlist2f',
-      //   iconRight: 'iconmessage'
+      //   iconLeft: 'iconmenu2',
+      //   iconRight: 'iconxinxi2'
       // },
       active: 0,
       startVal: 0,
@@ -264,7 +265,7 @@ export default {
   // overflow-y: scroll;
   .mainWrap {
     width: 95%;
-    margin: -80px auto 0;
+    margin: 0 auto;
     img {
       width: 100%;
     }
@@ -352,8 +353,8 @@ export default {
 .four-tit-b{
   position:absolute;
   color: #0C0100;
-  top:250px;
-  font-size: 70px!important;
+  top:260px;
+  font-size: 80px!important;
   z-index: 2;
   margin-left: -100px !important;
 }
@@ -371,7 +372,7 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 30px;
+    margin-bottom: 60px;
     border-bottom: none;
     .title-re {
       margin-top: 10px;

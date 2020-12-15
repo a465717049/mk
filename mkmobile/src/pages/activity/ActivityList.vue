@@ -66,7 +66,7 @@ export default {
     return {
       currentImg: 0,
       option: {
-        iconLeft: "iconlist2f"
+        iconLeft: "iconmenu2"
       },
       activityList: []
     };

@@ -35,11 +35,11 @@ module.exports = {
     port: 2364, // 当前vue项目 端口号
     https: false,
     hotOnly: false, // https:{type:Boolean}
-     proxy: true, // 设置代理       
+    proxy: true, // 设置代理       
     proxy: {
       // 配置多个代理
       "/api": {
-        target: "http://localhost:8081",//这里改成你自己的后端api端口地址，记得每次修改，都需要重新build
+        target: "https://api.a8dog.top", //"http://localhost:8081",//这里改成你自己的后端api端口地址，记得每次修改，都需要重新build
         //target: "http://localhost:58427",
         //target: "http://api.douban.com",
         ws: true,
@@ -50,7 +50,7 @@ module.exports = {
         }
       },
       "/images": {
-        target: "http://localhost:8081",
+        target: "https://api.a8dog.top", // "http://localhost:8081",
         ws: true,
         changeOrigin: true
       },

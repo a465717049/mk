@@ -19,7 +19,7 @@
               <div class="tag graytag" v-else-if="data.status===4">己完成</div>
             </div>
             <div class="goods base-flex flex-start p-58 borderR mb-80">
-              <img src="@/assets/imgs/tipimg.png" class="img" alt />
+              <img :src="imgicon" class="img" alt />
               <div class="goods-info">
                 <div class="tip-titl">{{data.shopname}}</div>
                 <div>数量:{{data.shopnum}}    总价:{{data.shopprice}}</div>
@@ -52,7 +52,7 @@
         </ScrollRefresh>
       </div>
     </div>
-    <YellowComfirm :show="showComfirm" :tipTitle="tips"></YellowComfirm>
+    <YellowComfirm :show="showComfirm" :tipTitle="data.tips"></YellowComfirm>
   </div>
 </template>
 <script>
@@ -77,8 +77,8 @@ export default {
       showChat: false,
       placeinputValue: '',
       topBarOption: {
-        iconLeft: 'iconlist2f',
-        iconRight: 'iconmessage'
+        iconLeft: 'iconmenu2',
+        iconRight: 'iconxinxi2'
       },
       data:
       {
@@ -95,6 +95,7 @@ export default {
         status: 2,
         remark: ''
       },
+      imgicon: '',
       col: 2,
       company: '顺丰快递',
       icons: ['dot', 'iconlist', 'iconcangku', 'iconjiantoushang', 'icongoodswhoutStock', 'iconfahuo', 'iconcar', 'iconyunshu', 'iconperson', 'iconchaibaoguoqujian-xianxing', 'iconright'],
@@ -205,6 +206,15 @@ export default {
       http(GetShopDetailsMyweb, {id: this.shopid}, json => {
         if (json.code === 0) {
           this.data = json.response.datainfo[0]
+
+          let img = null
+          try {
+            img = require('@/assets/imgs/shop/goods-' + this.data.shopidid + '.png')
+          } catch (err) {
+            // 图片 不存在则使用默认的图片
+            img = require('@/assets/imgs/shop/camea.png')
+          }
+          this.imgicon = img
         }
       })
     }
