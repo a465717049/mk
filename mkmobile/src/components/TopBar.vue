@@ -15,8 +15,8 @@
         <img class="img-header img-photo" :src="option.image" alt />
       </i>
       <i
-        v-else-if="option.iconRight==='iconmessage'"
-        class="iconfont img-r iconmessage"
+        v-else-if="option.iconRight==='iconxinxi2'"
+        class="iconfont img-r iconxinxi2"
         @click="goFeedBack"
       >
         <div v-if="hasNoRead" class="weidu"></div>
@@ -185,8 +185,8 @@ export default {
       type: Object,
       default: function () {
         return {
-          iconLeft: 'iconlist2f',
-          iconRight: 'iconmessage'
+          iconLeft: 'iconmenu2',
+          iconRight: 'iconxinxi2'
         }
       }
     },
@@ -307,8 +307,8 @@ export default {
     .weidu {
       display: block;
       position: absolute;
-      right: -15px;
-      top: 15px;
+      right: 0px;
+      top: 30px;
       width: 30px;
       height: 30px;
       background: red;
@@ -332,9 +332,10 @@ export default {
       color: #ffffff;
     }
   }
-  .iconmessage{
-    top: 68px;
-    right: 60px;
+  .iconxinxi2{
+    top: 38px;
+    right: 50px;
+    font-size: 100px;
   }
   @keyframes myfirst {
     from {
@@ -347,7 +348,7 @@ export default {
   .icon-l {
     left: 60px;
   }
-  .iconlist2f {
+  .iconmenu2 {
     // width: 100px;
     font-size: 80px;
   }
@@ -467,7 +468,7 @@ export default {
   margin: 0 auto;
   padding-top: 100px;
   font-size: 60px;
-  height: 340px;
+  height: 360px;
   position: relative;
   .four-tit-t {
     font-weight: normal;

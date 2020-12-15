@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       topBarOption: {
-        iconLeft: "iconlist2f",
+        iconLeft: "iconmenu2",
         iconRight: ""
       },
       detailsTile:"惠州超五星酒店周末极奢晚宴1晚惠州超五星酒店周末极奢晚宴1晚惠州超五星酒店周末极奢晚宴1晚",

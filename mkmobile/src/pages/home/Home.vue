@@ -125,8 +125,8 @@ export default {
       username: '',
       uid: '',
       // topBarOption: {
-      //   iconLeft: 'iconlist2f',
-      //   iconRight: 'iconmessage'
+      //   iconLeft: 'iconmenu2',
+      //   iconRight: 'iconxinxi2'
       // },
       active: 0,
       startVal: 0,
@@ -353,8 +353,8 @@ export default {
 .four-tit-b{
   position:absolute;
   color: #0C0100;
-  top:250px;
-  font-size: 70px!important;
+  top:260px;
+  font-size: 80px!important;
   z-index: 2;
   margin-left: -100px !important;
 }
@@ -372,7 +372,7 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom: 30px;
+    margin-bottom: 60px;
     border-bottom: none;
     .title-re {
       margin-top: 10px;

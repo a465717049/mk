@@ -54,8 +54,8 @@ export default {
       showChat: false,
       placeinputValue: '',
       topBarOption: {
-        iconLeft: 'iconlist2f',
-        iconRight: 'iconmessage'
+        iconLeft: 'iconmenu2',
+        iconRight: 'iconxinxi2'
       },
       showComfirm: true,
       tips: '即將更新！',
