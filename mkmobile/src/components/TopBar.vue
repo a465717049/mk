@@ -18,11 +18,12 @@
         v-else-if="option.iconRight==='iconmessage'"
         class="iconfont img-r iconmessage"
         @click="goFeedBack"
-      ></i>
+      >
+        <div v-if="hasNoRead" class="weidu"></div>
+      </i>
       <i v-else class="iconfont img-r" :class="option.iconRight" @click="clickR">
         <!-- <img v-if="!option.iconRight" class="img-fangxing" src="@/assets/imgs/fangxing.png" alt /> -->
         <!-- 未读图标  -->
-        <div v-if="hasNoRead" class="weidu"></div>
         <div v-if="badge" class="badge">{{badge}}</div>
       </i>
       <div class="clear"></div>
@@ -173,6 +174,7 @@
 <script>
 import TopBar from 'components/TopBar'
 import Store from '@/store'
+import { mapState } from 'vuex'
 import { storage } from '@/util/storage'
 export default {
   components: {
@@ -196,10 +198,6 @@ export default {
       type: Boolean,
       default: false
     },
-    hasNoRead: {
-      type: Boolean,
-      default: false
-    },
     badge: {
       // 角标
       type: Number,
@@ -213,6 +211,9 @@ export default {
       activeNames: ['1']
     }
   },
+  computed: mapState({
+    hasNoRead: state => state.hasNoRead
+  }),
   methods: {
     clickPopup () {
       this.menuShow = true
@@ -302,12 +303,12 @@ export default {
       height: 56px;
       animation: myfirst 4s 2s infinite;
     }
- 
+
     .weidu {
       display: block;
       position: absolute;
-      right: 8px;
-      top: 30px;
+      right: -15px;
+      top: 15px;
       width: 30px;
       height: 30px;
       background: red;
@@ -326,7 +327,6 @@ export default {
       background: red;
       border-radius: 50%;
       z-index: 999;
-
       font-size: 32px;
       font-weight: bold;
       color: #ffffff;

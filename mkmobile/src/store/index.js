@@ -6,7 +6,8 @@ export default new Vuex.Store({
   state: {
     globalLoadingShow: false,
     topbarHeight: 0,
-    bottomTabBarHeight: 0
+    bottomTabBarHeight: 0,
+    hasNoRead: false// 是否有未读消息
   },
 
   mutations: {
@@ -20,6 +21,10 @@ export default new Vuex.Store({
     changeBottomTabBarHeight (state, height) {
       // console.log(height, 7777)
       state.bottomTabBarHeight = height
+    },
+    changeRead (state, bool) {
+      // console.log(height, 7777)
+      state.bottomTabBarHeight = bool
     }
   },
   modules: {
