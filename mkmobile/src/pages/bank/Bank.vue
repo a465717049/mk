@@ -30,83 +30,82 @@
   </div>
 </template>
 <script type="text/javascript">
-import TabBar from "components/TabBar";
-import TopBar from "components/TopBar";
-import { storage } from "util/storage";
-import YellowComfirm from "components/YellowComfirm";
+import TabBar from 'components/TabBar'
+import TopBar from 'components/TopBar'
+import { storage } from 'util/storage'
+import YellowComfirm from 'components/YellowComfirm'
 export default {
-  data() {
+  data () {
     return {
       showComfirm: false,
-      tips: "",
+      tips: '',
       tipsObj: {
-        nomember: "請輸入账号！",
-        nonickname: "請輸入昵稱！",
-        nolevel: "請選擇級別！",
-        nopwd: "請輸入密碼！",
-        norpwd: "請輸入重複密碼",
-        nopwdreset: "兩次密碼不一致請重新確認！"
+        nomember: '請輸入账号！',
+        nonickname: '請輸入昵稱！',
+        nolevel: '請選擇級別！',
+        nopwd: '請輸入密碼！',
+        norpwd: '請輸入重複密碼',
+        nopwdreset: '兩次密碼不一致請重新確認！'
       },
       initData: {
         Jid: 0,
-        code: "",
-        nickName: "",
+        code: '',
+        nickName: '',
         level: 1,
-        password: "",
-        comfirmPassword: "",
-        radioValue: "1",
+        password: '',
+        comfirmPassword: '',
+        radioValue: '1',
         parentID: 0,
         L: 0
       },
       option1: [
-      { text: "支付寶", value: 1 },
-      { text: "微信", value: 2 },
-      { text: "銀行卡", value: 3 },
-      { text: "USDT", value: 4 },
+        { text: '支付寶', value: 1 },
+        { text: '微信', value: 2 },
+        { text: '銀行卡', value: 3 },
+        { text: 'USDT', value: 4 }
       ]
-    };
+    }
   },
   components: {
     TabBar,
     TopBar,
     YellowComfirm
   },
-  mounted() {},
+  mounted () {},
   computed: {},
   methods: {
-    clickOk() {
-      this.showComfirm = false;
+    clickOk () {
+      this.showComfirm = false
     },
-    goEditData() {
-   
+    goEditData () {
 
     }
   },
-  created() {
-    if (storage.getLocalStorage("joindata")) {
-      var modeldata = JSON.parse(storage.getLocalStorage("joindata"));
-      this.initData.code = modeldata.MemberNo;
-      this.initData.Jid = modeldata.Jid;
-      this.initData.nickName = modeldata.NickName;
-      this.initData.L = modeldata.L;
-      this.initData.MemberNo = modeldata.MemberNo;
-      this.initData.loginPass = modeldata.loginPass;
+  created () {
+    if (storage.getLocalStorage('joindata')) {
+      var modeldata = JSON.parse(storage.getLocalStorage('joindata'))
+      this.initData.code = modeldata.MemberNo
+      this.initData.Jid = modeldata.Jid
+      this.initData.nickName = modeldata.NickName
+      this.initData.L = modeldata.L
+      this.initData.MemberNo = modeldata.MemberNo
+      this.initData.loginPass = modeldata.loginPass
       if (modeldata.investmentAmount == 500) {
-        this.initData.level = 2;
+        this.initData.level = 2
       } else {
-        this.initData.level = 1;
+        this.initData.level = 1
       }
     }
     if (this.$route.params.uid) {
-      this.initData.Jid = this.$route.params.uid;
+      this.initData.Jid = this.$route.params.uid
       this.initData.L = this.$route.params.isLeft
         ? this.$route.params.isLeft
-        : 0;
+        : 0
     }
-    console.log(this.$route.params.isLeft);
-    console.log(this.initData.L);
+    console.log(this.$route.params.isLeft)
+    console.log(this.initData.L)
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -121,6 +120,10 @@ export default {
     .tips-part {
       font-weight: bold;
       color: rgba(52, 52, 52, 1);
+      div{
+        font-size: 40px;
+        line-height: 60px;
+       }
     }
     .tips {
       width: 90%;
@@ -302,4 +305,3 @@ export default {
   }
 }
 </style>
-
