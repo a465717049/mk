@@ -175,6 +175,7 @@ export default {
           }
         }
       )
+      // this.$router.push({ name: 'CheckData' })
     }
   },
   created () {

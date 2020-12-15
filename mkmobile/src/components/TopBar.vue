@@ -333,7 +333,7 @@ export default {
     }
   }
   .iconxinxi2{
-    top: 38px;
+    top: 58px;
     right: 50px;
     font-size: 100px;
   }

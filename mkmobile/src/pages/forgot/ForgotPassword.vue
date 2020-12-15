@@ -86,8 +86,8 @@ export default {
       //  verificationCode: null,
       tips: '',
       passwordTypeList: [
-        { text: '登录密码', value: 0 }
-        //      { text: "交易密码", value: 1 }
+        { text: '登录密码', value: 0 },
+        { text: "交易密码", value: 1 }
       ]
     }
   },
@@ -114,11 +114,11 @@ export default {
       })
     },
     gox () {
-      // if (this.verification.toLowerCase() != this.code.toLowerCase()) {
-      //   this.tips = "验证码错误！请确认验证码是否正确！";
-      //   this.showComfirm = true;
-      //   return;
-      // }
+      if (this.verification.toLowerCase() != this.code.toLowerCase()) {
+        this.tips = "验证码错误！请确认验证码是否正确！";
+        this.showComfirm = true;
+        return;
+      }
       http(checkUser, { uid: this.id }, json => {
         console.log(this.id)
         if (json.code === 0) {

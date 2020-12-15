@@ -1,12 +1,12 @@
 <template>
   <div class="CheckDataWrapper">
     <TopBar class="center-one-search">注册成为会员</TopBar>
-    <ScrollRefresh
+    <!-- <ScrollRefresh
       @getData="TogetUserInfo"
       :residualHeight="topbarHeight+bottomTabBarHeight+10"
       :isNeedUp="false"
       class="innerScroll"
-    >
+    > -->
       <div class="innerWrap">
         <div class="tips base-flex flex-start p-58 bg-white borderR mb-80">
           <img src="@/assets/imgs/tipimg.png" class="img" alt />
@@ -57,7 +57,7 @@
         </div>
         <!-- <button class="next" @click="goNext">确认提交</button> -->
       </div>
-    </ScrollRefresh>
+    <!-- </ScrollRefresh> -->
     <YellowComfirm :show="isEnter" :tipTitle="tips" @clickOver="clickOverpay" @clickOk="clickOk()"></YellowComfirm>
   </div>
 </template>
@@ -169,12 +169,15 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.CheckDataWrapper .innerScroll {
-  /deep/ .wrapper .bscroll-container {
-    min-height: calc(100vh - 420px);
-  }
-}
+// .CheckDataWrapper .innerScroll {
+//   /deep/ .wrapper .bscroll-container {
+//     min-height: calc(100vh - 420px);
+//   }
+// }
 .CheckDataWrapper {
+  max-height: 100vh;
+  overflow: scroll;
+  padding-bottom: 130px;
   .innerWrap {
     width: 100vw;
     margin-top: 0px;
