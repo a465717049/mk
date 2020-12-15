@@ -156,19 +156,23 @@ export default {
         {
           pwd: this.initData.password,
           idcard: this.initData.typeNumber,
-          idname: this.initData.name
+          idname: this.initData.name,
+          phone:this.initData.phone,
+          addr:this.initData.addr
         },
         json => {
           if (json.code === 0) {
-            this.addmodel.uRealName = this.initData.name
-            this.addmodel.idType = this.initData.type
-            this.addmodel.CountryPhoneCode = this.initData.country
-            this.addmodel.idNumber = this.initData.typeNumber
-            this.addmodel.TradePass = this.initData.password
-            this.addmodel.phone = this.initData.phone
-            this.addmodel.addr = this.initData.addr
-            storage.setLocalStorage('joindata', JSON.stringify(this.addmodel))
-            this.$router.push({ name: 'CheckData' })
+             this.showComfirm = true
+             this.tips = '更新成功'
+           // this.addmodel.uRealName = this.initData.name
+          //  this.addmodel.idType = this.initData.type
+           // this.addmodel.CountryPhoneCode = this.initData.country
+          //  this.addmodel.idNumber = this.initData.typeNumber
+          //  this.addmodel.TradePass = this.initData.password
+           // this.addmodel.phone = this.initData.phone
+           // this.addmodel.addr = this.initData.addr
+          //  storage.setLocalStorage('joindata', JSON.stringify(this.addmodel))
+          //  this.$router.push({ name: 'CheckData' })
           } else {
             this.showComfirm = true
             this.tips = json.msg

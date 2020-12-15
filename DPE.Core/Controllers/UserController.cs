@@ -1844,62 +1844,77 @@ namespace DPE.Core.Controllers
 
         //交易密码校验
         [HttpPost]
-        public async Task<MessageModel<dynamic>> CheckUpwd(string pwd, string idcard, string idname)
+        public async Task<MessageModel<dynamic>> CheckUpwd(string pwd, string idcard, string idname, string phone, string addr)
         {
             MessageModel<dynamic> result = new MessageModel<dynamic>();
 
-            if (_user.ID == 0)
+            try
             {
-                //身份验证过期请重新登陆
-                result.code = 61005;
-                result.success = false;
-                result.msg = "身份验证过期请重新登陆!";
-                return result;
+
+                if (_user.ID == 0)
+                {
+                    //身份验证过期请重新登陆
+                    result.code = 61005;
+                    result.success = false;
+                    result.msg = "身份验证过期请重新登陆!";
+                    return result;
+                }
+
+                if (pwd == null)
+                {
+                    //请输入谷歌验证码
+                    result.code = 61005;
+                    result.success = false;
+                    result.msg = "请输入交易密码！";
+                    return result;
+                }
+
+
+                if (!CheckVeridenNo.ckidcard(idcard, idname))
+                {
+                    //请输入谷歌验证码
+                    result.code = 61005;
+                    result.success = false;
+                    result.msg = "身份证验证不通过！";
+                    return result;
+                }
+
+
+                var idresult = await _sysUserInfoServices.Query(x => x.IDNumber == MD5Helper.MD5Encrypt32(idcard));
+                if (idresult.Count > 0)
+                {
+                    //请输入谷歌验证码
+                    result.code = 61006;
+                    result.success = false;
+                    result.msg = "身份证验证已用于其他账号！";
+                    return result;
+                }
+
+                var fuser = await _sysUserInfoServices.Query(x => x.uID == _user.ID && x.uTradPWD == MD5Helper.MD5Encrypt32(pwd));
+
+                if (fuser.Count > 0)
+                {
+
+                    var model = fuser[0];
+                    model.uRealName = idname;
+                    model.IDNumber = MD5Helper.MD5Encrypt32(idcard);
+                    model.useraddr = addr;
+                    model.userphone = phone;
+                    model.isSetIDNumber = 1;
+                    await _sysUserInfoServices.Update(model);
+
+                    return result;
+                }
+                else
+                {
+                    result.code = 61005;
+                    result.success = false;
+                    result.msg = "请输入正确交易密码";
+                    return result;
+                }
             }
+            catch { result.code = 6001; result.msg = "请稍后尝试!"; result.success = false; return result; }
 
-            if (pwd == null)
-            {
-                //请输入谷歌验证码
-                result.code = 61005;
-                result.success = false;
-                result.msg = "请输入交易密码！";
-                return result;
-            }
-
-
-            if (!CheckVeridenNo.ckidcard(idcard, idname))
-            {
-                //请输入谷歌验证码
-                result.code = 61005;
-                result.success = false;
-                result.msg = "身份证验证不通过！";
-                return result;
-            }
-
-
-            var idresult = await _sysUserInfoServices.Query(x => x.IDNumber == MD5Helper.MD5Encrypt32(idcard));
-            if (idresult.Count > 0)
-            {
-                //请输入谷歌验证码
-                result.code = 61006;
-                result.success = false;
-                result.msg = "身份证验证已用于其他账号！";
-                return result;
-            }
-
-            var fuser = await _sysUserInfoServices.Query(x => x.uID == _user.ID && x.uTradPWD == MD5Helper.MD5Encrypt32(pwd));
-
-            if (fuser.Count > 0)
-            {
-                return result;
-            }
-            else
-            {
-                result.code = 61005;
-                result.success = false;
-                result.msg = "请输入正确交易密码";
-                return result;
-            }
         }
 
 
