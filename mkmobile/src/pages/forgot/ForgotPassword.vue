@@ -86,8 +86,8 @@ export default {
       //  verificationCode: null,
       tips: '',
       passwordTypeList: [
-        { text: '登录密码', value: 0 }
-        //      { text: "交易密码", value: 1 }
+        { text: '登录密码', value: 0 },
+        { text: "交易密码", value: 1 }
       ]
     }
   },

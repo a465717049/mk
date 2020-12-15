@@ -71,7 +71,7 @@ export default {
     return {
       topBarOption: {
        // image: headerImg,
-        iconLeft: 'iconlist2f',
+        iconLeft: 'iconmenu2',
         iconRight: ''
       }
     }

@@ -54,123 +54,123 @@
   </div>
 </template>
 <script type="text/javascript">
-import YellowComfirm from "components/YellowComfirm";
-import { http } from "util/request";
-import { TransOtherType, GetUserInfo ,UpdateLevelWeb} from "util/netApi";
-import { storage } from "util/storage";
-import TopBar from "components/TopBar";
+import YellowComfirm from 'components/YellowComfirm'
+import { http } from 'util/request'
+import { TransOtherType, GetUserInfo, UpdateLevelWeb} from 'util/netApi'
+import { storage } from 'util/storage'
+import TopBar from 'components/TopBar'
 export default {
-  data() {
+  data () {
     return {
       form: {
-        oType: "RP",
-        dType: "",
+        oType: 'RP',
+        dType: '',
         amount: 0,
-        tpwd: "",
-        gcode: ""
+        tpwd: '',
+        gcode: ''
       },
       account: 0,
       showComfirm: false,
 
       receiptTypeList: [
-        { text: "666", value: 666 },
-        { text: "2000", value: 2000 },
-       { text: "10000", value: 10000 }
+        { text: '666', value: 666 },
+        { text: '2000', value: 2000 },
+        { text: '10000', value: 10000 }
       ],
       transPassword: null,
       verificationCode: null,
-      tips: "",
+      tips: '',
       tipsObj: {
-        amount: "余额不足！",
-        notype: "请选择升级类型",
-        nosucceed: "升级异常，请稍后重试",
-        succeed: "升级成功"
+        amount: '余额不足！',
+        notype: '请选择升级类型',
+        nosucceed: '升级异常，请稍后重试',
+        succeed: '升级成功'
       }
-    };
+    }
   },
   components: {
     TopBar,
     YellowComfirm
   },
-  mounted() {},
+  mounted () {},
   computed: {},
   methods: {
-    clickOk() {
-      this.showComfirm = false;
+    clickOk () {
+      this.showComfirm = false
     },
-    changeModel(v) {
-      this.showComfirm = v;
+    changeModel (v) {
+      this.showComfirm = v
     },
-    ChangeTransType() {
-      this.TogetUserInfo();
-      if (this.form.oType == "EP") {
-        this.form.oType = "RP";
-        this.receiptTypeList = [{ text: "SP", value: "SP" }];
+    ChangeTransType () {
+      this.TogetUserInfo()
+      if (this.form.oType == 'EP') {
+        this.form.oType = 'RP'
+        this.receiptTypeList = [{ text: 'SP', value: 'SP' }]
       } else {
-        this.form.oType = "EP";
+        this.form.oType = 'EP'
         this.receiptTypeList = [
-          { text: "RP", value: "RP" },
-          { text: "SP", value: "SP" }
-        ];
+          { text: 'RP', value: 'RP' },
+          { text: 'SP', value: 'SP' }
+        ]
       }
     },
-    TogetUserInfo() {
+    TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          console.log(json);
-           if (json.response.lv_name == 1) this.form.amount =666;
-           if (json.response.lv_name == 2) this.form.amount = 2000;
-           if (json.response.lv_name == 3) this.form.amount = 10000;
-    
-          if (this.form.oType == "EP") {
-            this.account = json.response.gold;
-          } else if (this.form.oType == "RP") {
-            this.account = json.response.rp;
+          console.log(json)
+          if (json.response.lv_name == 1) this.form.amount = 666
+          if (json.response.lv_name == 2) this.form.amount = 2000
+          if (json.response.lv_name == 3) this.form.amount = 10000
+
+          if (this.form.oType == 'EP') {
+            this.account = json.response.gold
+          } else if (this.form.oType == 'RP') {
+            this.account = json.response.rp
           }
         }
-      });
+      })
     },
-    ToTranWithMe() {
+    ToTranWithMe () {
       if (this.account <= 0) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.amount;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.amount
+        return
       }
-            console.log(this.form.dType)
+      console.log(this.form.dType)
       if (this.form.amount >= this.form.dType) {
-        this.showComfirm = true;
-        this.tips = '不能小於當前等級';
-        return;
+        this.showComfirm = true
+        this.tips = '不能小於當前等級'
+        return
       }
 
       if (!this.form.dType) {
-        this.showComfirm = true;
-        this.tips = this.tipsObj.notype;
-        return;
+        this.showComfirm = true
+        this.tips = this.tipsObj.notype
+        return
       }
 
-      console.log(this.form);
-      let _this = this;
-      http(UpdateLevelWeb, {level:this.form.dType}, json => {
+      console.log(this.form)
+      let _this = this
+      http(UpdateLevelWeb, {level: this.form.dType}, json => {
         if (json.code === 0) {
-          this.showComfirm = true;
-          this.tips = this.tipsObj.succeed;
-          this.TogetUserInfo();
+          this.showComfirm = true
+          this.tips = this.tipsObj.succeed
+          this.TogetUserInfo()
         } else {
-          this.showComfirm = true;
+          this.showComfirm = true
           if (!json.success) {
-            this.tips = json.msg;
+            this.tips = json.msg
           } else {
-            this.tips = this.tipsObj.succeed;
+            this.tips = this.tipsObj.succeed
           }
         }
-      });
+      })
     }
   },
-  created() {
-    this.TogetUserInfo();
+  created () {
+    this.TogetUserInfo()
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -186,6 +186,10 @@ export default {
     .tips-part {
       font-weight: bold;
       color: rgba(52, 52, 52, 1);
+      div{
+          font-size: 33px;
+          line-height: 60px;
+       }
     }
     .tips {
       width: 90%;

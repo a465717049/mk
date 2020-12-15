@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       topBarOption: {
-        iconLeft: 'iconlist2f',
+        iconLeft: 'iconmenu2',
         iconRight: ''
       },
       ntype:null,

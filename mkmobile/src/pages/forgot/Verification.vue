@@ -68,9 +68,9 @@ export default {
         iconLeft: 'back',
         iconRight: ''
       },
-      Q1: 'q1',
-      Q2: 'q2',
-      Q3: 'q3',
+      Q1: '',
+      Q2: '',
+      Q3: '',
       initData: {
         q1id: 0,
         q2id: 0,
@@ -194,6 +194,8 @@ export default {
         .title {
           color: #353535;
           font-size: 42px;
+          line-height: 50px;
+          height: 50px;
           margin: 42px 0;
           font-weight: 800;
           letter-spacing: 6px;

@@ -52,7 +52,7 @@ export default {
     return {
       msg: '',
       topBarOption: {
-        iconLeft: 'iconlist2f',
+        iconLeft: 'iconmenu2',
         iconRight: false
       },
       defaultimg: '',

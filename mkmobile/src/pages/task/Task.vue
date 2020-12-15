@@ -59,7 +59,7 @@ export default {
     return {
       activatedIndex:0,
       option: {
-        iconLeft: "iconlist2f",
+        iconLeft: "iconmenu2",
        // image: require("@/assets/imgs/set/person.png")
       },
       taskList: [

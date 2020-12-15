@@ -175,6 +175,7 @@ export default {
           }
         }
       )
+      // this.$router.push({ name: 'CheckData' })
     }
   },
   created () {
@@ -210,6 +211,10 @@ export default {
     .tips-part {
       font-weight: bold;
       color: rgba(52, 52, 52, 1);
+      div{
+          font-size: 40px;
+          line-height: 60px;
+       }
     }
     .tips {
       width: 90%;

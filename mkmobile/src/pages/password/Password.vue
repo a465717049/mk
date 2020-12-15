@@ -115,11 +115,11 @@ export default {
     goNext () {
       http(SetUpdatePassword, this.form, json => {
         // console.log(json)
-        let self = this;
+        let self = this
         if (json.code === 0) {
           this.isEnter = true
-          this.tips ='修改成功5s后返回登录'
-          setTimeout(function(){self.$router.push("Login") },5000)
+          this.tips = '修改成功5s后返回登录'
+          setTimeout(function () { self.$router.push('Login') }, 5000)
         } else {
           this.isEnter = true
           if (!json.success) {
@@ -146,7 +146,7 @@ export default {
     }
   },
   created () {
-    
+
   }
 }
 </script>
@@ -306,6 +306,10 @@ export default {
     .tips-part {
       font-weight: bold;
       color: rgba(52, 52, 52, 1);
+        div{
+          font-size: 40px;
+          line-height: 60px;
+       }
     }
     .tips {
       width: 90%;

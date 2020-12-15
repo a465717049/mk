@@ -77,8 +77,8 @@ export default {
       showChat: false,
       placeinputValue: '',
       topBarOption: {
-        iconLeft: 'iconlist2f',
-        iconRight: 'iconmessage'
+        iconLeft: 'iconmenu2',
+        iconRight: 'iconxinxi2'
       },
       data:
       {
@@ -95,7 +95,7 @@ export default {
         status: 2,
         remark: ''
       },
-      imgicon:"",
+      imgicon: '',
       col: 2,
       company: '顺丰快递',
       icons: ['dot', 'iconlist', 'iconcangku', 'iconjiantoushang', 'icongoodswhoutStock', 'iconfahuo', 'iconcar', 'iconyunshu', 'iconperson', 'iconchaibaoguoqujian-xianxing', 'iconright'],
@@ -207,17 +207,14 @@ export default {
         if (json.code === 0) {
           this.data = json.response.datainfo[0]
 
-            let img = null
-            try {
-              img = require('@/assets/imgs/shop/goods-' + this.data.shopidid + '.png')
-            } catch (err) {
-              // 图片 不存在则使用默认的图片
-              img = require('@/assets/imgs/shop/camea.png')
-            }
-            this.imgicon=img;
-           
-        
-
+          let img = null
+          try {
+            img = require('@/assets/imgs/shop/goods-' + this.data.shopidid + '.png')
+          } catch (err) {
+            // 图片 不存在则使用默认的图片
+            img = require('@/assets/imgs/shop/camea.png')
+          }
+          this.imgicon = img
         }
       })
     }
