@@ -1,10 +1,5 @@
 <template>
   <div class="homeWrapper">
-    <ScrollRefresh
-      @getData="getData"
-      :residualHeight="bottomTabBarHeight+10"
-      :isNeedUp="false"
-      class="innerScroll">
     <TopBar >
       <div class="center-four-search">
         <div class="four-tit-t">Hello</div>
@@ -15,6 +10,12 @@
         <img  @click="goSetting" class="header-back" :src="headerimg?headerimg:defaultImg" alt />
       </div>
     </TopBar>
+    <ScrollRefresh
+      @getData="getData"
+      :residualHeight="bottomTabBarHeight+topbarHeight+10"
+      :isNeedUp="false"
+      class="innerScroll">
+
     <div class="mainWrap">
       <div class="innerWrap">
         <van-swipe :autoplay="4000" class="sweiper1" :show-indicators="false" >
@@ -264,7 +265,7 @@ export default {
   // overflow-y: scroll;
   .mainWrap {
     width: 95%;
-    margin: -80px auto 0;
+    margin: 0 auto;
     img {
       width: 100%;
     }

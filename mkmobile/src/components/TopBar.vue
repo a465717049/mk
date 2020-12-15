@@ -467,7 +467,7 @@ export default {
   margin: 0 auto;
   padding-top: 100px;
   font-size: 60px;
-  height: 440px;
+  height: 340px;
   position: relative;
   .four-tit-t {
     font-weight: normal;
