@@ -267,6 +267,8 @@ export default {
   font-size: 50px;
   font-weight: bold;
   color: #efb618;
+  line-height: 60px;
+  margin-bottom: 60px;
 }
 .top-bar {
   padding: 60px;
