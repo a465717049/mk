@@ -158,7 +158,8 @@ export default {
       }
       // alert(this.initData.Jid)
       storage.setLocalStorage('joindata', JSON.stringify(Joindata))
-      this.$router.push({ name: 'Additional' })
+     // this.$router.push({ name: 'Additional' })
+      this.$router.push({ name: 'CheckData' })
     }
   },
   created () {

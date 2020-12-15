@@ -33,6 +33,10 @@
           <img src="@/assets/imgs/set/b-3.png" class="img" alt />
           <van-cell class="cell-info borderR mb-40" title="密码" is-link to="password" />
         </div>
+         <div class="relative">
+          <img src="@/assets/imgs/set/b-3.png" class="img" alt />
+          <van-cell class="cell-info borderR mb-40" title="完善资料" is-link to="additional" />
+        </div>
         <div class="relative">
           <img src="@/assets/imgs/set/b-3.png" class="img" alt />
           <van-cell class="cell-info borderR mb-40" title="安全问题" is-link to="./SetAnswer" />
