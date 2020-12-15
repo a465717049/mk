@@ -2,7 +2,7 @@
   <div class="homeWrapper">
     <TopBar >
       <div class="center-four-search">
-        <div class="four-tit-t">Hello</div>
+        <div class="four-tit-t">Hello,{{uid}}</div>
         <div class="four-tit-b">{{username}}</div>
         <!-- <img class="img-yueliang" src="@/assets/imgs/yueliang.png" alt />
         <img class="img-yueliang1" src="@/assets/imgs/yueliang1.png" alt />

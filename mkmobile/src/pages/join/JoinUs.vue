@@ -104,7 +104,7 @@ export default {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
           this.initData.parentID = json.response.uid
-          console.log(json)
+          //console.log(json)
           // this.account = json.response.apple
         }
       })
@@ -158,7 +158,7 @@ export default {
       }
       // alert(this.initData.Jid)
       storage.setLocalStorage('joindata', JSON.stringify(Joindata))
-      this.$router.push({ name: 'Additional' })
+         this.$router.push({ name: 'CheckData' })
     }
   },
   created () {
@@ -181,8 +181,7 @@ export default {
       this.TogetUserInfo()
     }
 
-    console.log(this.$route.params.isLeft)
-    console.log(this.initData.L)
+   
   }
 }
 </script>

@@ -599,7 +599,7 @@ export default {
         padding-left: 80px;
         li {
           font-size: 38px;
-          padding: 10px 0 10px 80px;
+          padding: 20px 0 20px 80px;
 
           .router {
             display: inline-block;
