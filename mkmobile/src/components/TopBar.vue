@@ -264,11 +264,9 @@ export default {
 }
 
 .menu-title {
-  font-size: 60px;
+  font-size: 50px;
   font-weight: bold;
   color: #efb618;
-  line-height: 60px;
-  margin-bottom: 60px;
 }
 .top-bar {
   padding: 60px;
@@ -335,7 +333,7 @@ export default {
     }
   }
   .iconxinxi2{
-    top: 58px;
+    top: 38px;
     right: 50px;
     font-size: 100px;
   }
@@ -573,7 +571,7 @@ export default {
       .van-cell {
         background: #000;
         color: #fff;
-        padding: 40px 20px;
+        padding: 20px;
         text-align: left;
         color: #fff;
         border-bottom: 6px solid #fff;
@@ -599,14 +597,9 @@ export default {
         color: #fff;
         text-align: left;
         padding-left: 80px;
-        padding-top: 20px;
         li {
-<<<<<<< HEAD
           font-size: 38px;
-=======
-          font-size: 48px;
->>>>>>> 24770ab35bf43928a928440cb856da89ff6bb404
-          padding: 20px 0 20px 80px;
+          padding: 10px 0 10px 80px;
 
           .router {
             display: inline-block;
@@ -635,11 +628,11 @@ export default {
     border-width: 0 0;
   }
   .menu-item-self {
-    font-size:52px;
+    font-size: 42px;
     color: #fff;
     position: relative;
-    padding: 20px 0 20px 0;
-    height: 140px;
+    // padding: 20px 0 20px 0;
+    height: 100px;
     line-height: 100px;
     text-align: left;
     display: flex;
@@ -670,7 +663,7 @@ export default {
 }
 .leftTreeTitle {
   color: #fff;
-  font-size: 52px;
+  font-size: 42px;
   align-items: center;
   display: flex;
   height: 60px;
