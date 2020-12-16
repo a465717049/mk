@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "16384729",
+      "name": "眼睛",
+      "font_class": "yanjing1",
+      "unicode": "e674",
+      "unicode_decimal": 58996
+    },
+    {
+      "icon_id": "16399027",
+      "name": "隐藏",
+      "font_class": "yincang",
+      "unicode": "e85f",
+      "unicode_decimal": 59487
+    },
+    {
       "icon_id": "2529702",
       "name": "目录、导航",
       "font_class": "menu2",
