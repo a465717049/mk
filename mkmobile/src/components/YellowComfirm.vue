@@ -60,9 +60,11 @@ export default {
   },
   watch: {
     show (newV) {
+      console.log(newV, 'newV')
       this.modelShow = newV
     },
     modelShow (newV) {
+      console.log(newV, '1newV')
       this.$emit('changeModel', newV)
     }
   },

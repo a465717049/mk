@@ -51,7 +51,7 @@
         <i class="jiantou iconfont iconarrow-right"></i>
       </button>
     </div>
-    <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk"></YellowComfirm>
+    <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk" @changeModel="changeModel"></YellowComfirm>
   </div>
 </template>
 <script type="text/javascript">
@@ -104,13 +104,16 @@ export default {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
           this.initData.parentID = json.response.uid
-          //console.log(json)
+          // console.log(json)
           // this.account = json.response.apple
         }
       })
     },
     clickOk () {
       this.showComfirm = false
+    },
+    changeModel (v) {
+      this.showComfirm = v
     },
     goEditData () {
       if (this.initData.code === 0) {
@@ -119,7 +122,9 @@ export default {
         return
       }
       if (!this.initData.nickName) {
+        console.log(2255)
         this.showComfirm = true
+        console.log(this.showComfirm)
         this.tips = this.tipsObj.nonickname
         return
       }
@@ -180,8 +185,6 @@ export default {
     } else {
       this.TogetUserInfo()
     }
-
-   
   }
 }
 </script>

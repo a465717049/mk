@@ -103,9 +103,9 @@
         </div>
       </div>
     </div>
-    <YellowComfirm :show="isEnter" :tipTitle="tips"  @clickNo="clickNo()" @clickOk="clickOk()"></YellowComfirm>
+    <YellowComfirm :show="isEnter" :tipTitle="tips"  @clickNo="clickNo()" @clickOk="clickOk()" @changeModel="changeModel"></YellowComfirm>
     </ScrollRefresh>
- 
+
   </div>
 </template>
 <script type="text/javascript">
@@ -170,8 +170,7 @@ export default {
   },
   computed: {},
   methods: {
-    clickNo()
-    {
+    clickNo () {
       this.$router.push({name: 'setting'})
     },
     readloadinfo () {
@@ -230,16 +229,18 @@ export default {
               count: json.response.rp
             }
           ]
-          
-            if(!json.response.isSetIDNumber)
-            {
-              this.tips='您还未完善资料，请前去完善资料!'
-              this.isEnter=true;
-            }
+
+          if (!json.response.isSetIDNumber) {
+            this.tips = '您还未完善资料，请前去完善资料!'
+            this.isEnter = true
+          }
         } else {
           //  this.$router.push({ path: "/login" });
         }
       })
+    },
+    changeModel (v) {
+      this.isEnter = v
     },
     ToGetEPlist (cktype) {
       http(getEpexchange, {type: cktype, pageSize: 5, pageIndex: 1, cktype: 'ep' },

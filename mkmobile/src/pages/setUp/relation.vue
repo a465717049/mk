@@ -86,21 +86,21 @@
         </div>
       </div>
     </div>
-    <YellowComfirm :show="isEnter" @clickOver="clickOverpay" @clickOk="clickOk()" :tipTitle="tipTitle" @clickNo="clickNo()" :showConfirmBtn="true"></YellowComfirm>
+    <YellowComfirm :show="isEnter" @clickOver="clickOverpay" @clickOk="clickOk()" :tipTitle="tipTitle" @clickNo="clickNo()" :showConfirmBtn="true" @changeModel="changeModel"></YellowComfirm>
      </ScrollRefresh>
   </div>
- 
+
 </template>
 <script>
-import TopBar from "components/TopBar";
-import TopSearch from "components/TopSearch";
-import YellowComfirm from "components/YellowComfirm";
-import ScrollRefresh from "components/ScrollRefresh";
-import { GetSearchRelation } from "util/netApi";
-import { http } from "util/request";
-import { GetFriendList } from "util/netApi";
-import { storage } from "util/storage";
-import { photoList } from "util/const.js";
+import TopBar from 'components/TopBar'
+import TopSearch from 'components/TopSearch'
+import YellowComfirm from 'components/YellowComfirm'
+import ScrollRefresh from 'components/ScrollRefresh'
+import { GetSearchRelation, GetFriendList } from 'util/netApi'
+import { http } from 'util/request'
+
+import { storage } from 'util/storage'
+import { photoList } from 'util/const.js'
 export default {
   components: {
     TopBar,
@@ -108,14 +108,14 @@ export default {
     YellowComfirm,
     ScrollRefresh
   },
-  data() {
+  data () {
     return {
       realtionid: 0,
       topBarOption: {
-        iconLeft: "back",
-        iconRight: ""
+        iconLeft: 'back',
+        iconRight: ''
       },
-      tipTitle: "请选择入驻方式",
+      tipTitle: '请选择入驻方式',
       isEnter: false,
       upID: 0,
       parentId: 0,
@@ -125,89 +125,90 @@ export default {
       SecList: [],
       ThrLeftList: [],
       ThrRightList: []
-    };
+    }
   },
   methods: {
-    goJoin(parentId, isLeft) {
-      this.isEnter = true;
-      this.parentId = parentId;
-      this.isLeft = isLeft;
+    goJoin (parentId, isLeft) {
+      this.isEnter = true
+      this.parentId = parentId
+      this.isLeft = isLeft
     },
-    clickOk() {
-      this.isEnter = false;
+    clickOk () {
+      this.isEnter = false
       this.$router.push({
-        name: "JoinUs",
+        name: 'JoinUs',
         params: { uid: this.parentId, isLeft: this.isLeft }
-      });
+      })
     },
-    clickNo() {
-      this.isEnter = false;
+    changeModel (v) {
+      this.isEnter = v
+    },
+    clickNo () {
+      this.isEnter = false
       this.$router.push({
-        name: "JoinFamily",
+        name: 'JoinFamily',
         params: { uid: this.parentId, isLeft: this.isLeft }
-      });
+      })
     },
-    go(uid) {
-      this.realtionid = uid;
-      this.loadData();
+    go (uid) {
+      this.realtionid = uid
+      this.loadData()
     },
-    up() {
-      this.realtionid = this.upID;
-      this.loadData();
+    up () {
+      this.realtionid = this.upID
+      this.loadData()
     },
-    backUser() {
-      var that = this;
+    backUser () {
+      var that = this
       for (var index = this.historyList.length; index >= 0; index--) {
-        var element = this.historyList[index];
+        var element = this.historyList[index]
         if (element == this.realtionid) {
-          let i = index > 0 ? index - 1 : index;
-          this.realtionid = that.historyList[i];
-          that.historyList.splice(index, 1);
-          that.loadData(true);
-          break;
+          let i = index > 0 ? index - 1 : index
+          this.realtionid = that.historyList[i]
+          that.historyList.splice(index, 1)
+          that.loadData(true)
+          break
         }
       }
     },
-    Search(uid)
-    {
-      if(uid=="")
-       uid=0
-      this.realtionid =uid;
-      this.loadData();
+    Search (uid) {
+      if (uid == '') { uid = 0 }
+      this.realtionid = uid
+      this.loadData()
     },
-    loadData(history) {
-      var that = this;
+    loadData (history) {
+      var that = this
       if (!history) {
-        this.historyList.push(this.realtionid);
+        this.historyList.push(this.realtionid)
       }
-      this.SecList = [];
-      this.ThrLeftList = [];
-      this.ThrRightList = [];
+      this.SecList = []
+      this.ThrLeftList = []
+      this.ThrRightList = []
       http(GetSearchRelation, { uid: this.realtionid }, json => {
         if (json.response) {
-          that.friendsList = json.response;
-          that.First = that.friendsList[0];
-          that.upID = that.friendsList[0].jid;
+          that.friendsList = json.response
+          that.First = that.friendsList[0]
+          that.upID = that.friendsList[0].jid
 
           that.friendsList.forEach(element => {
-            element.photo = photoList[element.photo];
+            element.photo = photoList[element.photo]
             if (element.ceng == 1) {
-              that.SecList.push(element);
+              that.SecList.push(element)
             } else if (element.ceng == 2) {
               if (element.pos <= 2) {
-                that.ThrLeftList.push(element);
+                that.ThrLeftList.push(element)
               } else {
-                that.ThrRightList.push(element);
+                that.ThrRightList.push(element)
               }
             }
-          });
+          })
 
           if (that.SecList.length == 1) {
             that.SecList.push({
               honorLevel: 0,
               InvestmentLevel: 0,
-              NickName: "",
-              photo: "",
+              NickName: '',
+              photo: '',
               jid: 0,
               L: 1,
               R: 0,
@@ -218,14 +219,14 @@ export default {
               LCount: 0,
               RCount: 0,
               uID: 0
-            });
+            })
           }
           if (that.ThrLeftList.length < 2) {
             that.ThrLeftList.push({
               honorLevel: 0,
               InvestmentLevel: 0,
-              NickName: "",
-              photo: "",
+              NickName: '',
+              photo: '',
               jid: 0,
               L: 1,
               R: 0,
@@ -236,13 +237,13 @@ export default {
               LCount: 0,
               RCount: 0,
               uID: 0
-            });
+            })
             if (that.ThrLeftList.length == 1) {
               that.ThrLeftList.push({
                 honorLevel: 0,
                 InvestmentLevel: 0,
-                NickName: "",
-                photo: "",
+                NickName: '',
+                photo: '',
                 jid: 0,
                 L: 1,
                 R: 0,
@@ -253,15 +254,15 @@ export default {
                 LCount: 0,
                 RCount: 0,
                 uID: 0
-              });
+              })
             }
           }
           if (that.ThrRightList.length < 2) {
             that.ThrRightList.push({
               honorLevel: 0,
               InvestmentLevel: 0,
-              NickName: "",
-              photo: "",
+              NickName: '',
+              photo: '',
               jid: 0,
               L: 1,
               R: 0,
@@ -272,13 +273,13 @@ export default {
               LCount: 0,
               RCount: 0,
               uID: 0
-            });
+            })
             if (that.ThrRightList.length == 1) {
               that.ThrRightList.push({
                 honorLevel: 0,
                 InvestmentLevel: 0,
-                NickName: "",
-                photo: "",
+                NickName: '',
+                photo: '',
                 jid: 0,
                 L: 1,
                 R: 0,
@@ -289,19 +290,19 @@ export default {
                 LCount: 0,
                 RCount: 0,
                 uID: 0
-              });
+              })
             }
           }
         }
-      });
+      })
     }
   },
-  created() {
-    this.realtionid = this.$route.params.uid;
-    this.loadData();
+  created () {
+    this.realtionid = this.$route.params.uid
+    this.loadData()
   },
-  mounted() {}
-};
+  mounted () {}
+}
 </script>
 <style lang='less' scoped>
 .relation-box {

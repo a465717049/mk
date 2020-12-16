@@ -26,7 +26,7 @@
         提交
       </button>
     </div>
-    <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk"></YellowComfirm>
+    <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk" @changeModel="changeModel"></YellowComfirm>
   </div>
 </template>
 <script type="text/javascript">
@@ -76,6 +76,9 @@ export default {
   methods: {
     clickOk () {
       this.showComfirm = false
+    },
+    changeModel (v) {
+      this.showComfirm = v
     },
     goEditData () {
 
