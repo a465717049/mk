@@ -137,8 +137,8 @@ export default {
       // },
       active: 0,
       startVal: 0,
-      endVal: 11072,
-      balanceTile: '余额',
+      endVal: 0,
+      balanceTile: '奖金',
       images: [{image: banner1}, {image: banner2}, {image: banner3}],
       headerimg: null,
       balanceList: [
