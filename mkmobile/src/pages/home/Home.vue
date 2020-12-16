@@ -25,7 +25,8 @@
         </van-swipe>
         <div class="swiper2Box">
           <van-swipe  class="sweiper2" @change="onSwiperChange" :stop-propagation="false" >
-            <van-swipe-item v-for="(item, index) in balanceList" :key="index" @click='goinfo(item.type)'>
+            <van-swipe-item v-for="(item, index) in balanceList" :key="index" >
+              <!-- @click='goinfo(item.type)' -->
               <!-- <img src="../../assets/imgs/yellowBg.png" alt /> -->
                <div class="countBox"  >
                 <p>{{ balanceTile }}</p>
@@ -38,7 +39,11 @@
                   prefix=""
                   :useEasing="true"
                   class="countNum"
+                  v-show="showMount"
                 ></countTo>
+                <div class="countNum"  v-show="!showMount">{{ new Array((endVal+'').length+1).join("*")}}</div>
+                 <i class="iconfont iconyanjing1 eye" @click="showMount=!showMount" v-show="showMount"></i>
+           <i class="iconfont iconyincang eye" @click="showMount=!showMount" v-show="!showMount"></i>
               </div>
             </van-swipe-item>
           </van-swipe>
@@ -131,6 +136,7 @@ export default {
       defaultImg,
       username: '',
       uid: '',
+      showMount: false,
       // topBarOption: {
       //   iconLeft: 'iconmenu2',
       //   iconRight: 'iconxinxi2'
@@ -330,7 +336,19 @@ export default {
       left: 100px;
       align-items: center;
       justify-content: space-between;
-
+     .eye {
+          position: absolute;
+          right: 0px;
+          bottom: 30px;
+          font-size: 60px;
+          color: #0C0100;
+          font-weight: bold;
+        }
+        .eye.iconyanjing1{
+          font-size: 70px;
+          bottom:20px;
+          width: 70px;
+        }
       p {
         font-size: 50px;
         margin-top:40px;
@@ -342,6 +360,8 @@ export default {
         font-size: 106px;
         font-weight: 800;
         color: #0C0100;
+        line-height: 120px;
+        padding-right: 100px;
       }
     }
     /deep/ .van-swipe__indicator {

@@ -20,12 +20,12 @@
       <ul>
         <li>
           <div class="title">会员现级别：</div>
-          <input type="number" min="0" v-model="form.amount" />
+          <input type="input"  v-model="nowvip" />
         </li>
         <li>
           <div class="title">升级</div>
-          <van-dropdown-menu>
-            <van-dropdown-item v-model="form.dType" :options="receiptTypeList" />
+          <van-dropdown-menu >
+            <van-dropdown-item @change="changetype" v-model="form.dType" :options="receiptTypeList" />
           </van-dropdown-menu>
         </li>
         <!-- <li>
@@ -40,7 +40,7 @@
       <div class="sumTitle">合计</div>
         <div class="sumInfo">
           <span class="tit">需扣除您的RP：</span>
-          <span class="num">{{form.dType}}</span>
+          <span class="num">{{showlevel}}</span>
         </div>
       <button class="next" @click="ToTranWithMe">确认升级</button>
     </div>
@@ -62,6 +62,8 @@ import TopBar from 'components/TopBar'
 export default {
   data () {
     return {
+      nowvip:"",
+      showlevel:0,
       form: {
         oType: 'RP',
         dType: '',
@@ -73,9 +75,9 @@ export default {
       showComfirm: false,
 
       receiptTypeList: [
-        { text: '666', value: 666 },
-        { text: '2000', value: 2000 },
-        { text: '10000', value: 10000 }
+        { text: '初级会员', value: 666 },
+        { text: '中级会员', value: 2000 },
+        { text: '高级会员', value: 10000 }
       ],
       transPassword: null,
       verificationCode: null,
@@ -95,6 +97,15 @@ export default {
   mounted () {},
   computed: {},
   methods: {
+    changetype()
+    {
+       if (this.form.amount >= this.form.dType) {
+        this.showComfirm = true
+        this.tips = '不能小於當前等級'
+        return
+      }
+       this.showlevel= this.form.dType-this.form.amount;
+    },
     clickOk () {
       this.showComfirm = false
     },
@@ -117,10 +128,9 @@ export default {
     TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          console.log(json)
-          if (json.response.lv_name == 1) this.form.amount = 666
-          if (json.response.lv_name == 2) this.form.amount = 2000
-          if (json.response.lv_name == 3) this.form.amount = 10000
+          if (json.response.lv_name == 1){ this.form.amount = 666;this.nowvip="初级会员";}
+          if (json.response.lv_name == 2){ this.form.amount = 2000;this.nowvip="中级会员";}
+          if (json.response.lv_name == 3) {this.form.amount = 10000;this.nowvip="高级会员";}
 
           if (this.form.oType == 'EP') {
             this.account = json.response.gold
@@ -151,7 +161,7 @@ export default {
 
       console.log(this.form)
       let _this = this
-      http(UpdateLevelWeb, {level: this.form.dType}, json => {
+      http(UpdateLevelWeb, {level: this.showlevel}, json => {
         if (json.code === 0) {
           this.showComfirm = true
           this.tips = this.tipsObj.succeed

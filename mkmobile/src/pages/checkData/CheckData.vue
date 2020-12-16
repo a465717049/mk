@@ -42,7 +42,7 @@
           <li>呢称：{{initData.addname}}</li>
           <li>安置ID: {{initData.addpid}}</li>
           <li>接点ID: {{initData.addtid}}</li>
-          <li>会员级别： {{initData.addlevle}}</li>
+          <li>会员级别： {{nowvip}}</li>
         </ul>
         <div class="sumTitle">合计</div>
         <div class="sumInfo">
@@ -82,7 +82,7 @@ export default {
       isEnter: false,
       account: '2,000',
       isreturn: 0,
-
+      nowvip:"",
       addmodel: {},
       initData: {
         price: '',
@@ -177,6 +177,9 @@ export default {
       this.initData.addprice = this.addmodel.investmentAmount
       this.initData.addlevle = this.addmodel.levlename
 
+         if (this.initData.addlevle == 666){ this.nowvip="初级会员";}
+          if (this.initData.addlevle == 2000){ this.nowvip="中级会员";}
+          if (this.initData.addlevle == 10000) {this.nowvip="高级会员";}
       if (this.addmodel.L == 0) {
         this.initData.area = '蔬菜區'
       } else {

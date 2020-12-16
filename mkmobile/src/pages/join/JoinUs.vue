@@ -88,9 +88,9 @@ export default {
         L: 0
       },
       option1: [
-        { text: '666', value: 666 },
-        { text: '2000', value: 2000 },
-        { text: '10000', value: 10000 }
+        { text: '初级会员', value: 666 },
+        { text: '中级会员', value: 2000 },
+        { text: '高级会员', value: 10000 }
       ]
     }
   },

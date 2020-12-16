@@ -22,7 +22,8 @@
         </div>
         <div class="label-info">
           <span class="title">密码</span>
-          <i class="iconfont iconeye eye" @click="showP=!showP"></i>
+          <i class="iconfont iconyanjing1 eye" @click="showP=!showP" v-show="showP"></i>
+           <i class="iconfont iconyincang eye" @click="showP=!showP" v-show="!showP"></i>
           <input
             class="input"
             v-if="!showP"
@@ -325,6 +326,11 @@ export default {
           top: 50px;
           font-size: 60px;
           color: #fff;
+        }
+        .eye.iconyanjing1{
+          font-size: 70px;
+          top:40px;
+          width: 70px;
         }
         .input {
           height: 106px;

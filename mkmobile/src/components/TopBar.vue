@@ -353,9 +353,9 @@ export default {
   }
   .iconmenu2 {
     // width: 100px;
-    font-size: 80px;
-    height: 80px;
-    line-height: 80px;
+    font-size: 90px;
+    height: 90px;
+    line-height: 90px;
     top: 100px;
   }
   .loc-p {
