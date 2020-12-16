@@ -267,8 +267,6 @@ export default {
   font-size: 50px;
   font-weight: bold;
   color: #efb618;
-  line-height: 60px;
-  margin-bottom: 60px;
 }
 .top-bar {
   padding: 60px;
@@ -285,6 +283,7 @@ export default {
     font-size: 90px;
     position: absolute;
     z-index: 999;
+    font-weight: normal;
   }
   .icon-r {
     right: 60px;
@@ -310,7 +309,7 @@ export default {
       display: block;
       position: absolute;
       right: 0px;
-      top: 30px;
+      top: 0px;
       width: 30px;
       height: 30px;
       background: red;
@@ -335,9 +334,11 @@ export default {
     }
   }
   .iconxinxi2{
-    top: 58px;
+    top: 88px;
     right: 50px;
     font-size: 100px;
+    height: 100px;
+    line-height: 100px;
   }
   @keyframes myfirst {
     from {
@@ -353,6 +354,9 @@ export default {
   .iconmenu2 {
     // width: 100px;
     font-size: 80px;
+    height: 80px;
+    line-height: 80px;
+    top: 100px;
   }
   .loc-p {
     font-size: 80px;
@@ -647,6 +651,7 @@ export default {
     .iconfont {
       font-size: 60px;
       margin-right: 36px;
+      font-weight: normal;
     }
   }
   .iconfont2 {
