@@ -20,7 +20,7 @@
       <ul>
         <li>
           <div class="title">会员现级别：</div>
-          <input type="number" min="0" v-model="form.amount" />
+          <input type="input"  v-model="nowvip" />
         </li>
         <li>
           <div class="title">升级</div>
@@ -62,6 +62,7 @@ import TopBar from 'components/TopBar'
 export default {
   data () {
     return {
+      nowvip:"",
       form: {
         oType: 'RP',
         dType: '',
@@ -73,9 +74,9 @@ export default {
       showComfirm: false,
 
       receiptTypeList: [
-        { text: '666', value: 666 },
-        { text: '2000', value: 2000 },
-        { text: '10000', value: 10000 }
+        { text: '初级会员', value: 666 },
+        { text: '中级会员', value: 2000 },
+        { text: '高级会员', value: 10000 }
       ],
       transPassword: null,
       verificationCode: null,
@@ -117,10 +118,9 @@ export default {
     TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          console.log(json)
-          if (json.response.lv_name == 1) this.form.amount = 666
-          if (json.response.lv_name == 2) this.form.amount = 2000
-          if (json.response.lv_name == 3) this.form.amount = 10000
+          if (json.response.lv_name == 1){ this.form.amount = 666;this.nowvip="初级会员";}
+          if (json.response.lv_name == 2){ this.form.amount = 2000;this.nowvip="中级会员";}
+          if (json.response.lv_name == 3) {this.form.amount = 10000;this.nowvip="高级会员";}
 
           if (this.form.oType == 'EP') {
             this.account = json.response.gold
