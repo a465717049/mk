@@ -50,8 +50,8 @@
           <span class="num">{{initData.addprice}}</span>
         </div>
         <div class="buttonWrap">
-          <router-link to="VipUpgrade" class="router">
-          <button class="back" @click="goNext"><i class="iconfont iconfanhui"></i> 返回修改</button>
+          <router-link to="joinUs" class="router">
+          <button class="back" @click="goRetrun"><i class="iconfont iconfanhui"></i> 返回修改</button>
           </router-link>
           <button class="sure" @click="goNext">确认注册</button>
         </div>
@@ -111,6 +111,11 @@ export default {
           params: { uid: this.addmodel.Jid }
         })
       }  
+    },
+    goRetrun(){
+          this.$router.push({
+          name: 'joinUs'
+        })
     },
     goNext () {
       if (this.account < this.addmodel.investmentAmount) {
