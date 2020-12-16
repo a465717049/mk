@@ -24,8 +24,8 @@
         </li>
         <li>
           <div class="title">升级</div>
-          <van-dropdown-menu>
-            <van-dropdown-item v-model="form.dType" :options="receiptTypeList" />
+          <van-dropdown-menu >
+            <van-dropdown-item @change="changetype" v-model="form.dType" :options="receiptTypeList" />
           </van-dropdown-menu>
         </li>
         <!-- <li>
@@ -40,7 +40,7 @@
       <div class="sumTitle">合计</div>
         <div class="sumInfo">
           <span class="tit">需扣除您的RP：</span>
-          <span class="num">{{form.dType}}</span>
+          <span class="num">{{showlevel}}</span>
         </div>
       <button class="next" @click="ToTranWithMe">确认升级</button>
     </div>
@@ -63,6 +63,7 @@ export default {
   data () {
     return {
       nowvip:"",
+      showlevel:0,
       form: {
         oType: 'RP',
         dType: '',
@@ -96,6 +97,15 @@ export default {
   mounted () {},
   computed: {},
   methods: {
+    changetype()
+    {
+       if (this.form.amount >= this.form.dType) {
+        this.showComfirm = true
+        this.tips = '不能小於當前等級'
+        return
+      }
+       this.showlevel= this.form.dType-this.form.amount;
+    },
     clickOk () {
       this.showComfirm = false
     },
@@ -151,7 +161,7 @@ export default {
 
       console.log(this.form)
       let _this = this
-      http(UpdateLevelWeb, {level: this.form.dType}, json => {
+      http(UpdateLevelWeb, {level: this.showlevel}, json => {
         if (json.code === 0) {
           this.showComfirm = true
           this.tips = this.tipsObj.succeed
