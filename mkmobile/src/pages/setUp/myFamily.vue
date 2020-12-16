@@ -52,17 +52,17 @@
     <div class="set-btn base-flex around p-40">
       <button class="t-yellow cWhite s-btn" @click="onekey()">集结至主账户</button>
     </div>
-    <YellowComfirm :show="isEnter" :tipTitle="tips" @clickOver="clickOverpay" @clickOk="clickOk()"></YellowComfirm>
+    <YellowComfirm :show="isEnter" :tipTitle="tips" @clickOver="clickOverpay" @clickOk="clickOk()"  @changeModel="changeModel"></YellowComfirm>
   </div>
 </template>
 <script>
-import TopBar from "components/TopBar";
-import YellowComfirm from "components/YellowComfirm";
-import ScrollRefresh from "components/ScrollRefresh";
-import { http } from "util/request";
-import TopSearch from "components/TopSearch";
-import { photoList } from "util/const.js";
-import { GetSearchFimaly, GetUserInfo, GetOneKeyReturn } from "util/netApi";
+import TopBar from 'components/TopBar'
+import YellowComfirm from 'components/YellowComfirm'
+import ScrollRefresh from 'components/ScrollRefresh'
+import { http } from 'util/request'
+import TopSearch from 'components/TopSearch'
+import { photoList } from 'util/const.js'
+import { GetSearchFimaly, GetUserInfo, GetOneKeyReturn } from 'util/netApi'
 export default {
   components: {
     TopBar,
@@ -70,68 +70,71 @@ export default {
     YellowComfirm,
     ScrollRefresh
   },
-  data() {
+  data () {
     return {
       topBarOption: {
-        iconLeft: "back",
-        iconRight: ""
+        iconLeft: 'back',
+        iconRight: ''
       },
       isEnter: false,
-      tips: "",
+      tips: '',
       tipsObj: {
-        success: "处理成功！",
-        nosuccess: "处理失败，请稍后尝试！"
+        success: '处理成功！',
+        nosuccess: '处理失败，请稍后尝试！'
       },
       familyList: [],
       uid: 0
-    };
-  },
-  mounted() {},
-  computed: {},
-  methods: {
-    search(uid) {
-      if (uid == "") {
-        this.uid = 0;
-      } else {
-        this.uid = uid;
-      }
-      this.loadinfo();
-    },
-    loadinfo() {
-      var _this = this;
-      http(GetSearchFimaly, { uid: this.uid }, json => {
-        if (json.response) {
-          _this.familyList = json.response;
-          _this.familyList.forEach(element => {
-            element.photo = photoList[element.photo];
-          });
-        }
-      });
-    },
-    gofriend(uID) {
-      this.$router.push({ name: "relation", params: { uid: uID } });
-    },
-    clickOk() {
-      this.isEnter = false;
-    },
-    onekey() {
-      var _this = this;
-      http(GetOneKeyReturn, null, json => {
-        if (json.code === 0) {
-          _this.isEnter = true;
-          _this.tips = _this.tipsObj.success;
-          this.loadinfo(0);
-        } else {
-          _this.isEnter = true;
-          _this.tips = _this.tipsObj.nosuccess;
-        }
-      });
     }
   },
-  created() {
-    this.loadinfo();
+  mounted () {},
+  computed: {},
+  methods: {
+    search (uid) {
+      if (uid == '') {
+        this.uid = 0
+      } else {
+        this.uid = uid
+      }
+      this.loadinfo()
+    },
+    loadinfo () {
+      var _this = this
+      http(GetSearchFimaly, { uid: this.uid }, json => {
+        if (json.response) {
+          _this.familyList = json.response
+          _this.familyList.forEach(element => {
+            element.photo = photoList[element.photo]
+          })
+        }
+      })
+    },
+    gofriend (uID) {
+      this.$router.push({ name: 'relation', params: { uid: uID } })
+    },
+    clickOk () {
+      this.isEnter = false
+    },
+    changeModel (v) {
+      this.isEnter = v
+    },
+    onekey () {
+      var _this = this
+      http(GetOneKeyReturn, null, json => {
+        if (json.code === 0) {
+          _this.isEnter = true
+          _this.tips = _this.tipsObj.success
+          this.loadinfo(0)
+        } else {
+          _this.isEnter = true
+          _this.tips = _this.tipsObj.nosuccess
+        }
+      })
+    }
+  },
+  created () {
+    this.loadinfo()
   }
-};
+}
 </script>
 <style lang='less' scoped>
 .relativeScroll {

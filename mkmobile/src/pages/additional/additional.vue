@@ -62,7 +62,7 @@
       </ul>
       <button class="next" @click="goCheckData">提交申请</button>
     </div>
-     <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk"></YellowComfirm>
+     <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk"  @changeModel="changeModel"></YellowComfirm>
   </div>
 </template>
 <script type="text/javascript">
@@ -122,6 +122,9 @@ export default {
     clickOk () {
       this.showComfirm = false
     },
+    changeModel (v) {
+      this.showComfirm = v
+    },
     goCheckData () {
       if (!this.initData.name) {
         this.showComfirm = true
@@ -157,20 +160,20 @@ export default {
           pwd: this.initData.password,
           idcard: this.initData.typeNumber,
           idname: this.initData.name,
-          phone:this.initData.phone,
-          addr:this.initData.addr
+          phone: this.initData.phone,
+          addr: this.initData.addr
         },
         json => {
           if (json.code === 0) {
-             this.showComfirm = true
-             this.tips = '更新成功'
-           // this.addmodel.uRealName = this.initData.name
+            this.showComfirm = true
+            this.tips = '更新成功'
+            // this.addmodel.uRealName = this.initData.name
           //  this.addmodel.idType = this.initData.type
-           // this.addmodel.CountryPhoneCode = this.initData.country
+            // this.addmodel.CountryPhoneCode = this.initData.country
           //  this.addmodel.idNumber = this.initData.typeNumber
           //  this.addmodel.TradePass = this.initData.password
-           // this.addmodel.phone = this.initData.phone
-           // this.addmodel.addr = this.initData.addr
+            // this.addmodel.phone = this.initData.phone
+            // this.addmodel.addr = this.initData.addr
           //  storage.setLocalStorage('joindata', JSON.stringify(this.addmodel))
           //  this.$router.push({ name: 'CheckData' })
           } else {

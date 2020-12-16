@@ -3,7 +3,7 @@
     <TopBar class="center-one-search" :option="topBarOption" :badge="carNum">
       <div>
         <div class="three-tit-t">商店</div>
-        <TopSearch @onSearch="search" placeinputValue></TopSearch>
+        <TopSearch @onSearch="onSearch" placeinputValue></TopSearch>
       </div>
     </TopBar>
     <div>
@@ -22,7 +22,6 @@
               :gutterWidth="gutterWidth"
               :data="data"
               @loadmore="loadmore"
-              @scroll="scroll"
             >
               <template>
                 <div
@@ -112,9 +111,6 @@ export default {
     },
     goDetail (shopid) {
       this.$router.push('./shopDetail?id=' + shopid)
-    },
-    scroll (scrollData) {
-      console.log(scrollData)
     },
     loadmore (index) {
       this.data = this.data.concat(this.data)

@@ -58,7 +58,7 @@
         <!-- <button class="next" @click="goNext">确认提交</button> -->
       </div>
     <!-- </ScrollRefresh> -->
-    <YellowComfirm :show="isEnter" :tipTitle="tips"  @clickNo="clickNo()" @clickOk="clickOk()"></YellowComfirm>
+    <YellowComfirm :show="isEnter" :tipTitle="tips"  @clickNo="clickNo()" @clickOk="clickOk()" @changeModel="changeModel"></YellowComfirm>
   </div>
 </template>
 <script type="text/javascript">
@@ -103,14 +103,13 @@ export default {
   mounted () {},
   computed: {},
   methods: {
-    clickNo()
-    {
-     if (this.isreturn == 1) {
+    clickNo () {
+      if (this.isreturn == 1) {
         this.$router.push({
           name: 'friendsList',
           params: { uid: this.addmodel.Jid }
         })
-      }  
+      }
     },
     goRetrun(){
           this.$router.push({
@@ -129,18 +128,17 @@ export default {
         json => {
           if (json.code === 0) {
             var n = Number(json.msg)
-          if (!isNaN(n)) {  // 数字
-          // "恭喜！注册成功了！<br/> 登录ID: 100012<br/>登录密码：123456<br/>交易密码：123456<br/>请尽快登录修改并完善个人资料"
-          this.isEnter = true
-          this.tips = '恭喜！注册成功了！<br/> 登录ID:' + json.msg + '<br/>登录密码：' + this.addmodel.loginPass + '<br/>交易密码：' + this.addmodel.TradePass + '<br/>请尽快登录修改并完善个人资料'
-          this.account = this.account - this.addmodel.investmentAmount
-          this.isreturn = 1
-          }
-          else // 字符
-          {
-          this.isEnter = true
-          this.tips=json.msg
-          }           
+            if (!isNaN(n)) { // 数字
+              // "恭喜！注册成功了！<br/> 登录ID: 100012<br/>登录密码：123456<br/>交易密码：123456<br/>请尽快登录修改并完善个人资料"
+              this.isEnter = true
+              this.tips = '恭喜！注册成功了！<br/> 登录ID:' + json.msg + '<br/>登录密码：' + this.addmodel.loginPass + '<br/>交易密码：' + this.addmodel.TradePass + '<br/>请尽快登录修改并完善个人资料'
+              this.account = this.account - this.addmodel.investmentAmount
+              this.isreturn = 1
+            } else // 字符
+            {
+              this.isEnter = true
+              this.tips = json.msg
+            }
           } else {
             this.isEnter = true
           }
@@ -168,7 +166,6 @@ export default {
     }
   },
   created () {
-     
     this.TogetUserInfo()
     if (storage.getLocalStorage('joindata')) {
       this.addmodel = JSON.parse(storage.getLocalStorage('joindata'))
@@ -189,8 +186,7 @@ export default {
         this.initData.area = '水果區'
       }
     }
-    //this.isEnter = false
-    
+    // this.isEnter = false
   }
 }
 </script>

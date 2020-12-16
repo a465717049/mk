@@ -71,6 +71,7 @@
       :tipTitle="tips"
       @clickOver="clickOverpay"
       @clickOk="clickOk()"
+      @changeModel="changeModel"
     ></YellowComfirm>
   </div>
 </template>

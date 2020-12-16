@@ -38,97 +38,100 @@
           <i class="jiantou iconfont iconarrow-right"></i>
         </button>
       </div>
-      <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk()"></YellowComfirm>
+      <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk()" @changeModel="changeModel"></YellowComfirm>
     </ScrollRefresh>
   </div>
 </template>
 
 <script>
-import TopBar from "components/TopBar";
-import TopSearch from "components/TopSearch";
-import ScrollRefresh from "components/ScrollRefresh";
-import { http } from "util/request";
-import { GetBuyDPEList, GetSerarchApple } from "util/netApi";
-import { storage } from "util/storage";
-import { accessToken, loginPro } from "util/const.js";
-import YellowComfirm from "components/YellowComfirm";
+import TopBar from 'components/TopBar'
+import TopSearch from 'components/TopSearch'
+import ScrollRefresh from 'components/ScrollRefresh'
+import { http } from 'util/request'
+import { GetBuyDPEList, GetSerarchApple } from 'util/netApi'
+import { storage } from 'util/storage'
+import { accessToken, loginPro } from 'util/const.js'
+import YellowComfirm from 'components/YellowComfirm'
 export default {
-  name: "searchOne",
+  name: 'searchOne',
   components: {
     TopBar,
     TopSearch,
     YellowComfirm,
     ScrollRefresh
   },
-  data() {
+  data () {
     return {
       topBarOption: {
-        iconLeft: "back",
-        iconRight: ""
+        iconLeft: 'back',
+        iconRight: ''
       },
       bNum: 0,
       sNum: 0,
       queueNumder: 0,
       showComfirm: false,
-      tips: "",
+      tips: '',
       option: null
-    };
+    }
   },
   methods: {
-    onPeoPle() {
-      this.$router.push("./Queue");
+    onPeoPle () {
+      this.$router.push('./Queue')
     },
-    clickOk() {
-      this.showComfirm = false;
+    clickOk () {
+      this.showComfirm = false
     },
-    onSearch(value) {
-      this.bNum = value;
-      this.ToGetSerarchApple();
-      //this.$router.push('./Queue?id=' + value)
+    changeModel (v) {
+      this.showComfirm = v
     },
-    onButton(option) {
-      this.option = option;
-      if (option === "back") {
-        this.$router.push("./Analyse?");
-      } else if (option == "down") {
-        this.ToGetSerarchApple("down");
-      } else if (option == "up") {
-        this.ToGetSerarchApple("up");
+    onSearch (value) {
+      this.bNum = value
+      this.ToGetSerarchApple()
+      // this.$router.push('./Queue?id=' + value)
+    },
+    onButton (option) {
+      this.option = option
+      if (option === 'back') {
+        this.$router.push('./Analyse?')
+      } else if (option == 'down') {
+        this.ToGetSerarchApple('down')
+      } else if (option == 'up') {
+        this.ToGetSerarchApple('up')
       }
     },
-    ToGetSerarchApple() {
+    ToGetSerarchApple () {
       http(GetSerarchApple, { uid: this.bNum, option: this.option }, json => {
         if (json.code === 0) {
           // bNum sNum
           if (json.response.data.length > 0) {
-            this.bNum = json.response.data[0].uID;
-            this.sNum = json.response.data[0].amount;
+            this.bNum = json.response.data[0].uID
+            this.sNum = json.response.data[0].amount
           } else {
-            this.showComfirm = true;
-            this.tips = "沒有查詢到此ID";
-            this.bNum = 0;
-            this.sNum = 0;
+            this.showComfirm = true
+            this.tips = '沒有查詢到此ID'
+            this.bNum = 0
+            this.sNum = 0
           }
         }
-      });
+      })
     },
-    ToGetBuyDPEList() {
+    ToGetBuyDPEList () {
       http(GetBuyDPEList, null, json => {
         if (json.code === 0) {
-          this.queueNumder = json.response.length;
+          this.queueNumder = json.response.length
         }
-      });
+      })
     },
-    getInfo() {
-      this.ToGetSerarchApple();
-      this.ToGetBuyDPEList();
+    getInfo () {
+      this.ToGetSerarchApple()
+      this.ToGetBuyDPEList()
     }
   },
-  created() {
-    this.ToGetSerarchApple();
-    this.ToGetBuyDPEList();
+  created () {
+    this.ToGetSerarchApple()
+    this.ToGetBuyDPEList()
   }
-};
+}
 </script>
 
 <style lang="less" scope>

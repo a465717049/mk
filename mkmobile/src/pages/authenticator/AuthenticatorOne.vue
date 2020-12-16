@@ -30,7 +30,7 @@
         2、將Google密鑰複製到Google身份驗證去中產生校驗碼.
       </div> -->
     </div>
-    <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk()"></YellowComfirm>
+    <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk()" @changeModel="changeModel"></YellowComfirm>
   </div>
 </template>
 
@@ -47,7 +47,7 @@ export default {
     TopBar,
     YellowComfirm
   },
-  data() {
+  data () {
     return {
       activationCode: '',
       showComfirm: false,
@@ -62,14 +62,17 @@ export default {
     }
   },
   methods: {
-    clickOk() {
+    clickOk () {
       this.showComfirm = false
     },
-    goNext() {
+    changeModel (v) {
+      this.showComfirm = v
+    },
+    goNext () {
       this.ToSetAuthenticator()
       // this.$router.push({ name: 'AuthenticatorThree' })
     },
-    ToSetAuthenticator() {
+    ToSetAuthenticator () {
       http(
         SetAuthenticator,
         { gcode: this.activationCode, tpwd: this.password },
@@ -164,7 +167,7 @@ export default {
     border-radius: 20px;
     position: relative;
     margin-top: 120px;
- 
+
   }
   .auth-buttom {
     padding: 98px 0;

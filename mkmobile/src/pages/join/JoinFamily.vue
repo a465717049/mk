@@ -35,86 +35,86 @@
 
       <button class="next" @click="goNext">确认提交</button>
     </div>
-    <YellowComfirm :show="isEnter" :tipTitle="tips" @clickOver="clickOverpay" @clickOk="clickOk()"></YellowComfirm>
+    <YellowComfirm :show="isEnter" :tipTitle="tips" @clickOver="clickOverpay" @clickOk="clickOk()" @changeModel="changeModel"></YellowComfirm>
   </div>
 </template>
 <script type="text/javascript">
-import TopBar from "components/TopBar";
-import headerImg from "../../assets/imgs/headerImg.png";
-import YellowComfirm from "components/YellowComfirm";
-import { http } from "util/request";
-import { GetUserInfo, CreateSubAccount } from "util/netApi";
-import { storage } from "util/storage";
-import { accessToken, loginPro } from "util/const.js";
+import TopBar from 'components/TopBar'
+import headerImg from '../../assets/imgs/headerImg.png'
+import YellowComfirm from 'components/YellowComfirm'
+import { http } from 'util/request'
+import { GetUserInfo, CreateSubAccount } from 'util/netApi'
+import { storage } from 'util/storage'
+import { accessToken, loginPro } from 'util/const.js'
 
 export default {
   components: {
     TopBar,
     YellowComfirm
   },
-  data() {
+  data () {
     return {
       topBarOption: {
-        iconLeft: "back",
-        iconRight: ""
+        iconLeft: 'back',
+        iconRight: ''
       },
       isEnter: false,
       account: 0,
       isreturn: 0,
-      isLeft:0,
+      isLeft: 0,
       initData: {
-        price: "",
-        positionId: "",
+        price: '',
+        positionId: '',
         level: 1,
-        password: "",
-        area: ""
+        password: '',
+        area: ''
       },
       levelList: [
         { text: '高级农场', value: 1 },
         { text: '中级农场', value: 2 }
       ],
-      tips: "",
+      tips: '',
       tipsObj: {
-        success: "创建成功",
-        noid: "請重新選擇創建！",
-        nolevel: "請選擇級別！",
-        nopwd: "請輸入交易密碼！"
+        success: '创建成功',
+        noid: '請重新選擇創建！',
+        nolevel: '請選擇級別！',
+        nopwd: '請輸入交易密碼！'
       }
-    };
+    }
   },
-  mounted() {},
+  mounted () {},
   computed: {},
   methods: {
-    TogetUserInfo() {
+    TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          this.account = json.response.seed;
+          this.account = json.response.seed
         }
-      });
+      })
     },
-    goNext() {
+    goNext () {
       if (!this.initData.positionId) {
-        this.isEnter = true;
-        this.tips = this.tipsObj.noid;
-        return;
+        this.isEnter = true
+        this.tips = this.tipsObj.noid
+        return
       }
       // this.isEnter = true
       if (!this.initData.password) {
-        this.isEnter = true;
-        this.tips = this.tipsObj.nopwd;
-        return;
+        this.isEnter = true
+        this.tips = this.tipsObj.nopwd
+        return
       }
 
       if (!this.initData.level) {
-        this.isEnter = true;
-        this.tips = this.tipsObj.nolevel;
-        return;
+        this.isEnter = true
+        this.tips = this.tipsObj.nolevel
+        return
       }
-      var tmpamount = this.initData.level == 1 ? 1000 : 500;
+      var tmpamount = this.initData.level == 1 ? 1000 : 500
       if (this.account < tmpamount) {
-        this.isEnter = true;
-        this.tips = "當前金額不足";
-        return;
+        this.isEnter = true
+        this.tips = '當前金額不足'
+        return
       }
       http(
         CreateSubAccount,
@@ -126,41 +126,41 @@ export default {
         },
         json => {
           if (json.code === 0) {
-            this.isEnter = true;
-            this.tips = "子賬號：" + json.msg;
-            this.account = (this.account - tmpamount).toFixed(2);
-            this.isreturn = 1;
+            this.isEnter = true
+            this.tips = '子賬號：' + json.msg
+            this.account = (this.account - tmpamount).toFixed(2)
+            this.isreturn = 1
           } else {
-            this.isEnter = true;
-            this.tips = json.msg;
+            this.isEnter = true
+            this.tips = json.msg
           }
         }
-      );
+      )
     },
-    changeModel(v) {
-      this.isEnter = v;
+    changeModel (v) {
+      this.isEnter = v
     },
-    clickOk() {
-      this.isEnter = false;
+    clickOk () {
+      this.isEnter = false
       if (this.isreturn == 1) {
         this.$router.push({ name: 'relation', params: { uid: this.initData.positionId } })
       }
     }
   },
-  created() {
+  created () {
     if (this.$route.params) {
-      this.initData.positionId = this.$route.params.uid;
-      this.isLeft=this.$route.params.isLeft
+      this.initData.positionId = this.$route.params.uid
+      this.isLeft = this.$route.params.isLeft
       if (this.$route.params.isLeft == 0) {
-        this.initData.area = "蔬菜區";
+        this.initData.area = '蔬菜區'
       } else {
-        this.initData.area = "水果區";
+        this.initData.area = '水果區'
       }
     }
 
-    this.TogetUserInfo();
+    this.TogetUserInfo()
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

@@ -8,7 +8,7 @@
       <img :src="forgotImg" alt class="head" />
       <h6 class="forgotTitle">重置您的密码</h6>
       <ul>
-        <li> 
+        <li>
           <div class="title">请输入您的ID</div>
           <input type="text" v-model="id" />
         </li>
@@ -78,21 +78,21 @@ export default {
       id: null,
       verification: null,
       code: null,
-      image: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3649178992,1821853682&fm=26&gp=0.jpg',
+      image: '',
       showComfirm: false,
       forgotImg: forgot,
       //  receiptId: null,
       //  transPassword: null,
-      //  verificationCode: null,
+      //  verificationCode: null,joinUs
       tips: '',
       passwordTypeList: [
         { text: '登录密码', value: 0 },
-        { text: "交易密码", value: 1 }
+        { text: '交易密码', value: 1 }
       ]
     }
   },
   mounted () {
-    this.getVerificationCode();
+    this.getVerificationCode()
   },
   methods: {
     clickOk () {
@@ -114,20 +114,18 @@ export default {
       })
     },
     gox () {
-      //id  passwordType verification
+      // id  passwordType verification
 
-      if(!this.id)
-      {
-        this.showComfirm=true;
-        this.tips="请输入您的ID";
-        return;
+      if (!this.id) {
+        this.showComfirm = true
+        this.tips = '请输入您的ID'
+        return
       }
 
-      if(!this.verification)
-      {
-        this.showComfirm=true;
-        this.tips="请输入验证码";
-        return;
+      if (!this.verification) {
+        this.showComfirm = true
+        this.tips = '请输入验证码'
+        return
       }
 
       // if (this.verification.toLowerCase() != this.code.toLowerCase()) {
@@ -136,31 +134,25 @@ export default {
       //   return;
       // }
 
-  try
-  {
-  http(checkUser, { uid: this.id }, json => {
-        console.log(this.id)
-        if (json.code === 0) {
-          this.$router.push({
-            name: 'Verification',
-            params: { uid: this.id }
-          })
-        }else
-        {
-          this.showComfirm = true;
-          this.tips="不存在该ID请重新输入";
-          this.id="";
-        }
-      })
-
-  }catch(err)
-  {
-     this.showComfirm = true;
-          this.tips="不存在该ID请重新输入";
-          this.id="";
-  }
-      
-   
+      try {
+        http(checkUser, { uid: this.id }, json => {
+          console.log(this.id)
+          if (json.code === 0) {
+            this.$router.push({
+              name: 'Verification',
+              params: { uid: this.id }
+            })
+          } else {
+            this.showComfirm = true
+            this.tips = '不存在该ID请重新输入'
+            this.id = ''
+          }
+        })
+      } catch (err) {
+        this.showComfirm = true
+        this.tips = '不存在该ID请重新输入'
+        this.id = ''
+      }
     }
   }
 }
