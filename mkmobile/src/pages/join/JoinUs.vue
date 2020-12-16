@@ -27,12 +27,12 @@
         </li>
         <li>
           <div class="title">安置ID:</div>
-          <input type="text" v-model="initData.parentID" />
+          <input type="text" @blur="checkpid" v-model="initData.parentID" />
           <i class="iconfont icondui"></i>
         </li>
         <li>
           <div class="title">接点ID:</div>
-          <input type="text" v-model="initData.Jid" />
+          <input type="text" @blur="checkjid" v-model="initData.Jid" />
           <i class="iconfont icondui"></i>
         </li>
         <li>
@@ -58,13 +58,15 @@
 import TabBar from 'components/TabBar'
 import TopBar from 'components/TopBar'
 import { http } from 'util/request'
-import { GetUserInfo } from 'util/netApi'
+import { GetUserInfo,checkUser } from 'util/netApi'
 import { accessToken, loginPro } from 'util/const.js'
 import { storage } from 'util/storage'
 import YellowComfirm from 'components/YellowComfirm'
 export default {
   data () {
     return {
+      successjid:true,
+      successpid:true,
       showComfirm: false,
       tips: '',
       tipsObj: {
@@ -100,6 +102,32 @@ export default {
   mounted () {},
   computed: {},
   methods: {
+    checkjid()
+    {
+      http(checkUser, {uid:this.initData.Jid}, json => {
+        if (json.code === 0) {
+          this.successjid=true;
+        }else
+        {
+          this.successjid=false;
+          this.showComfirm=true
+          this.tips='接点ID不存在'
+        }
+      })
+    },
+    checkpid()
+    {
+       http(checkUser, {uid:this.initData.parentID}, json => {
+         if (json.code === 0) {
+          this.successpid=true;
+        }else
+        {
+          this.successpid=false;
+          this.showComfirm=true
+          this.tips='安置ID不存在'
+        }
+      })
+    },
     TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
@@ -134,6 +162,33 @@ export default {
         this.tips = this.tipsObj.nolevel
         return
       }
+
+        if (!this.initData.Jid || this.initData.Jid==0) {
+        this.showComfirm = true
+        this.tips = '请输入接点id'
+        return
+      }
+
+       if (!this.initData.parentID || this.initData.parentID==0) {
+        this.showComfirm = true
+        this.tips = '请输入安置id'
+        return
+      }
+
+      if(!this.successjid)
+      {
+        this.showComfirm = true
+        this.tips = '请检查接点Id'
+        return
+      }
+
+       if(!this.successpid)
+      {
+        this.showComfirm = true
+        this.tips = '请检查安置Id'
+        return
+      }
+
 
       if (!this.initData.password) {
         this.showComfirm = true
@@ -176,6 +231,8 @@ export default {
       this.initData.MemberNo = modeldata.MemberNo
       this.initData.loginPass = modeldata.loginPass
       this.initData.levlename = modeldata.levlename
+      this.initData.password = modeldata.loginPass
+      this.initData.parentID = modeldata.parentID
     }
     if (this.$route.params.uid) {
       this.initData.Jid = this.$route.params.uid
