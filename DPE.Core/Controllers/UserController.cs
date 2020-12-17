@@ -1149,6 +1149,53 @@ namespace DPE.Core.Controllers
 
         }
 
+        //获取是否有未读消息
+        [HttpPost]
+        public async Task<MessageModel<dynamic>> GetReadUserFeedBack()
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                var data =await _idisposefeedbackservices.Query(x => x.MessageUid == _user.ID && x.IsRead==false);
+                result.code = 0;
+                result.msg = "";
+                result.response = data.Count();
+                return result;
+            }
+            catch
+            {
+                result.code = 4001;
+                result.success = true;
+                return result;
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<MessageModel<dynamic>> SetReadUserFeedBack()
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                var data = await _idisposefeedbackservices.Query(x => x.MessageUid == _user.ID && x.IsRead == false);
+                foreach (DisposeFeedback model in data) 
+                {
+                    model.IsRead = true;
+                    await _idisposefeedbackservices.Update(model);
+                }
+                result.code = 0;
+                result.msg = "";
+                result.response = data.Count();
+                return result;
+            }
+            catch
+            {
+                result.code = 4001;
+                result.success = true;
+                return result;
+            }
+        }
+
         /// <summary>
         /// 修改用户反馈
         /// </summary>

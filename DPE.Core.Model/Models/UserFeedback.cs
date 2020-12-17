@@ -28,5 +28,7 @@ namespace DPE.Core.Model.Models
            public DateTime? CreateTime { get; set; }
 
            public int? IsReply { get; set; }
+
+           public bool? IsRead { get; set; }
     }
 }

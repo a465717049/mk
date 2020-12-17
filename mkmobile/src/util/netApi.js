@@ -209,6 +209,22 @@ export const AddUserFeedBack = {
   version: v,
   string: true
 };
+//SetReadUserFeedBack GetReadUserFeedBack
+export const SetReadUserFeedBack = {
+  contentType: "application/json",
+  url: "User/SetReadUserFeedBack",
+  method: "POST",
+  version: v,
+  string: true
+};
+
+export const GetReadUserFeedBack = {
+  contentType: "application/json",
+  url: "User/GetReadUserFeedBack",
+  method: "POST",
+  version: v,
+  string: true
+};
 //价格曲线
 export const GetStockPriceTrend = {
   contentType: "application/json",
