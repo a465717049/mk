@@ -72,36 +72,15 @@ const router = new Router({
           path: '/friendsList',
           component: resolve => require(['@/pages/setUp/friendsList'], resolve)
         },
-
-        {
-          name: 'friends',
-          path: '/friends',
-          component: resolve => require(['@/pages/setUp/friends'], resolve)
-        },
         {
           name: 'FAQ',
           path: '/faq',
           component: resolve => require(['@/pages/faq/FAQ'], resolve)
         },
         {
-          name: 'Charge',
-          path: '/charge',
-          component: resolve => require(['@/pages/charge/Charge'], resolve)
-        },
-        {
-          name: 'ChargeAll',
-          path: '/chargeAll',
-          component: resolve => require(['@/pages/charge/ChargeAll'], resolve)
-        },
-        {
           name: 'Password',
           path: '/password',
           component: resolve => require(['@/pages/Password/password'], resolve)
-        },
-        {
-          name: 'SellEp',
-          path: '/sellEp',
-          component: resolve => require(['@/pages/sell/SellEp'], resolve)
         },
 
         {
@@ -135,19 +114,9 @@ const router = new Router({
           component: resolve => require(['@/pages/news/index'], resolve)
         },
         {
-          name: 'FX',
-          path: '/FX',
-          component: resolve => require(['@/pages/news/FX'], resolve)
-        },
-        {
           name: 'NewsDetail',
           path: '/newsDetail',
           component: resolve => require(['@/pages/news/NewsDetail'], resolve)
-        },
-        {
-          name: 'Analyse',
-          path: '/analyse',
-          component: resolve => require(['@/pages/analyse/Analyse'], resolve)
         },
         {
           name: 'AuthenticatorOne',
@@ -199,45 +168,9 @@ const router = new Router({
           component: resolve => require(['@/pages/SetUp/lanSet'], resolve)
         },
         {
-          name: 'etInfomation',
-          path: '/etInfomation',
-          component: resolve => require(['@/pages/trade/etInfomation'], resolve)
-        },
-        {
-          name: 'epTrade',
-          path: '/epTrade',
-          component: resolve => require(['@/pages/trade/epTrade'], resolve)
-        },
-        {
-          name: 'receiving',
-          path: '/receiving',
-          component: resolve => require(['@/pages/trade/receiving'], resolve)
-        },
-        {
-          name: 'paying',
-          path: '/paying',
-          component: resolve => require(['@/pages/trade/paying'], resolve)
-        },
-        {
           name: 'epList',
           path: '/epList',
           component: resolve => require(['@/pages/trade/list'], resolve)
-        },
-        {
-          name: 'exChangeData',
-          path: '/exChangeData',
-          component: resolve => require(['@/pages/exChangeData/exChangeData'], resolve)
-        },
-        {
-          name: 'stockList',
-          path: '/stocklist',
-          component: resolve => require(['@/pages/trade/stocklist'], resolve)
-        },
-
-        {
-          name: 'Config',
-          path: '/config',
-          component: resolve => require(['@/pages/config/Config'], resolve)
         },
         {
           name: 'JoinUs',
@@ -276,11 +209,6 @@ const router = new Router({
           path: '/queue',
           component: resolve => require(['@/pages/queue/queue'], resolve)
         },
-        {
-          name: 'setRelation',
-          path: '/setRelation',
-          component: resolve => require(['@/pages/setUp/setRelation'], resolve)
-        },
 
         {
           name: 'task',
@@ -303,17 +231,6 @@ const router = new Router({
           path: '/activityDetails',
           component: resolve =>
             require(['@/pages/activity/ActivityDetails'], resolve)
-        },
-        {
-          name: 'SecretQuestion',
-          path: '/secretQuestion',
-          component: resolve =>
-            require(['@/pages/secretQuestion/SecretQuestion'], resolve)
-        },
-        {
-          name: 'Details',
-          path: '/details',
-          component: resolve => require(['@/pages/details/Details'], resolve)
         },
         {
           name: 'OpenShop',

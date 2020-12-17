@@ -91,7 +91,7 @@
                 </router-link>
               </li>
               <li>
-                <router-link to="/" class="router">
+                <router-link to="#" class="router">
                   <i class="iconfont iconarrow-right"></i>任务
                 </router-link>
               </li>
@@ -148,11 +148,6 @@
               <li>
                 <router-link to="news" class="router">
                   <i class="iconfont iconarrow-right"></i>公告
-                </router-link>
-              </li>
-              <li>
-                <router-link to="news" class="router">
-                  <i class="iconfont iconarrow-right"></i>分析
                 </router-link>
               </li>
             </ul>
