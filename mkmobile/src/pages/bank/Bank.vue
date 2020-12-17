@@ -6,27 +6,52 @@
         <img src="@/assets/imgs/tipimg.png" class="img" alt />
         <div class="tips-part">
           <div class="tip-titl">提示</div>
-          <div> 一经设置后个人不能修改。</div>
+          <div>一经设置后个人不能修改。</div>
         </div>
       </div>
-      <ul>
+      <ul class="selectUl">
         <li>
           <div class="title">选择银行卡类型</div>
           <van-dropdown-menu>
             <van-dropdown-item v-model="initData.level" :options="option1" />
           </van-dropdown-menu>
         </li>
-         <li>
+        <li>
           <div class="title">帐户</div>
           <input type="text" v-model="initData.nickName" />
           <i class="iconfont iconlock"></i>
         </li>
+        <li>
+          <div class="title">开户行信息</div>
+          <input type="text" v-model="initData.nickName" />
+          <i class="iconfont iconlock"></i>
+        </li>
       </ul>
-      <button class="next" @click="goEditData">
-        提交
-      </button>
+      <button class="next" @click="goEditData">提交</button>
+      <div class="infowrap">
+        <div class="title">您的银行卡信息：</div>
+        <ul>
+          <li>
+            <span class="lable">支付宝</span>
+            <span class="info">11233121@qq.com</span>
+          </li>
+          <li>
+            <span class="lable">微信</span>
+            <span class="info">11233121@qq.com</span>
+          </li>
+          <li>
+            <span class="lable">银联卡</span>
+            <span class="info">542234234*****23432 工商银行深圳支行</span>
+          </li>
+        </ul>
+      </div>
     </div>
-    <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk" @changeModel="changeModel"></YellowComfirm>
+    <YellowComfirm
+      :show="showComfirm"
+      :tipTitle="tips"
+      @clickOk="clickOk"
+      @changeModel="changeModel"
+    ></YellowComfirm>
   </div>
 </template>
 <script type="text/javascript">
@@ -80,9 +105,7 @@ export default {
     changeModel (v) {
       this.showComfirm = v
     },
-    goEditData () {
-
-    }
+    goEditData () {}
   },
   created () {
     if (storage.getLocalStorage('joindata')) {
@@ -118,21 +141,23 @@ export default {
     border-radius: 40px 40px 0 0;
     margin-top: -20px;
     padding-top: 30px;
-    padding-bottom: 400px;
+    padding-bottom: 300px;
+    height: calc(100vh - 300px);
+    overflow: auto;
     // background-color: #4678bc;
     .tips-part {
       font-weight: bold;
       color: rgba(52, 52, 52, 1);
-      div{
+      div {
         font-size: 40px;
         line-height: 60px;
-       }
+      }
     }
     .tips {
       width: 90%;
       min-height: 158px;
       align-items: center;
-      padding: 30px ;
+      padding: 30px;
       margin: 0 auto;
       box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.24);
       .img {
@@ -142,7 +167,7 @@ export default {
       }
     }
   }
-  ul {
+  .selectUl {
     width: 90%;
     margin: 0 auto;
     li {
@@ -167,7 +192,7 @@ export default {
       .iconfont {
         position: absolute;
         font-size: 60px;
-        color: #91A4DD;
+        color: #91a4dd;
         top: 100px;
         right: 20px;
       }
@@ -305,6 +330,35 @@ export default {
   .disabled {
     background: #ccc;
     color: #666;
+  }
+  .infowrap {
+    width: 90%;
+    margin: 120px auto 0;
+    .title {
+      font-size: 41px;
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 40px;
+    }
+    ul {
+      background: #ffffff;
+      box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.24);
+      border-radius: 34px;
+      padding: 50px 40px;
+    }
+    li {
+      font-size: 37px;
+      font-family: STHeiti;
+      font-weight: bold;
+      color: #767c8f;
+      opacity: 0.84;
+      height: 60px;
+      line-height: 60px;
+      display: flex;
+      .lable{
+        width: 17%;
+      }
+    }
   }
 }
 </style>

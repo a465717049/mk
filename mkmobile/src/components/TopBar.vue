@@ -31,7 +31,7 @@
     <van-popup v-model="menuShow" :position="'left'" :style="{ height: '100vh', width: '60%'}">
       <div class="menu-tree">
         <P class="menu-title">快速指引</P>
-        <van-collapse v-model="activeNames">
+        <van-collapse v-model="activeNames" :accordion="true">
           <van-collapse-item name="1">
             <template #title>
               <div class="leftTreeTitle">
@@ -43,6 +43,11 @@
               <li>
                 <router-link to="withdrawal" class="router">
                   <i class="iconfont iconarrow-right"></i>提现
+                </router-link>
+              </li>
+               <li>
+                <router-link to="withdrawalRecord" class="router">
+                  <i class="iconfont iconarrow-right"></i>提现记录
                 </router-link>
               </li>
               <li>
@@ -110,6 +115,11 @@
                   <i class="iconfont iconarrow-right"></i>购物车
                 </router-link>
               </li>
+               <li>
+                <router-link to="shoplist" class="router">
+                  <i class="iconfont iconarrow-right"></i>再次购买
+                </router-link>
+              </li>
               <li>
                 <router-link to="shoplist" class="router">
                   <i class="iconfont iconarrow-right"></i>我的订单
@@ -118,6 +128,11 @@
               <li>
                 <router-link to="orderDetail" class="router">
                   <i class="iconfont iconarrow-right"></i>订单详情
+                </router-link>
+              </li>
+               <li>
+                <router-link to="openShop" class="router">
+                  <i class="iconfont iconarrow-right"></i>申请开店
                 </router-link>
               </li>
             </ul>
@@ -208,7 +223,7 @@ export default {
     return {
       menuShow: false,
       service: false,
-      activeNames: ['1']
+      activeNames: '1'
     }
   },
   computed: mapState({
@@ -264,7 +279,7 @@ export default {
 }
 
 .menu-title {
-  font-size: 50px;
+  font-size: 60px;
   font-weight: bold;
   color: #efb618;
 }
@@ -546,7 +561,7 @@ export default {
   }
   /deep/ .van-popup--left {
     opacity: 0.89;
-    z-index: 9999999;
+    z-index: 9999998 !important;
   }
 }
 .menu-tree {
@@ -555,7 +570,7 @@ export default {
   background: #000;
   font-weight: normal;
   overflow: scroll;
-  z-index: 99999;
+  z-index: 9999999 !important;
 
   p {
     width: 60vw;
@@ -569,7 +584,7 @@ export default {
     width: 60vw;
     padding: 30px 20px 50px;
     padding-bottom: 350px;
-    z-index: 9999;
+    z-index: 9999999 !important;
     .van-collapse-item--border::after {
       border: 0;
     }
@@ -577,7 +592,7 @@ export default {
       .van-cell {
         background: #000;
         color: #fff;
-        padding: 20px;
+        padding: 30px 20px;
         text-align: left;
         color: #fff;
         border-bottom: 6px solid #fff;
@@ -603,8 +618,9 @@ export default {
         color: #fff;
         text-align: left;
         padding-left: 80px;
+        padding-top: 30px;
         li {
-          font-size: 38px;
+          font-size: 48px;
           padding: 10px 0 10px 80px;
 
           .router {
@@ -634,11 +650,11 @@ export default {
     border-width: 0 0;
   }
   .menu-item-self {
-    font-size: 42px;
+    font-size: 52px;
     color: #fff;
     position: relative;
-    // padding: 20px 0 20px 0;
-    height: 100px;
+    padding: 10px 0;
+    height: 120px;
     line-height: 100px;
     text-align: left;
     display: flex;
@@ -670,7 +686,7 @@ export default {
 }
 .leftTreeTitle {
   color: #fff;
-  font-size: 42px;
+  font-size: 52px;
   align-items: center;
   display: flex;
   height: 60px;
