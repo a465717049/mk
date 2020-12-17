@@ -120,6 +120,11 @@ const router = new Router({
       component: resolve => require(['@/pages/trans/Withdrawal'], resolve)
     },
     {
+      name: 'Withdrawal',
+      path: '/withdrawalRecord', // 提现记录
+      component: resolve => require(['@/pages/trans/WithdrawalRecord'], resolve)
+    },
+    {
       name: 'News',
       path: '/news',
       component: resolve => require(['@/pages/news/index'], resolve)
@@ -304,6 +309,21 @@ const router = new Router({
       name: 'Details',
       path: '/details',
       component: resolve => require(['@/pages/details/Details'], resolve)
+    },
+    {
+      name: 'OpenShop',
+      path: '/openShop',
+      component: resolve => require(['@/pages/openShop/OpenShop'], resolve)
+    },
+    {
+      name: 'About',
+      path: '/about', // 关于摩奇猴
+      component: resolve => require(['@/pages/about/About'], resolve)
+    },
+    {
+      name: 'Agreement',
+      path: '/agreement', // 协议
+      component: resolve => require(['@/pages/agreement/Agreement'], resolve)
     }
 
       // ActivityList.vue

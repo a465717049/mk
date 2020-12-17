@@ -89,7 +89,7 @@ export default {
 .xptabbar {
   position: fixed;
   bottom: 0;
-  z-index: 9999997;
+  // z-index: 999;
   background-color: #113d79;
   height: 170px;
   line-height: 170px;

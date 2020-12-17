@@ -138,5 +138,12 @@ namespace DPE.Core.Model.Models
         public string userphone { get; set; }
 
         public string useraddr { get; set; }
+
+
+        public string bankname { get; set; }
+        public string bankidcard { get; set; }
+        public string bankaddr { get; set; }
+        public string alipayname { get; set; }
+        public string alipayaccount { get; set; }
     }
 }

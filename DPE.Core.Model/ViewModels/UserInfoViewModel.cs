@@ -37,5 +37,11 @@ namespace DPE.Core.Model.ViewModels
         public decimal dynamicTotal { get; set; }
 
         public bool? isSetIDNumber { get; set; }
+
+        public string bankname { get; set; }
+        public string bankidcard { get; set; }
+        public string bankaddr { get; set; }
+        public string alipayname { get; set; }
+        public string alipayaccount { get; set; }
     }
 }

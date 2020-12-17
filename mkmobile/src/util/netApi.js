@@ -387,6 +387,15 @@ export const GetUpdateHeadImageAndNickName = {
   version: v,
   string: true
 };
+
+export const Getupdatebankinfo = {
+  contentType: "application/json",
+  url: "User/updatebankinfo",
+  method: "POST",
+  version: v,
+  string: true
+};
+
 export const GetAllQuestionList = {
   contentType: "application/json",
   url: "Question/GetAllQuestionList",
