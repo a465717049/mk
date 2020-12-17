@@ -1,68 +1,44 @@
 <template>
-  <div class="sellEpWrapper">
-    <TopBar class="center-one-search">完善个人资料</TopBar>
+  <div class="openShopWrapper">
+    <TopBar class="center-one-search">申请开店</TopBar>
     <div class="innerWrap">
       <div class="tips base-flex flex-start p-58 bg-white borderR mb-80">
         <img src="@/assets/imgs/tipimg.png" class="img" alt />
         <div class="tips-part">
           <div class="tip-titl">提示</div>
-          <div>请阅读完整《 摩奇猴用户协议和隐私政策》</div>
+          <div>不能重复申请，提交申请后会有专人与您联系！</div>
           <!-- <div>即將更新！</div> -->
         </div>
       </div>
       <ul>
-        <li>
-          <div class="title">真实姓名</div>
-          <input type="text" v-model="initData.name" readonly/>
-          <i class="iconfont iconlock" v-show="initData.name.length"></i>
-        </li>
-          <li>
-          <div class="title">身份证</div>
-          <input type="text" v-model="initData.typeNumber" readonly/>
-          <i class="iconfont iconlock" v-show="initData.typeNumber.length"></i>
+       <li>
+          <div class="title">ID</div>
+          <input type="text" v-model="initData.id" readonly/>
+          <i class="iconfont iconlock" v-show="initData.id.length"></i>
         </li>
         <li>
-          <div class="title">手机：</div>
-          <input type="text" v-model="initData.phone" readonly/>
-          <i class="iconfont iconlock" v-show="initData.phone.length"></i>
+          <div class="title">昵称</div>
+          <input type="text" v-model="initData.nickName" readonly/>
+          <i class="iconfont iconlock" v-show="initData.nickName.length"></i>
         </li>
-        <!-- <li>
-          <div class="title">國家</div>
-          <van-dropdown-menu>
-            <van-dropdown-item v-model="initData.country" :options="option1" />
-          </van-dropdown-menu>
-        </li> -->
+        <li>
+          <div class="title">姓名</div>
+          <input type="text" v-model="initData.name" />
+        </li>
+        <li>
+          <div class="title">联系电话：</div>
+          <input type="text" v-model="initData.phone" />
+        </li>
 
-        <!-- <li>
-          <div class="title">身份類型</div>
-          <van-dropdown-menu>
-            <van-dropdown-item v-model="initData.type" :options="option2" />
-          </van-dropdown-menu>
-        </li>
-        <li>
-          <div class="title">身份證號</div>
-          <input type="text" v-model="initData.typeNumber" />
-        </li>
-        <li>
-          <div class="title">擴展區域</div>
-          <van-radio-group v-model="initData.radioValue" disabled direction="horizontal">
-            <van-radio name="1">水果區</van-radio>
-            <van-radio name="0">蔬菜區</van-radio>
-          </van-radio-group>
-        </li> -->
-          <li>
-          <div class="title">配送地址：</div>
-          <input type="text" v-model="initData.addr" readonly/>
-          <i class="iconfont iconlock" v-show="initData.addr.length"></i>
-        </li>
-        <li>
-          <div class="title">密码验证(交易密码）:</div>
-          <input type="password" v-model="initData.password" />
-        </li>
       </ul>
-      <button class="next" @click="goCheckData">提交申请</button>
+      <button class="next" @click="goCheckData">立即申请</button>
     </div>
-     <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk"  @changeModel="changeModel"></YellowComfirm>
+    <YellowComfirm
+      :show="showComfirm"
+      :tipTitle="tips"
+      @clickOk="clickOk"
+      @changeModel="changeModel"
+    ></YellowComfirm>
   </div>
 </template>
 <script type="text/javascript">
@@ -92,23 +68,16 @@ export default {
         iconRight: ''
       },
       initData: {
+        id: '',
+        nickName: '',
         phone: '',
-        addr: '',
         name: '',
         country: '',
         type: 2,
         password: '',
         typeNumber: '',
         radioValue: '0'
-      },
-      option1: [
-        { text: '中国', value: 86 }
-        //   { text: '东南亚', value: 2 }
-      ],
-      option2: [
-        { text: '身份证', value: 2 }
-        //     { text: '港澳通行证', value: 2 }
-      ]
+      }
     }
   },
   components: {
@@ -168,14 +137,14 @@ export default {
             this.showComfirm = true
             this.tips = '更新成功'
             // this.addmodel.uRealName = this.initData.name
-          //  this.addmodel.idType = this.initData.type
+            //  this.addmodel.idType = this.initData.type
             // this.addmodel.CountryPhoneCode = this.initData.country
-          //  this.addmodel.idNumber = this.initData.typeNumber
-          //  this.addmodel.TradePass = this.initData.password
+            //  this.addmodel.idNumber = this.initData.typeNumber
+            //  this.addmodel.TradePass = this.initData.password
             // this.addmodel.phone = this.initData.phone
             // this.addmodel.addr = this.initData.addr
-          //  storage.setLocalStorage('joindata', JSON.stringify(this.addmodel))
-          //  this.$router.push({ name: 'CheckData' })
+            //  storage.setLocalStorage('joindata', JSON.stringify(this.addmodel))
+            //  this.$router.push({ name: 'CheckData' })
           } else {
             this.showComfirm = true
             this.tips = json.msg
@@ -206,11 +175,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.sellEpWrapper {
+.openShopWrapper {
   .innerWrap {
     width: 100vw;
     border-radius: 40px 40px 0 0;
-      height: calc(100vh - 300px);
+    height: calc(100vh - 300px);
     overflow: auto;
     margin-top: -20px;
     padding-top: 30px;
@@ -218,10 +187,10 @@ export default {
     .tips-part {
       font-weight: bold;
       color: rgba(52, 52, 52, 1);
-      div{
-          font-size: 40px;
-          line-height: 60px;
-       }
+      div {
+        font-size: 40px;
+        line-height: 60px;
+      }
     }
     .tips {
       width: 90%;

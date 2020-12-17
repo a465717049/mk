@@ -304,6 +304,11 @@ const router = new Router({
       name: 'Details',
       path: '/details',
       component: resolve => require(['@/pages/details/Details'], resolve)
+    },
+    {
+      name: 'OpenShop',
+      path: '/openShop',
+      component: resolve => require(['@/pages/openShop/OpenShop'], resolve)
     }
 
       // ActivityList.vue
