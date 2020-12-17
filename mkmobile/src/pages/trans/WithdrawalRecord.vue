@@ -22,8 +22,8 @@
                       </div>
                     </div>
                     <div class="price">
-                      <div :class="item.amount>0?'':'special-price'">{{ item.fromID }}</div>
-                      <div :class="item.amount>0?'':'special-price'">{{ item.amount.toFixed(2) }}</div>
+                      <div :class="item.status==2?'':'special-price'">{{ item.fromID }}</div>
+                      <div :class="item.status==2?'':'special-price'">{{ item.amount.toFixed(2) }}</div>
                     </div>
                   </div>
                 </div>
@@ -129,7 +129,7 @@ import ScrollRefresh from 'components/ScrollRefresh'
 import { http } from 'util/request'
 import { storage } from 'util/storage'
 import { accessToken, loginPro } from 'util/const.js'
-import { getEpexchange } from 'util/netApi'
+import { GetEPRecordLists } from 'util/netApi'
 import EP from '@/assets/imgs/EPimg.png'
 import SP from '@/assets/imgs/SPimg.png'
 import RP from '@/assets/imgs/RPimg.png'
@@ -177,19 +177,18 @@ export default {
       //  return
       console.log(pageIndex, ',pageSize,pageIndex')
       http(
-        getEpexchange,
+        GetEPRecordLists,
         {
           type: stype,
           pageSize: this.pageSize,
           pageIndex,
-          cktype: this.tmpcktype
+          status:90
         },
         json => {
           if (json.response != 'undefined') {
             if (pageIndex !== 1 && json.response.length === 0) {
               this.isNone = true
             } else {
-              console.log(777777)
               this.isNone = false
               if (pageIndex === 1) {
                 if (stype == 1) {

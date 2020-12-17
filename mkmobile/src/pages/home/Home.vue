@@ -74,7 +74,7 @@
                     <div class="sub-num">{{ item.date }}</div>
                   </div>
                 </div>
-                <div class="price" :class='item.amount>0?"":"red"'>＄ {{ item.amount }}</div>
+                <div class="price" :class='item.amount>0?"":"red"'>{{ item.amount }}</div>
               </div>
             </van-tab>
             <van-tab title="收入">
@@ -87,7 +87,7 @@
                     <div class="sub-num">{{ item.date }}</div>
                   </div>
                 </div>
-                <div class="price" :class='item.amount>0?"":"red"'>＄ {{ item.amount }}</div>
+                <div class="price" :class='item.amount>0?"":"red"'>{{ item.amount }}</div>
               </div>
             </van-tab>
             <van-tab title="支出">
@@ -100,7 +100,7 @@
                     <div class="sub-num">{{ item.date }}</div>
                   </div>
                 </div>
-                <div class="price" :class='item.amount>0?"":"red"'>＄   {{ '   '+item.amount }}</div>
+                <div class="price" :class='item.amount>0?"":"red"'>{{ '   '+item.amount }}</div>
               </div>
             </van-tab>
             <!-- <van-tab class="no-area"></van-tab> -->

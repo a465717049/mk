@@ -116,7 +116,7 @@
                 </router-link>
               </li>
                <li>
-                <router-link to="shoplist" class="router">
+                <router-link to="reshop" class="router">
                   <i class="iconfont iconarrow-right"></i>再次购买
                 </router-link>
               </li>

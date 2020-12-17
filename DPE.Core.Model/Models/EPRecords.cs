@@ -57,5 +57,14 @@ namespace DPE.Core.Model.Models
         public int fcount { get; set; }
         [SugarColumn(IsIgnore = true)]
         public int appealcount { get; set; }
+
+        public string bankname { get; set; }
+        public string bankidcard { get; set; }
+        public string bankaddr { get; set; }
+        public string alipayname { get; set; }
+        public string alipayaccount { get; set; }
+
+
+
     }
 }

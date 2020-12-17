@@ -13,21 +13,21 @@
       <ul>
        <li>
           <div class="title">ID</div>
-          <input type="text" v-model="initData.id" readonly/>
-          <i class="iconfont iconlock" v-show="initData.id.length"></i>
+          <input type="text"  v-model="initData.uid" readonly/>
+          <i class="iconfont iconlock" ></i>
         </li>
         <li>
           <div class="title">昵称</div>
-          <input type="text" v-model="initData.nickName" readonly/>
-          <i class="iconfont iconlock" v-show="initData.nickName.length"></i>
+          <input type="text" v-model="initData.nickname"/>
+          <i class="iconfont iconlock"></i>
         </li>
         <li>
           <div class="title">姓名</div>
-          <input type="text" v-model="initData.name" />
+          <input type="text" v-model="initData.username" />
         </li>
         <li>
           <div class="title">联系电话：</div>
-          <input type="text" v-model="initData.phone" />
+          <input type="text" v-model="initData.userphone" />
         </li>
 
       </ul>
@@ -47,7 +47,7 @@ import TopBar from 'components/TopBar'
 import headerImg from '../../assets/imgs/headerImg.png'
 import YellowComfirm from 'components/YellowComfirm'
 import { http } from 'util/request'
-import { CheckUpwd } from 'util/netApi'
+import { CheckUpwd,ApplyOpenShop ,checkUser,GetUserInfo} from 'util/netApi'
 import { storage } from 'util/storage'
 import { accessToken, loginPro } from 'util/const.js'
 export default {
@@ -57,26 +57,17 @@ export default {
       showComfirm: false,
       tips: '',
       tipsObj: {
-        norealname: '请输入真实姓名！',
-        nocountry: '請选择国家！',
-        noidtype: '请选择身份证类型!',
-        noidcard: '请输入身份证号码！',
-        notpwd: '请输入交易密碼！'
       },
       topBarOption: {
         iconLeft: 'back',
         iconRight: ''
       },
+      //uid nickname username username
       initData: {
-        id: '',
-        nickName: '',
-        phone: '',
-        name: '',
-        country: '',
-        type: 2,
-        password: '',
-        typeNumber: '',
-        radioValue: '0'
+        uid: 0,
+        nickname: '',
+        username: '',
+        username: '',
       }
     }
   },
@@ -94,57 +85,36 @@ export default {
     changeModel (v) {
       this.showComfirm = v
     },
-    goCheckData () {
-      if (!this.initData.name) {
+    goCheckData () { 
+      if (!this.initData.nickname) {
         this.showComfirm = true
-        this.tips = this.tipsObj.norealname
-        return
-      }
-      if (!this.initData.country) {
-        this.showComfirm = true
-        this.tips = this.tipsObj.nocountry
+        this.tips ='请输入昵称'
         return
       }
 
-      if (!this.initData.type) {
+      if (!this.initData.username) {
         this.showComfirm = true
-        this.tips = this.tipsObj.noidtype
+        this.tips ='请输入姓名'
         return
       }
 
-      if (!this.initData.typeNumber) {
+      if (!this.initData.userphone) {
         this.showComfirm = true
-        this.tips = this.tipsObj.noidcard
-        return
-      }
-
-      if (!this.initData.password) {
-        this.showComfirm = true
-        this.tips = this.tipsObj.notpwd
+        this.tips ='请输入联系电话'
         return
       }
       http(
-        CheckUpwd,
+        ApplyOpenShop,
         {
-          pwd: this.initData.password,
-          idcard: this.initData.typeNumber,
-          idname: this.initData.name,
-          phone: this.initData.phone,
-          addr: this.initData.addr
+          uid: this.initData.uid,
+          nickname: this.initData.nickname,
+          username: this.initData.username,
+          userphone: this.initData.userphone
         },
         json => {
           if (json.code === 0) {
             this.showComfirm = true
-            this.tips = '更新成功'
-            // this.addmodel.uRealName = this.initData.name
-            //  this.addmodel.idType = this.initData.type
-            // this.addmodel.CountryPhoneCode = this.initData.country
-            //  this.addmodel.idNumber = this.initData.typeNumber
-            //  this.addmodel.TradePass = this.initData.password
-            // this.addmodel.phone = this.initData.phone
-            // this.addmodel.addr = this.initData.addr
-            //  storage.setLocalStorage('joindata', JSON.stringify(this.addmodel))
-            //  this.$router.push({ name: 'CheckData' })
+            this.tips =  json.msg
           } else {
             this.showComfirm = true
             this.tips = json.msg
@@ -155,21 +125,12 @@ export default {
     }
   },
   created () {
-    if (storage.getLocalStorage('joindata')) {
-      this.addmodel = JSON.parse(storage.getLocalStorage('joindata'))
-      this.initData.name = this.addmodel.uRealName
-      this.initData.type = this.addmodel.idType
-      this.initData.country = this.addmodel.CountryPhoneCode
-      this.initData.typeNumber = this.addmodel.idNumber
-      this.initData.password = this.addmodel.TradePass
-      this.initData.phone = this.addmodel.phone
-      this.initData.addr = this.addmodel.addr
-      if (this.addmodel.L == 0) {
-        this.initData.radioValue = '0'
-      } else {
-        this.initData.radioValue = '1'
-      }
-    }
+     http(GetUserInfo, null, json => {
+        if (json.code === 0) {
+          this.initData.uid = json.response.uid
+        }
+      })
+    
   }
 }
 </script>

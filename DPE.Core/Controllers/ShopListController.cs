@@ -46,11 +46,12 @@ namespace DPE.Core.Controllers
         private readonly IUnitOfWork _unitOfWork;
 
 
+        readonly IOpenShopServices _iopenshopservices;
         public ShopListController(ISysUserInfoServices isysuserinfoservices, IUnitOfWork unitOfWork, IUser user,
             IShopListServices ishoplistservices, IUserGoodsListServices iusergoodslistservices,
             IUserInfoServices userInfoServices, IEPServices iepservices,
             IEPexchangeServices iepexchangeservices, IShopBuyDetailSerivces ishopbuydetailserivces,
-            IRPexchangeServices irpexchangeservices, IRPServices irpservices, IShoppingCartSerivces ishoppingcartserivces)
+            IRPexchangeServices irpexchangeservices, IRPServices irpservices, IShoppingCartSerivces ishoppingcartserivces, IOpenShopServices iopenshopservices)
         {
             this._user = user;
             _userInfoServices = userInfoServices;
@@ -64,6 +65,7 @@ namespace DPE.Core.Controllers
             _irpexchangeservices = irpexchangeservices;
             _irpservices = irpservices;
             _ishoppingcartserivces = ishoppingcartserivces;
+            _iopenshopservices = iopenshopservices;
         }
 
 
@@ -74,11 +76,11 @@ namespace DPE.Core.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("GetShopList")]
-        public async Task<MessageModel<ShopListViewModels>> GetShopList(string language = "cn")
+        public async Task<MessageModel<ShopListViewModels>> GetShopList(int ptype=0,string language = "cn")
         {
             //_user.ID
             //     var user = await _userInfoServices.GetUserInfo(_user.ID);
-            var spinfo = await _ishoplistservices.Query();
+            var spinfo = await _ishoplistservices.Query(x=>x.ptype==ptype);
             return new MessageModel<ShopListViewModels>()
             {
                 success = true,
@@ -292,7 +294,7 @@ namespace DPE.Core.Controllers
                     foreach (ShoppingCart model in mycart)
                     {
                         var shopdetail = await _ishoplistservices.QueryById(model.shopid);
-                        var rpinfo = (await _irpservices.Query(x => x.uID == _user.ID)).First();
+                        var rpinfo = (await _iepservices.Query(x => x.uID == _user.ID)).First();
                         if (shopdetail != null)
                         {
                             if ((shopdetail.pNum - model.shoptotalnum) < 0)
@@ -333,9 +335,9 @@ namespace DPE.Core.Controllers
                                 if (_ishoplistservices.Update(shopdetail).Result)
                                 {
                                     rpinfo.amount = rpinfo.amount - Convert.ToDecimal(model.shoptotalnum * shopdetail.price);
-                                    if (_irpservices.Update(rpinfo).Result)
+                                    if (_iepservices.Update(rpinfo).Result)
                                     {
-                                        if (_irpexchangeservices.Add(new RPexchange()
+                                        if (_iepexchangeservices.Add(new EPexchange()
                                         {
                                             amount = -Convert.ToDecimal(model.shoptotalnum * shopdetail.price),
                                             createTime = DateTime.Now,
@@ -647,47 +649,36 @@ namespace DPE.Core.Controllers
             MessageModel<dynamic> result = new MessageModel<dynamic>();
             try
             {
-                var shopdetail = await _ishoplistservices.QueryById(shopid);
-                if (shopdetail != null)
+                var addshop = await _ishoppingcartserivces.Query(x => x.id == shopid && x.uid == _user.ID);
+                if (addshop.Count() > 0)
                 {
-                    var addshop = await _ishoppingcartserivces.Query(x => x.shopid == shopid && x.uid == _user.ID);
-                    if (addshop.Count() > 0)
+                    var model = addshop.First();
+                    if (string.IsNullOrEmpty(option))
                     {
-                        var model = addshop.First();
-                        if (string.IsNullOrEmpty(option))
-                        {
-                            model.shoptotalnum += num;
-                        }
-                        else
-                        {
-                            model.shoptotalnum -= num;
-                        }
-
-                        if (model.shoptotalnum <= 0)
-                        {
-                            await _ishoppingcartserivces.Delete(model);
-                        }
-                        else
-                        {
-                            await _ishoppingcartserivces.Update(model);
-                        }
+                        model.shoptotalnum += num;
                     }
                     else
                     {
-                        await _ishoppingcartserivces.Add(new ShoppingCart() { shopid = shopid, shoptotalnum = num, uid = _user.ID }); ;
+                        model.shoptotalnum -= num;
                     }
-                    result.code = 0;
-                    result.msg = "添加成功";
-                    result.success = true;
 
+                    if (model.shoptotalnum <= 0)
+                    {
+                        await _ishoppingcartserivces.Delete(model);
+                    }
+                    else
+                    {
+                        await _ishoppingcartserivces.Update(model);
+                    }
                 }
-                else
+                else 
                 {
-                    result.code = 10001;
-                    result.msg = "商品信息有误";
-                    result.success = false;
+                    await _ishoppingcartserivces.Add(new ShoppingCart() { shopid = shopid, shoptotalnum = num, uid = _user.ID }); ;
+                   
                 }
-
+                result.code = 0;
+                result.msg = "添加成功";
+                result.success = true;
                 return result;
             }
             catch (Exception ex)
@@ -776,12 +767,12 @@ namespace DPE.Core.Controllers
         //获取购物车
         [HttpPost]
         [Route("GetShopCartsweb")]
-        public async Task<MessageModel<dynamic>> GetShopCartsweb()
+        public async Task<MessageModel<dynamic>> GetShopCartsweb(int ptype=0)
         {
             MessageModel<dynamic> result = new MessageModel<dynamic>();
             try
             {
-                var data = await _ishoppingcartserivces.Query(x => x.uid == _user.ID);
+                var data = await _ishoppingcartserivces.Query(x => x.uid == _user.ID );
                 result.code = 0;
                 result.response = new
                 {
@@ -828,6 +819,59 @@ namespace DPE.Core.Controllers
                 {
                     data = descdata
                 };
+                return result;
+            }
+            catch (Exception ex)
+            {
+                string a = ex.Message;
+                result.code = 10001;
+                result.msg = "请稍后再试";
+                result.success = false;
+                return result;
+            }
+
+        }
+
+        //申请开店
+        [HttpPost]
+        [Route("ApplyOpenShop")]
+        public async Task<MessageModel<dynamic>> ApplyOpenShop(long uid,string nickname,string username,string userphone)
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                var data = await _iopenshopservices.Query(x => x.openid == uid);
+                if (data.Count<=0)
+                {
+                    if (_iopenshopservices.Add(new OpenShop
+                    {
+                        openstatus = 0,
+                        applyid = _user.ID,
+                        createtime = DateTime.Now,
+                        nickname = nickname,
+                        username = username,
+                        userphone = userphone,
+                        openid=uid
+                    }).Result > 0)
+                    {
+                        result.code = 0;
+                        result.msg = "恭喜您提交成功!请等待专员与您联系!";
+                        result.success = true;
+                    }
+                    else
+                    {
+                        result.code = 10001;
+                        result.msg = "请稍后再试";
+                        result.success = false;
+                    }
+                }
+                else
+                {
+                    result.code = 10001;
+                    result.msg = "您已经提交过申请!请不要重复提交!";
+                    result.success = false;
+                }
+
                 return result;
             }
             catch (Exception ex)

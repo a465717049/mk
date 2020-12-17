@@ -21,6 +21,13 @@ export const getEpexchange = {
   version: v,
   string: true
 };
+
+export const GetEPRecordLists = {
+  url: "ep/GetEPRecordLists",
+  method: "POST",
+  version: v,
+  string: true
+};
 // ep转出
 export const EPToEexchange = {
   url: "ep/EPToEexchange",
@@ -56,6 +63,15 @@ export const EPSell = {
   version: v,
   string: true
 };
+
+export const GetEpSellWeb = {
+  contentType: "application/json",
+  url: "EP/GetEpSellWeb",
+  method: "POST",
+  version: v,
+  string: true
+};
+
 // 出售股票
 export const SellStock = {
   contentType: "application/json",
@@ -426,10 +442,16 @@ export const AddGoodsweb = {
   version: v,
   string: true
 };
+export const ApplyOpenShop = {
+  contentType: "application/json",
+  url: "Shop/ApplyOpenShop",
+  method: "POST",
+  version: v,
+  string: true
+};
 
 //购物车数量
 export const GetShopCartsweb = {
-  contentType: "application/json",
   url: "Shop/GetShopCartsweb",
   method: "POST",
   version: v,

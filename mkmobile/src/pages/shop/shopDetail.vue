@@ -21,7 +21,7 @@
           </div>
           <van-swipe :autoplay="4000" class="sweiper1" @change="onChangeSwiper">
             <van-swipe-item v-for="(image, index) in images" :key="index">
-              <img :src="image.pIcon" />
+              <img :src="image.image" />
             </van-swipe-item>
             <template #indicator>
               <div class="custom-indicator">
@@ -101,7 +101,7 @@ export default {
       showComfirm: false,
       carNum: 1,
       shopid: 0,
-      images: [{ image: banner1 }, { image: banner2 }],
+      images: [{ image:  require("@/assets/imgs/shop/camea.png") }],
       current: 0,
       // pName: "促销中",
       // pDesc: "促销中促销中促销中",
@@ -177,10 +177,16 @@ export default {
           this.pName = shop.pName;
           this.pInfo = [shop.pDesc];
           this.pDesc = shop.pDesc;
-          this.pIcon = shop.pIcon;
           this.price = shop.price;
           this.shopprice = shop.price;
           this.startmax = shop.pNum;
+          let img = null
+            try {
+              img = require('@/assets/imgs/shop/goods-' + shop.id + '.png')
+            } catch (err) { 
+              img = require('@/assets/imgs/shop/camea.png')
+            }
+         this.images =[{image:img}];
         }
       });
     },

@@ -4,7 +4,7 @@
       <TopBar :option="topBarOption" :hasNoRead="false" @clickR="goNews">
         <div class="center-two-search">
           <div class="two-tit-t">排队购买</div>
-          <div @click="goBuy()" class="two-tit-b">＄{{ totalData }}</div>
+          <div @click="goBuy()" class="two-tit-b">{{ totalData }}</div>
           <img class="img-yueliang" src="@/assets/imgs/yueliang.png" alt />
         </div>
       </TopBar>
@@ -35,12 +35,12 @@
           <div class="cg-item cg-item-1">
             <div class="top">$</div>
             <p>初始成本</p>
-            <span>＄ {{ initialVal || 0 }}</span>
+            <span> {{ initialVal || 0 }}</span>
           </div>
           <div class="cg-item cg-item-1 cg-item-2">
             <div class="top">+</div>
             <p>累计收益</p>
-            <span class="green">＄{{ withdrawVal || 0 }}</span>
+            <span class="green">{{ withdrawVal || 0 }}</span>
           </div>
         </div>
       </div>

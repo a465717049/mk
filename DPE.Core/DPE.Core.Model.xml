@@ -309,6 +309,11 @@
             
             </summary>
         </member>
+        <member name="T:DPE.Core.Model.Models.OpenShop">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:DPE.Core.Model.Models.Permission">
             <summary>
             路由菜单表
