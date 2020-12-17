@@ -49,39 +49,42 @@
           <img src="@/assets/imgs/set/B-5.png" class="img" alt />
           <van-cell class="cell-info borderR mb-40" title="语言" is-link to="./lanSet" />
         </div>
+        <div class="relative">
+          <img src="@/assets/imgs/set/B-5.png" class="img" alt />
+          <van-cell class="cell-info borderR mb-40" title="关于摩奇猴" is-link to="about" />
+        </div>
       </div>
     </ScrollRefresh>
   </div>
 </template>
 <script>
-import TopBar from "components/TopBar";
-import { http } from "util/request";
-import { GetUserInfo } from "util/netApi";
-import { storage } from "util/storage";
-import { accessToken, photoList } from "util/const.js";
-import ScrollRefresh from "components/ScrollRefresh";
-import defaultImg from "@/assets/imgs/set/head02.png";
+import TopBar from 'components/TopBar'
+import { http } from 'util/request'
+import { GetUserInfo } from 'util/netApi'
+import { storage } from 'util/storage'
+import { accessToken, photoList } from 'util/const.js'
+import ScrollRefresh from 'components/ScrollRefresh'
+import defaultImg from '@/assets/imgs/set/head02.png'
 export default {
-  name: "Set",
+  name: 'Set',
   components: {
     TopBar,
     ScrollRefresh
   },
-  data() {
+  data () {
     return {
       defaultImg,
-      photo: "",
-      userlv: "总监",
+      photo: '',
+      userlv: '总监',
       lv: 0,
-      Lvname:0,
-      username: "Totay cyels",
+      username: 'Totay cyels',
       isBindGoogle: false,
-      level: "初级会员",
-      registerTime: "2020-09-10 15:04"
-    };
+      level: '初级会员',
+      registerTime: '2020-09-10 15:04'
+    }
   },
   methods: {
-    TogetUserInfo() {
+    TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
           this.username = json.response.nickname;
@@ -99,27 +102,29 @@ export default {
           this.Lvname = json.response.lv_name;
           this.lv = json.response.farmers;
           this.photo = photoList[json.response.photo];
+          this.username = json.response.nickname
+          this.isBindGoogle = json.response.isBindGoogle
         }
-      });
+      })
     },
-    GoAuthenticator() {
-      console.log(this.isBindGoogle);
+    GoAuthenticator () {
+      console.log(this.isBindGoogle)
       if (this.isBindGoogle) {
         this.$router.push({
-          name: "AuthenticatorThree"
-        });
+          name: 'AuthenticatorThree'
+        })
       } else {
         this.$router.push({
-          name: "AuthenticatorOne"
-        });
+          name: 'AuthenticatorOne'
+        })
       }
     }
   },
-  created() {
-    this.TogetUserInfo();
+  created () {
+    this.TogetUserInfo()
   },
-  mounted() {}
-};
+  mounted () {}
+}
 </script>
 <style lang="less" scoped>
 .set-wrap .innerScroll {

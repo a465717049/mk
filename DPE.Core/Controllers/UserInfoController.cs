@@ -110,7 +110,12 @@ namespace DPE.Core.Controllers
                     dynamicTotal = user.DynamicTotal.Value,
                     lprofit = user.LProfit.Value,
                     rprofit = user.RProfit.Value,
-                    isSetIDNumber = user.isSetIDNumber
+                    isSetIDNumber = user.isSetIDNumber,
+                    alipayaccount = user.alipayaccount,
+                    alipayname = user.alipayname,
+                    bankaddr = user.bankaddr,
+                    bankidcard = user.bankidcard,
+                    bankname = user.bankname
                 }
             };
         }
