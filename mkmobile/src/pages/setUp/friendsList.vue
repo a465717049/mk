@@ -49,50 +49,6 @@ export default {
   data () {
     return {
       friendsList: [
-        {
-          photo: defaultImg,
-          NickName: 'Totay cyels',
-          uID: '10001',
-          friendsNum: '34'
-        },
-        {
-          photo: defaultImg,
-          NickName: 'Totay cyels',
-          uID: '10002'
-        },
-        {
-          photo: defaultImg,
-          NickName: 'Totay cyels',
-          uID: '10003',
-          friendsNum: '34'
-        },
-        {
-          photo: defaultImg,
-          NickName: 'Totay cyels',
-          uID: '10004'
-        },
-        {
-          photo: defaultImg,
-          NickName: 'Totay cyels',
-          uID: '10005',
-          friendsNum: '34'
-        },
-        {
-          photo: defaultImg,
-          NickName: 'Totay cyels',
-          uID: '10006'
-        },
-        {
-          photo: defaultImg,
-          NickName: 'Totay cyels',
-          uID: '10007',
-          friendsNum: '34'
-        },
-        {
-          photo: defaultImg,
-          NickName: 'Totay cyels',
-          uID: '10008'
-        }
       ],
       uid: 0
     }

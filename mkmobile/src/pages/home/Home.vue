@@ -74,7 +74,7 @@
                     <div class="sub-num">{{ item.date }}</div>
                   </div>
                 </div>
-                <div class="price" :class='item.amount>0?"":"red"'>{{ item.amount }}</div>
+                <div class="price" :class='item.amount>0?"":"red"'> {{ item.amount }}</div>
               </div>
             </van-tab>
             <van-tab title="收入">
@@ -87,7 +87,7 @@
                     <div class="sub-num">{{ item.date }}</div>
                   </div>
                 </div>
-                <div class="price" :class='item.amount>0?"":"red"'>{{ item.amount }}</div>
+                <div class="price" :class='item.amount>0?"":"red"'> {{ item.amount }}</div>
               </div>
             </van-tab>
             <van-tab title="支出">
@@ -100,7 +100,7 @@
                     <div class="sub-num">{{ item.date }}</div>
                   </div>
                 </div>
-                <div class="price" :class='item.amount>0?"":"red"'>{{ '   '+item.amount }}</div>
+                <div class="price" :class='item.amount>0?"":"red"'>   {{ '   '+item.amount }}</div>
               </div>
             </van-tab>
             <!-- <van-tab class="no-area"></van-tab> -->
@@ -143,8 +143,8 @@ export default {
       // },
       active: 0,
       startVal: 0,
-      endVal: 11072,
-      balanceTile: '余额',
+      endVal: 0,
+      balanceTile: '奖金',
       images: [{image: banner1}, {image: banner2}, {image: banner3}],
       headerimg: null,
       balanceList: [
@@ -220,7 +220,7 @@ export default {
         if (json.code === 0) {
           this.username = json.response.nickname
           this.uid = json.response.uid
-          this.endVal = json.response.apple
+          this.endVal = json.response.gold
           this.headerimg = photoList[json.response.photo]
           storage.setLocalStorage('service', json.response.service)
           this.balanceList = [
