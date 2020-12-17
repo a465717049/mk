@@ -10,7 +10,7 @@
         <div class="relative">
           <img src="@/assets/imgs/set/B-1.png" class="img" alt />
           <van-cell class="cell-info borderR mb-40 cell-special" :title="userlv" />
-          <van-progress class="process base-purple" :percentage="lv/5*100>100?100:lv/5*100" />
+          <van-progress class="process base-purple" :percentage="Lvname/5*100>100?100:Lvname/5*100" />
         </div>
         <div class="relative">
           <img src="@/assets/imgs/set/B-1.png" class="img" alt />
@@ -21,7 +21,7 @@
           <van-cell class="cell-info borderR mb-40" to="VipUpgrade">
             <template #title>
               <span class="custom-title">级别：{{level}}</span>
-              <van-tag round class="tag">升级</van-tag>
+              <van-tag round class="tag" v-if="lv!=3">升级</van-tag>
             </template>
           </van-cell>
         </div>
@@ -73,6 +73,7 @@ export default {
       photo: "",
       userlv: "总监",
       lv: 0,
+      Lvname:0,
       username: "Totay cyels",
       isBindGoogle: false,
       level: "初级会员",
@@ -85,22 +86,18 @@ export default {
         if (json.code === 0) {
           this.username = json.response.nickname;
           this.isBindGoogle = json.response.isBindGoogle;
-          if (json.response.lv_name == 1) this.level = "初级会员";
-          if (json.response.lv_name == 2) this.level = "中级会员";
-          if (json.response.lv_name == 3) this.level = "高级会员";
+          if (json.response.farmers == 1) this.level = "初级会员";
+          if (json.response.farmers == 2) this.level = "中级会员";
+          if (json.response.farmers == 3) this.level = "高级会员";
 
-          if (json.response.lv_name == 0) this.userlv = "玩家";
-          if (json.response.lv_name == 1) this.userlv = "达标社區";
-          if (json.response.lv_name == 2) this.userlv = "初级社区";
-          if (json.response.lv_name == 3) this.userlv = "中级社区";
-          if (json.response.lv_name == 4) this.userlv = "高级社区";
-          if (json.response.lv_name == 5) this.userlv = "超级社区";
-          if (json.response.lv_name == 6) this.userlv = "橘子派";
-          if (json.response.lv_name == 7) this.userlv = "香瓜派";
-          if (json.response.lv_name == 8) this.userlv = "菠萝派";
-          if (json.response.lv_name == 9) this.userlv = "柚子派";
-          if (json.response.lv_name == 10) this.userlv = "苹果派";
-          this.lv = json.response.lv_name;
+          if (json.response.lv_name == 0) this.userlv = "会员";
+          if (json.response.lv_name == 1) this.userlv = "经理";
+          if (json.response.lv_name == 2) this.userlv = "总监";
+          if (json.response.lv_name == 3) this.userlv = "总裁";
+          if (json.response.lv_name == 4) this.userlv = "董事";
+          if (json.response.lv_name == 5) this.userlv = "合伙人";
+          this.Lvname = json.response.lv_name;
+          this.lv = json.response.farmers;
           this.photo = photoList[json.response.photo];
         }
       });

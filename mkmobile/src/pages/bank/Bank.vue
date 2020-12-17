@@ -16,8 +16,30 @@
             <van-dropdown-item v-model="initData.level" :options="option1" />
           </van-dropdown-menu>
         </li>
-         <li>
-          <div class="title">帐户</div>
+         <li v-if="initData.level==1">
+          <div class="title">账号</div>
+          <input type="text" v-model="initData.nickName" />
+          <i class="iconfont iconlock"></i>
+        </li>
+        <li v-if="initData.level==1">
+          <div  class="title">姓名</div>
+          <input type="text" v-model="initData.nickName" />
+          <i class="iconfont iconlock"></i>
+        </li>
+
+         <li v-if="initData.level==2">
+          <div  class="title">开户行</div>
+          <input type="text" v-model="initData.nickName" />
+          <i class="iconfont iconlock"></i>
+        </li>
+         <li v-if="initData.level==2">
+          <div  class="title">卡号</div>
+          <input type="text" v-model="initData.nickName" />
+          <i class="iconfont iconlock"></i>
+        </li>
+
+         <li v-if="initData.level==3">
+          <div  class="title">地址</div>
           <input type="text" v-model="initData.nickName" />
           <i class="iconfont iconlock"></i>
         </li>
@@ -60,9 +82,8 @@ export default {
       },
       option1: [
         { text: '支付寶', value: 1 },
-        { text: '微信', value: 2 },
-        { text: '銀行卡', value: 3 },
-        { text: 'USDT', value: 4 }
+        { text: '銀行卡', value: 2 },
+        { text: 'USDT', value: 3 }
       ]
     }
   },
