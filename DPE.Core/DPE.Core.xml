@@ -423,6 +423,13 @@
             <param name="ePSellParams"></param>
             <returns></returns>
         </member>
+        <member name="M:DPE.Core.Controllers.EPController.GetEpSellWeb(System.Decimal,System.Int32,System.String,System.String)">
+            <summary>
+            提现
+            </summary>
+            <param name="ePSellParams"></param>
+            <returns></returns>
+        </member>
         <member name="M:DPE.Core.Controllers.EPController.EPBuy(System.Int64)">
             <summary>
             EP购买
@@ -967,7 +974,7 @@
             Shop 商店管理【无权限】
             </summary>
         </member>
-        <member name="M:DPE.Core.Controllers.ShopListController.GetShopList(System.String)">
+        <member name="M:DPE.Core.Controllers.ShopListController.GetShopList(System.Int32,System.String)">
             <summary>
             商店列表 商品清单
             </summary>

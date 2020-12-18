@@ -102,39 +102,6 @@ export default {
           friendsNum: 34,
           performance: 6000,
           honors: ['经理2个', ' 总监0个', ' 总裁0个', ' 董事0个', '合伙人0个']
-        },
-        {
-          photo: defaultImg,
-          NickName: 'Totay cyels',
-          uID: '10003',
-          friendsNum: '34'
-        },
-        {
-          photo: defaultImg,
-          NickName: 'Totay cyels',
-          uID: '10004'
-        },
-        {
-          photo: defaultImg,
-          NickName: 'Totay cyels',
-          uID: '10005',
-          friendsNum: '34'
-        },
-        {
-          photo: defaultImg,
-          NickName: 'Totay cyels',
-          uID: '10006'
-        },
-        {
-          photo: defaultImg,
-          NickName: 'Totay cyels',
-          uID: '10007',
-          friendsNum: '34'
-        },
-        {
-          photo: defaultImg,
-          NickName: 'Totay cyels',
-          uID: '10008'
         }
       ],
       uid: 0,

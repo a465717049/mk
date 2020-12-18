@@ -91,7 +91,7 @@
                 </router-link>
               </li>
               <li>
-                <router-link to="/" class="router">
+                <router-link to="#" class="router">
                   <i class="iconfont iconarrow-right"></i>任务
                 </router-link>
               </li>
@@ -116,7 +116,7 @@
                 </router-link>
               </li>
                <li>
-                <router-link to="shoplist" class="router">
+                <router-link to="reshop" class="router">
                   <i class="iconfont iconarrow-right"></i>再次购买
                 </router-link>
               </li>
@@ -148,11 +148,6 @@
               <li>
                 <router-link to="news" class="router">
                   <i class="iconfont iconarrow-right"></i>公告
-                </router-link>
-              </li>
-              <li>
-                <router-link to="news" class="router">
-                  <i class="iconfont iconarrow-right"></i>分析
                 </router-link>
               </li>
             </ul>
@@ -190,6 +185,8 @@
 import TopBar from 'components/TopBar'
 import Store from '@/store'
 import { mapState } from 'vuex'
+import { http } from 'util/request'
+import { GetReadUserFeedBack } from 'util/netApi'
 import { storage } from '@/util/storage'
 export default {
   components: {
@@ -249,6 +246,19 @@ export default {
   mounted () {
     this.service = storage.getLocalStorage('service')
     Store.commit('changeTopbarHeight', this.$refs.topBar.offsetHeight)
+
+     http(GetReadUserFeedBack, null, json => {
+        if (json.code === 0) {
+          if(json.response>0)
+          {
+            Store.commit('changeRead',true)
+          }else
+          {
+            Store.commit('changeRead',false)
+          }
+        }
+      })
+    //Store.commit('changeRead',false)
   }
 }
 </script>

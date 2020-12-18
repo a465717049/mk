@@ -9,6 +9,8 @@ using DPE.Core.AuthHelper;
 using DPE.Core.AuthHelper.OverWrite;
 using DPE.Core.Common.Helper;
 using DPE.Core.Common.HttpContextUser;
+using DPE.Core.IRepository;
+using DPE.Core.IRepository.UnitOfWork;
 using DPE.Core.IServices;
 using DPE.Core.Model;
 using DPE.Core.Model.Models;
@@ -45,9 +47,21 @@ namespace DPE.Core.Controllers
 
         readonly IUserComplaintServices _iusercomplaintservices;
 
+        readonly ISysUserInfoServices _sysUserInfoServices;
+
+        readonly ISettingsServices _settingsdal;
+
+        private readonly IUnitOfWork _iunitofwork;
+
+        private readonly IEPRecordsRepository _ePRecordsdal;
+
+        private readonly IEPexchangeRepository _exchangedal;
+
+
         public EPController(IExchangeTotalServices iexchangetotalservices, ISysUserInfoServices isysuserinfoservice, IEPRecordsServices ieprecordsservices,
             IEPServices epspservices, IUser user, IEPexchangeServices iepexchangeservices, IUserInfoServices userInfoServices
-            , IUserComplaintServices iusercomplaintservices)
+            , IUserComplaintServices iusercomplaintservices, ISysUserInfoServices sysUserInfoServices, 
+            ISettingsServices settingsdal, IUnitOfWork iunitofwork, IEPRecordsRepository ePRecordsdal, IEPexchangeRepository exchangedal)
         {
             _EPServices = epspservices;
             this._user = user;
@@ -57,6 +71,11 @@ namespace DPE.Core.Controllers
             _isysuserinfoservice = isysuserinfoservice;
             _iexchangetotalservices = iexchangetotalservices;
             _iusercomplaintservices = iusercomplaintservices;
+            _sysUserInfoServices = sysUserInfoServices;
+            _settingsdal = settingsdal;
+            _iunitofwork = iunitofwork;
+            _ePRecordsdal = ePRecordsdal;
+            _exchangedal = exchangedal;
         }
 
         /// <summary>
@@ -156,6 +175,152 @@ namespace DPE.Core.Controllers
 
             return await _EPServices.EPSell(ePSellParams);
         }
+
+        /// <summary>
+        /// 提现
+        /// </summary>
+        /// <param name="ePSellParams"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("GetEpSellWeb")]
+        public async Task<MessageModel<dynamic>> GetEpSellWeb(decimal amount,int type,string pwd,string goolekey )
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try 
+            {
+                var data = await _sysUserInfoServices.checkTrad(_user.ID, pwd);
+                if (data == null)
+                {
+                    //交易密码错误
+                    result.code = 61004;
+                    result.success = false;
+                    result.msg = "交易密码错误";
+                    return result;
+                }
+
+                //var trangode = await _sysUserInfoServices.checkGoogleKey(_user.ID, goolekey);
+                //if (trangode == null)
+                //{
+                //    //谷歌验证错误
+                //    result.code = 61005;
+                //    result.success = false;
+                //    result.msg = "谷歌验证码校验失败";
+                //    return result;
+                //}
+
+                var settings = (await _settingsdal.Query()).FirstOrDefault();
+                decimal rate = 0;
+                decimal usdRate = 6.95M;
+                decimal cnRate = 6.175M;
+                if (settings != null)
+                {
+                    usdRate = settings.ComRate.ObjToDecimal();
+                    cnRate = settings.CNYRate.ObjToDecimal();
+                    rate = cnRate / usdRate;
+                }
+
+                var userdata =await _userInfoServices.GetUserInfo(_user.ID);
+                if (amount > userdata.EP) 
+                {
+                    result.code = 61005;
+                    result.success = false;
+                    result.msg = "提现金额不足";
+                    return result;
+
+                }
+
+                EPRecords epmRecordsModel = new EPRecords()
+                {
+                    uID =_user.ID,
+                    amount = 0-amount,
+                    rate = rate,
+                    RMBrate = cnRate,
+                    USDTrate = usdRate,
+                    status = 1,
+                    statusName = "提现中",
+                    usdtAddress = data.addr,
+                   // trcAddress = ePSellParams.trcAddress,
+                    receiveType = type,
+                    phone ="",
+                    createTime = DateTime.Now,
+                    alipayaccount=userdata.alipayaccount,
+                    alipayname = userdata.alipayname,
+                    bankaddr = userdata.bankaddr,
+                    bankidcard = userdata.bankidcard,
+                    bankname = userdata.bankname,
+                };
+
+                _iunitofwork.BeginTran();
+                var exrowsid = await _ePRecordsdal.Add(epmRecordsModel);
+                if (exrowsid > 0)
+                {
+                    EPexchange pexchange = new EPexchange()
+                    {
+                        uID = _user.ID,
+                        amount = 0 - amount,
+                        lastTotal = userdata.EP,
+                        fromID = 0,
+                        recordID = exrowsid,
+                        scount = 0,
+                        stype = 90,
+                        price = 0,
+                        createTime = DateTime.Now,
+                        remark = "提现EP"
+                    };
+
+                    var changerowid = await _exchangedal.Add(pexchange);
+                    if (changerowid > 0)
+                    {
+                        var epentity = await _EPServices.QueryById(_user.ID);
+                        if (epentity != null)
+                        {
+                            epentity.amount = epentity.amount - amount;
+                            await _EPServices.Update(epentity);
+
+                            _iunitofwork.CommitTran();//提交事务
+                        }
+                        else
+                        {
+                            _iunitofwork.RollbackTran();//事务回滚
+                            result.code = 50006;
+                            result.success = false;
+                            result.msg = "提交失败请稍后再试！";
+                            return result;
+                        }
+                    }
+                    else
+                    {
+                        _iunitofwork.RollbackTran();//事务回滚
+                        result.code = 50006;
+                        result.success = false;
+                        result.msg = "提交失败请稍后再试！";
+                        return result;
+                    }
+
+                }
+                else
+                {
+                    _iunitofwork.RollbackTran();//事务回滚
+                    result.code = 50006;
+                    result.success = false;
+                    result.msg = "提交失败请稍后再试！";
+                    return result;
+                }
+
+                result.code = 0;
+                result.success = true;
+                result.msg = "提现成功！";
+                return result;
+            } 
+            catch 
+            {
+                result.code = 20001;
+                result.success = false;
+                result.msg = "提现失败请稍后再试！";
+                return result;
+            }
+        }
+
 
 
         /// <summary>
@@ -458,6 +623,48 @@ namespace DPE.Core.Controllers
                                 item.lastTotal,
                                 item.amount,
                                 item.remark
+                            })
+
+            };
+        }
+
+
+        [HttpPost]
+        [Route("GetEPRecordLists")]
+        public async Task<MessageModel<dynamic>> GetEPRecordLists(int type, int pageSize, int pageIndex,int status)
+        {
+            pageSize = pageSize == 0 ? 10 : pageSize;
+            pageIndex = pageIndex == 0 ? 1 : pageIndex;
+            var result = new PageModel<EPRecords>();
+
+            switch (type)
+            {
+                case 1:
+                    result = await _ePRecordsdal.QueryPage(x => x.uID == _user.ID , pageIndex, pageSize, " createTime desc");
+                    break;
+                case 2:
+                    result = await _ePRecordsdal.QueryPage(x => x.uID == _user.ID && x.status == 2, pageIndex, pageSize, " createTime desc");
+                    break;
+                case 3:
+                    result = await _ePRecordsdal.QueryPage(x => x.uID == _user.ID && x.status == 1, pageIndex, pageSize, " createTime desc");
+                    break;
+                default:
+                    result = await _ePRecordsdal.QueryPage(x => x.uID == _user.ID, pageIndex, pageSize, " createTime desc");
+                    break;
+            }
+
+            return new MessageModel<dynamic>
+            {
+                response = (from item in result.data
+                            orderby item.createTime descending
+                            select new
+                            {
+                                datacount = result.dataCount,
+                                id = item.uID,
+                                img = "head01",
+                                date = item.createTime.Value.ToString("yy/MM/dd HH:mm:ss"),
+                                item.amount,
+                                status=item.status
                             })
 
             };

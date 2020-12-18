@@ -51,7 +51,7 @@
 <script type="text/javascript">
 import YellowComfirm from 'components/YellowComfirm'
 import { http } from 'util/request'
-import { TransOtherType, GetUserInfo } from 'util/netApi'
+import { TransOtherType, GetUserInfo ,GetEpSellWeb} from 'util/netApi'
 import { storage } from 'util/storage'
 import TopBar from 'components/TopBar'
 export default {
@@ -68,8 +68,7 @@ export default {
       showComfirm: false,
 
       receiptTypeList: [
-        { text: 'RP', value: 'RP' },
-        { text: 'SP', value: 'SP' }
+        
       ],
       transPassword: null,
       verificationCode: null,
@@ -77,7 +76,7 @@ export default {
       tipsObj: {
         noamount: '请填写转换数量',
         amount: '余额不足！',
-        notype: '请选择转出类型',
+        notype: '请选择提现类型',
         notpwd: '请填写交易密码',
         nosucceed: '转换异常，稍后重试',
         succeed: '转换成功'
@@ -98,6 +97,7 @@ export default {
       this.showComfirm = v
     },
     ChangeTransType () {
+      return;
       this.TogetUserInfo()
       if (this.form.oType == 'EP') {
         this.form.oType = 'RP'
@@ -113,12 +113,26 @@ export default {
     TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          console.log(json)
-          if (this.form.oType == 'EP') {
-            this.account = json.response.gold
-          } else if (this.form.oType == 'RP') {
-            this.account = json.response.rp
-          }
+         this.account = json.response.gold
+          var reloadaary=[];
+            if(json.response.alipayaccount)
+            {
+               reloadaary.push({text: '支付宝', value: 1})
+            }
+             if(json.response.bankidcard)
+            {
+               reloadaary.push({text: '银行卡', value: 2})
+            }
+             if(json.response.coin_location)
+            {
+               reloadaary.push({text: 'USDT', value: 3})
+            }
+            this.receiptTypeList=reloadaary;
+            if(reloadaary.length==0)
+            {
+              this.showComfirm=true;
+              this.tips='暂未设置提现方式，请您前去银行卡设置提现方式'
+            }
         }
       })
     },
@@ -146,23 +160,29 @@ export default {
         return
       }
 
-      console.log(this.form)
-      let _this = this
-      http(TransOtherType, this.form, json => {
+       if (!this.form.gcode) {
+        this.showComfirm = true
+        this.tips = '请输入谷歌验证码'
+        return
+      }
+    
+    
+      http(GetEpSellWeb,
+      {
+      amount:this.form.amount,type:this.form.dType,
+      pwd:this.form.tpwd,goolekey:this.form.gcode}, json => {
         if (json.code === 0) {
           this.showComfirm = true
-          this.tips = this.tipsObj.succeed
+          this.tips = '提现成功!';
           this.TogetUserInfo()
         } else {
           this.showComfirm = true
-          if (!json.success) {
-            this.tips = json.msg
-          } else {
-            this.tips = this.tipsObj.nosucceed
-          }
+          this.tips = '提现失败，请稍后再试!'
         }
       })
-    }
+
+    
+  }
   },
   created () {
     this.TogetUserInfo()

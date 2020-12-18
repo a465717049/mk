@@ -92,7 +92,7 @@ export default {
     onButton (option) {
       this.option = option
       if (option === 'back') {
-        this.$router.push('./Analyse?')
+       // this.$router.push('./Analyse?')
       } else if (option == 'down') {
         this.ToGetSerarchApple('down')
       } else if (option == 'up') {

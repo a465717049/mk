@@ -21,8 +21,9 @@
             <template #input>
               <van-stepper
                 v-model="key.shopnum"
+                min="0"
                 @plus="onPlus(key.id)"
-                @minus="onMinus(key.id)"
+                @minus="onMinus(key.id,key.shopnum)"
                 class="font42"
               />
             </template>
@@ -162,9 +163,8 @@ export default {
           this.data.forEach(el => {
             let img = null
             try {
-              console.log(el.shopdetail.id)
               img = require('@/assets/imgs/shop/goods-' + el.shopdetail.id + '.png')
-            } catch (err) { // 图片 不存在则使用默认的图片
+            } catch (err) { 
               img = require('@/assets/imgs/shop/camea.png')
             }
             return el.shopdetail.pIcon = img
@@ -189,15 +189,7 @@ export default {
         this.tips = '当前金额不足'
         return
       }
-      http(
-        CreateNewAccount,
-        { jsondata: JSON.stringify(this.addmodel) },
-        (json) => {
-          if (json.code === 0) {
-            this.totalrp = json.response.rp
-          }
-        }
-      )
+     
     },
     buyShop () {
       if (this.totalrp < this.buytotalrp) {
@@ -240,7 +232,7 @@ export default {
     TogetUserInfo () {
       http(GetUserInfo, null, (json) => {
         if (json.code === 0) {
-          this.totalrp = json.response.rp
+          this.totalrp = json.response.gold
         }
       })
     },
@@ -249,10 +241,21 @@ export default {
       this.price += this.shopprice
       this.addshop(id, 1, '')
     },
-    onMinus (id) {
-      // 减少
+    onMinus (id,index) {
       this.price -= this.shopprice
       this.addshop(id, 1, '-')
+      if(index==1)
+      {
+        var newcar=[];
+        this.data.forEach(element => {
+            if(element.id!=id)
+            {
+              newcar.push(element);
+            }
+      this.data=newcar;
+        });
+         //location.reload()
+      }
     },
     addshop (id, num, option) {
       http(AddGoodsweb, { shopid: id, num: num, option: option }, (json) => {

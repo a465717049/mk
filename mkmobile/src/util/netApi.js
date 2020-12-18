@@ -21,6 +21,13 @@ export const getEpexchange = {
   version: v,
   string: true
 };
+
+export const GetEPRecordLists = {
+  url: "ep/GetEPRecordLists",
+  method: "POST",
+  version: v,
+  string: true
+};
 // ep转出
 export const EPToEexchange = {
   url: "ep/EPToEexchange",
@@ -56,6 +63,15 @@ export const EPSell = {
   version: v,
   string: true
 };
+
+export const GetEpSellWeb = {
+  contentType: "application/json",
+  url: "EP/GetEpSellWeb",
+  method: "POST",
+  version: v,
+  string: true
+};
+
 // 出售股票
 export const SellStock = {
   contentType: "application/json",
@@ -189,6 +205,22 @@ export const GetUserFeedBack = {
 export const AddUserFeedBack = {
   contentType: "application/json",
   url: "User/AddUserFeedBack",
+  method: "POST",
+  version: v,
+  string: true
+};
+//SetReadUserFeedBack GetReadUserFeedBack
+export const SetReadUserFeedBack = {
+  contentType: "application/json",
+  url: "User/SetReadUserFeedBack",
+  method: "POST",
+  version: v,
+  string: true
+};
+
+export const GetReadUserFeedBack = {
+  contentType: "application/json",
+  url: "User/GetReadUserFeedBack",
   method: "POST",
   version: v,
   string: true
@@ -387,6 +419,15 @@ export const GetUpdateHeadImageAndNickName = {
   version: v,
   string: true
 };
+
+export const Getupdatebankinfo = {
+  contentType: "application/json",
+  url: "User/updatebankinfo",
+  method: "POST",
+  version: v,
+  string: true
+};
+
 export const GetAllQuestionList = {
   contentType: "application/json",
   url: "Question/GetAllQuestionList",
@@ -417,10 +458,16 @@ export const AddGoodsweb = {
   version: v,
   string: true
 };
+export const ApplyOpenShop = {
+  contentType: "application/json",
+  url: "Shop/ApplyOpenShop",
+  method: "POST",
+  version: v,
+  string: true
+};
 
 //购物车数量
 export const GetShopCartsweb = {
-  contentType: "application/json",
   url: "Shop/GetShopCartsweb",
   method: "POST",
   version: v,

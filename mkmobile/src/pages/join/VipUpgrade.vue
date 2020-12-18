@@ -127,9 +127,9 @@ export default {
     TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          if (json.response.lv_name == 1) { this.form.amount = 666; this.nowvip = '初级会员' }
-          if (json.response.lv_name == 2) { this.form.amount = 2000; this.nowvip = '中级会员' }
-          if (json.response.lv_name == 3) { this.form.amount = 10000; this.nowvip = '高级会员' }
+          if (json.response.farmers == 1) { this.form.amount = 666; this.nowvip = '初级会员' }
+          if (json.response.farmers == 2) { this.form.amount = 2000; this.nowvip = '中级会员' }
+          if (json.response.farmers == 3) { this.form.amount = 10000; this.nowvip = '高级会员' }
 
           if (this.form.oType == 'EP') {
             this.account = json.response.gold

@@ -69,7 +69,7 @@ export default {
 
       receiptTypeList: [
         { text: 'RP', value: 'RP' },
-        { text: 'SP', value: 'SP' }
+       // { text: 'SP', value: 'SP' }
       ],
       transPassword: null,
       verificationCode: null,
@@ -98,6 +98,7 @@ export default {
       this.showComfirm = v
     },
     ChangeTransType () {
+      return;
       this.TogetUserInfo()
       if (this.form.oType == 'EP') {
         this.form.oType = 'RP'

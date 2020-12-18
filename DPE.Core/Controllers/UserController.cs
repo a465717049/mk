@@ -1149,6 +1149,53 @@ namespace DPE.Core.Controllers
 
         }
 
+        //获取是否有未读消息
+        [HttpPost]
+        public async Task<MessageModel<dynamic>> GetReadUserFeedBack()
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                var data =await _idisposefeedbackservices.Query(x => x.MessageUid == _user.ID && x.IsRead==false);
+                result.code = 0;
+                result.msg = "";
+                result.response = data.Count();
+                return result;
+            }
+            catch
+            {
+                result.code = 4001;
+                result.success = true;
+                return result;
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<MessageModel<dynamic>> SetReadUserFeedBack()
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                var data = await _idisposefeedbackservices.Query(x => x.MessageUid == _user.ID && x.IsRead == false);
+                foreach (DisposeFeedback model in data) 
+                {
+                    model.IsRead = true;
+                    await _idisposefeedbackservices.Update(model);
+                }
+                result.code = 0;
+                result.msg = "";
+                result.response = data.Count();
+                return result;
+            }
+            catch
+            {
+                result.code = 4001;
+                result.success = true;
+                return result;
+            }
+        }
+
         /// <summary>
         /// 修改用户反馈
         /// </summary>
@@ -2664,6 +2711,53 @@ namespace DPE.Core.Controllers
                 result.success = false;
                 return result;
             }
+        }
+
+
+        //更新银行卡信息
+        [HttpPost]
+        public async Task<MessageModel<dynamic>> updatebankinfo(int type,string alipayname="",string alipayaccount="",string bankidcard="",string bankaddr="",string bankname="",string addr="")
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try 
+            {
+                var user = await _sysUserInfoServices.QueryById(_user.ID);
+                switch (type) 
+                {
+                    case 1:
+                        user.alipayname = alipayname;
+                        user.alipayaccount = alipayaccount;
+                        break;
+                    case 2:
+                        user.bankidcard = bankidcard;
+                        user.bankaddr = bankaddr;
+                        user.bankname = bankname;
+                        break;
+                    case 3:
+                        user.addr = addr;
+                        break;
+                }
+                if (await _sysUserInfoServices.Update(user)) 
+                {
+                    result.code = 0;
+                    result.msg = "更新成功";
+                    result.success = true;
+                }
+                else 
+                {
+                    result.code = 10002;
+                    result.msg = "更新失败";
+                    result.success = false;
+                }
+                return result;
+            }
+            catch 
+            {
+                result.code = 5000;
+                result.msg = "更新失败请稍后再试";
+                return result;
+            }
+           
         }
 
 

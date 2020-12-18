@@ -16,14 +16,35 @@
             <van-dropdown-item v-model="initData.level" :options="option1" />
           </van-dropdown-menu>
         </li>
-        <li>
-          <div class="title">帐户</div>
-          <input type="text" v-model="initData.nickName" />
+         <li v-if="initData.level==1">
+          <div class="title">账号</div>
+          <input type="text" v-model="initData.alipayaccount" />
           <i class="iconfont iconlock"></i>
         </li>
-        <li>
-          <div class="title">开户行信息</div>
-          <input type="text" v-model="initData.nickName" />
+        <li v-if="initData.level==1">
+          <div  class="title">姓名</div>
+          <input type="text" v-model="initData.alipayname" />
+          <i class="iconfont iconlock"></i>
+        </li>
+         <li v-if="initData.level==2">
+          <div  class="title">开户行</div>
+          <input type="text" v-model="initData.bankaddr" />
+          <i class="iconfont iconlock"></i>
+        </li>
+         <li v-if="initData.level==2">
+          <div  class="title">卡号</div>
+          <input type="text" v-model="initData.bankidcard" />
+          <i class="iconfont iconlock"></i>
+        </li>
+          <li v-if="initData.level==2">
+          <div  class="title">姓名</div>
+          <input type="text" v-model="initData.bankname" />
+          <i class="iconfont iconlock"></i>
+        </li>
+
+         <li v-if="initData.level==3">
+          <div  class="title">地址</div>
+          <input type="text" v-model="initData.addr" />
           <i class="iconfont iconlock"></i>
         </li>
       </ul>
@@ -32,16 +53,17 @@
         <div class="title">您的银行卡信息：</div>
         <ul>
           <li>
-            <span class="lable">支付宝</span>
-            <span class="info">11233121@qq.com</span>
+            <span class="lable">支付宝:</span>
+            <span class="info">{{initData.alipayaccount}}  {{initData.alipayname}}</span>
           </li>
           <li>
-            <span class="lable">微信</span>
-            <span class="info">11233121@qq.com</span>
+            <span class="lable">usdt:</span>
+            <span class="info">{{initData.addr}}</span>
           </li>
           <li>
-            <span class="lable">银联卡</span>
-            <span class="info">542234234*****23432 工商银行深圳支行</span>
+            <span class="lable">银联卡:</span>
+            <span class="info">{{initData.bankidcard}} {{initData.bankaddr}} :</span>
+            <span class="info">{{initData.bankname}} </span>
           </li>
         </ul>
       </div>
@@ -53,10 +75,12 @@
       @changeModel="changeModel"
     ></YellowComfirm>
   </div>
-</template>
+</template> 
 <script type="text/javascript">
 import TabBar from 'components/TabBar'
 import TopBar from 'components/TopBar'
+import { http } from 'util/request'
+import {  GetUserInfo,Getupdatebankinfo} from 'util/netApi'
 import { storage } from 'util/storage'
 import YellowComfirm from 'components/YellowComfirm'
 export default {
@@ -73,10 +97,16 @@ export default {
         nopwdreset: '兩次密碼不一致請重新確認！'
       },
       initData: {
+        addr:'',
+        bankaddr:'',
+        bankname:'',
+        bankidcard:'',
+        alipayaccount:'',
+        alipayname:'',
         Jid: 0,
         code: '',
         nickName: '',
-        level: 1,
+        level: 0,
         password: '',
         comfirmPassword: '',
         radioValue: '1',
@@ -84,10 +114,7 @@ export default {
         L: 0
       },
       option1: [
-        { text: '支付寶', value: 1 },
-        { text: '微信', value: 2 },
-        { text: '銀行卡', value: 3 },
-        { text: 'USDT', value: 4 }
+       
       ]
     }
   },
@@ -105,31 +132,116 @@ export default {
     changeModel (v) {
       this.showComfirm = v
     },
-    goEditData () {}
+    TogetUserInfo () {
+      http(GetUserInfo, null, json => {
+        if (json.code === 0) {
+          var reloadaary=[];
+            if(!json.response.alipayaccount)
+            {
+               reloadaary.push({text: '支付宝', value: 1})
+            }else
+            {
+              this.initData.alipayaccount=json.response.alipayaccount;
+              this.initData.alipayname=json.response.alipayname;
+            }
+
+             if(!json.response.bankidcard)
+            {
+               reloadaary.push({text: '银行卡', value: 2})
+            }else
+            {
+              this.initData.bankaddr=json.response.bankaddr;
+              this.initData.bankname=json.response.bankname;
+               this.initData.bankidcard=json.response.bankidcard;
+            }
+
+             if(!json.response.coin_location)
+            {
+               reloadaary.push({text: 'USDT', value: 3})
+            }else
+            {
+              this.initData.addr=json.response.coin_location;
+            }
+            this.option1=reloadaary;
+        }
+      })
+    },
+    goEditData ()
+     {
+       var data={};
+       if(this.initData.level==1)
+       {
+         if(!this.initData.alipayname)
+         {
+           this.showComfirm = true;
+           this.tips="请输入支付宝名字"
+           return;
+         }
+          if(!this.initData.alipayaccount)
+         {
+           this.showComfirm = true;
+           this.tips="请输入支付宝账号"
+           return;
+         }
+          data={
+            type:this.initData.level,
+            alipayname:this.initData.alipayname,
+            alipayaccount:this.initData.alipayaccount}
+       }else if (this.initData.level==2)
+        {
+           if(!this.initData.bankname)
+         {
+           this.showComfirm = true;
+           this.tips="请输入银行卡姓名"
+           return;
+         }
+          if(!this.initData.bankaddr)
+         {
+           this.showComfirm = true;
+           this.tips="请输入银行卡地址"
+           return;
+         }
+          if(!this.initData.bankidcard)
+         {
+           this.showComfirm = true;
+           this.tips="请输入银行卡卡号"
+           return;
+         }
+        data={
+        type:this.initData.level,
+        bankname:this.initData.bankname, 
+        bankaddr:this.initData.bankaddr,
+        bankidcard:this.initData.bankidcard}
+       }else if(this.initData.level==3)
+       {
+            if(!this.initData.addr)
+         {
+           this.showComfirm = true;
+           this.tips="请输入usdt地址"
+           return;
+         }
+        data={  type:this.initData.level,addr:this.initData.addr}
+       }
+       http(
+        Getupdatebankinfo,
+        data,
+        json => {
+          if (json.code === 0) {
+             this.tips='更新成功!'
+             this.showComfirm=true
+          }else
+          {
+             this.tips='更新失败!'
+             this.showComfirm=true
+          }
+        }
+      )
+
+     }
   },
   created () {
-    if (storage.getLocalStorage('joindata')) {
-      var modeldata = JSON.parse(storage.getLocalStorage('joindata'))
-      this.initData.code = modeldata.MemberNo
-      this.initData.Jid = modeldata.Jid
-      this.initData.nickName = modeldata.NickName
-      this.initData.L = modeldata.L
-      this.initData.MemberNo = modeldata.MemberNo
-      this.initData.loginPass = modeldata.loginPass
-      if (modeldata.investmentAmount == 500) {
-        this.initData.level = 2
-      } else {
-        this.initData.level = 1
-      }
-    }
-    if (this.$route.params.uid) {
-      this.initData.Jid = this.$route.params.uid
-      this.initData.L = this.$route.params.isLeft
-        ? this.$route.params.isLeft
-        : 0
-    }
-    console.log(this.$route.params.isLeft)
-    console.log(this.initData.L)
+    this.TogetUserInfo()
+  
   }
 }
 </script>

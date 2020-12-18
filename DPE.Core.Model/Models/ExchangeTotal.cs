@@ -27,5 +27,7 @@ namespace DPE.Core.Model.Models
 
         public string extype { get; set; }
 
+        public int stype { get; set; }
+
     }
 }

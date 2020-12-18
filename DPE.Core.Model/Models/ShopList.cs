@@ -36,5 +36,7 @@ namespace DPE.Core.Model.Models
            public int? status { get; set; }
 
            public int? minLevel { get; set; }
+
+           public int? ptype { get; set; }
     }
 }
