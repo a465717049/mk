@@ -13,22 +13,15 @@
       </div>
       <div class="code-body">
         <div class="c-cell">
-          <div class="c-cell-label">Android( 安卓手机 ）</div>
+          <div class="c-cell-label">长按验证码选择进行复制</div>
           <div class="c-cell-value">
-           <span>{{androidCode}}</span>
-           
-          </div>
-        </div>
-        <div class="c-cell">
-          <div class="c-cell-label">IPHONE（苹果手机）</div>
-          <div class="c-cell-value">
-            <span> {{iosCode}}</span>
+          {{androidCode}}
           </div>
         </div>
       </div>
-      <!-- <button class="button" @click="goNext">
+       <button class="button" @click="goNext">
         下一步
-      </button> -->
+      </button>
     </div>
   </div>
 </template>
@@ -120,26 +113,23 @@ export default {
         font-weight: bold;
       }
       .c-cell-value {
-        height: 150px;
-        // line-height: 123px;
-        font-size: 42px;
+        height: 200px!important;
+        line-height: 40px!important;
+        font-size: 32px!important;
         width: 100%;
-        padding: 20px ;
+        padding: 0 20px;
         border-radius: 20px;
         color: #6F6D72;
-        font-weight: 600;
-        letter-spacing: 4px;
         overflow: hidden;
         background: #fff;
         position: relative;
         display: flex;
         align-items: center;
-        span{
-          flex: 1;
-          word-wrap: break-word;
-          white-space: normal;
-          word-break: break-all;
-        }
+        flex: 1;
+        word-wrap: break-word;
+        white-space: normal;
+        word-break: break-all;
+        
         i {
           // position: absolute;
           // right: 20px;

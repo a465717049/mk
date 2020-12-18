@@ -15,19 +15,12 @@
       </div>
       <div class="code-body">
         <div class="c-cell">
-          <div class="c-cell-label">Android激活码</div>
+          <div class="c-cell-label">长按激活码选择进行复制</div>
           <div class="c-cell-value">
             {{androidCode}}
-            <i class="iconfont iconcopy"></i>
           </div>
         </div>
-        <div class="c-cell">
-          <div class="c-cell-label">IOS激活码</div>
-          <div class="c-cell-value">
-            {{iosCode}}
-            <i class="iconfont iconcopy"></i>
-          </div>
-        </div>
+        
       </div>
      
     </div>

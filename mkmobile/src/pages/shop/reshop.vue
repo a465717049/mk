@@ -85,14 +85,7 @@ export default {
       showComfirm: true,
       tips: '即將更新！',
       data: [
-        {
-          icon_url: require('@/assets/imgs/shop/camea.png'),
-          price: '70$',
-          name: 'Children Camera Visionkids Happycamu',
-          id: 1,
-          bgc: '#F5E0BA',
-          tag: '促销中'
-        }
+       
       ],
       col: 2
     }

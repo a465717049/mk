@@ -15,17 +15,17 @@
       <ul>
         <li>
           <div class="title">真实姓名</div>
-          <input type="text" v-model="initData.name" readonly />
+          <input type="text" v-model="initData.name" />
           <i class="iconfont iconlock" v-show="initData.name.length"></i>
         </li>
         <li>
           <div class="title">身份证</div>
-          <input type="text" v-model="initData.typeNumber" readonly />
+          <input type="text" v-model="initData.typeNumber" />
           <i class="iconfont iconlock" v-show="initData.typeNumber.length"></i>
         </li>
         <li>
           <div class="title">手机：</div>
-          <input type="text" v-model="initData.phone" readonly />
+          <input type="text" v-model="initData.phone" />
           <i class="iconfont iconlock" v-show="initData.phone.length"></i>
         </li>
         <!-- <li>
@@ -54,7 +54,7 @@
         </li>-->
         <li>
           <div class="title">配送地址：</div>
-          <input type="text" v-model="initData.addr" readonly />
+          <input type="text" v-model="initData.addr"  />
           <i class="iconfont iconlock" v-show="initData.addr.length"></i>
         </li>
         <li>
@@ -174,15 +174,6 @@ export default {
           if (json.code === 0) {
             this.showComfirm = true
             this.tips = '更新成功'
-            // this.addmodel.uRealName = this.initData.name
-            //  this.addmodel.idType = this.initData.type
-            // this.addmodel.CountryPhoneCode = this.initData.country
-            //  this.addmodel.idNumber = this.initData.typeNumber
-            //  this.addmodel.TradePass = this.initData.password
-            // this.addmodel.phone = this.initData.phone
-            // this.addmodel.addr = this.initData.addr
-            //  storage.setLocalStorage('joindata', JSON.stringify(this.addmodel))
-            //  this.$router.push({ name: 'CheckData' })
           } else {
             this.showComfirm = true
             this.tips = json.msg
@@ -202,11 +193,7 @@ export default {
       this.initData.password = this.addmodel.TradePass
       this.initData.phone = this.addmodel.phone
       this.initData.addr = this.addmodel.addr
-      if (this.addmodel.L == 0) {
-        this.initData.radioValue = '0'
-      } else {
-        this.initData.radioValue = '1'
-      }
+     
     }
   }
 }

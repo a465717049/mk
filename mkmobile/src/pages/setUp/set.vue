@@ -43,7 +43,7 @@
         </div>
         <div class="relative">
           <img src="@/assets/imgs/set/b-6.png" class="img" alt />
-          <van-cell class="cell-info borderR mb-40" title="个人资料" is-link to="additional" />
+          <van-cell class="cell-info borderR mb-40" title="个人资料" is-link  @click="Goadditional" />
         </div>
         <div class="relative">
           <img src="@/assets/imgs/set/B-5.png" class="img" alt />
@@ -55,9 +55,12 @@
         </div>
       </div>
     </ScrollRefresh>
+    <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk()" @changeModel="changeModel"></YellowComfirm>
+   
   </div>
 </template>
 <script>
+import YellowComfirm from 'components/YellowComfirm'
 import TopBar from 'components/TopBar'
 import { http } from 'util/request'
 import { GetUserInfo } from 'util/netApi'
@@ -69,18 +72,22 @@ export default {
   name: 'Set',
   components: {
     TopBar,
+    YellowComfirm,
     ScrollRefresh
   },
   data () {
     return {
+      tips: '',
+      isEnter: false,
       defaultImg,
       photo: '',
-      userlv: '总监',
+      userlv: '',
       lv: 0,
-      username: 'Totay cyels',
+      username: '',
       isBindGoogle: false,
-      level: '初级会员',
-      registerTime: '2020-09-10 15:04'
+      isSetIDNumber: false,
+      level: '',
+      registerTime: ''
     }
   },
   methods: {
@@ -89,6 +96,7 @@ export default {
         if (json.code === 0) {
           this.username = json.response.nickname;
           this.isBindGoogle = json.response.isBindGoogle;
+          this.isSetIDNumber = json.response.isSetIDNumber;
           if (json.response.farmers == 1) this.level = "初级会员";
           if (json.response.farmers == 2) this.level = "中级会员";
           if (json.response.farmers == 3) this.level = "高级会员";
@@ -108,7 +116,7 @@ export default {
       })
     },
     GoAuthenticator () {
-      console.log(this.isBindGoogle)
+  
       if (this.isBindGoogle) {
         this.$router.push({
           name: 'AuthenticatorThree'
@@ -117,6 +125,19 @@ export default {
         this.$router.push({
           name: 'AuthenticatorOne'
         })
+      }
+    },
+     changeModel (v) {
+      this.isEnter = v
+    },
+    Goadditional() {
+      if (this.isSetIDNumber) {
+        this.$router.push({
+          name: 'additional'
+        })
+      } else {
+         this.showComfirm = true
+        this.tips = "资料已经完善，无法修改"
       }
     }
   },

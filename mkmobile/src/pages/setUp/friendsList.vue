@@ -87,22 +87,7 @@ export default {
   data () {
     return {
       friendsList: [
-        {
-          photo: defaultImg,
-          NickName: 'Totay cyels',
-          uID: '10001',
-          friendsNum: 34,
-          performance: 6000,
-          honors: ['经理2个', ' 总监0个', ' 总裁0个', ' 董事0个', '合伙人0个']
-        },
-        {
-          photo: defaultImg,
-          NickName: 'Totay cyels',
-          uID: '10002',
-          friendsNum: 34,
-          performance: 6000,
-          honors: ['经理2个', ' 总监0个', ' 总裁0个', ' 董事0个', '合伙人0个']
-        }
+       
       ],
       uid: 0,
       activeName: 0

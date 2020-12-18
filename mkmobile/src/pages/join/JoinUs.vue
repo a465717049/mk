@@ -32,7 +32,7 @@
         </li>
         <li>
           <div class="title">接点ID:</div>
-          <input type="text" @blur="checkjid" v-model="initData.Jid" />
+          <input type="text" @blur="checkjid" v-model="initData.parentID" />
           <i class="iconfont icondui"></i>
         </li>
         <li>
