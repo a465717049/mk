@@ -1,6 +1,7 @@
 using DPE.Core.IServices.BASE;
 using DPE.Core.Model.Models;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 namespace DPE.Core.IServices
 {	
@@ -11,5 +12,8 @@ namespace DPE.Core.IServices
 	{
 
 		Task<List<ShopList>> GetShopList(long uid);
+
+		//¸üÐÂ½áËã
+		Task<DataTable> GetautoProcessamount(long userID,decimal money);
 	}
 }

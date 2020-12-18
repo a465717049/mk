@@ -348,6 +348,15 @@ namespace DPE.Core.Controllers
                                             fromID = _user.ID
                                         }).Result > 0)
                                         {
+                                            if (shopdetail.ptype == 0) 
+                                            {
+                                                //结算奖励
+                                                for (int i = 0; i < model.shoptotalnum; i++)
+                                                {
+                                                    await _ishoplistservices.GetautoProcessamount(_user.ID, Convert.ToDecimal(shopdetail.price));
+                                                }
+                                            }
+                                         
                                             if (_ishoppingcartserivces.DeleteById(model.id).Result)
                                             {
                                                 successnum++;

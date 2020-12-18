@@ -176,6 +176,15 @@ export const GetFriendsList = {
   version: v,
   string: true
 };
+
+//查看某人资料
+export const GetFriendsListbyId = {
+  contentType: "application/json",
+  url: "Relation/GetFriendsListbyId",
+  method: "POST",
+  version: v,
+  string: true
+};
 //查找家人
 export const GetSearchFimaly = {
   contentType: "application/json",

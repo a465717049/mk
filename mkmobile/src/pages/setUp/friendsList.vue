@@ -18,7 +18,7 @@
           <div class="list">
             <div class="relative" v-for="(item,index) in friendsList" :key="index">
               <img :src="item.photo" class="img" alt />
-              <van-cell class="cell-info borderR mb-40" is-link @click="gofriend(item.uID)">
+              <van-cell class="cell-info borderR mb-40" is-link @click="toGetFriendsListbyId(item.uID)">
                 <div slot="title" class="data-title">
                   <div class="friendsName">{{item.NickName+'('+item.uID+')'}}</div>
                   <div class="friendsNum" v-if="item.friendsNum">{{item.friendsNum}}</div>
@@ -38,7 +38,7 @@ import { photoList } from 'util/const.js'
 import TopSearch from 'components/TopSearch'
 import ScrollRefresh from 'components/ScrollRefresh'
 import defaultImg from '@/assets/imgs/set/head02.png'
-import { GetFriendsList, GetSearchFimaly, GetUserInfo } from 'util/netApi'
+import { GetFriendsList, GetSearchFimaly, GetUserInfo,GetFriendsListbyId } from 'util/netApi'
 // import getHeightPX from "../../mixins/getHeightPX";
 export default {
   components: {
@@ -55,6 +55,15 @@ export default {
   },
   computed: {},
   methods: {
+    toGetFriendsListbyId(id)
+    {
+      http(GetFriendsListbyId, { uid: id }, json => {
+        if (json.response) {
+            console.log(json)
+          }
+        })
+      
+    },
     loadinfo () {
       var _this = this
       http(GetFriendsList, { uid: this.uid }, json => {

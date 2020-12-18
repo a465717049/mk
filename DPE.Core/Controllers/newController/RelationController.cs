@@ -112,6 +112,39 @@ namespace DPE.Core.Controllers
             }
         }
 
+
+        [HttpPost]
+        public async Task<MessageModel<dynamic>> GetFriendsListbyId(long uid)
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+
+            try
+            {
+                var relationData = await _sysUserInfoServices.GetRelationListbyid(uid);
+
+                var friendData = await _sysUserInfoServices.GetFriendsList(uid, 0);
+                if (friendData == null || friendData.Rows.Count <= 0)
+                {
+                    result.code = 63001;
+                    result.success = false;
+                    return result;
+                }
+
+                result.code = 0;
+                result.success = true;
+                result.response = new { friendData= friendData, relationData= relationData };
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.success = false;
+                result.code = 1007;
+                result.msg = ex.Message;
+                return result;
+            }
+        }
+
         /// <summary>
         /// 朋友关係
         /// </summary>
