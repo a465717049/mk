@@ -176,6 +176,15 @@ export const GetFriendsList = {
   version: v,
   string: true
 };
+
+//查看某人资料
+export const GetFriendsListbyId = {
+  contentType: "application/json",
+  url: "Relation/GetFriendsListbyId",
+  method: "POST",
+  version: v,
+  string: true
+};
 //查找家人
 export const GetSearchFimaly = {
   contentType: "application/json",
@@ -205,6 +214,22 @@ export const GetUserFeedBack = {
 export const AddUserFeedBack = {
   contentType: "application/json",
   url: "User/AddUserFeedBack",
+  method: "POST",
+  version: v,
+  string: true
+};
+//SetReadUserFeedBack GetReadUserFeedBack
+export const SetReadUserFeedBack = {
+  contentType: "application/json",
+  url: "User/SetReadUserFeedBack",
+  method: "POST",
+  version: v,
+  string: true
+};
+
+export const GetReadUserFeedBack = {
+  contentType: "application/json",
+  url: "User/GetReadUserFeedBack",
   method: "POST",
   version: v,
   string: true

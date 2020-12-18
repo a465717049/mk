@@ -100,7 +100,7 @@
           <van-collapse-item name="3">
             <template #title>
               <div class="leftTreeTitle">
-                <i class="iconfont iconfont2 iconlock"></i>
+                <i class="iconfont iconfont2 iconshangdian"></i>
                 <span>商店</span>
               </div>
             </template>
@@ -185,6 +185,8 @@
 import TopBar from 'components/TopBar'
 import Store from '@/store'
 import { mapState } from 'vuex'
+import { http } from 'util/request'
+import { GetReadUserFeedBack } from 'util/netApi'
 import { storage } from '@/util/storage'
 export default {
   components: {
@@ -244,6 +246,19 @@ export default {
   mounted () {
     this.service = storage.getLocalStorage('service')
     Store.commit('changeTopbarHeight', this.$refs.topBar.offsetHeight)
+
+     http(GetReadUserFeedBack, null, json => {
+        if (json.code === 0) {
+          if(json.response>0)
+          {
+            Store.commit('changeRead',true)
+          }else
+          {
+            Store.commit('changeRead',false)
+          }
+        }
+      })
+    //Store.commit('changeRead',false)
   }
 }
 </script>
@@ -677,6 +692,11 @@ export default {
   .icontuichu {
     font-size: 50px !important;
     margin-left: 5px;
+  }
+  .iconshangdian{
+    font-size: 80px;
+    margin-left: -8px;
+     margin-right: 20px;
   }
 }
 .leftTreeTitle {

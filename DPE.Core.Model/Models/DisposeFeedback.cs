@@ -32,5 +32,7 @@ namespace DPE.Core.Model.Models
            public bool? IsDelete { get; set; }
 
            public bool? IReply { get; set; }
+
+           public bool? IsRead { get; set; }
     }
 }

@@ -36,7 +36,7 @@
 <script>
 import TopBar from 'components/TopBar'
 import { http } from 'util/request'
-import { GetUserFeedBack, AddUserFeedBack, GetUserInfo } from 'util/netApi'
+import { GetUserFeedBack, AddUserFeedBack, GetUserInfo,SetReadUserFeedBack } from 'util/netApi'
 import { storage } from 'util/storage'
 import ScrollRefresh from 'components/ScrollRefresh'
 import defaultImg from '@/assets/imgs/set/head03.png'
@@ -169,7 +169,11 @@ export default {
   created () {
     this.TogetUserInfo()
     this.ToGetUserFeedBack()
-    Store.commit('changeRead', true)
+     http(SetReadUserFeedBack, null, json => {
+        if (json.code === 0) {
+          
+        }
+      })
   }
 }
 </script>

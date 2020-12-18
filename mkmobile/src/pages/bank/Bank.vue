@@ -3,7 +3,7 @@
     <TopBar class="center-one-search">银行卡设置</TopBar>
     <div class="innerWrap">
       <div class="tips base-flex flex-start p-58 bg-white borderR mb-80">
-        <img src="@/assets/imgs/tipimg.png" class="img" alt />
+        <img src="@/assets/imgs/login/head.png" class="img" alt />
         <div class="tips-part">
           <div class="tip-titl">提示</div>
           <div>一经设置后个人不能修改。</div>
@@ -272,9 +272,9 @@ export default {
       padding: 30px;
       margin: 0 auto;
       box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.24);
-      .img {
-        width: 148px;
-        height: 115px;
+     .img {
+        width: 122px;
+        height: 128px;
         margin-right: 70px;
       }
     }

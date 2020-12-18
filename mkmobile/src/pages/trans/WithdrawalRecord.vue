@@ -15,7 +15,7 @@
                 <div class="detailWrap">
                   <div class="detail" v-for="(item,index) in listOne" :key="'ONE'+index">
                     <div class="info">
-                      <img :src="photoList[tmpcktype]" alt />
+                      <img src="@/assets/imgs/set/TT.png" class="img" alt />
                       <div class="num">
                         <div class="font50">{{ item.remark }}</div>
                         <div class="sub-num">{{ item.date }}</div>
