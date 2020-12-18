@@ -3,7 +3,7 @@
     <TopBar class="center-one-search">注册成为会员</TopBar>
     <div class="innerWrap">
       <div class="tips base-flex flex-start p-58 bg-white borderR mb-80">
-        <img src="@/assets/imgs/tipimg.png" class="img" alt />
+        <img src="@/assets/imgs/login/head.png" class="img" alt />
         <div class="tips-part">
           <div class="tip-titl">提示</div>
           <div>密码最少6位,必须包含大小写及特殊字符。</div>
@@ -58,15 +58,15 @@
 import TabBar from 'components/TabBar'
 import TopBar from 'components/TopBar'
 import { http } from 'util/request'
-import { GetUserInfo,checkUser } from 'util/netApi'
+import { GetUserInfo, checkUser } from 'util/netApi'
 import { accessToken, loginPro } from 'util/const.js'
 import { storage } from 'util/storage'
 import YellowComfirm from 'components/YellowComfirm'
 export default {
   data () {
     return {
-      successjid:true,
-      successpid:true,
+      successjid: true,
+      successpid: true,
       showComfirm: false,
       tips: '',
       tipsObj: {
@@ -102,29 +102,25 @@ export default {
   mounted () {},
   computed: {},
   methods: {
-    checkjid()
-    {
-      http(checkUser, {uid:this.initData.Jid}, json => {
+    checkjid () {
+      http(checkUser, {uid: this.initData.Jid}, json => {
         if (json.code === 0) {
-          this.successjid=true;
-        }else
-        {
-          this.successjid=false;
-          this.showComfirm=true
-          this.tips='接点ID不存在'
+          this.successjid = true
+        } else {
+          this.successjid = false
+          this.showComfirm = true
+          this.tips = '接点ID不存在'
         }
       })
     },
-    checkpid()
-    {
-       http(checkUser, {uid:this.initData.parentID}, json => {
-         if (json.code === 0) {
-          this.successpid=true;
-        }else
-        {
-          this.successpid=false;
-          this.showComfirm=true
-          this.tips='安置ID不存在'
+    checkpid () {
+      http(checkUser, {uid: this.initData.parentID}, json => {
+        if (json.code === 0) {
+          this.successpid = true
+        } else {
+          this.successpid = false
+          this.showComfirm = true
+          this.tips = '安置ID不存在'
         }
       })
     },
@@ -163,32 +159,29 @@ export default {
         return
       }
 
-        if (!this.initData.Jid || this.initData.Jid==0) {
+      if (!this.initData.Jid || this.initData.Jid == 0) {
         this.showComfirm = true
         this.tips = '请输入接点id'
         return
       }
 
-       if (!this.initData.parentID || this.initData.parentID==0) {
+      if (!this.initData.parentID || this.initData.parentID == 0) {
         this.showComfirm = true
         this.tips = '请输入安置id'
         return
       }
 
-      if(!this.successjid)
-      {
+      if (!this.successjid) {
         this.showComfirm = true
         this.tips = '请检查接点Id'
         return
       }
 
-       if(!this.successpid)
-      {
+      if (!this.successpid) {
         this.showComfirm = true
         this.tips = '请检查安置Id'
         return
       }
-
 
       if (!this.initData.password) {
         this.showComfirm = true
@@ -270,9 +263,9 @@ export default {
       padding: 30px ;
       margin: 0 auto;
       box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.24);
-      .img {
-        width: 148px;
-        height: 115px;
+     .img {
+        width: 122px;
+        height: 128px;
         margin-right: 70px;
       }
     }

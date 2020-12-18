@@ -13,9 +13,47 @@
       :isNeedUp="false"
       class="relativeScroll"
     >
-      <div class="listWrap borderR" ref="listWrap">
+      <div class="friendlistWrap borderR" ref="listWrap">
         <div class="friendsList">
-          <div class="list">
+          <van-collapse v-model="activeName" accordion>
+            <van-collapse-item
+              :name="index"
+              v-for="(item,index) in friendsList"
+              :key="index"
+              class="friendWrap"
+            >
+              <template #title>
+                <div class="friendTop">
+                  <img :src="item.photo" class="img" alt />
+                  <div class="data-title">
+                    <div class="friendsName">{{item.NickName+'('+item.uID+')'}}</div>
+                    <!-- <div class="friendsNum" v-if="item.friendsNum">{{item.friendsNum}}</div> -->
+                  </div>
+                </div>
+              </template>
+              <ul>
+                <li v-if="item.friendsNum">
+                  <span class="title">朋友：</span>
+                  <dl>
+                    <dt>{{item.friendsNum}}个</dt>
+                  </dl>
+                </li>
+                <li v-if="item.performance">
+                  <span class="title">业绩：</span>
+                  <dl>
+                    <dt>{{item.performance}}</dt>
+                  </dl>
+                </li>
+                <li v-if="item.honors&&item.honors.length">
+                  <span class="title">荣誉：</span>
+                  <dl>
+                    <dt v-for="(honor,j) in item.honors" :key="index+j">{{honor}}</dt>
+                  </dl>
+                </li>
+              </ul>
+            </van-collapse-item>
+          </van-collapse>
+          <!-- <div class="list">
             <div class="relative" v-for="(item,index) in friendsList" :key="index">
               <img :src="item.photo" class="img" alt />
               <van-cell class="cell-info borderR mb-40" is-link @click="toGetFriendsListbyId(item.uID)">
@@ -25,7 +63,7 @@
                 </div>
               </van-cell>
             </div>
-          </div>
+          </div>-->
         </div>
       </div>
     </ScrollRefresh>
@@ -49,8 +87,25 @@ export default {
   data () {
     return {
       friendsList: [
+        {
+          photo: defaultImg,
+          NickName: 'Totay cyels',
+          uID: '10001',
+          friendsNum: 34,
+          performance: 6000,
+          honors: ['经理2个', ' 总监0个', ' 总裁0个', ' 董事0个', '合伙人0个']
+        },
+        {
+          photo: defaultImg,
+          NickName: 'Totay cyels',
+          uID: '10002',
+          friendsNum: 34,
+          performance: 6000,
+          honors: ['经理2个', ' 总监0个', ' 总裁0个', ' 董事0个', '合伙人0个']
+        }
       ],
-      uid: 0
+      uid: 0,
+      activeName: 0
     }
   },
   computed: {},
@@ -70,7 +125,7 @@ export default {
         if (json.response) {
           _this.friendsList = json.response
           _this.friendsList.forEach(element => {
-            element.photo = photoList[element.photo]
+            element.photo=photoList[element.photo]
           })
         }
       })
@@ -102,91 +157,111 @@ export default {
   }
 }
 
-.listWrap {
+.friendlistWrap {
   position: relative;
   width: 100%;
   margin-top: -40px;
   padding: 40px 60px 0;
-}
-.friendsList {
-  margin-top: 60px;
-  padding-bottom: 50px;
-  .list {
-    // background: #f2f3f7;
-    .cell-info {
-      // line-height: 120px;
-      min-height: 150px;
-      align-items: center;
+  .friendsList {
+    margin-top: 60px;
+    padding-bottom: 50px;
+  }
+  .friendWrap {
+    background-color: #fff;
+    padding: 10px 30px;
+    border-radius: 30px;
+    margin-bottom: 33px;
+
+    .friendTop {
+      display: flex;
+      justify-content: space-between;
     }
-    .img {
-      position: absolute;
-      left: 20px;
-      top: 50%;
-      transform: translateY(-50%);
+    img {
       width: 120px;
       height: 120px;
-      z-index: 99;
+      margin-right: 60px;
     }
-    /deep/.van-cell__right-icon {
-      font-size: 60px;
-      // height: 137px;
-      // margin-top: 30px;
-      // line-height: 120px;
+  }
+  /deep/ .van-collapse {
+    .van-collapse-item--border::after {
+      border: 0;
     }
-    /deep/.van-cell__title {
-      margin-left: 160px;
-      font-weight: bold;
-      color: #767c8f;
-      position: relative;
+    .van-collapse-item {
+      .van-icon-arrow::before {
+        color: #767c8f;
+        font-size: 60px;
+        transform: rotate(0);
+      }
+      .van-collapse-item__title--expanded .van-cell__right-icon::before {
+        transform: rotate(-90deg);
+      }
+      .van-collapse-item__title--expanded::after {
+        display: none;
+      }
+      .van-cell {
+        align-items: center;
+        .van-cell__right-icon {
+          font-size: 60px;
+          color: #d9c704;
+        }
+      }
+      .van-collapse-item__content {
+        padding: 0;
+      }
+      ul {
+        width: 100%;
+        padding-left: 180px;
+        li {
+          font-size: 40px;
+          color: #767c8f;
+          font-weight: bold;
+          display: flex;
+          margin-bottom: 10px;
+          .title {
+            width: 18%;
+          }
+          dl {
+            flex: 1;
+            display: flex;
+            flex-wrap: wrap;
+            dt {
+              margin-right: 10px;
+            }
+          }
+        }
+      }
     }
-    /deep/.van-cell__value {
-      font-size: 35px;
-      margin-left: 140px;
-      font-weight: bold;
-      color: rgba(118, 124, 143, 1);
-      position: relative;
-    }
-    /deep/.van-progress__pivot {
-      display: none;
-    }
-    .cell-special {
-      /deep/.van-cell__title {
-        margin-left: 600px;
+    .no-arrow {
+      .van-cell {
+        .van-cell__right-icon {
+          display: none;
+        }
       }
     }
   }
-}
+  /deep/ .van-hairline--top-bottom::after,
+  .van-hairline-unset--top-bottom::after {
+    border-width: 0 0;
+  }
 
-.data-info {
-  height: 60px;
-  line-height: 60px;
-  div {
-    display: inline-flex;
-    width: 50%;
-    color: #e28b07;
-    span {
-      color: #660a79;
-      text-align: right;
-      display: inline-block;
-      width: 140px;
+  .data-title {
+    flex: 1;
+    div {
+      height: 60px;
+      line-height: 60px;
     }
-  }
-}
-.data-title {
-  div {
-    height: 60px;
-    line-height: 60px;
-  }
-  div.friendsName {
-    white-space: nowrap;
-    height: 100px;
-    line-height: 100px;
-    color: #767c8f;
-    font-size: 50px;
-  }
-  div.friendsNum {
-    margin-left: 0px;
-    font-size: 40px;
+    div.friendsName {
+      white-space: nowrap;
+      height: 100px;
+      line-height: 100px;
+      color: #767c8f;
+      font-size: 50px;
+      font-weight: bold;
+    }
+    div.friendsNum {
+      margin-left: 0px;
+      font-size: 40px;
+    }
   }
 }
 </style>

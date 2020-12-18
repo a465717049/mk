@@ -100,7 +100,7 @@
           <van-collapse-item name="3">
             <template #title>
               <div class="leftTreeTitle">
-                <i class="iconfont iconfont2 iconlock"></i>
+                <i class="iconfont iconfont2 iconshangdian"></i>
                 <span>商店</span>
               </div>
             </template>
@@ -692,6 +692,11 @@ export default {
   .icontuichu {
     font-size: 50px !important;
     margin-left: 5px;
+  }
+  .iconshangdian{
+    font-size: 80px;
+    margin-left: -8px;
+     margin-right: 20px;
   }
 }
 .leftTreeTitle {

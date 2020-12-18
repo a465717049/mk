@@ -9,7 +9,7 @@
     > -->
       <div class="innerWrap">
         <div class="tips base-flex flex-start p-58 bg-white borderR mb-80">
-          <img src="@/assets/imgs/tipimg.png" class="img" alt />
+          <img src="@/assets/imgs/login/head.png" class="img" alt />
           <div class="tips-part">
             <div class="tip-titl">提示</div>
             <div>EP可以提现，也可以兑换成为RP(注册分）</div>
@@ -82,7 +82,7 @@ export default {
       isEnter: false,
       account: '2,000',
       isreturn: 0,
-      nowvip:"",
+      nowvip: '',
       addmodel: {},
       initData: {
         price: '',
@@ -111,10 +111,10 @@ export default {
         })
       }
     },
-    goRetrun(){
-          this.$router.push({
-          name: 'joinUs'
-        })
+    goRetrun () {
+      this.$router.push({
+        name: 'joinUs'
+      })
     },
     goNext () {
       if (this.account < this.addmodel.investmentAmount) {
@@ -177,9 +177,9 @@ export default {
       this.initData.addprice = this.addmodel.investmentAmount
       this.initData.addlevle = this.addmodel.levlename
 
-         if (this.initData.addlevle == 666){ this.nowvip="初级会员";}
-          if (this.initData.addlevle == 2000){ this.nowvip="中级会员";}
-          if (this.initData.addlevle == 10000) {this.nowvip="高级会员";}
+      if (this.initData.addlevle == 666) { this.nowvip = '初级会员' }
+      if (this.initData.addlevle == 2000) { this.nowvip = '中级会员' }
+      if (this.initData.addlevle == 10000) { this.nowvip = '高级会员' }
       if (this.addmodel.L == 0) {
         this.initData.area = '蔬菜區'
       } else {
@@ -225,8 +225,8 @@ export default {
     margin: 0 auto 50px;
     box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.24);
     .img {
-      width: 148px;
-      height: 115px;
+      width: 130px;
+      height: 130px;
       margin-right: 70px;
     }
   }
