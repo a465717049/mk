@@ -131,7 +131,7 @@ export default {
       this.isEnter = v
     },
     Goadditional() {
-      if (this.isSetIDNumber) {
+      if (!this.isSetIDNumber) {
         this.$router.push({
           name: 'additional'
         })
