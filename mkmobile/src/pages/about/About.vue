@@ -5,7 +5,7 @@
     </TopBar>
     <div class="innerWrap">
       <div class="imgwrap">
-        <img src="@/assets/imgs/aboutImg.jpg" class="img" alt />
+        <img src="@/assets/imgs/aboutImg.png" class="img" alt />
       </div>
     </div>
   </div>

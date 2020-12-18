@@ -7,7 +7,7 @@
           <li>
             <div class="title">您的钱包地址</div>
             <div class="t-img">
-              <img src="@/assets/imgs/T.png" alt />
+              <img src="@/assets/imgs/set/B-7.png" alt />
               <input
                 type="text"
                 placeholder="请输入ERC20地址"
@@ -50,101 +50,101 @@
 </template>
 
 <script>
-import TopBar from "components/TopBar";
-import YellowComfirm from "components/YellowComfirm";
-import ScrollRefresh from "components/ScrollRefresh";
-import { GetUserInfo, SetUserlocationweb } from "util/netApi";
-import { http } from "util/request";
-import { storage } from "util/storage";
-import { accessToken, loginPro } from "util/const.js";
+import TopBar from 'components/TopBar'
+import YellowComfirm from 'components/YellowComfirm'
+import ScrollRefresh from 'components/ScrollRefresh'
+import { GetUserInfo, SetUserlocationweb } from 'util/netApi'
+import { http } from 'util/request'
+import { storage } from 'util/storage'
+import { accessToken, loginPro } from 'util/const.js'
 export default {
-  name: "AuthenticatorOne",
+  name: 'AuthenticatorOne',
   components: {
     TopBar,
     YellowComfirm,
     ScrollRefresh
   },
-  data() {
+  data () {
     return {
       form: {
-        location: "",
-        tpwd: "",
-        idnum: "",
-        google: ""
+        location: '',
+        tpwd: '',
+        idnum: '',
+        google: ''
       },
       // address: "1",
-      address:'',
+      address: '',
       //   password: "",
       isEnter: false,
       topBarOption: {
-        iconLeft: "back",
-        iconRight: ""
+        iconLeft: 'back',
+        iconRight: ''
       },
-      tips: "",
+      tips: '',
       tipsObj: {
-        nosucceed: "设置钱包地址失败",
-        nolong: "请设置正确的钱包地址",
-        noex: "钱包地址长度不正确",
-        succeed: "设置钱包地址成功"
+        nosucceed: '设置钱包地址失败',
+        nolong: '请设置正确的钱包地址',
+        noex: '钱包地址长度不正确',
+        succeed: '设置钱包地址成功'
       }
-    };
+    }
   },
   methods: {
-    goNext() {
+    goNext () {
       if (!this.form.location) {
-        this.tips = this.tipsObj.noex;
-        this.isEnter = true;
-        return;
+        this.tips = this.tipsObj.noex
+        this.isEnter = true
+        return
       }
       if (this.form.location.length != 42) {
-        this.tips = this.tipsObj.noex;
-        this.isEnter = true;
-        return;
+        this.tips = this.tipsObj.noex
+        this.isEnter = true
+        return
       }
-      if (this.form.location.substring(0, 2).toLowerCase() !== "0x") {
-        this.tips = this.tipsObj.nolong;
-        this.isEnter = true;
-        return;
+      if (this.form.location.substring(0, 2).toLowerCase() !== '0x') {
+        this.tips = this.tipsObj.nolong
+        this.isEnter = true
+        return
       }
       http(SetUserlocationweb, this.form, json => {
         if (json.code === 0) {
-          this.isEnter = true;
-          this.tips = this.tipsObj.succeed;
-          this.address = this.form.location;
+          this.isEnter = true
+          this.tips = this.tipsObj.succeed
+          this.address = this.form.location
         } else {
-          this.isEnter = true;
+          this.isEnter = true
           if (!json.success) {
-            this.tips = json.msg;
+            this.tips = json.msg
           } else {
-            this.tips = this.tipsObj.nosucceed;
+            this.tips = this.tipsObj.nosucceed
           }
         }
-      });
-      //this.isEnter = true
+      })
+      // this.isEnter = true
     },
-    clickOk() {
-      this.isEnter = false;
+    clickOk () {
+      this.isEnter = false
     },
-    changeModel(v) {
-      this.isEnter = v;
+    changeModel (v) {
+      this.isEnter = v
     },
-    TogetUserInfo() {
+    TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          this.form.location = json.response.coin_location;
-          this.form.location = this.form.location ? this.form.location : "";
+          this.form.location = json.response.coin_location
+          this.form.location = this.form.location ? this.form.location : ''
           this.address = json.response.coin_location
             ? json.response.coin_location
-            : "";
+            : ''
         }
-      });
+      })
     }
   },
-  mounted() {
-    this.TogetUserInfo();
+  mounted () {
+    this.TogetUserInfo()
   },
-  created() {}
-};
+  created () {}
+}
 </script>
 
 <style lang="less" scope>

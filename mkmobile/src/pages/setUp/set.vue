@@ -50,7 +50,7 @@
           <van-cell class="cell-info borderR mb-40" title="语言" is-link to="./lanSet" />
         </div>
         <div class="relative">
-          <img src="@/assets/imgs/set/B-5.png" class="img" alt />
+          <img src="@/assets/imgs/set/B-7.png" class="img" alt />
           <van-cell class="cell-info borderR mb-40" title="关于摩奇猴" is-link to="about" />
         </div>
       </div>

@@ -3,7 +3,7 @@
     <TopBar class="center-one-search" >会员升级</TopBar>
     <div class="innerWrap">
       <div class="tips base-flex flex-start p-58 bg-white borderR mb-80">
-        <img src="@/assets/imgs/tipimg.png" class="img" alt />
+        <img src="@/assets/imgs/login/head.png" class="img" alt />
         <div class="tips-part">
           <div class="tip-titl">提示</div>
           <div>会员可以提出升级计划同时推荐人获得奖励</div>
@@ -62,8 +62,8 @@ import TopBar from 'components/TopBar'
 export default {
   data () {
     return {
-      nowvip:"",
-      showlevel:0,
+      nowvip: '',
+      showlevel: 0,
       form: {
         oType: 'RP',
         dType: '',
@@ -97,14 +97,13 @@ export default {
   mounted () {},
   computed: {},
   methods: {
-    changetype()
-    {
-       if (this.form.amount >= this.form.dType) {
+    changetype () {
+      if (this.form.amount >= this.form.dType) {
         this.showComfirm = true
         this.tips = '不能小於當前等級'
         return
       }
-       this.showlevel= this.form.dType-this.form.amount;
+      this.showlevel = this.form.dType - this.form.amount
     },
     clickOk () {
       this.showComfirm = false
@@ -128,9 +127,9 @@ export default {
     TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          if (json.response.lv_name == 1){ this.form.amount = 666;this.nowvip="初级会员";}
-          if (json.response.lv_name == 2){ this.form.amount = 2000;this.nowvip="中级会员";}
-          if (json.response.lv_name == 3) {this.form.amount = 10000;this.nowvip="高级会员";}
+          if (json.response.lv_name == 1) { this.form.amount = 666; this.nowvip = '初级会员' }
+          if (json.response.lv_name == 2) { this.form.amount = 2000; this.nowvip = '中级会员' }
+          if (json.response.lv_name == 3) { this.form.amount = 10000; this.nowvip = '高级会员' }
 
           if (this.form.oType == 'EP') {
             this.account = json.response.gold
@@ -208,9 +207,9 @@ export default {
       padding: 30px ;
       margin: 0 auto 50px;
       box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.24);
-      .img {
-        width: 148px;
-        height: 115px;
+     .img {
+        width: 122px;
+        height: 128px;
         margin-right: 70px;
       }
     }
