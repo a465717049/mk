@@ -6,7 +6,7 @@
         <img src="@/assets/imgs/tipimg.png" class="img" alt />
         <div class="tips-part">
           <div class="tip-titl">提示</div>
-          <div>EP提现要扣除10%的手续费</div>
+          <div>周三为提现日(平常提，每周三发)提现手续费：2%</div>
           <!-- <div>即将更新！</div> -->
         </div>
       </div>

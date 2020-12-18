@@ -16,14 +16,13 @@
           <div class="c-cell-label">Android( 安卓手机 ）</div>
           <div class="c-cell-value">
            <span>{{androidCode}}</span>
-            <i class="iconfont iconcopy"></i>
+           
           </div>
         </div>
         <div class="c-cell">
           <div class="c-cell-label">IPHONE（苹果手机）</div>
           <div class="c-cell-value">
             <span> {{iosCode}}</span>
-            <i class="iconfont iconcopy"></i>
           </div>
         </div>
       </div>
@@ -121,7 +120,7 @@ export default {
         font-weight: bold;
       }
       .c-cell-value {
-        // height: 123px;
+        height: 150px;
         // line-height: 123px;
         font-size: 42px;
         width: 100%;
