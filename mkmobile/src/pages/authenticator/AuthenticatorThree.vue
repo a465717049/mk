@@ -11,8 +11,8 @@
             <!-- 只需2步，获取激活码用于您的账号进行安全校验 -->
           </div>
           <div class="auth-link">
-            <a href="">安卓手机APP</a>
-            <a href="">苹果手机APP</a>
+            <a href="https://static.a8dog.top/App/google.apk">安卓手机APP</a>
+            <a href="">苹果手机请自行下载</a>
           </div>
         </div>
       </div>

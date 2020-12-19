@@ -157,6 +157,11 @@ export default {
           name: '注册分',
           type: 'rp',
           count: 0
+        },
+        {
+          name: '产品积分',
+          type: 'dp',
+          count: 0
         }
       ],
       listOne: [
@@ -233,6 +238,11 @@ export default {
               name: '注册分',
               type: 'rp',
               count: json.response.rp
+            },
+            {
+              name: '产品积分',
+              type: 'dp',
+              count: json.response.dpe
             }
           ]
 

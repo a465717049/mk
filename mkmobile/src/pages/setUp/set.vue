@@ -82,6 +82,7 @@ export default {
       defaultImg,
       photo: '',
       userlv: '',
+      lvname:0,
       lv: 0,
       username: '',
       isBindGoogle: false,
@@ -126,13 +127,16 @@ export default {
         })
       }
     },
+     clickOk () {
+      this.showComfirm = false
+    },
     changeModel (v) {
-      this.isEnter = v
+      this.showComfirm = v
     },
     Goadditional () {
       if (!this.isSetIDNumber) {
         this.$router.push({
-          name: 'additional'
+          name: 'Additional'
         })
       } else {
         this.showComfirm = true

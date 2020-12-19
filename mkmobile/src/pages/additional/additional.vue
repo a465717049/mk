@@ -102,7 +102,7 @@ export default {
         phone: '',
         addr: '',
         name: '',
-        country: '',
+        country: '86',
         type: 2,
         password: '',
         typeNumber: '',

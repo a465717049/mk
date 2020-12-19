@@ -49,7 +49,7 @@
                   />
                 </template>
               </van-field>
-              <span class="price">$ {{ price }}</span>
+              <span class="price"> {{ price }}</span>
             </div>
             <div class="base-flex mt-40">
               <div class="heart borderR">
@@ -101,12 +101,12 @@ export default {
       showComfirm: false,
       carNum: 1,
       shopid: 0,
-      images: [{ image: require('@/assets/imgs/shop/camea.png') }],
+      images: [],
       current: 0,
       // pName: "促销中",
       // pDesc: "促销中促销中促销中",
       pInfo: ['品牌： '],
-      pIcon: require('@/assets/imgs/shop/camea.png'),
+      pIcon:null,
       ptag: '',
       price: 0,
       shopprice: 0,
@@ -339,9 +339,7 @@ export default {
       height: 373px;
     }
     /deep/ .van-swipe-item {
-      border-radius: 24px;
       overflow: hidden;
-      border: 10px solid #fff;
     }
     /deep/ .van-swipe__indicator {
       width: 20px;
