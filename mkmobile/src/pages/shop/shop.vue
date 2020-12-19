@@ -39,7 +39,7 @@
                   />
                   <div class="title font-weight Tleft">{{item.price}}</div>
                   <div class="detail Tleft">{{item.name}}</div>
-                  <div class="circle" @click="goDetail(item.id)">+</div>
+                  <div class="circle" @click="addshop(item.id)">+</div>
                   <div class="tag" v-show="item.tag">{{item.tag}}</div>
                 </div>
               </template>
@@ -76,7 +76,7 @@ export default {
   },
   data () {
     return {
-      carNum: 1,
+      carNum: 0,
       showChat: false,
       placeinputValue: '',
       topBarOption: {
@@ -102,10 +102,10 @@ export default {
     onSearch (value) {
       this.ToGetShopDeatilLike(value)
     },
-    goDetail (shopid) {
-      http(AddGoodsweb, { shopid: this.shopid, num: 1 }, json => {
+    addshop (shopid) {
+      http(AddGoodsweb, { shopid: shopid, num: 1 }, (json) => {
         if (json.code === 0) {
-          this.$router.push('./shopDetail?id=' + shopid)
+          this.getshopcartnum()
         }
       })
     },

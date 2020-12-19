@@ -48,7 +48,7 @@
         </ul>
         <div class="sumTitle">合计</div>
         <div class="sumInfo">
-          <span class="tit">需扣除您</span>
+          <span class="tit">需扣除您的RP：</span>
           <span class="num">{{ buytotalrp }}</span>
           <span class="unit">（RMB)</span>
         </div>
@@ -108,7 +108,7 @@ export default {
       buyremark: '',
       data: [
         {
-          icon_url: null,
+          icon_url: require('@/assets/imgs/shop/camea.png'),
           id: 1,
           shopdetail: {
             createTime: '',
@@ -133,7 +133,7 @@ export default {
       },
       carNum: 1,
       tips:
-        '',
+        '恭喜！注册成功了！登录ID: 100012登录密码：123456交易密码：123456请尽快登录修改并完善个人资料',
       isEnter: false,
       account: '2,000',
       price: 0,
@@ -157,10 +157,11 @@ export default {
   computed: {},
   methods: {
     getshopcartnum () {
+      var that = this;
       http(GetShopCartsweb, null, json => {
         if (json.code === 0) {
-          this.data = json.response.data.list
-          this.data.forEach(el => {
+          that.data = json.response.data.list
+          that.data.forEach(el => {
             let img = null
             try {
               img = require('@/assets/imgs/shop/goods-' + el.shopdetail.id + '.png')
