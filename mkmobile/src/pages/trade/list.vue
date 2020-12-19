@@ -239,7 +239,7 @@ export default {
       height: 100px;
     }
     /deep/.van-tab {
-      font-size: 42px;
+      font-size: 0.48rem;
       font-weight: 600;
       border-bottom: 8px solid #ffffff;
       color: #191819;
@@ -254,6 +254,7 @@ export default {
       border-bottom: 8px solid #efb618;
       /deep/.van-tab__text {
         color: #fff;
+
       }
     }
     .listWrap {
@@ -305,7 +306,7 @@ export default {
           margin-left: 20px;
           width: 100%;
           .font50 {
-            font-size: 35px;
+            // font-size: 35px;
             font-weight: bold;
             color: #000000;
           }

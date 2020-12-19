@@ -74,134 +74,134 @@
   </div>
 </template>
 <script>
-import TopBar from "components/TopBar";
-import YellowComfirm from "components/YellowComfirm";
-import { http } from "util/request";
+import TopBar from 'components/TopBar'
+import YellowComfirm from 'components/YellowComfirm'
+import { http } from 'util/request'
 import {
   GetShopDeatilList,
   GetUserInfo,
   BuyGoodsweb,
   AddGoodsweb,
-  GetShopCartsweb,
-} from "util/netApi";
-import { storage } from "util/storage";
-import banner1 from "../../assets/imgs/banner-00.png";
-import banner2 from "../../assets/imgs/banner-01.png";
-import { accessToken, loginPro } from "util/const.js";
-import ScrollRefresh from "components/ScrollRefresh";
+  GetShopCartsweb
+} from 'util/netApi'
+import { storage } from 'util/storage'
+import banner1 from '../../assets/imgs/banner-00.png'
+import banner2 from '../../assets/imgs/banner-01.png'
+import { accessToken, loginPro } from 'util/const.js'
+import ScrollRefresh from 'components/ScrollRefresh'
 export default {
-  name: "shopDetail",
+  name: 'shopDetail',
   components: {
     TopBar,
     YellowComfirm,
-    ScrollRefresh,
+    ScrollRefresh
   },
-  data() {
+  data () {
     return {
       showComfirm: false,
       carNum: 1,
       shopid: 0,
-      images: [{ image:  require("@/assets/imgs/shop/camea.png") }],
+      images: [{ image: require('@/assets/imgs/shop/camea.png') }],
       current: 0,
       // pName: "促销中",
       // pDesc: "促销中促销中促销中",
-      pInfo: ["品牌： "],
-      pIcon: require("@/assets/imgs/shop/camea.png"),
-      ptag: "",
+      pInfo: ['品牌： '],
+      pIcon: require('@/assets/imgs/shop/camea.png'),
+      ptag: '',
       price: 0,
       shopprice: 0,
       stepper: 1,
       startmax: 8,
       showChat: true,
       topBarOption: {
-        iconLeft: "back",
-        iconRight: "icongouwucheman",
+        iconLeft: 'back',
+        iconRight: 'icongouwucheman'
       },
-      tips: "",
-      tipsObj: {},
-    };
+      tips: '',
+      tipsObj: {}
+    }
   },
   methods: {
-    onChangeSwiper(index) {
-      this.current = index;
+    onChangeSwiper (index) {
+      this.current = index
     },
-    clickOk() {
-      this.showComfirm = false;
+    clickOk () {
+      this.showComfirm = false
     },
-    changeModel(v) {
-      this.showComfirm = v;
+    changeModel (v) {
+      this.showComfirm = v
     },
-    onPlus() {
-      //增加
-      this.price += this.shopprice;
+    onPlus () {
+      // 增加
+      this.price += this.shopprice
     },
-    onMinus() {
-      //减少
-      this.price -= this.shopprice;
+    onMinus () {
+      // 减少
+      this.price -= this.shopprice
     },
-    buyShop() {
-      //shopCar
+    buyShop () {
+      // shopCar
       http(
         BuyGoodsweb,
         { shopid: this.shopid, buynum: this.stepper },
         (json) => {
           if (json.code === 0) {
           } else {
-            this.showComfirm = true;
-            this.tips = json.msg;
+            this.showComfirm = true
+            this.tips = json.msg
           }
         }
-      );
+      )
     },
-    getshopcartnum() {
+    getshopcartnum () {
       http(GetShopCartsweb, null, (json) => {
         if (json.code === 0) {
-          this.carNum = json.response.count;
+          this.carNum = json.response.count
         }
-      });
+      })
     },
-    addshop() {
+    addshop () {
       http(AddGoodsweb, { shopid: this.shopid, num: this.stepper }, (json) => {
         if (json.code === 0) {
-          this.getshopcartnum();
+          this.getshopcartnum()
         }
         //  console.log("111");
-      });
+      })
     },
-    ToGetShopDeatilList(tmpshopid) {
+    ToGetShopDeatilList (tmpshopid) {
       http(GetShopDeatilList, { shopid: tmpshopid }, (json) => {
-        console.log(json);
+        console.log(json)
         if (json.code === 0) {
-          var shop = json.response.list[0];
-          console.log(shop);
-          this.pName = shop.pName;
-          this.pInfo = [shop.pDesc];
-          this.pDesc = shop.pDesc;
-          this.price = shop.price;
-          this.shopprice = shop.price;
-          this.startmax = shop.pNum;
+          var shop = json.response.list[0]
+          console.log(shop)
+          this.pName = shop.pName
+          this.pInfo = [shop.pDesc]
+          this.pDesc = shop.pDesc
+          this.price = shop.price
+          this.shopprice = shop.price
+          this.startmax = shop.pNum
           let img = null
-            try {
-              img = require('@/assets/imgs/shop/goods-' + shop.id + '.png')
-            } catch (err) { 
-              img = require('@/assets/imgs/shop/camea.png')
-            }
-         this.images =[{image:img}];
+          try {
+            img = require('@/assets/imgs/shop/goods-' + shop.id + '.png')
+          } catch (err) {
+            img = require('@/assets/imgs/shop/camea.png')
+          }
+          this.images = [{image: img}]
         }
-      });
-    },
-  },
-  created() {
-    if (this.$route.query.id) {
-      this.shopid = this.$route.query.id;
-      this.ToGetShopDeatilList(this.shopid);
-      this.getshopcartnum();
+      })
     }
   },
-  mounted() {
-    // this.scrollInit()
+  created () {
+    if (this.$route.query.id) {
+      this.shopid = this.$route.query.id
+      this.ToGetShopDeatilList(this.shopid)
+      this.getshopcartnum()
+    }
   },
-};
+  mounted () {
+    // this.scrollInit()
+  }
+}
 </script>
 <style lang='less' scoped>
 .shop-part {
@@ -281,6 +281,7 @@ export default {
       .heart {
         width: 221px;
         height: 163px;
+        left: 163px;
         background: #a9cd60;
         margin-right: 40px;
         > i {
@@ -291,10 +292,12 @@ export default {
       .buy-btn {
         width: 739px;
         height: 163px;
+        line-height: 163px;
         background: #eecb08;
         margin-bottom: 40px;
         font-weight: bold;
         font-size: 53px;
+        color: #191819;
       }
     }
     .detail-info {

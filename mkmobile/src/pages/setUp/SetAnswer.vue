@@ -193,12 +193,12 @@ export default {
         .title {
           color: #FFF;
           font-size: 42px;
-          margin: 12px;
+          margin: 42px 20px 20px 0;
           font-weight: bold;
         }
         input {
-          height: 148px;
-          line-height: 148px;
+          height: 123px;
+          line-height: 123px;
           color: #9d9d9f;
           width: 100%;
           padding: 0 30px;

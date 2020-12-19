@@ -18,22 +18,22 @@
         <li>
           <div class="title">昵称:</div>
           <input type="text" v-model="initData.nickName" />
-          <i class="iconfont icondui"></i>
+          <i class="iconfont icondui" v-show="initData.nickName.length"/>
         </li>
         <li>
           <div class="title">密码:</div>
           <input type="password" v-model="initData.password" />
-          <i class="iconfont icondui"></i>
+          <i class="iconfont icondui" v-show="initData.password.length"/>
         </li>
         <li>
           <div class="title">安置ID:</div>
           <input type="text" @blur="checkpid" v-model="initData.parentID" />
-          <i class="iconfont icondui"></i>
+          <i class="iconfont icondui" v-show="initData.parentID.length"/>
         </li>
         <li>
           <div class="title">接点ID:</div>
           <input type="text" @blur="checkjid" v-model="initData.parentID" />
-          <i class="iconfont icondui"></i>
+          <i class="iconfont icondui" v-show="initData.parentID.length"/>
         </li>
         <li>
           <div class="title">会员级别：</div>
