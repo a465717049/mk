@@ -164,7 +164,7 @@ export default {
             let img = null
             try {
               img = require('@/assets/imgs/shop/goods-' + el.shopdetail.id + '.png')
-            } catch (err) { 
+            } catch (err) {
               img = require('@/assets/imgs/shop/camea.png')
             }
             return el.shopdetail.pIcon = img
@@ -187,9 +187,7 @@ export default {
       if (this.totalrp < this.buytotalrp) {
         this.isEnter = true
         this.tips = '当前金额不足'
-        return
       }
-     
     },
     buyShop () {
       if (this.totalrp < this.buytotalrp) {
@@ -241,20 +239,18 @@ export default {
       this.price += this.shopprice
       this.addshop(id, 1, '')
     },
-    onMinus (id,index) {
+    onMinus (id, index) {
       this.price -= this.shopprice
       this.addshop(id, 1, '-')
-      if(index==1)
-      {
-        var newcar=[];
+      if (index == 1) {
+        var newcar = []
         this.data.forEach(element => {
-            if(element.id!=id)
-            {
-              newcar.push(element);
-            }
-      this.data=newcar;
-        });
-         //location.reload()
+          if (element.id != id) {
+            newcar.push(element)
+          }
+          this.data = newcar
+        })
+        // location.reload()
       }
     },
     addshop (id, num, option) {
