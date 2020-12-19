@@ -28,7 +28,7 @@
                   class="container p-58"
                   v-for="(item,index) in data"
                   :key="index"
-                  :style="'background-color:'+item.bgc"
+                  :style="'background-color:'+bgcList[index%3]"
                 >
                   <!-- 后期根据将图片设置为自动高 -->
                   <img
@@ -85,9 +85,10 @@ export default {
       showComfirm: true,
       tips: '即將更新！',
       data: [
-        
+
       ],
-      col: 2
+      col: 2,
+      bgcList: ['#F5E0BA', '#D1D4CB', '#CADBA7']
     }
   },
   computed: {

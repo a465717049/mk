@@ -5,20 +5,20 @@
       <div class="set clearfix p-58">
         <div class="relative">
           <img :src="photo?photo:defaultImg" class="img" alt />
-          <van-cell class="cell-info borderR mb-100" v-bind:title="username" is-link to="./SetUp" />
+          <van-cell class="cell-info borderR mb-40" v-bind:title="username" is-link to="./SetUp" />
         </div>
         <div class="relative">
           <img src="@/assets/imgs/set/B-1.png" class="img" alt />
-          <van-cell class="cell-info borderR mb-40 cell-special" :title="userlv" />
+          <van-cell class="cell-info borderR cell-special" :title="userlv" />
           <van-progress class="process base-purple" :percentage="Lvname/5*100>100?100:Lvname/5*100" />
         </div>
         <div class="relative">
           <img src="@/assets/imgs/set/B-1.png" class="img" alt />
-          <van-cell class="cell-info borderR mb-40" :title="'注册时间:  '+registerTime" />
+          <van-cell class="cell-info borderR" :title="'注册时间:  '+registerTime" />
         </div>
         <div class="relative">
           <img src="@/assets/imgs/set/B-5.png" class="img" alt />
-          <van-cell class="cell-info borderR mb-40" to="VipUpgrade">
+          <van-cell class="cell-info borderR" to="VipUpgrade">
             <template #title>
               <span class="custom-title">级别：{{level}}</span>
               <van-tag round class="tag" v-if="lv!=3">升级</van-tag>
@@ -27,36 +27,36 @@
         </div>
         <div class="relative">
           <img src="@/assets/imgs/set/B-2.png" class="img" alt />
-          <van-cell class="cell-info borderR mb-40" title="认证" is-link @click="GoAuthenticator" />
+          <van-cell class="cell-info borderR" title="认证" is-link @click="GoAuthenticator" />
         </div>
         <div class="relative">
           <img src="@/assets/imgs/set/b-3.png" class="img" alt />
-          <van-cell class="cell-info borderR mb-40" title="密码" is-link to="password" />
+          <van-cell class="cell-info borderR" title="密码" is-link to="password" />
         </div>
         <div class="relative">
           <img src="@/assets/imgs/set/b-3.png" class="img" alt />
-          <van-cell class="cell-info borderR mb-40" title="安全问题" is-link to="./SetAnswer" />
+          <van-cell class="cell-info borderR" title="安全问题" is-link to="./SetAnswer" />
         </div>
         <div class="relative">
           <img src="@/assets/imgs/set/b-4.png" class="img" alt />
-          <van-cell class="cell-info borderR mb-40" title="银行" is-link to="bank" />
+          <van-cell class="cell-info borderR" title="银行" is-link to="bank" />
         </div>
         <div class="relative">
           <img src="@/assets/imgs/set/b-6.png" class="img" alt />
-          <van-cell class="cell-info borderR mb-40" title="个人资料" is-link  @click="Goadditional" />
+          <van-cell class="cell-info borderR" title="个人资料" is-link  @click="Goadditional" />
         </div>
         <div class="relative">
           <img src="@/assets/imgs/set/B-5.png" class="img" alt />
-          <van-cell class="cell-info borderR mb-40" title="语言" is-link to="./lanSet" />
+          <van-cell class="cell-info borderR" title="语言" is-link to="./lanSet" />
         </div>
         <div class="relative">
           <img src="@/assets/imgs/set/B-7.png" class="img" alt />
-          <van-cell class="cell-info borderR mb-40" title="关于摩奇猴" is-link to="about" />
+          <van-cell class="cell-info borderR" title="关于摩奇猴" is-link to="about" />
         </div>
       </div>
     </ScrollRefresh>
     <YellowComfirm :show="showComfirm" :tipTitle="tips" @clickOk="clickOk()" @changeModel="changeModel"></YellowComfirm>
-   
+
   </div>
 </template>
 <script>
@@ -95,29 +95,28 @@ export default {
     TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          this.username = json.response.nickname;
-          this.isBindGoogle = json.response.isBindGoogle;
-          this.isSetIDNumber = json.response.isSetIDNumber;
-          if (json.response.farmers == 1) this.level = "初级会员";
-          if (json.response.farmers == 2) this.level = "中级会员";
-          if (json.response.farmers == 3) this.level = "高级会员";
+          this.username = json.response.nickname
+          this.isBindGoogle = json.response.isBindGoogle
+          this.isSetIDNumber = json.response.isSetIDNumber
+          if (json.response.farmers == 1) this.level = '初级会员'
+          if (json.response.farmers == 2) this.level = '中级会员'
+          if (json.response.farmers == 3) this.level = '高级会员'
 
-          if (json.response.lv_name == 0) this.userlv = "会员";
-          if (json.response.lv_name == 1) this.userlv = "经理";
-          if (json.response.lv_name == 2) this.userlv = "总监";
-          if (json.response.lv_name == 3) this.userlv = "总裁";
-          if (json.response.lv_name == 4) this.userlv = "董事";
-          if (json.response.lv_name == 5) this.userlv = "合伙人";
-          this.Lvname = json.response.lv_name;
-          this.lv = json.response.farmers;
-          this.photo = photoList[json.response.photo];
+          if (json.response.lv_name == 0) this.userlv = '会员'
+          if (json.response.lv_name == 1) this.userlv = '经理'
+          if (json.response.lv_name == 2) this.userlv = '总监'
+          if (json.response.lv_name == 3) this.userlv = '总裁'
+          if (json.response.lv_name == 4) this.userlv = '董事'
+          if (json.response.lv_name == 5) this.userlv = '合伙人'
+          this.Lvname = json.response.lv_name
+          this.lv = json.response.farmers
+          this.photo = photoList[json.response.photo]
           this.username = json.response.nickname
           this.isBindGoogle = json.response.isBindGoogle
         }
       })
     },
     GoAuthenticator () {
-  
       if (this.isBindGoogle) {
         this.$router.push({
           name: 'AuthenticatorThree'
@@ -134,14 +133,14 @@ export default {
     changeModel (v) {
       this.showComfirm = v
     },
-    Goadditional() {
+    Goadditional () {
       if (!this.isSetIDNumber) {
         this.$router.push({
           name: 'Additional'
         })
       } else {
-         this.showComfirm = true
-        this.tips = "资料已经完善，无法修改"
+        this.showComfirm = true
+        this.tips = '资料已经完善，无法修改'
       }
     }
   },
@@ -159,10 +158,12 @@ export default {
 }
 .set {
   // margin-top: -160px;
+  padding-top: 0;
   // border-radius: 40px 40px 0 0;
   .cell-info {
     height: 130px;
     line-height: 120px;
+    margin-bottom: 30px;
   }
   .img {
     position: absolute;

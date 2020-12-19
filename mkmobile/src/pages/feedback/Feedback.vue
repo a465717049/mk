@@ -36,7 +36,7 @@
 <script>
 import TopBar from 'components/TopBar'
 import { http } from 'util/request'
-import { GetUserFeedBack, AddUserFeedBack, GetUserInfo,SetReadUserFeedBack } from 'util/netApi'
+import { GetUserFeedBack, AddUserFeedBack, GetUserInfo, SetReadUserFeedBack } from 'util/netApi'
 import { storage } from 'util/storage'
 import ScrollRefresh from 'components/ScrollRefresh'
 import defaultImg from '@/assets/imgs/set/head03.png'
@@ -169,11 +169,11 @@ export default {
   created () {
     this.TogetUserInfo()
     this.ToGetUserFeedBack()
-     http(SetReadUserFeedBack, null, json => {
-        if (json.code === 0) {
-          
-        }
-      })
+    http(SetReadUserFeedBack, null, json => {
+      if (json.code === 0) {
+
+      }
+    })
   }
 }
 </script>
@@ -208,8 +208,8 @@ export default {
       font-size: 38px;
       padding: 10px 0;
       img {
-        width: 146px;
-        height: 154px;
+        width: 132px;
+        // height: 154px;
       }
       .chat_left_img {
         margin-right: 40px;
@@ -218,8 +218,8 @@ export default {
       .chat_left_msg {
         margin-top: 30px;
         float: left;
-        width: calc(100vw - 430px);
-        min-height: 106px;
+        width: calc(100vw - 400px);
+        line-height: 54px;
         background: #fff;
         border-radius: 20px;
         position: relative;
@@ -244,8 +244,9 @@ export default {
       .chat_right_msg {
         padding: 20px;
         float: right;
-        width: calc(100vw - 430px);
-        min-height: 106px;
+        width: calc(100vw - 400px);
+        margin-top: 30px;
+        line-height: 54px;
         background-color: #77d9d3;
         color: #040000;
         border-radius: 20px;

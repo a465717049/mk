@@ -56,14 +56,14 @@ export default {
     // }
     .topHead {
       height: 150px;
-      margin-bottom: 146px;
+      margin-bottom: 86px;
     }
     .info {
-      font-size: 33px;
+      font-size: 40px;
       font-weight: bold;
       color: #ffffff;
       line-height: 60px;
-      margin-bottom: 140px;
+      margin-bottom: 60px;
     }
     .qrwrap {
       display: flex;

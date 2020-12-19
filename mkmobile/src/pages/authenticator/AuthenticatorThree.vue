@@ -10,6 +10,10 @@
             只需2步，获取激活码用于您的帐号进行安全校验
             <!-- 只需2步，获取激活码用于您的账号进行安全校验 -->
           </div>
+          <div class="auth-link">
+            <a href="https://static.a8dog.top/App/google.apk">安卓手机APP</a>
+            <a href="">苹果手机请自行下载</a>
+          </div>
         </div>
       </div>
       <div class="pwd_box">
@@ -41,55 +45,53 @@
 </template>
 
 <script>
-import TopBar from "components/TopBar";
-import YellowComfirm from "components/YellowComfirm";
-import { http } from "util/request";
-import { CheckGoogleKey } from "util/netApi";
-import { storage } from "util/storage";
-import { accessToken, loginPro } from "util/const.js";
+import TopBar from 'components/TopBar'
+import YellowComfirm from 'components/YellowComfirm'
+import { http } from 'util/request'
+import { CheckGoogleKey } from 'util/netApi'
+import { storage } from 'util/storage'
+import { accessToken, loginPro } from 'util/const.js'
 export default {
-  name: "AuthenticatorThree",
+  name: 'AuthenticatorThree',
   components: {
     TopBar,
     YellowComfirm
   },
-  data() {
+  data () {
     return {
-      msg: "", // 支付密码
+      msg: '', // 支付密码
       isEnter: false,
-      tips: ""
-    };
+      tips: ''
+    }
   },
   watch: {
-    msg(curVal) {
-      this.msg = curVal.replace(/\D/g, "");
+    msg (curVal) {
+      this.msg = curVal.replace(/\D/g, '')
       if (this.msg.length === 6) {
         http(CheckGoogleKey, { gcode: this.msg }, json => {
-          this.isEnter = true;
+          this.isEnter = true
           if (json.code === 0) {
-            this.$router.push({name:'AuthenticatorLast',params:{googlekey:json.response}})
-         
+            this.$router.push({name: 'AuthenticatorLast', params: {googlekey: json.response}})
           } else {
             this.tips = '校验失败'
-
           }
-        });
+        })
       }
     }
   },
   methods: {
-    //输入支付密码
-    focus() {
-      this.$refs.pwd.focus();
+    // 输入支付密码
+    focus () {
+      this.$refs.pwd.focus()
     },
-    clickOk() {
-      this.isEnter = false;
+    clickOk () {
+      this.isEnter = false
     },
-    changeModel(v) {
-      this.isEnter = v;
+    changeModel (v) {
+      this.isEnter = v
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>
@@ -131,6 +133,21 @@ export default {
         color: #191819;
         font-weight: 600;
         letter-spacing: 0;
+        line-height: 60px;
+      }
+      .auth-link{
+        display: flex;
+        justify-content: center;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        a{
+         font-size: 25px;
+         padding: 0 40px;
+         line-height: 30px;
+        text-align: center;
+        color: #498cff;
+        font-weight: bold;
+        }
       }
     }
   }
