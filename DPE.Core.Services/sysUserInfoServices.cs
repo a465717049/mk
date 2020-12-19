@@ -196,6 +196,7 @@ namespace DPE.Core.FrameWork.Services
                 new SugarParameter("TradePass",model.TradePass),
                 new SugarParameter("TransUserID",model.TransUserID),
                 new SugarParameter("Jid",model.Jid),
+                new SugarParameter("Tid",model.Tid),
                 new SugarParameter("phone",model.phone),
                 new SugarParameter("addr",model.addr),
                 new SugarParameter("levlename",model.levlename)

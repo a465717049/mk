@@ -1647,8 +1647,6 @@ namespace DPE.Core.Controllers
                 jsonInfo.googleCode = MD5Helper.GenerateUniqueText();
                 jsonInfo.TradePass = MD5Helper.MD5Encrypt32("123456");
 
-
-
                 var inforesult = await _sysUserInfoServices.AddSpCreatePayUser(jsonInfo);
                 if (inforesult == null || inforesult.Rows.Count <= 0)
                 {

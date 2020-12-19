@@ -27,13 +27,13 @@
         </li>
         <li>
           <div class="title">安置ID:</div>
-          <input type="text" @blur="checkpid" v-model="initData.parentID" />
-          <i class="iconfont icondui" v-show="initData.parentID.length"/>
+          <input type="text" @blur="checkpid" v-model="initData.Tid" />
+          <i class="iconfont icondui" v-show="initData.Tid.length"/>
         </li>
         <li>
           <div class="title">接点ID:</div>
-          <input type="text" @blur="checkjid" v-model="initData.parentID" />
-          <i class="iconfont icondui" v-show="initData.parentID.length"/>
+          <input type="text" @blur="checkjid" v-model="initData.Jid" />
+          <i class="iconfont icondui" v-show="initData.Jid.length"/>
         </li>
         <li>
           <div class="title">会员级别：</div>
@@ -77,14 +77,15 @@ export default {
         nopwdreset: '两次密码不一致请重新确认！'
       },
       initData: {
+        Uid: 0,
         Jid: 0,
+        Tid: 0,
         code: '',
         nickName: '',
         level: 666,
         password: '',
         comfirmPassword: '',
         radioValue: '1',
-        parentID: 0,
         L: 0
       },
       option1: [
@@ -114,7 +115,7 @@ export default {
       })
     },
     checkpid () {
-      http(checkUser, {uid: this.initData.parentID}, json => {
+      http(checkUser, {uid: this.initData.Tid}, json => {
         if (json.code === 0) {
           this.successpid = true
         } else {
@@ -127,7 +128,9 @@ export default {
     TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          this.initData.parentID = json.response.uid
+          this.initData.Tid = json.response.uid
+          this.initData.Jid = json.response.uid
+          this.initData.Uid = json.response.uid
           // console.log(json)
           // this.account = json.response.apple
         }
@@ -165,7 +168,7 @@ export default {
         return
       }
 
-      if (!this.initData.parentID || this.initData.parentID == 0) {
+      if (!this.initData.Tid || this.initData.Jid == 0) {
         this.showComfirm = true
         this.tips = '请输入安置id'
         return
@@ -190,6 +193,7 @@ export default {
       }
 
       var Joindata = {
+        Tid: this.initData.Tid, // uid
         Jid: this.initData.Jid, // uid
         idType: 2,
         idNumber: '',
@@ -203,7 +207,7 @@ export default {
         googleCode: '',
         TradePass: '',
         TransUserID: 0,
-        parentID: this.initData.parentID, // parentID 当前ID
+        parentID: this.initData.Uid, // parentID 当前ID
         L: this.initData.L,
         phone: '',
         addr: '',
