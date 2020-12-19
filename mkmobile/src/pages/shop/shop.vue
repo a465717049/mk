@@ -1,6 +1,6 @@
 <template>
   <div class="shopWrap">
-    <TopBar class="center-one-search" :option="topBarOption" :badge="carNum">
+    <TopBar class="center-one-search" :option="topBarOption" :badge="carNum" @clickR="goShopCar">
       <div>
         <div class="three-tit-t">商店</div>
         <TopSearch @onSearch="onSearch" placeinputValue></TopSearch>
@@ -59,7 +59,8 @@ import {
   GetShopList,
   GetUserInfo,
   GetShopDeatilLike,
-  GetShopCartsweb
+  GetShopCartsweb,
+  AddGoodsweb
 } from 'util/netApi'
 import { storage } from 'util/storage'
 import { accessToken, loginPro } from 'util/const.js'
@@ -84,9 +85,7 @@ export default {
       },
       showComfirm: true,
       tips: '即將更新！',
-      data: [
-
-      ],
+      data: [],
       col: 2,
       bgcList: ['#F5E0BA', '#D1D4CB', '#CADBA7']
     }
@@ -104,7 +103,14 @@ export default {
       this.ToGetShopDeatilLike(value)
     },
     goDetail (shopid) {
-      this.$router.push('./shopDetail?id=' + shopid)
+      http(AddGoodsweb, { shopid: this.shopid, num: 1 }, json => {
+        if (json.code === 0) {
+          this.$router.push('./shopDetail?id=' + shopid)
+        }
+      })
+    },
+    goShopCar () {
+      this.$router.push('shopCar')
     },
     loadmore (index) {
       this.data = this.data.concat(this.data)
@@ -165,7 +171,7 @@ export default {
   /deep/.top-bar .img-r {
     font-size: 70px;
   }
-  /deep/.toptab_search{
+  /deep/.toptab_search {
     margin-top: 60px;
   }
 }

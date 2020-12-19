@@ -1,6 +1,6 @@
 <template>
   <div class="shopWrap">
-    <TopBar class="center-one-search" :option="topBarOption" :badge="carNum">
+    <TopBar class="center-one-search" :option="topBarOption" :badge="carNum" @clickR="goShopCar">
       <div>
         <div class="three-tit-t">商店(再次购买)</div>
         <TopSearch @onSearch="onSearch" placeinputValue></TopSearch>
@@ -59,7 +59,8 @@ import {
   GetShopList,
   GetUserInfo,
   GetShopDeatilLike,
-  GetShopCartsweb
+  GetShopCartsweb,
+  AddGoodsweb
 } from 'util/netApi'
 import { storage } from 'util/storage'
 import { accessToken, loginPro } from 'util/const.js'
@@ -85,7 +86,7 @@ export default {
       showComfirm: true,
       tips: '即將更新！',
       data: [
-       
+
       ],
       col: 2
     }
@@ -103,13 +104,20 @@ export default {
       this.ToGetShopDeatilLike(value)
     },
     goDetail (shopid) {
-      this.$router.push('./shopDetail?id=' + shopid)
+      http(AddGoodsweb, { shopid: this.shopid, num: 1 }, json => {
+        if (json.code === 0) {
+          this.$router.push('./shopDetail?id=' + shopid)
+        }
+      })
+    },
+    goShopCar () {
+      this.$router.push('shopCar')
     },
     loadmore (index) {
       this.data = this.data.concat(this.data)
     },
     ToGetShopList () {
-      http(GetShopList, {ptype:1}, json => {
+      http(GetShopList, {ptype: 1}, json => {
         if (json.code === 0) {
           this.data = json.response.list
           this.data.forEach(el => {
