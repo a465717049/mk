@@ -1,6 +1,6 @@
 <template>
   <div class="shop-part">
-    <TopBar class="center-one-search" :option="topBarOption" :badge="carNum"
+    <TopBar class="center-one-search" :option="topBarOption" :badge="carNum" @clickR="goShopCar"
       >商品介绍</TopBar
     >
     <ScrollRefresh
@@ -131,6 +131,9 @@ export default {
     changeModel (v) {
       this.showComfirm = v
     },
+    goShopCar () {
+      this.$router.push('shopCar')
+    },
     onPlus () {
       // 增加
       this.price += this.shopprice
@@ -165,7 +168,6 @@ export default {
         if (json.code === 0) {
           this.getshopcartnum()
         }
-        //  console.log("111");
       })
     },
     ToGetShopDeatilList (tmpshopid) {
