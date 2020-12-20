@@ -26,12 +26,12 @@
           <i class="iconfont icondui" v-show="initData.password.length"/>
         </li>
         <li>
-          <div class="title">安置ID:</div>
+          <div class="title">推荐ID:</div>
           <input type="text" @blur="checkpid" v-model="initData.Tid" />
           <i class="iconfont icondui" v-show="initData.Tid.length"/>
         </li>
         <li>
-          <div class="title">接点ID:</div>
+          <div class="title">安置ID:</div>
           <input type="text" @blur="checkjid" v-model="initData.Jid" />
           <i class="iconfont icondui" v-show="initData.Jid.length"/>
         </li>
@@ -110,7 +110,7 @@ export default {
         } else {
           this.successjid = false
           this.showComfirm = true
-          this.tips = '接点ID不存在'
+          this.tips = '安置ID不存在'
         }
       })
     },
@@ -121,7 +121,7 @@ export default {
         } else {
           this.successpid = false
           this.showComfirm = true
-          this.tips = '安置ID不存在'
+          this.tips = '推荐ID不存在'
         }
       })
     },
@@ -164,13 +164,13 @@ export default {
 
       if (!this.initData.Jid || this.initData.Jid == 0) {
         this.showComfirm = true
-        this.tips = '请输入接点id'
+        this.tips = '请输入安置id'
         return
       }
 
-      if (!this.initData.Tid || this.initData.Jid == 0) {
+      if (!this.initData.Tid || this.initData.Tid == 0) {
         this.showComfirm = true
-        this.tips = '请输入安置id'
+        this.tips = '请输入推荐id'
         return
       }
 

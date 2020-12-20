@@ -37,8 +37,8 @@ namespace DPE.Core.Controllers
         readonly IUser _user;
         readonly ISysUserInfoServices _isysuserinfoservices;
         readonly IUserInfoServices _userInfoServices;
-        readonly IEPServices _iepservices;
-        readonly IEPexchangeServices _iepexchangeservices;
+        readonly IDPEServices _idpeservices;
+        readonly IDPEexchangeServices _idpeexchangeservices;
         readonly IShopBuyDetailSerivces _ishopbuydetailserivces;
         readonly IRPexchangeServices _irpexchangeservices;
         readonly IRPServices _irpservices;
@@ -49,16 +49,16 @@ namespace DPE.Core.Controllers
         readonly IOpenShopServices _iopenshopservices;
         public ShopListController(ISysUserInfoServices isysuserinfoservices, IUnitOfWork unitOfWork, IUser user,
             IShopListServices ishoplistservices, IUserGoodsListServices iusergoodslistservices,
-            IUserInfoServices userInfoServices, IEPServices iepservices,
-            IEPexchangeServices iepexchangeservices, IShopBuyDetailSerivces ishopbuydetailserivces,
+            IUserInfoServices userInfoServices, IDPEServices idpeservices,
+            IDPEexchangeServices idpeexchangeservices, IShopBuyDetailSerivces ishopbuydetailserivces,
             IRPexchangeServices irpexchangeservices, IRPServices irpservices, IShoppingCartSerivces ishoppingcartserivces, IOpenShopServices iopenshopservices)
         {
             this._user = user;
             _userInfoServices = userInfoServices;
             _ishoplistservices = ishoplistservices;
             _iusergoodslistservices = iusergoodslistservices;
-            _iepservices = iepservices;
-            _iepexchangeservices = iepexchangeservices;
+            _idpeservices = idpeservices;
+            _idpeexchangeservices = idpeexchangeservices;
             _unitOfWork = unitOfWork;
             _isysuserinfoservices = isysuserinfoservices;
             _ishopbuydetailserivces = ishopbuydetailserivces;
@@ -67,6 +67,7 @@ namespace DPE.Core.Controllers
             _ishoppingcartserivces = ishoppingcartserivces;
             _iopenshopservices = iopenshopservices;
         }
+
 
 
 
@@ -223,20 +224,19 @@ namespace DPE.Core.Controllers
                     await _ishoplistservices.Update(shop);
 
                     //更新EP记录 
-                    var myep = await _iepservices.QueryById(_user.ID);
+                    var myep = await _idpeservices.QueryById(_user.ID);
                     decimal tmpepamount = myep.amount.ObjToDecimal();
-                    myep.amount = myep.amount - shop.price;
-                    await _iepservices.Update(myep);
+                    myep.amount = myep.amount - shop.price.Value;
+                    await _idpeservices.Update(myep);
 
                     //插入ep记录
-                    await _iepexchangeservices.Add(new EPexchange()
+                    await _idpeexchangeservices.Add(new DPEexchange()
                     {
                         amount = shop.price,
                         createTime = DateTime.Now,
                         fromID = _user.ID,
                         uID = _user.ID,
                         lastTotal = tmpepamount,
-                        recordID = _user.ID,
                         remark = "购买商品",
                         price = shop.price,
                         scount = 0,
@@ -294,7 +294,7 @@ namespace DPE.Core.Controllers
                     foreach (ShoppingCart model in mycart)
                     {
                         var shopdetail = await _ishoplistservices.QueryById(model.shopid);
-                        var rpinfo = (await _iepservices.Query(x => x.uID == _user.ID)).First();
+                        var rpinfo = (await _idpeservices.Query(x => x.uID == _user.ID)).First();
                         if (shopdetail != null)
                         {
                             if ((shopdetail.pNum - model.shoptotalnum) < 0)
@@ -335,9 +335,9 @@ namespace DPE.Core.Controllers
                                 if (_ishoplistservices.Update(shopdetail).Result)
                                 {
                                     rpinfo.amount = rpinfo.amount - Convert.ToDecimal(model.shoptotalnum * shopdetail.price);
-                                    if (_iepservices.Update(rpinfo).Result)
+                                    if (_idpeservices.Update(rpinfo).Result)
                                     {
-                                        if (_iepexchangeservices.Add(new EPexchange()
+                                        if (_idpeexchangeservices.Add(new DPEexchange()
                                         {
                                             amount = -Convert.ToDecimal(model.shoptotalnum * shopdetail.price),
                                             createTime = DateTime.Now,

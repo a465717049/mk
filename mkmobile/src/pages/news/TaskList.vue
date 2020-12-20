@@ -1,6 +1,6 @@
 <template>
   <div class="newsIndexWrapper">
-    <TopBar class="center-one-search">{{this.ntype==1?"活动":this.ntype==2?"任务":"公告"}}</TopBar>
+    <TopBar class="center-one-search">任务</TopBar>
      <ScrollRefresh
       @getData="ToGetNewsWeb"
       :residualHeight="topbarHeight+bottomTabBarHeight+10"
@@ -62,7 +62,6 @@ export default {
       ]
     }
   },
- 
   components: {
     TopBar,
     ScrollRefresh
@@ -72,11 +71,11 @@ export default {
     this.ToGetNewsWeb()
   },
   methods: {
-   onNext (value) {
-      this.$router.push('./NewsDetail?type=3&id=' + value)
+    onNext (value) {
+      this.$router.push('./NewsDetail?type=2&id=' + value)
     },
     ToGetNewsWeb () {
-      http(GetNewsWeb, { type: 3 }, json => {
+      http(GetNewsWeb, { type: 2 }, json => {
         if (json.code === 0) {
           this.newsList = json.response
         }
@@ -85,6 +84,7 @@ export default {
 
     getTabbar () {
       http(goodscollectionList).then(res => {
+        console.log('11')
       })
     }
   },

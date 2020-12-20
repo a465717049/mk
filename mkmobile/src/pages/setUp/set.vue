@@ -110,12 +110,22 @@ export default {
           if (json.response.lv_name == 5) this.userlv = '合伙人'
           this.Lvname = json.response.lv_name
           this.lv = json.response.farmers
+          this.registerTime = this.formatDate(json.response.create_time)
           this.photo = photoList[json.response.photo]
           this.username = json.response.nickname
           this.isBindGoogle = json.response.isBindGoogle
         }
       })
     },
+      formatDate(date) {
+        var date = new Date(date*1000);
+        var YY = date.getFullYear() + '-';
+        var MM = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var DD = (date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate());
+        var hh = (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ':';
+        var mm = (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()) ;
+        return YY + MM + DD +" "+hh + mm;
+     },
     GoAuthenticator () {
       if (this.isBindGoogle) {
         this.$router.push({

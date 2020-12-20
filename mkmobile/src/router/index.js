@@ -114,6 +114,16 @@ const router = new Router({
       component: resolve => require(['@/pages/news/index'], resolve)
     },
     {
+      name: 'Active',
+      path: '/active',
+      component: resolve => require(['@/pages/news/ActiveList'], resolve)
+    },
+    {
+      name: 'Task',
+      path: '/task',
+      component: resolve => require(['@/pages/news/TaskList'], resolve)
+    },
+    {
       name: 'NewsDetail',
       path: '/newsDetail',
       component: resolve => require(['@/pages/news/NewsDetail'], resolve)

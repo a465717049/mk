@@ -55,7 +55,7 @@ export default {
         iconLeft: 'iconmenu2',
         iconRight: false
       },
-      defaultimg: '',
+      defaultimg: defaultImg,
       list: [
         // {
         //   id: 1,

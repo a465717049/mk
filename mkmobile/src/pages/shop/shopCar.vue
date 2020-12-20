@@ -48,7 +48,7 @@
         </ul>
         <div class="sumTitle">合计</div>
         <div class="sumInfo">
-          <span class="tit">需扣除您的RP：</span>
+          <span class="tit">需扣除您的PP：</span>
           <span class="num">{{ buytotalrp }}</span>
           <span class="unit">（RMB)</span>
         </div>
@@ -165,7 +165,7 @@ export default {
             let img = null
             try {
               img = require('@/assets/imgs/shop/goods-' + el.shopdetail.id + '.png')
-            } catch (err) { 
+            } catch (err) {
               img = require('@/assets/imgs/shop/camea.png')
             }
             return el.shopdetail.pIcon = img
@@ -188,9 +188,7 @@ export default {
       if (this.totalrp < this.buytotalrp) {
         this.isEnter = true
         this.tips = '当前金额不足'
-        return
       }
-     
     },
     buyShop () {
       if (this.totalrp < this.buytotalrp) {
@@ -233,7 +231,7 @@ export default {
     TogetUserInfo () {
       http(GetUserInfo, null, (json) => {
         if (json.code === 0) {
-          this.totalrp = json.response.gold
+          this.totalrp = json.response.apple
         }
       })
     },
@@ -242,20 +240,18 @@ export default {
       this.price += this.shopprice
       this.addshop(id, 1, '')
     },
-    onMinus (id,index) {
+    onMinus (id, index) {
       this.price -= this.shopprice
       this.addshop(id, 1, '-')
-      if(index==1)
-      {
-        var newcar=[];
+      if (index == 1) {
+        var newcar = []
         this.data.forEach(element => {
-            if(element.id!=id)
-            {
-              newcar.push(element);
-            }
-      this.data=newcar;
-        });
-         //location.reload()
+          if (element.id != id) {
+            newcar.push(element)
+          }
+          this.data = newcar
+        })
+        // location.reload()
       }
     },
     addshop (id, num, option) {

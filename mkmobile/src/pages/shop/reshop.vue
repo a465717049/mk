@@ -29,6 +29,7 @@
                   v-for="(item,index) in data"
                   :key="index"
                   :style="'background-color:'+item.bgc"
+                   @click.stop="goDetail(item.id)"
                 >
                   <!-- 后期根据将图片设置为自动高 -->
                   <img
@@ -39,7 +40,7 @@
                   />
                   <div class="title font-weight Tleft">{{item.price}}</div>
                   <div class="detail Tleft">{{item.name}}</div>
-                  <div class="circle" @click="goDetail(item.id)">+</div>
+                  <div class="circle"  @click.stop="addshop(item.id)">+</div>
                   <div class="tag" v-show="item.tag">{{item.tag}}</div>
                 </div>
               </template>
@@ -104,9 +105,12 @@ export default {
       this.ToGetShopDeatilLike(value)
     },
     goDetail (shopid) {
-      http(AddGoodsweb, { shopid: this.shopid, num: 1 }, json => {
+      this.$router.push('./shopDetail?id=' + shopid)
+    },
+    addshop (shopid) {
+      http(AddGoodsweb, { shopid, num: 1 }, json => {
         if (json.code === 0) {
-          this.$router.push('./shopDetail?id=' + shopid)
+          this.getshopcartnum()
         }
       })
     },

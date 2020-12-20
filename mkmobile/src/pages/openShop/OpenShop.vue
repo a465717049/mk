@@ -18,7 +18,7 @@
         </li>
         <li>
           <div class="title">昵称</div>
-          <input type="text" v-model="initData.nickname"/>
+          <input type="text" v-model="initData.nickname" readonly/>
           <i class="iconfont iconlock"></i>
         </li>
         <li>
@@ -128,6 +128,7 @@ export default {
      http(GetUserInfo, null, json => {
         if (json.code === 0) {
           this.initData.uid = json.response.uid
+          this.initData.nickname = json.response.nickname
         }
       })
     
