@@ -47,6 +47,8 @@ namespace DPE.Core.Controllers
         readonly IEPexchangeServices _iepexchangeservices;
         readonly IEPServices _iepservices;
 
+        readonly IShopRoleServices _ishoproleservices;
+
 
         readonly IOpenShopServices _iopenshopservices;
         public ShopListController(ISysUserInfoServices isysuserinfoservices, IUnitOfWork unitOfWork, IUser user,
@@ -54,7 +56,7 @@ namespace DPE.Core.Controllers
             IUserInfoServices userInfoServices, IDPEServices idpeservices,
             IDPEexchangeServices idpeexchangeservices, IShopBuyDetailSerivces ishopbuydetailserivces,
             IRPexchangeServices irpexchangeservices, IRPServices irpservices,
-            IShoppingCartSerivces ishoppingcartserivces, IOpenShopServices iopenshopservices, IEPexchangeServices iepexchangeservices, IEPServices iepservices)
+            IShoppingCartSerivces ishoppingcartserivces, IOpenShopServices iopenshopservices, IEPexchangeServices iepexchangeservices, IEPServices iepservices, IShopRoleServices ishoproleservices)
         {
             this._user = user;
             _userInfoServices = userInfoServices;
@@ -71,6 +73,7 @@ namespace DPE.Core.Controllers
             _iopenshopservices = iopenshopservices;
             _iepexchangeservices = iepexchangeservices;
             _iepservices = iepservices;
+            _ishoproleservices = ishoproleservices;
         }
 
 
@@ -86,7 +89,18 @@ namespace DPE.Core.Controllers
         {
             //_user.ID
             //     var user = await _userInfoServices.GetUserInfo(_user.ID);
-            var spinfo = await _ishoplistservices.Query(x=>x.ptype==ptype);
+
+            var role = await _ishoproleservices.Query(x => x.uId == _user.ID);
+            if (role.Count <= 0)
+            {
+                role.Add(new ShopRole() { uId = _user.ID, shopRoleId = 1 });
+            }
+            if (role.Find(x => x.shopRoleId == 1) ==null)
+            {
+                role.Add(new ShopRole() { uId = _user.ID, shopRoleId = 1 });
+            }
+            var roleid = role.Select(x => x.shopRoleId);
+            var spinfo = await _ishoplistservices.Query(x=>x.ptype==ptype && roleid.Contains(x.Shopgroup.Value));
             return new MessageModel<ShopListViewModels>()
             {
                 success = true,
