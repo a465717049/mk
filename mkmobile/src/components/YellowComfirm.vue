@@ -19,8 +19,8 @@
       </div>
       <!-- <div class="btn" v-if="!showConfirmBtn" @click="clickOk">OK</div> -->
       <div v-if="showConfirmBtn" class="confirm-btn">
-        <div class="first-btn" @click="clickOk">主農場</div>
-        <div class="second-btn" @click="clickNo">子農場</div>
+        <div class="first-btn" @click="clickOk">删除</div>
+        <div class="second-btn" @click="clickNo">取消</div>
       </div>
       <div></div>
     </div>

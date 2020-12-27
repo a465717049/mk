@@ -22,8 +22,8 @@
               <van-stepper
                 v-model="key.shopnum"
                 min="0"
-                @plus="onPlus(key.id)"
-                @minus="onMinus(key.id,key.shopnum)"
+                @plus="onPlus(key.id,key.shopdetail.ptype)"
+                @minus="onMinus(key.id,key.shopnum,key.shopdetail.ptype)"
                 class="font42"
               />
             </template>
@@ -47,19 +47,23 @@
           <!--   <li>摩奇猴套装系列（A001) 尺寸：XL 码</li> -->
         </ul>
         <div class="sumTitle">合计</div>
-        <div class="sumInfo">
-          <span class="tit">需扣除您的PP：</span>
-          <span class="num">{{ buytotalrp }}</span>
+        <div class="sumInfo" v-if="buytotalrp>0">
+          <span class="tit">需扣除您的金额：</span>
+          <span class="num">{{buytotalrp}}</span>
+          <span class="unit">（RMB)</span>
+        </div>
+          <div class="sumInfo" v-if="buytotalep>0">
+          <span class="tit">需扣除您的产品分：</span>
+          <span class="num">{{buytotalep}}</span>
           <span class="unit">（RMB)</span>
         </div>
         <div class="sumInfo">
-          <span class="tit"
-            >您目前帐户可购买商品的余额为：{{ totalrp }}（RMB)</span
+          <span class="tit">您目前帐户可购买商品的余额为：{{ totalrp+ totalep}}(RMB) </span
           >
         </div>
         <div class="buttonWrap">
           <router-link to="shop" class="router">
-            <!--@click="buyShop" -->
+            <!--@click="buyShop" totalep -->
             <button class="back">继续购物</button>
           </router-link>
           <button class="sure" @click="buyShop">立即购买</button>
@@ -70,8 +74,10 @@
     <YellowComfirm
       :show="isEnter"
       :tipTitle="tips"
+      :showConfirmBtn="isshowconfirm"
       @clickOver="clickOverpay"
       @clickOk="clickOk()"
+      @clickNo="clickNo()"
       @changeModel="changeModel"
     ></YellowComfirm>
   </div>
@@ -100,8 +106,11 @@ export default {
   },
   data () {
     return {
+      isshowconfirm:false,
       totalrp: 0,
+      totalep:0,
       buytotalrp: 0,
+      buytotalep: 0,
       buyaddr: '',
       buyname: '',
       buyphone: '',
@@ -120,7 +129,8 @@ export default {
             pNum: 0,
             price: 0,
             priceType: 0,
-            status: 0
+            status: 0,
+            ptype:0,
           },
           shopid: 8,
           shopnum: 8,
@@ -141,6 +151,7 @@ export default {
       stepper: 1,
       startmax: 8,
       isreturn: 0,
+      nowid:0,
       addmodel: {},
       initData: {
         price: '',
@@ -177,11 +188,21 @@ export default {
     sumallshop () {
       var trp = 0
       var totalnum = 0
+      var ep = 0
       this.data.forEach(function (item) {
-        trp += item.shopnum * item.shopdetail.price
+        if(item.shopdetail.ptype==0)
+        {
+         trp += item.shopnum * item.shopdetail.price
         totalnum += item.shopnum
+        }else if(item.shopdetail.ptype==1)
+        {
+         ep += item.shopnum * item.shopdetail.price
+         totalnum += item.shopnum
+        }
+       
       })
       this.buytotalrp = trp
+      this.buytotalep = ep
       this.carNum = totalnum
     },
     goNext () {
@@ -221,17 +242,25 @@ export default {
     },
     clickOk () {
       this.isEnter = false
-      if (this.isreturn == 1) {
-        this.$router.push({
-          name: 'relation',
-          params: { uid: this.addmodel.Jid }
+      console.log(this.nowid)
+      this.addshop(this.nowid, 1, '-')
+      //location.reload();
+    },
+    clickNo()
+    {
+        this.isEnter = false
+        this.data.forEach(el => {
+          if(el.id==this.nowid)
+          {
+            el.shopnum++;
+          }
         })
-      }
     },
     TogetUserInfo () {
       http(GetUserInfo, null, (json) => {
         if (json.code === 0) {
           this.totalrp = json.response.apple
+          this.totalep=json.response.dynamicTotal
         }
       })
     },
@@ -241,23 +270,23 @@ export default {
       this.addshop(id, 1, '')
     },
     onMinus (id, index) {
-      this.price -= this.shopprice
-      this.addshop(id, 1, '-')
+     // this.addshop(id, 1, '-')
       if (index == 1) {
-        var newcar = []
-        this.data.forEach(element => {
-          if (element.id != id) {
-            newcar.push(element)
-          }
-          this.data = newcar
-        })
-        // location.reload()
+      this.tips='是否要删除当前商品?'
+      this.isshowconfirm=true
+      this.isEnter=true
+      this.nowid=id
+      }else
+      {
+         this.price -= this.shopprice
+         this.addshop(id, 1, '-')
       }
     },
     addshop (id, num, option) {
       http(AddGoodsweb, { shopid: id, num: num, option: option }, (json) => {
         if (json.code === 0) {
           this.sumallshop()
+          this.getshopcartnum()
         }
       })
     }

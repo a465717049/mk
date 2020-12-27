@@ -38,5 +38,7 @@ namespace DPE.Core.Model.Models
            public int? minLevel { get; set; }
 
            public int? ptype { get; set; }
+
+          public int? Shopgroup { get; set; }
     }
 }
