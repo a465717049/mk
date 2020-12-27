@@ -250,8 +250,6 @@ namespace DPE.Core.Controllers
                     tmpcode = 1004;
                     return returnresult;
                 }
-
-
                 returnresult = new MessageModel<dynamic>()
                 {
                     success = true,
@@ -351,10 +349,10 @@ namespace DPE.Core.Controllers
                                             if (shopdetail.ptype == 0) 
                                             {
                                                 //结算奖励
-                                                for (int i = 0; i < model.shoptotalnum; i++)
-                                                {
-                                                    await _ishoplistservices.GetautoProcessamount(_user.ID, Convert.ToDecimal(shopdetail.price));
-                                                }
+                                                //for (int i = 0; i < model.shoptotalnum; i++)
+                                                //{
+                                                //    await _ishoplistservices.GetautoProcessamount(_user.ID, Convert.ToDecimal(shopdetail.price));
+                                                //}
                                             }
                                          
                                             if (_ishoppingcartserivces.DeleteById(model.id).Result)
