@@ -2,7 +2,7 @@
   <div class="relative">
     <TopBar class="center-one-search">
       <div>
-        <div class="three-tit-t">我的朋友</div>
+        <div class="three-tit-t">我的安置</div>
         <div class="three-tit-b">{{friendsList.length}}</div>
         <TopSearch @onSearch="search"></TopSearch>
       </div>
@@ -53,7 +53,6 @@
               </ul>
             </van-collapse-item>
           </van-collapse>
-           
           <!-- <div class="list">
             <div class="relative" v-for="(item,index) in friendsList" :key="index">
               <img :src="item.photo" class="img" alt />

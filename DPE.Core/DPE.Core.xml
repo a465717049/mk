@@ -744,6 +744,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:DPE.Core.Controllers.RelationController.GetFriendsListJid(System.Int64)">
+            <summary>
+            朋友清单
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:DPE.Core.Controllers.RelationController.GetRelationList(System.Int64)">
             <summary>
             朋友关係
