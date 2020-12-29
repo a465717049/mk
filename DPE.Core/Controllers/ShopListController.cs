@@ -269,8 +269,6 @@ namespace DPE.Core.Controllers
                     tmpcode = 1004;
                     return returnresult;
                 }
-
-
                 returnresult = new MessageModel<dynamic>()
                 {
                     success = true,
@@ -391,6 +389,11 @@ namespace DPE.Core.Controllers
                                                 fromID = _user.ID
                                             }).Result > 0)
                                             {
+                                            }
+                                         
+                                            if (_ishoppingcartserivces.DeleteById(model.id).Result)
+                                            {
+                                                successnum++;
                                                 if (_ishoppingcartserivces.DeleteById(model.id).Result)
                                                 {
                                                     successnum++;
