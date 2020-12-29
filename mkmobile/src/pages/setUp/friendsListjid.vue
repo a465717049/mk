@@ -76,7 +76,7 @@ import { photoList } from 'util/const.js'
 import TopSearch from 'components/TopSearch'
 import ScrollRefresh from 'components/ScrollRefresh'
 import defaultImg from '@/assets/imgs/set/head02.png'
-import { GetFriendsList, GetSearchFimaly, GetUserInfo,GetFriendsListbyId } from 'util/netApi'
+import { GetFriendsListJid, GetSearchFimaly, GetUserInfo,GetFriendsListbyId } from 'util/netApi'
 // import getHeightPX from "../../mixins/getHeightPX";
 export default {
   components: {
@@ -106,7 +106,7 @@ export default {
     },
     loadinfo () {
       var _this = this
-      http(GetFriendsList, { uid: this.uid }, json => {
+      http(GetFriendsListJid, { uid: this.uid }, json => {
         if (json.response) {
           _this.friendsList = json.response
           _this.friendsList.forEach(element => {

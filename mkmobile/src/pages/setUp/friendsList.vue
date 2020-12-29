@@ -3,16 +3,20 @@
     <TopBar class="center-one-search">
       <div>
         <div class="three-tit-t">我的朋友</div>
-        <div class="three-tit-b">{{friendsList.length}}</div>
+        <div class="three-tit-b">{{friendsList.length}}
+        </div>
         <TopSearch @onSearch="search"></TopSearch>
       </div>
     </TopBar>
+   <router-link to="friendsListjid" class="router">我的安置</router-link>
     <ScrollRefresh
       @getData="loadinfo"
       :residualHeight="topbarHeight+bottomTabBarHeight+10"
       :isNeedUp="false"
       class="relativeScroll"
     >
+     
+     
       <div class="friendlistWrap borderR" ref="listWrap">
         <div class="friendsList">
           <van-collapse v-model="activeName" accordion>
