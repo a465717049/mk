@@ -68,15 +68,14 @@ export default {
       showComfirm: false,
 
       receiptTypeList: [
-        { text: 'RP', value: 'RP' },
-        { text: 'PP', value: 'DPE' }
+        { text: 'RP', value: 'RP' }
       ],
       transPassword: null,
       verificationCode: null,
       tips: '',
       tipsObj: {
         noamount: '请填写转换数量',
-        amount: '馀额不足！',
+        amount: '余额不足！',
         notype: '请选择转出类型',
         notpwd: '请填写交易密码',
         nosucceed: '转换异常，稍后重试',

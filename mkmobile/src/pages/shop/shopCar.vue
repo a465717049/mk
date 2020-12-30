@@ -47,23 +47,23 @@
           <!--   <li>摩奇猴套装系列（A001) 尺寸：XL 码</li> -->
         </ul>
         <div class="sumTitle">合计</div>
-        <div class="sumInfo" v-if="buytotalrp>0">
-          <span class="tit">需扣除您的金额：</span>
-          <span class="num">{{buytotalrp}}</span>
-          <span class="unit">（RMB)</span>
-        </div>
-          <div class="sumInfo" v-if="buytotalep>0">
-          <span class="tit">需扣除您的产品分：</span>
+        <div class="sumInfo" v-if="buytotalep>0">
+          <span class="tit">需扣除您的奖金：</span>
           <span class="num">{{buytotalep}}</span>
-          <span class="unit">（RMB)</span>
+          <span class="unit">（EP)</span>
+        </div>
+          <div class="sumInfo" v-if="buytotalpp>0">
+          <span class="tit">需扣除您的产品分：</span>
+          <span class="num">{{buytotalpp}}</span>
+          <span class="unit">（PP)</span>
         </div>
         <div class="sumInfo">
-          <span class="tit">您目前帐户可购买商品的余额为：{{ totalrp+ totalep}}(RMB) </span
+          <span class="tit">您目前帐户可购买商品的余额为：EP:{{ totalep}} PP:{{totalpp}} </span
           >
         </div>
         <div class="buttonWrap">
           <router-link to="shop" class="router">
-            <!--@click="buyShop" totalep -->
+            <!--@click="buyShop" totalpp -->
             <button class="back">继续购物</button>
           </router-link>
           <button class="sure" @click="buyShop">立即购买</button>
@@ -107,10 +107,10 @@ export default {
   data () {
     return {
       isshowconfirm:false,
-      totalrp: 0,
-      totalep:0,
-      buytotalrp: 0,
+      totalep: 0,
+      totalpp:0,
       buytotalep: 0,
+      buytotalpp: 0,
       buyaddr: '',
       buyname: '',
       buyphone: '',
@@ -186,13 +186,13 @@ export default {
       })
     },
     sumallshop () {
-      var trp = 0
+      var pp = 0
       var totalnum = 0
       var ep = 0
       this.data.forEach(function (item) {
         if(item.shopdetail.ptype==0)
         {
-         trp += item.shopnum * item.shopdetail.price
+         pp += item.shopnum * item.shopdetail.price
         totalnum += item.shopnum
         }else if(item.shopdetail.ptype==1)
         {
@@ -201,20 +201,25 @@ export default {
         }
        
       })
-      this.buytotalrp = trp
       this.buytotalep = ep
+      this.buytotalpp = pp
       this.carNum = totalnum
     },
     goNext () {
-      if (this.totalrp < this.buytotalrp) {
+      if (this.totalep < this.buytotalep) {
         this.isEnter = true
         this.tips = '当前金额不足'
       }
     },
     buyShop () {
-      if (this.totalrp < this.buytotalrp) {
+      if (this.totalep < this.buytotalep) {
         this.isEnter = true
-        this.tips = '当前金额不足'
+        this.tips = '当前奖金不足'
+        return
+      }
+       if (this.totalpp < this.buytotalpp) {
+        this.isEnter = true
+        this.tips = '当前产品分不足'
         return
       }
       http(
@@ -259,8 +264,8 @@ export default {
     TogetUserInfo () {
       http(GetUserInfo, null, (json) => {
         if (json.code === 0) {
-          this.totalrp = json.response.apple
-          this.totalep=json.response.dynamicTotal
+          this.totalep = json.response.gold
+          this.totalpp=json.response.apple
         }
       })
     },
