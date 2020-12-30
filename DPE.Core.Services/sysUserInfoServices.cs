@@ -249,6 +249,18 @@ namespace DPE.Core.FrameWork.Services
             return await _dal.QueryProcTable("SP_SearchFriends", parameters);
         }
 
+
+        public async Task<DataTable> GetFriendsListJid(long parentid, long uid)
+        {
+
+            SugarParameter[] parameters = new SugarParameter[2];
+            parameters[0] = new SugarParameter("@parentId", parentid);
+            parameters[1] = new SugarParameter("@uid", uid);
+            return await _dal.QueryProcTable("SP_SearchTeam", parameters);
+        }
+
+
+       
         public async Task<sysUserInfo> checkTrad(long uid,string password)
         {
             var user = (await base.Query(d => d.uID == uid && d.uTradPWD == MD5Helper.MD5Encrypt32(password) && d.isDelete == false)).ToList().FirstOrDefault();

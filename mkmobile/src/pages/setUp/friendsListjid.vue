@@ -2,21 +2,17 @@
   <div class="relative">
     <TopBar class="center-one-search">
       <div>
-        <div class="three-tit-t">我的朋友</div>
-        <div class="three-tit-b">{{friendsList.length}}
-        </div>
+        <div class="three-tit-t">我的安置</div>
+        <div class="three-tit-b">{{friendsList.length}}</div>
         <TopSearch @onSearch="search"></TopSearch>
       </div>
     </TopBar>
-   <router-link to="friendsListjid" class="router">我的安置</router-link>
     <ScrollRefresh
       @getData="loadinfo"
       :residualHeight="topbarHeight+bottomTabBarHeight+10"
       :isNeedUp="false"
       class="relativeScroll"
     >
-     
-     
       <div class="friendlistWrap borderR" ref="listWrap">
         <div class="friendsList">
           <van-collapse v-model="activeName" accordion>
@@ -57,7 +53,6 @@
               </ul>
             </van-collapse-item>
           </van-collapse>
-           
           <!-- <div class="list">
             <div class="relative" v-for="(item,index) in friendsList" :key="index">
               <img :src="item.photo" class="img" alt />
@@ -81,7 +76,7 @@ import { photoList } from 'util/const.js'
 import TopSearch from 'components/TopSearch'
 import ScrollRefresh from 'components/ScrollRefresh'
 import defaultImg from '@/assets/imgs/set/head02.png'
-import { GetFriendsList, GetSearchFimaly, GetUserInfo,GetFriendsListbyId } from 'util/netApi'
+import { GetFriendsListJid, GetSearchFimaly, GetUserInfo,GetFriendsListbyId } from 'util/netApi'
 // import getHeightPX from "../../mixins/getHeightPX";
 export default {
   components: {
@@ -111,7 +106,7 @@ export default {
     },
     loadinfo () {
       var _this = this
-      http(GetFriendsList, { uid: this.uid }, json => {
+      http(GetFriendsListJid, { uid: this.uid }, json => {
         if (json.response) {
           _this.friendsList = json.response
           _this.friendsList.forEach(element => {

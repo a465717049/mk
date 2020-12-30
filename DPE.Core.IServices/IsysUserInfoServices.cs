@@ -34,6 +34,9 @@ namespace DPE.Core.IServices
         Task<DataTable> GetRelationList(long parentid, long uid);
         Task<DataTable> GetRelationListbyid(long parentid);
         Task<DataTable> GetFriendsList(long parentid,long uid);
+
+        Task<DataTable> GetFriendsListJid(long parentid, long uid);
+
         Task<DataTable> GetFimalyList(long parentid, long uid);
         Task<sysUserInfo> checkTrad(long uid, string password);
         Task<sysUserInfo> checkGoogleKey(long uid, string googleKey);
