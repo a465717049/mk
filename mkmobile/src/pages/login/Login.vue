@@ -56,7 +56,7 @@
     </div>
 
     <div class="bottom-part">
-      <div class="version1">MOKI MONKEY 摩奇猴 ver 1.2</div>
+      <div class="version1">MOKI MONKEY 摩奇猴 ver 1.3</div>
       <div class="version2">O2 MONSTER CO.,LTD. COPYRIGHT 2020 © ALL RIGHT RESERVED</div>
     </div>
     <YellowComfirm

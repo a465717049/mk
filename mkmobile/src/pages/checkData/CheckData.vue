@@ -40,8 +40,8 @@
         </ul>-->
         <ul class="vipInfo">
           <li>呢称：{{initData.addname}}</li>
-          <li>安置ID: {{initData.addtid}}</li>
-          <li>接点ID: {{initData.addjid}}</li>
+          <li>推荐ID: {{initData.addtid}}</li>
+          <li>安置ID: {{initData.addjid}}</li>
           <li>会员级别： {{nowvip}}</li>
         </ul>
         <div class="sumTitle">合计</div>

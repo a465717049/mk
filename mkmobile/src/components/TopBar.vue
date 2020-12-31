@@ -86,6 +86,11 @@
                 </router-link>
               </li>
               <li>
+                <router-link to="friendsListjid" class="router">
+                  <i class="iconfont iconarrow-right"></i>安置
+                </router-link>
+              </li>
+              <li>
                 <router-link to="active" class="router">
                   <i class="iconfont iconarrow-right"></i>活动
                 </router-link>
