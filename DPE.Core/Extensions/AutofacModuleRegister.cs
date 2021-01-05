@@ -3,7 +3,6 @@ using Autofac.Extras.DynamicProxy;
 using DPE.Core.AOP;
 using DPE.Core.Common;
 using DPE.Core.Model;
-using log4net;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +12,6 @@ namespace DPE.Core.Extensions
 {
     public class AutofacModuleRegister : Autofac.Module
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(AutofacModuleRegister));
         protected override void Load(ContainerBuilder builder)
         {
             var basePath = AppContext.BaseDirectory;
@@ -28,7 +26,7 @@ namespace DPE.Core.Extensions
             if (!(File.Exists(servicesDllFile) && File.Exists(repositoryDllFile)))
             {
                 var msg = "Repository.dll和service.dll 丢失，因为项目解耦了，所以需要先F6编译，再F5运行，请检查 bin 文件夹，并拷贝。";
-                log.Error(msg);
+                
                 throw new Exception(msg);
             }
 

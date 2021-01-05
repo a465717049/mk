@@ -1,5 +1,4 @@
 ﻿using DPE.Core.Common;
-using log4net;
 using Microsoft.AspNetCore.Builder;
 using System;
 using System.IO;
@@ -13,7 +12,6 @@ namespace DPE.Core.Extensions
     /// </summary>
     public static class SwaggerMildd
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(SwaggerMildd));
         public static void UseSwaggerMildd(this IApplicationBuilder app, Func<Stream> streamHtml)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));
@@ -32,7 +30,7 @@ namespace DPE.Core.Extensions
                 if (streamHtml.Invoke() == null)
                 {
                     var msg = "index.html的属性，必须设置为嵌入的资源";
-                    log.Error(msg);
+                   // log.Error(msg);
                     throw new Exception(msg);
                 }
                 c.IndexStream = streamHtml;

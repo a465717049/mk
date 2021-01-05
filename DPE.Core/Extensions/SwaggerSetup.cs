@@ -1,6 +1,4 @@
 ﻿using DPE.Core.Common;
-using DPE.Core.Filter;
-using log4net;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
@@ -19,8 +17,6 @@ namespace DPE.Core.Extensions
     public static class SwaggerSetup
     {
 
-        private static readonly ILog log =
-        LogManager.GetLogger(typeof(GlobalExceptionsFilter));
 
         public static void AddSwaggerSetup(this IServiceCollection services)
         {
@@ -58,7 +54,7 @@ namespace DPE.Core.Extensions
                 }
                 catch (Exception ex)
                 {
-                    log.Error("DPE.Core.xml和DPE.Core.Model.xml 丢失，请检查并拷贝。\n" + ex.Message);
+                  //  log.Error("DPE.Core.xml和DPE.Core.Model.xml 丢失，请检查并拷贝。\n" + ex.Message);
                 }
 
                 // 开启加权小锁

@@ -60,8 +60,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\DPE.Core.Common\DPE.Core.Common.csproj" />
+		<ProjectReference Include="..\DPE.Core.FrameWork\DPE.Core.FrameWork.csproj" />
 		<ProjectReference Include="..\DPE.Core.IRepository\DPE.Core.IRepository.csproj" />
 		<ProjectReference Include="..\DPE.Core.IServices\DPE.Core.IServices.csproj" />
+		<ProjectReference Include="..\DPE.Core.Model\DPE.Core.Model.csproj" />
+		<ProjectReference Include="..\DPE.Core.Repository\DPE.Core.Repository.csproj" />
+		<ProjectReference Include="..\DPE.Core.Services\DPE.Core.Services.csproj" />
 		<ProjectReference Include="..\DPE.Core.Tasks\DPE.Core.Tasks.csproj" />
 	</ItemGroup>
 

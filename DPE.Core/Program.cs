@@ -25,8 +25,8 @@ namespace DPE.Core
                      builder.AddFilter("DPE.Core.AuthHelper.ApiResponseHandler", LogLevel.Error);
 
                      //可配置文件
-                     var path = Path.Combine(Directory.GetCurrentDirectory(), "Log4net.config");
-                     builder.AddLog4Net(path);
+                   //  var path = Path.Combine(Directory.GetCurrentDirectory(), "Log4net.config");
+                  //   builder.AddLog4Net(path);
                  });
              })
             // 生成承载 web 应用程序的 Microsoft.AspNetCore.Hosting.IWebHost。Build是WebHostBuilder最终的目的，将返回一个构造的WebHost，最终生成宿主。

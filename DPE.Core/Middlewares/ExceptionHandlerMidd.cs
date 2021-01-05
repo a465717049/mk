@@ -11,9 +11,7 @@ namespace DPE.Core.Middlewares
     public class ExceptionHandlerMidd
     {
         private readonly RequestDelegate _next;
-        private static readonly log4net.ILog log =
-        log4net.LogManager.GetLogger(typeof(ExceptionHandlerMidd));
-
+        
         public ExceptionHandlerMidd(RequestDelegate next)
         {
             _next = next;
@@ -35,7 +33,6 @@ namespace DPE.Core.Middlewares
         {
             if (e == null) return;
 
-            log.Error(e.GetBaseException().ToString());
 
             await WriteExceptionAsync(context, e).ConfigureAwait(false);
         }

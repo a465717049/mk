@@ -48,7 +48,7 @@ namespace DPE.Core.Filter
 
 
             //采用log4net 进行错误日志记录
-            _loggerHelper.LogError(json.Message + WriteLog(json.Message, context.Exception));
+         //   _loggerHelper.LogError(json.Message + WriteLog(json.Message, context.Exception));
 
             _hubContext.Clients.All.SendAsync("ReceiveUpdate", LogLock.GetLogData()).Wait();
 

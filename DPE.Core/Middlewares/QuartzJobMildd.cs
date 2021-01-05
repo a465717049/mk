@@ -2,7 +2,7 @@
 using DPE.Core.IServices;
 using DPE.Core.Model.Models;
 using DPE.Core.Tasks;
-using log4net;
+
 using Microsoft.AspNetCore.Builder;
 using System;
 using System.Threading.Tasks;
@@ -14,7 +14,6 @@ namespace DPE.Core.Extensions
     /// </summary>
     public static class QuartzJobMildd
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(QuartzJobMildd));
         public static void UseQuartzJobMildd(this IApplicationBuilder app, ITasksQzServices tasksQzServices, ISchedulerCenter schedulerCenter)
         {
             if (app == null) throw new ArgumentNullException(nameof(app));
@@ -41,7 +40,7 @@ namespace DPE.Core.Extensions
             }
             catch (Exception e)
             {
-                log.Error($"An error was reported when starting the job service.\n{e.Message}");
+                //log.Error($"An error was reported when starting the job service.\n{e.Message}");
                 throw;
             }
         }
