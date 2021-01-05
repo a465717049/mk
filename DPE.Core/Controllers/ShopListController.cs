@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -100,7 +102,7 @@ namespace DPE.Core.Controllers
                 role.Add(new ShopRole() { uId = _user.ID, shopRoleId = 1 });
             }
             var roleid = role.Select(x => x.shopRoleId);
-            var spinfo = await _ishoplistservices.Query(x=>x.ptype==ptype && roleid.Contains(x.Shopgroup.Value));
+            var spinfo = await _ishoplistservices.Query(x => x.ptype == ptype && roleid.Contains(x.Shopgroup.Value) && x.isDelete == false) ;
             return new MessageModel<ShopListViewModels>()
             {
                 success = true,
@@ -841,6 +843,301 @@ namespace DPE.Core.Controllers
         }
 
 
+        [HttpPost]
+        [Route("GetOpenShopMyweb")]
+        public async Task<MessageModel<dynamic>> GetOpenShopMyweb()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+                int pageindex = Convert.ToInt32(HttpContext.Request.Form["pageindex"]);
+                int pagesize = Convert.ToInt32(HttpContext.Request.Form["pagesize"]);
+                string key = HttpContext.Request.Form["key"];
+
+                if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+                {
+                    key = "";
+                }
+                pagesize = pagesize == 0 ? 20 : pagesize;
+                pageindex = pageindex == 0 ? 1 : pageindex;
+                var data = await _iopenshopservices.QueryPage(x => 
+              (x.nickname.ToString().Contains(key) || x.username.Contains(key) || x.userphone.Contains(key)), pageindex, pagesize, " createTime DESC ");
+
+                result.response = new
+                {
+                    dataCount = data.dataCount,
+                    page = data.page,
+                    pageCount = data.pageCount,
+                    data = data.data
+                };
+                result.code = 200;
+                result.success = true;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+        }
+
+        [HttpPost]
+        [Route("GetShopListMyweb")]
+        public async Task<MessageModel<dynamic>> GetShopListMyweb()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+                int pageindex = Convert.ToInt32(HttpContext.Request.Form["pageindex"]);
+                int pagesize = Convert.ToInt32(HttpContext.Request.Form["pagesize"]);
+                string key = HttpContext.Request.Form["key"];
+
+                if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+                {
+                    key = "";
+                }
+                pagesize = pagesize == 0 ? 20 : pagesize;
+                pageindex = pageindex == 0 ? 1 : pageindex;
+                var data = await _ishoplistservices.QueryPage(x => x.isDelete==false &&
+              (x.pName.ToString().Contains(key) || x.pDesc.Contains(key) || x.price.ToString().Contains(key)), pageindex, pagesize, " createTime DESC ");
+                result.response = new
+                {
+                    dataCount = data.dataCount,
+                    page = data.page,
+                    pageCount = data.pageCount,
+                    data = data.data
+                };
+                result.code = 200;
+                result.success = true;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+        }
+
+        [HttpPost]
+        [Route("DeleteShopListMyweb")]
+        public async Task<MessageModel<dynamic>> DeleteShopListMyweb()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+                long id = Convert.ToInt64(HttpContext.Request.Form["id"]);
+                var data = await _ishoplistservices.Query(x =>x.id==id);
+                if (data.Count > 0) 
+                {
+                    var model = data.First();
+                    model.isDelete = true;
+
+                    var buylist = await _ishopbuydetailserivces.Query(x => x.shopid == id);
+                    if (buylist.Count > 0) 
+                    {
+                        foreach (ShopBuyDetail detail in buylist) 
+                        {
+                            await _ishopbuydetailserivces.DeleteById(detail.id);
+                        }
+                    }
+                    await _ishoplistservices.Update(model);
+                }
+                result.code = 200;
+                result.success = true;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("AddShopListMyweb")]
+        public async Task<MessageModel<dynamic>> AddShopListMyweb()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+
+                ShopList shop = new ShopList();
+                shop.id =string.IsNullOrEmpty( HttpContext.Request.Form["id"])?0:Convert.ToInt64(HttpContext.Request.Form["id"]);
+                shop.isDelete = false;  //id minLevel price pNum pName pDesc pIcon status ptype priceType Shopgroup
+                shop.minLevel=string.IsNullOrEmpty( HttpContext.Request.Form["idminLevel"])?0:Convert.ToInt32(HttpContext.Request.Form["minLevel"]);
+                shop.price= string.IsNullOrEmpty(HttpContext.Request.Form["price"]) ? 0 : Convert.ToDecimal(HttpContext.Request.Form["price"]);
+                shop.pNum = string.IsNullOrEmpty(HttpContext.Request.Form["pNum"]) ? 0 : Convert.ToInt32(HttpContext.Request.Form["pNum"]);
+                shop.pName = string.IsNullOrEmpty(HttpContext.Request.Form["pName"]) ? "" : HttpContext.Request.Form["pName"].ToString();
+                shop.pDesc = string.IsNullOrEmpty(HttpContext.Request.Form["pDesc"]) ? "" : HttpContext.Request.Form["pDesc"].ToString();
+                shop.pIcon = string.IsNullOrEmpty(HttpContext.Request.Form["pIcon"]) ? "" : HttpContext.Request.Form["pIcon"].ToString();
+                shop.createTime = DateTime.Now;
+                shop.status = 1;// string.IsNullOrEmpty(HttpContext.Request.Form["status"]) ? 0 : Convert.ToInt32(HttpContext.Request.Form["status"]);
+                shop.ptype = string.IsNullOrEmpty(HttpContext.Request.Form["ptype"]) ? 0 : Convert.ToInt32(HttpContext.Request.Form["ptype"]);
+                shop.priceType = 1;// string.IsNullOrEmpty(HttpContext.Request.Form["priceType"]) ? 0 : Convert.ToInt32(HttpContext.Request.Form["priceType"]);
+                shop.Shopgroup = string.IsNullOrEmpty(HttpContext.Request.Form["Shopgroup"]) ? 0 : Convert.ToInt32(HttpContext.Request.Form["Shopgroup"]);
+
+                long shoopid = 0;
+                if (shop.id == 0)
+                {
+                   shoopid = await _ishoplistservices.Add(shop);
+                    var model = await _ishoplistservices.QueryById(shoopid);
+                    model.pIcon = "shopimg_"+ shoopid + ".png";
+                    await _ishoplistservices.Update(model);
+                }
+                else 
+                {
+                    var upmodel = await _ishoplistservices.QueryById(shop.id);
+                    shoopid = shop.id;
+                    upmodel.pIcon = "shopimg_" + shoopid + ".png";
+                    shop.isDelete = upmodel.isDelete;
+                    shop.createTime = upmodel.createTime;
+                    await _ishoplistservices.Update(shop);
+                }
+                result.code = 200;
+                result.success = true;
+                result.response = shoopid;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+        }
+
+
+        
+        [HttpPost]
+        [Route("uploadPicture")]
+        public async Task<MessageModel<dynamic>> uploadPicture()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+                var ss = Directory.GetCurrentDirectory();
+                var files = HttpContext.Request.Form.Files;
+                int id =Convert.ToInt32(HttpContext.Request.Form["id"]);
+                if (files.Count>0)
+                {
+                    using (HttpClient client = new HttpClient())
+                    {
+
+                        var text = HttpContext.Request.Form.Files[0].OpenReadStream();
+                        string strPath = "";
+                        strPath = ss + @"//shopimg//shopimg_" + id + ".png";
+                        StreamHelp.StreamToFile(text, strPath);
+                    }
+                    //return "添加成功";
+                }
+                result.code = 200;
+                result.success = true;
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+
+
+        }
+
+        [HttpPost]
+        [Route("ApplyOpenShopMyweb")]
+        public async Task<MessageModel<dynamic>> ApplyOpenShopMyweb()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+                long openid = Convert.ToInt64( HttpContext.Request.Form["openid"]);
+                var data = await _iopenshopservices.Query(x => x.openid == openid && x.openstatus==0);
+                if (data.Count > 0)
+                {
+                    var model = data.First();
+                    model.openstatus = 1;
+                    await _iopenshopservices.Update(model);
+                    result.code = 200;
+                    result.success = true;
+                    return result;
+                }
+                else 
+                {
+                    result.code = 500;
+                    result.success = false;
+                    return result;
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+
+
+        }
 
 
         //获取购物车

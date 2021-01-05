@@ -58,10 +58,9 @@ namespace DPE.Core
             services.AddHttpContextSetup();
             services.AddAppConfigSetup();
             services.AddHttpApi();
-            
             //消息队列
-       //     services.AddSingleton(new RabbitMQClient());
-        //    services.AddHostedService<RabbitMessageLister>();
+            //     services.AddSingleton(new RabbitMQClient());
+            //    services.AddHostedService<RabbitMessageLister>();
 
             if (Permissions.IsUseIds4)
             {
@@ -113,7 +112,6 @@ namespace DPE.Core
         {
             //允许跨域
             app.UseOptions();
-
             // Ip限流,尽量放管道外层
             app.UseIpRateLimiting();
             // 记录请求与返回数据 

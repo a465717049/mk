@@ -7,7 +7,7 @@ import Vue from 'vue';
 
 import applicationUserManager from "../Auth/applicationusermanager";
 
-let base = 'https://api.a8dog.top'; //'https://api.snptw.cn';
+let base = 'http://localhost:8083'; //'https://api.snptw.cn' https://api.a8dog.top;
 // 如果是IIS部署，用这个，因为 IIS 只能是 CORS 跨域，不能代理
 // let base = process.env.NODE_ENV=="production"? 'http://localhost:8081':'';
 
@@ -450,6 +450,11 @@ export const adminResetanswer = params => {
     return axios.post(`${base}/api/User/adminResetanswer`, qs.stringify(params)).then(res => res.data);
 };
 
+export const GetOpenShopMyweb = params => {
+    return axios.post(`${base}/api/Shop/GetOpenShopMyweb`, qs.stringify(params)).then(res => res.data);
+};
+
+
 //adminResetidcard
 export const adminResetidcard = params => {
     return axios.post(`${base}/api/User/adminResetidcard`, qs.stringify(params)).then(res => res.data);
@@ -528,6 +533,22 @@ export const GetAdminRPExchange = params => {
 export const GetAdminBuyShopList = params => {
     return axios.post(`${base}/api/Shop/GetAdminBuyShopList`, qs.stringify(params)).then(res => res.data);
 };
+export const ApplyOpenShopMyweb = params => {
+    return axios.post(`${base}/api/Shop/ApplyOpenShopMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const GetShopListMyweb = params => {
+    return axios.post(`${base}/api/Shop/GetShopListMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const DeleteShopListMyweb = params => {
+    return axios.post(`${base}/api/Shop/DeleteShopListMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const AddShopListMyweb = params => {
+    return axios.post(`${base}/api/Shop/AddShopListMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const uploadPicture = params => {
+    return axios.post(`${base}/api/Shop/uploadPicture`, params).then(res => res.data);
+};
+
 //ChangeOrdersweb
 export const ChangeOrdersweb = params => {
     return axios.post(`${base}/api/Shop/ChangeOrdersweb`, qs.stringify(params)).then(res => res.data);
