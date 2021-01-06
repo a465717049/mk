@@ -11,7 +11,7 @@
     >
       <div class="innerWrap" >
         <div class="goods base-flex flex-start p-58 borderR mb-80"  v-for="(key,value) in data" :key="value">
-          <img :src="key.shopdetail.pIcon" class="img" alt />
+          <img  :src="getimgurl(key.shopdetail.pIcon)" class="img" alt />
           <div class="goods-info">
             <div class="tip-titl">{{ key.shopdetail.pName }}</div>
             <div>价格：{{ key.shopdetail.price }}</div>
@@ -88,6 +88,7 @@ import headerImg from '../../assets/imgs/headerImg.png'
 import YellowComfirm from 'components/YellowComfirm'
 import ScrollRefresh from 'components/ScrollRefresh'
 import { http } from 'util/request'
+import { config } from 'util/config'
 import {
   CreateNewAccount,
   GetUserInfo,
@@ -167,20 +168,15 @@ export default {
   mounted () {},
   computed: {},
   methods: {
+     getimgurl(imgurl)
+    {
+        return config.shopimgUrl+imgurl
+    },
     getshopcartnum () {
       var that = this;
       http(GetShopCartsweb, null, json => {
         if (json.code === 0) {
           that.data = json.response.data.list
-          that.data.forEach(el => {
-            let img = null
-            try {
-              img = require('@/assets/imgs/shop/goods-' + el.shopdetail.id + '.png')
-            } catch (err) {
-              img = require('@/assets/imgs/shop/camea.png')
-            }
-            return el.shopdetail.pIcon = img
-          })
           this.sumallshop()
         }
       })

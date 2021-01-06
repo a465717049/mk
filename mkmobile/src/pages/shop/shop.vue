@@ -33,7 +33,7 @@
                 >
                   <!-- 后期根据将图片设置为自动高 -->
                   <img
-                    :src="item.icon_url"
+                    :src="getimgurl(item.icon_url)"
                     :class="index===1?'imgSpecial':''"
                     class="img-info mt-100 center"
                     alt
@@ -56,6 +56,7 @@
 import TopBar from 'components/TopBar'
 import TopSearch from 'components/TopSearch'
 import { http } from 'util/request'
+import { config } from 'util/config'
 import {
   GetShopList,
   GetUserInfo,
@@ -100,6 +101,9 @@ export default {
     }
   },
   methods: {
+    getimgurl(img){
+      return  config.shopimgUrl+img
+    },
     onSearch (value) {
       this.ToGetShopDeatilLike(value)
     },
@@ -123,16 +127,7 @@ export default {
       http(GetShopList, null, json => {
         if (json.code === 0) {
           this.data = json.response.list
-          this.data.forEach(el => {
-            let img = null
-            try {
-              img = require('@/assets/imgs/shop/goods-' + el.id + '.png')
-            } catch (err) {
-              // 图片 不存在则使用默认的图片
-              img = require('@/assets/imgs/shop/camea.png')
-            }
-            return (el.icon_url = img)
-          })
+
         }
       })
     },
@@ -149,17 +144,6 @@ export default {
         if (json.code === 0) {
           console.log(json)
           this.data = json.response.list
-          this.data.forEach(el => {
-            let img = null
-            try {
-              img = require('@/assets/imgs/shop/goods-' + el.id + '.png')
-            } catch (err) {
-              // 图片 不存在则使用默认的图片
-              img = require('@/assets/imgs/shop/camea.png')
-            }
-            return (el.icon_url = img)
-          })
-          // this.username = json.response.nickname
         }
       })
     }

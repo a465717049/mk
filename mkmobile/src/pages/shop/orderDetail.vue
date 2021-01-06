@@ -19,7 +19,7 @@
               <div class="tag graytag" v-else-if="data.status===4">己完成</div>
             </div>
             <div class="goods base-flex flex-start p-58 borderR mb-80">
-              <img :src="imgicon" class="img" alt />
+              <img :src="getimgurl(data.shopidid)" class="img" alt />
               <div class="goods-info">
                 <div class="tip-titl">{{data.shopname}}</div>
                 <div>数量:{{data.shopnum}}    总价:{{data.shopprice}}</div>
@@ -59,6 +59,7 @@
 import TopBar from 'components/TopBar'
 import TopSearch from 'components/TopSearch'
 import { http } from 'util/request'
+import { config } from 'util/config'
 import { GetShopList, GetUserInfo, GetShopDeatilLike, GetShopDetailsMyweb } from 'util/netApi'
 import { storage } from 'util/storage'
 import { accessToken, loginPro } from 'util/const.js'
@@ -82,7 +83,7 @@ export default {
       },
       data:
       {
-        shopid: 0,
+        shopidid: 0,
         showComfirm: true,
         tips: '即將更新！',
         trackingnumber: '',
@@ -190,6 +191,10 @@ export default {
     }
   },
   methods: {
+    getimgurl(imgurl)
+    {
+      return config.shopimgUrl+'/shopimg_'+imgurl+'.png';
+    },
     onSearch (value) {
       this.ToGetShopDeatilLike(value)
     },
@@ -206,15 +211,6 @@ export default {
       http(GetShopDetailsMyweb, {id: this.shopid}, json => {
         if (json.code === 0) {
           this.data = json.response.datainfo[0]
-
-          let img = null
-          try {
-            img = require('@/assets/imgs/shop/goods-' + this.data.shopidid + '.png')
-          } catch (err) {
-            // 图片 不存在则使用默认的图片
-            img = require('@/assets/imgs/shop/camea.png')
-          }
-          this.imgicon = img
         }
       })
     }

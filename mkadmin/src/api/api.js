@@ -549,6 +549,9 @@ export const uploadPicture = params => {
     return axios.post(`${base}/api/Shop/uploadPicture`, params).then(res => res.data);
 };
 
+export const uploadPictureDetail = params => {
+    return axios.post(`${base}/api/Shop/uploadPictureDetail`, params).then(res => res.data);
+};
 //ChangeOrdersweb
 export const ChangeOrdersweb = params => {
     return axios.post(`${base}/api/Shop/ChangeOrdersweb`, qs.stringify(params)).then(res => res.data);

@@ -24,12 +24,12 @@
               <img :src="image.image" />
             </van-swipe-item>
             <template #indicator>
+          
               <div class="custom-indicator">
                 {{ current + 1 }}/{{ images.length }}
               </div>
             </template>
           </van-swipe>
-          <!-- <img class="shop-img center mt-100 mb-100" :src="pIcon" alt /> -->
           <div class="buy border-top-radius mt-80">
             <!-- <div class="title Tleft font-weight pt-60 font60">{{pName}}</div> -->
             <ul class="detail-info pt-60 Tleft font42">
@@ -60,6 +60,8 @@
                 <button class="buy-btn center borderR">立即购买</button>
               </router-link>
             </div>
+            <img style="width:100%;height:100%;" class="mt-100 mb-100" v-if="pDetailIcon" 
+            :src="getimgurl(pDetailIcon)" alt /> 
           </div>
         </div>
       </div>
@@ -77,6 +79,7 @@
 import TopBar from 'components/TopBar'
 import YellowComfirm from 'components/YellowComfirm'
 import { http } from 'util/request'
+import {config} from 'util/config'
 import {
   GetShopDeatilList,
   GetUserInfo,
@@ -102,6 +105,7 @@ export default {
       carNum: 1,
       shopid: 0,
       images: [],
+      pDetailIcon:"",
       current: 0,
       // pName: "促销中",
       // pDesc: "促销中促销中促销中",
@@ -122,6 +126,10 @@ export default {
     }
   },
   methods: {
+     getimgurl(imgurl)
+    {
+        return config.shopimgUrl+imgurl;
+    },
     onChangeSwiper (index) {
       this.current = index
     },
@@ -172,23 +180,16 @@ export default {
     },
     ToGetShopDeatilList (tmpshopid) {
       http(GetShopDeatilList, { shopid: tmpshopid }, (json) => {
-        console.log(json)
         if (json.code === 0) {
           var shop = json.response.list[0]
-          console.log(shop)
           this.pName = shop.pName
           this.pInfo = [shop.pDesc]
           this.pDesc = shop.pDesc
           this.price = shop.price
           this.shopprice = shop.price
           this.startmax = shop.pNum
-          let img = null
-          try {
-            img = require('@/assets/imgs/shop/goods-' + shop.id + '.png')
-          } catch (err) {
-            img = require('@/assets/imgs/shop/camea.png')
-          }
-          this.images = [{image: img}]
+          this.pDetailIcon=shop.pDetailIcon
+          this.images = [{image: this.getimgurl(shop.pIcon)}]
         }
       })
     }

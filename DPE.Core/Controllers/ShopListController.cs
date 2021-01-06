@@ -542,7 +542,7 @@ namespace DPE.Core.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Route("GetShopDeatilLike")]
+        [Route("GetShopDeatilLike")] 
         public async Task<MessageModel<dynamic>> GetShopDeatilLike(string key)
         {
             //_user.ID
@@ -1018,16 +1018,17 @@ namespace DPE.Core.Controllers
                 long shoopid = 0;
                 if (shop.id == 0)
                 {
-                   shoopid = await _ishoplistservices.Add(shop);
-                    var model = await _ishoplistservices.QueryById(shoopid);
-                    model.pIcon = "shopimg_"+ shoopid + ".png";
-                    await _ishoplistservices.Update(model);
+                    shoopid = await _ishoplistservices.Add(shop);
+                    //var model = await _ishoplistservices.QueryById(shoopid);
+                    //model.pIcon = "shopimg_"+ shoopid + ".png";
+                    //await _ishoplistservices.Update(model);
                 }
                 else 
                 {
                     var upmodel = await _ishoplistservices.QueryById(shop.id);
                     shoopid = shop.id;
-                    upmodel.pIcon = "shopimg_" + shoopid + ".png";
+                    shop.pIcon = upmodel.pIcon;
+                    shop.pDetailIcon = upmodel.pDetailIcon;
                     shop.isDelete = upmodel.isDelete;
                     shop.createTime = upmodel.createTime;
                     await _ishoplistservices.Update(shop);
@@ -1071,10 +1072,20 @@ namespace DPE.Core.Controllers
                     using (HttpClient client = new HttpClient())
                     {
 
-                        var text = HttpContext.Request.Form.Files[0].OpenReadStream();
-                        string strPath = "";
-                        strPath = ss + @"//shopimg//shopimg_" + id + ".png";
-                        StreamHelp.StreamToFile(text, strPath);
+                        var model = await _ishoplistservices.QueryById(id);
+                        model.pIcon = "shopimg_" + id + ".png";
+                       var resultz =  _ishoplistservices.Update(model);
+
+                        if (resultz.Result) 
+                        {
+                            var text = HttpContext.Request.Form.Files[0].OpenReadStream();
+                            string strPath = "";
+                            strPath = ss + @"//shopimg//shopimg_" + id + ".png";
+                            StreamHelp.StreamToFile(text, strPath);
+                        }
+                  
+
+                      
                     }
                     //return "添加成功";
                 }
@@ -1093,6 +1104,61 @@ namespace DPE.Core.Controllers
 
 
         }
+
+        [HttpPost]
+        [Route("uploadPictureDetail")]
+        public async Task<MessageModel<dynamic>> uploadPictureDetail()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+                var ss = Directory.GetCurrentDirectory();
+                var files = HttpContext.Request.Form.Files;
+                int id = Convert.ToInt32(HttpContext.Request.Form["id"]);
+                if (files.Count > 0)
+                {
+                    using (HttpClient client = new HttpClient())
+                    {
+                        var model = await _ishoplistservices.QueryById(id);
+                        model.pDetailIcon = "shopdetailimg_" + id + ".png";
+                       var resultz=  _ishoplistservices.Update(model);
+                        if (resultz.Result)
+                        {
+                            var text = HttpContext.Request.Form.Files[0].OpenReadStream();
+                            string strPath = "";
+                            strPath = ss + @"//shopimg//shopdetailimg_" + id + ".png";
+                            StreamHelp.StreamToFile(text, strPath);
+
+                        }
+
+                    }
+                    //return "添加成功";
+                }
+                result.code = 200;
+                result.success = true;
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+
+
+        }
+
+        
 
         [HttpPost]
         [Route("ApplyOpenShopMyweb")]

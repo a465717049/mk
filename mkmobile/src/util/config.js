@@ -4,10 +4,12 @@
   let url = 'http://localhost:8083' // 域名
 
 
+
   // 如果要跨域修改这里和 config/index的proxyTable 修改成实际要请求的地址
 
   const config = {
     imageUrl: 'https://resource.upinstar.com',
+    shopimgUrl: 'http://localhost:8083/shopimg/',
     imageAfterUrl: '?imageslim',
     baseUrl,
     url

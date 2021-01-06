@@ -15,6 +15,8 @@
       </el-table-column>
         <el-table-column prop="pIcon" label="商品图片" width="" sortable>
       </el-table-column>
+         <el-table-column prop="pDetailIcon" label="商品详情图片" width="" sortable>
+      </el-table-column>
        <el-table-column prop="pNum" label="数量" width="" sortable>
       </el-table-column>
        <el-table-column prop="price" label="价格" width="" sortable>
@@ -53,6 +55,16 @@
       <el-form ref="form" :model="form" label-width="80px">
           <input type="file" @change="getFile($event)">
       </el-form>
+    </div>
+        </el-form-item>
+
+      <el-form-item label="商品详情" >
+      <el-input v-model="Formtid.pDetailIcon" disabled auto-complete="off"></el-input>
+      <div class="Thisform">
+      <el-form ref="detailform" :model="detailform" label-width="80px">
+      <input type="file" @change="getdetilFile($event)">
+      </el-form>
+
     </div>
         </el-form-item>
         <el-form-item label="商品数量" >
@@ -110,7 +122,8 @@ import {
   GetEPUserSell,
   testapi,
   GetAdminBuyShopList ,AddTruckOrdersweb, 
-  ChangeOrdersweb,GetShopListMyweb,DeleteShopListMyweb,AddShopListMyweb,uploadPicture
+  ChangeOrdersweb,GetShopListMyweb,
+  DeleteShopListMyweb,AddShopListMyweb,uploadPicture,uploadPictureDetail
 } from "../../api/api";
 import { getButtonList } from "../../promissionRouter";
 import Toolbar from "../../components/Toolbar";
@@ -125,9 +138,13 @@ export default {
       tidLoading: false,
        form: {
       },
+       detailform: {
+      },
        file: '',
+       detailfile:'',
       //id minLevel price pNum pName pDesc pIcon status ptype priceType Shopgroup
       Formtid: {
+        pDetailIcon:"",
         id: 0,
         minLevel: 0,
         price: 0,
@@ -136,7 +153,7 @@ export default {
         pDesc: "",
         pIcon: "",
         status: 1,
-        ptype: 1,
+        ptype: 0,
         priceType: 1,
         Shopgroup: 1,
       },
@@ -163,6 +180,11 @@ export default {
   methods: {
      getFile(event) {
       this.file = event.target.files[0];
+        console.log(this.file)
+    },
+    getdetilFile(event) {
+     this.detailfile = event.target.files[0];
+     console.log(this.detailfile)
     },
      onSubmit() {
       let that = this;
@@ -170,10 +192,20 @@ export default {
       //创建 formData 对象
       let param = new FormData();
       param.append("file", this.file);
-       param.append("id", this.Formtid.id);
-      
-   uploadPicture(param).then((res) => {
-              this.files="";
+      param.append("id", this.Formtid.id);
+      uploadPicture(param).then((res) => {
+            //   this.files="";
+            });
+    },
+     onSubmitdetail() {
+      let that = this;
+      event.preventDefault();//取消默认行为
+      //创建 formData 对象
+      let param = new FormData();
+      param.append("file", this.detailfile);
+      param.append("id", this.Formtid.id);
+      uploadPictureDetail(param).then((res) => {
+             // this.files="";
             });
     },
     formatlv: function (row, column) {
@@ -238,17 +270,30 @@ export default {
                   ptype:this.Formtid.ptype,
                   priceType:this.Formtid.priceType,
                   Shopgroup:this.Formtid.Shopgroup,
+                  pDetailIcon:this.Formtid.pDetailIcon
             };
+            let _this=this;
             AddShopListMyweb(para).then((res) => {
               if (res.success) {
+                let resthis=res;
                 this.levelFormVisible = false;
-                if(this.file){ this.Formtid.id=res.response; this.onSubmit();}
+                if(this.file)
+                {
+                console.log(res.response); 
+                this.Formtid.id=res.response;
+                this.onSubmit();
+                }
+                if(this.detailfile)
+                { 
+                  console.log(res.response); 
+                 this.Formtid.id=res.response; 
+                 this.onSubmitdetail();
+                 }
                 this.$message({
                   message: "操作成功",
                   type: "success",
                 });
-                 
-                this.getUsers();
+                 setTimeout(function(){ _this.getUsers();},1000)
               } else {
                 this.$message({
                   message: "操作失败请稍后再试！",
@@ -271,6 +316,11 @@ export default {
     },
     //修改状态
      updateshop(index, row) {
+        this.detailfile="";
+        this.detailform={};
+        this.file="";
+        this.form={};
+       
       let rows = this.currentRow;
       if (!rows) {
         this.$message({
@@ -290,7 +340,8 @@ export default {
        this.Formtid.ptype=rows.ptype;
        this.Formtid.priceType=rows.priceType;
        this.Formtid.Shopgroup=rows.Shopgroup;
-      this.levelFormVisible=true;
+       this.Formtid.pDetailIcon=rows.pDetailIcon;
+       this.levelFormVisible=true;
      
     },
       deleteshop(index, row) {
@@ -327,6 +378,10 @@ export default {
      
     },
       addshop(index, row) {
+        this.detailfile="";
+        this.detailform={};
+        this.file="";
+        this.form={};
         this.Formtid.id=0;
         this.Formtid.minLevel=0;
         this.Formtid.price=0;
@@ -334,11 +389,12 @@ export default {
         this.Formtid.pName="";
         this.Formtid.pDesc="";
         this.Formtid.pIcon="";
+        this.Formtid.pDetailIcon="";
         this.Formtid.status=1;
-        this.Formtid.ptype=1;
+        this.Formtid.ptype=0;
         this.Formtid.priceType=1;
         this.Formtid.Shopgroup=1;
-      this.levelFormVisible=true;
+        this.levelFormVisible=true;
     },
     handleCurrentChange(val) {
       this.page = val;
