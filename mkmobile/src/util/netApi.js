@@ -168,6 +168,16 @@ export const BuyGoodsweb = {
   version: v,
   string: true
 };
+
+export const BuyGoodsbyweb = {
+  contentType: "application/json",
+  url: "Shop/BuyGoodsbyweb",
+  method: "POST",
+  version: v,
+  string: true
+};
+
+
 //查找好友
 export const GetFriendsList = {
   contentType: "application/json",
@@ -473,6 +483,25 @@ export const AddGoodsweb = {
   version: v,
   string: true
 };
+
+export const GetShopSkuList = {
+  contentType: "application/json",
+  url: "Shop/GetShopSkuList",
+  method: "POST",
+  version: v,
+  string: true
+};
+
+
+export const GetShopSkuDetailList = {
+  contentType: "application/json",
+  url: "Shop/GetShopSkuDetailList",
+  method: "POST",
+  version: v,
+  string: true
+};
+
+
 export const ApplyOpenShop = {
   contentType: "application/json",
   url: "Shop/ApplyOpenShop",
@@ -488,6 +517,14 @@ export const GetShopCartsweb = {
   version: v,
   string: true
 };
+export const GetShopCartsbyweb = {
+  url: "Shop/GetShopCartsbyweb",
+  method: "POST",
+  version: v,
+  string: true
+};
+
+
 //购物车数量
 export const GetShopaddr = {
   contentType: "application/json",

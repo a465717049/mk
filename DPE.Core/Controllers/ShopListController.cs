@@ -50,6 +50,8 @@ namespace DPE.Core.Controllers
         readonly IEPServices _iepservices;
 
         readonly IShopRoleServices _ishoproleservices;
+        readonly IShopSkuServices _ishopskuservices;
+        readonly IShopSkuDetailServices _ishopskudetailservices;
 
 
         readonly IOpenShopServices _iopenshopservices;
@@ -58,7 +60,9 @@ namespace DPE.Core.Controllers
             IUserInfoServices userInfoServices, IDPEServices idpeservices,
             IDPEexchangeServices idpeexchangeservices, IShopBuyDetailSerivces ishopbuydetailserivces,
             IRPexchangeServices irpexchangeservices, IRPServices irpservices,
-            IShoppingCartSerivces ishoppingcartserivces, IOpenShopServices iopenshopservices, IEPexchangeServices iepexchangeservices, IEPServices iepservices, IShopRoleServices ishoproleservices)
+            IShoppingCartSerivces ishoppingcartserivces, IOpenShopServices iopenshopservices,
+            IEPexchangeServices iepexchangeservices,
+            IEPServices iepservices, IShopRoleServices ishoproleservices, IShopSkuServices ishopskuservices, IShopSkuDetailServices ishopskudetailservices)
         {
             this._user = user;
             _userInfoServices = userInfoServices;
@@ -76,6 +80,8 @@ namespace DPE.Core.Controllers
             _iepexchangeservices = iepexchangeservices;
             _iepservices = iepservices;
             _ishoproleservices = ishoproleservices;
+            _ishopskuservices = ishopskuservices;
+            _ishopskudetailservices = ishopskudetailservices;
         }
 
 
@@ -500,6 +506,216 @@ namespace DPE.Core.Controllers
 
         }
 
+
+
+
+
+        [HttpPost]
+        [Route("BuyGoodsbyweb")]
+        public async Task<MessageModel<dynamic>> BuyGoodsbyweb(string addr, string phone, string name, string remark)
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            int successnum = 0;
+            try
+            {
+                //结算购物车
+                if (_user.ID > 0)
+                {
+                    _unitOfWork.BeginTran();
+                    var mycart = await _ishoppingcartserivces.Query(x => x.uid == _user.ID);
+                    List<ShopBuyDetail> addlist = new List<ShopBuyDetail>();
+                    foreach (ShoppingCart model in mycart)
+                    {
+                        //获取skudetail
+                        var shopskudetialinfo = await _ishopskudetailservices.QueryById(model.shopid);
+
+                        var shopskuinfo = await _ishopskuservices.QueryById(shopskudetialinfo.skuid);
+
+                        var shopdetail = await _ishoplistservices.QueryById(shopskuinfo.shopid);
+
+
+                        var dpeinfo = (await _idpeservices.Query(x => x.uID == _user.ID)).First();
+                        var epinfo = (await _iepservices.Query(x => x.uID == _user.ID)).First();
+
+                        if (shopskudetialinfo != null)
+                        {
+                            if ((shopskudetialinfo.detailnum - model.shoptotalnum) < 0)
+                            {
+                                result.code = 1002;
+                                result.msg = shopskudetialinfo.detailname + "库存不足";
+                                result.success = false;
+                                _unitOfWork.RollbackTran();
+                                return result;
+                            }
+
+                            //特殊商品
+                            if (shopdetail.ptype == 1)
+                            {
+                                if (epinfo.amount < Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice))
+                                {
+                                    result.code = 1002;
+                                    result.msg = "金额不够,无法购买商品";
+                                    result.success = false;
+                                    _unitOfWork.RollbackTran();
+                                    return result;
+                                }
+                            }
+                            else
+                            {
+                                if (dpeinfo.amount < Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice))
+                                {
+                                    result.code = 1002;
+                                    result.msg = "产品分不够,无法购买商品";
+                                    result.success = false;
+                                    _unitOfWork.RollbackTran();
+                                    return result;
+                                }
+                            }
+                            ShopBuyDetail shopmodel = new ShopBuyDetail();
+                            shopmodel.shopid = model.shopid;
+                            shopmodel.buyNum = model.shoptotalnum;
+                            shopmodel.buyuid = _user.ID;
+                            shopmodel.createTime = DateTime.Now;
+                            shopmodel.price = Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice);
+                            shopmodel.status = 1;
+                            shopmodel.buyaddr = addr;
+                            shopmodel.buyname = name;
+                            shopmodel.buyphone = phone;
+                            shopmodel.reamrk = remark;
+                            shopmodel.shopordernumber = creatOrderNumber();
+
+                            var addresult = await _ishopbuydetailserivces.Add(shopmodel);
+                            if (addresult > 0)
+                            {
+
+                                shopskudetialinfo.detailnum -= model.shoptotalnum;
+                                if (_ishopskudetailservices.Update(shopskudetialinfo).Result)
+                                {
+                                    if (shopdetail.ptype == 1)
+                                    {
+                                        epinfo.amount = epinfo.amount - Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice);
+                                        if (_iepservices.Update(epinfo).Result)
+                                        {
+                                            if (_iepexchangeservices.Add(new EPexchange()
+                                            {
+                                                amount = -Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice),
+                                                createTime = DateTime.Now,
+                                                uID = _user.ID,
+                                                lastTotal = epinfo.amount + Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice),
+                                                stype = 88,
+                                                remark = "购买商品",
+                                                fromID = _user.ID
+                                            }).Result > 0)
+                                            {
+                                            }
+
+                                            if (_ishoppingcartserivces.DeleteById(model.id).Result)
+                                            {
+                                                successnum++;
+                                                if (_ishoppingcartserivces.DeleteById(model.id).Result)
+                                                {
+                                                    successnum++;
+                                                }
+                                                else
+                                                {
+                                                    result.code = 1002;
+                                                    result.msg = shopskudetialinfo.detailname + "结算异常请稍后再试";
+                                                    result.success = false;
+                                                    _unitOfWork.RollbackTran();
+                                                    return result;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                result.code = 1002;
+                                                result.msg = shopskudetialinfo.detailname + "结算异常请稍后再试";
+                                                result.success = false;
+                                                _unitOfWork.RollbackTran();
+                                                return result;
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        dpeinfo.amount = dpeinfo.amount - Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice);
+                                        if (_idpeservices.Update(dpeinfo).Result)
+                                        {
+                                            if (_idpeexchangeservices.Add(new DPEexchange()
+                                            {
+                                                amount = -Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice),
+                                                createTime = DateTime.Now,
+                                                uID = _user.ID,
+                                                lastTotal = dpeinfo.amount + Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice),
+                                                stype = 88,
+                                                remark = "购买商品",
+                                                fromID = _user.ID
+                                            }).Result > 0)
+                                            {
+                                                if (_ishoppingcartserivces.DeleteById(model.id).Result)
+                                                {
+                                                    successnum++;
+                                                }
+                                                else
+                                                {
+                                                    result.code = 1002;
+                                                    result.msg = shopskudetialinfo.detailname + "结算异常请稍后再试";
+                                                    result.success = false;
+                                                    _unitOfWork.RollbackTran();
+                                                    return result;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                result.code = 1002;
+                                                result.msg = shopskudetialinfo.detailname + "结算异常请稍后再试";
+                                                result.success = false;
+                                                _unitOfWork.RollbackTran();
+                                                return result;
+                                            }
+                                        }
+
+                                    }
+                                }
+                                else
+                                {
+                                    result.code = 1002;
+                                    result.msg = shopdetail.pName + "更新商品数量有误请稍后再试";
+                                    result.success = false;
+                                    _unitOfWork.RollbackTran();
+                                    return result;
+                                }
+
+                            }
+                            else
+                            {
+                                result.code = 1002;
+                                result.msg = shopdetail.pName + "结算异常请稍后再试";
+                                result.success = false;
+                                _unitOfWork.RollbackTran();
+                                return result;
+                            }
+
+                        }
+                    }
+                }
+                result.code = 0;
+                result.msg = "成功结算:" + successnum.ToString() + "件商品";
+                result.success = false;
+                _unitOfWork.CommitTran();
+                return result;
+
+            }
+            catch
+            {
+                result.code = 10001;
+                result.msg = "请稍后再试";
+                result.success = false;
+                _unitOfWork.RollbackTran();
+                return result;
+            }
+
+        }
+
         public string creatOrderNumber()
         {
 
@@ -536,6 +752,41 @@ namespace DPE.Core.Controllers
             };
         }
 
+        [HttpPost]
+        [Route("GetShopSkuList")]
+        public async Task<MessageModel<dynamic>> GetShopSkuList(long shopid)
+        {
+            //_user.ID
+            //     var user = await _userInfoServices.GetUserInfo(_user.ID);
+            var spinfo = await _ishopskuservices.Query(x => x.shopid == shopid);
+            return new MessageModel<dynamic>()
+            {
+                success = true,
+                msg = "",
+                response = new
+                {
+                    list = spinfo
+                }
+            };
+        }
+
+        [HttpPost]
+        [Route("GetShopSkuDetailList")]
+        public async Task<MessageModel<dynamic>> GetShopSkuDetailList(long id)
+        {
+            //_user.ID
+            //     var user = await _userInfoServices.GetUserInfo(_user.ID);
+            var spinfo = await _ishopskudetailservices.Query(x => x.skuid == id);
+            return new MessageModel<dynamic>()
+            {
+                success = true,
+                msg = "",
+                response = new
+                {
+                    list = spinfo
+                }
+            };
+        }
 
         /// <summary>
         /// 商品模糊查询
@@ -774,6 +1025,59 @@ namespace DPE.Core.Controllers
         }
 
 
+        //购物车修改
+        [HttpPost]
+        [Route("AddGoodsbyweb")]
+        public async Task<MessageModel<dynamic>> AddGoodsbyweb(int shopid, int num, string option = "")
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                var addshop = await _ishoppingcartserivces.Query(x => x.id == shopid && x.uid == _user.ID);
+                if (addshop.Count() > 0)
+                {
+                    var model = addshop.First();
+                    if (string.IsNullOrEmpty(option))
+                    {
+                        model.shoptotalnum += num;
+                    }
+                    else
+                    {
+                        model.shoptotalnum -= num;
+                    }
+
+                    if (model.shoptotalnum <= 0)
+                    {
+                        await _ishoppingcartserivces.Delete(model);
+                    }
+                    else
+                    {
+                        await _ishoppingcartserivces.Update(model);
+                    }
+                }
+                else
+                {
+                    await _ishoppingcartserivces.Add(new ShoppingCart() { shopid = shopid, shoptotalnum = num, uid = _user.ID }); ;
+
+                }
+                result.code = 0;
+                result.msg = "添加成功";
+                result.success = true;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                string a = ex.Message;
+                result.code = 10001;
+                result.msg = "请稍后再试";
+                result.success = false;
+                return result;
+            }
+
+        }
+
+
+
         //获取我的订单
         [HttpPost]
         [Route("GetMyShopList")]
@@ -826,7 +1130,10 @@ namespace DPE.Core.Controllers
                                     trackingnumber = item.trackingnumber,
                                     company = item.company,
                                     status = item.status,
-                                    remark = item.reamrk
+                                    remark = item.reamrk,
+                                    shopsku = _ishopskudetailservices.QueryById(item.shopid).Result,
+                                    shopskudetail = _ishopskuservices.QueryById(_ishopskudetailservices.QueryById(item.shopid).Result.skuid).Result,
+                                    shopdetail = _ishoplistservices.QueryById(_ishopskuservices.QueryById(_ishopskudetailservices.QueryById(item.shopid).Result.skuid).Result.shopid).Result
                                 }).ToList()
                 };
                 return result;
@@ -1230,6 +1537,49 @@ namespace DPE.Core.Controllers
                                     shopid = item.shopid,
                                     shopnum = item.shoptotalnum,
                                     shopdetail = _ishoplistservices.QueryById(item.shopid).Result
+                                }).ToList()
+                    }
+                };
+                return result;
+            }
+            catch (Exception ex)
+            {
+                string a = ex.Message;
+                result.code = 10001;
+                result.msg = "请稍后再试";
+                result.success = false;
+                return result;
+            }
+
+        }
+
+
+        //获取购物车
+        [HttpPost]
+        [Route("GetShopCartsbyweb")]
+        public async Task<MessageModel<dynamic>> GetShopCartsbyweb(int ptype = 0)
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                var data = await _ishoppingcartserivces.Query(x => x.uid == _user.ID);
+                result.code = 0;
+                result.response = new
+                {
+                    count = data.Count() > 0 ? data.Sum(x => x.shoptotalnum) : 0,
+                    data = new
+                    {
+                        list = (from item in data
+                                orderby item.id descending
+                                select new
+                                {
+                                    uid = item.uid,
+                                    id = item.id,
+                                    shopid = item.shopid,
+                                    shopnum = item.shoptotalnum,
+                                    shopsku=_ishopskudetailservices.QueryById(item.shopid).Result,
+                                    shopskudetail =_ishopskuservices.QueryById(_ishopskudetailservices.QueryById(item.shopid).Result.skuid).Result,
+                                    shopdetail = _ishoplistservices.QueryById(_ishopskuservices.QueryById(_ishopskudetailservices.QueryById(item.shopid).Result.skuid).Result.shopid).Result
                                 }).ToList()
                     }
                 };

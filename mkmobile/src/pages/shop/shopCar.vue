@@ -11,10 +11,10 @@
     >
       <div class="innerWrap" >
         <div class="goods base-flex flex-start p-58 borderR mb-80"  v-for="(key,value) in data" :key="value">
-          <img  :src="getimgurl(key.shopdetail.pIcon)" class="img" alt />
+          <img  :src="getimgurl(key.shopskudetail.skuIcon)" class="img" alt />
           <div class="goods-info">
-            <div class="tip-titl">{{ key.shopdetail.pName }}</div>
-            <div>价格：{{ key.shopdetail.price }}</div>
+            <div class="tip-titl">{{ key.shopdetail.pName }} : {{key.shopsku.detaildesc}}</div>
+            <div>价格：{{ key.shopsku.detailprice }}</div>
             <!-- <div>赠送：面膜+修复水</div>    v-model="stepper"  @plus="onPlus" @minus="onMinus" -->
           </div>
           <van-field name="stepper" class="font42">
@@ -95,7 +95,9 @@ import {
   GetShopCartsweb,
   AddGoodsweb,
   BuyGoodsweb,
-  GetShopaddr
+  GetShopaddr,
+  GetShopCartsbyweb,
+  BuyGoodsbyweb
 } from 'util/netApi'
 import { storage } from 'util/storage'
 import { accessToken, loginPro } from 'util/const.js'
@@ -120,6 +122,25 @@ export default {
         {
           icon_url: require('@/assets/imgs/shop/camea.png'),
           id: 1,
+          shopsku:
+          {
+          createtime: "2021-01-06 00:00",
+          detaildesc: "黑色-S码",
+          detailicon: "shopimg_1.png",
+          detailname: "S",
+          detailnum: 200,
+          detailprice: 300,
+          id: 1,
+          skuid: 1,
+          },
+          shopskudetail:{
+            createtime: "2021-01-06 00:00",
+            id: 1,
+            shopid: 1,
+            skuIcon: "shopimg_1.png",
+            skudesc: "黑色的东西",
+            skuname: "黑色",
+          },
           shopdetail: {
             createTime: '',
             id: 0,
@@ -174,7 +195,7 @@ export default {
     },
     getshopcartnum () {
       var that = this;
-      http(GetShopCartsweb, null, json => {
+      http(GetShopCartsbyweb, null, json => {
         if (json.code === 0) {
           that.data = json.response.data.list
           this.sumallshop()
@@ -188,11 +209,11 @@ export default {
       this.data.forEach(function (item) {
         if(item.shopdetail.ptype==0)
         {
-         trp += item.shopnum * item.shopdetail.price
+         trp += item.shopnum * item.shopsku.detailprice
         totalnum += item.shopnum
         }else if(item.shopdetail.ptype==1)
         {
-         ep += item.shopnum * item.shopdetail.price
+         ep += item.shopnum * item.shopsku.detailprice
          totalnum += item.shopnum
         }
        
@@ -208,13 +229,13 @@ export default {
       }
     },
     buyShop () {
-      if (this.totalrp < this.buytotalrp) {
-        this.isEnter = true
-        this.tips = '当前金额不足'
-        return
-      }
+     // if (this.totalrp < this.buytotalrp) {
+    //    this.isEnter = true
+    //    this.tips = '当前金额不足'
+    //    return
+    //  }
       http(
-        BuyGoodsweb,
+        BuyGoodsbyweb,
         {
           addr: this.buyaddr,
           phone: this.buyphone,
