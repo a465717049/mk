@@ -185,7 +185,7 @@ export default {
               this.price = el.detailprice
               this.shopprice = el.detailprice
               this.startmax = el.detailnum
-              this.pDetailIcon=el.detailicon
+             // this.pDetailIcon=el.detailicon
               this.images = [{image: this.getimgurl(el.detailicon)}]
                }
        });

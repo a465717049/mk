@@ -1124,7 +1124,6 @@ namespace DPE.Core.Controllers
                                     id = item.shopid,
                                     buyaddr = item.buyaddr,
                                     phonename = item.buyname + "  " + item.buyphone,
-                                    shopname = _ishoplistservices.QueryById(item.shopid).Result.pName,
                                     shopnum = item.buyNum,
                                     shopprice = item.price,
                                     trackingnumber = item.trackingnumber,
@@ -1245,6 +1244,138 @@ namespace DPE.Core.Controllers
             }
         }
 
+
+        [HttpPost]
+        [Route("GetShopSkuInfoMyweb")]
+        public async Task<MessageModel<dynamic>> GetShopSkuInfoMyweb()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+                long id =Convert.ToInt64(HttpContext.Request.Form["id"]);
+
+                var data = await _ishopskuservices.Query(x => x.shopid == id);
+                result.code = 0;
+                result.response = new
+                {
+                    datainfo = (from item in data
+                                select new
+                                {
+                                 skuinfo= item,
+                                 skudetailinfo=_ishopskudetailservices.Query(z=>z.skuid==item.id).Result
+                                }).ToList()
+                };
+                result.success = true;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+        }
+
+
+        [HttpPost]
+        [Route("DeleteSkuInfoMyweb")]
+        public async Task<MessageModel<dynamic>> DeleteSkuInfoMyweb()
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            _unitOfWork.BeginTran();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+                long id = Convert.ToInt64(HttpContext.Request.Form["id"]);
+                var detailinfo =await _ishopskudetailservices.Query(x => x.skuid == id);
+                foreach (ShopSkuDetail skudetail in detailinfo) 
+                {
+                    if (! _ishopskudetailservices.Delete(skudetail).Result) 
+                    {
+                        _unitOfWork.RollbackTran();
+                        result.code = 300;
+                        result.msg = "删除明细失败!请稍后再试";
+                        result.success = false;
+                        return result;
+                    }
+                }
+
+                if (!_ishopskuservices.DeleteById(id).Result) 
+                {
+                    _unitOfWork.RollbackTran();
+                    result.code = 300;
+                    result.msg = "删除商品sku失败!请稍后再试";
+                    result.success = false;
+                    return result;
+                }
+                _unitOfWork.CommitTran();
+
+                result.code = 200;
+                result.success = true;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.RollbackTran();
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+        }
+
+        [HttpPost]
+        [Route("DeleteSkudetailInfoMyweb")]
+        public async Task<MessageModel<dynamic>> DeleteSkudetailInfoMyweb()
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+                long id = Convert.ToInt64(HttpContext.Request.Form["id"]);
+                if (!_ishopskudetailservices.DeleteById(id).Result)
+                {
+                    result.code = 300;
+                    result.msg = "删除明细失败!请稍后再试";
+                    result.success = false;
+                    return result;
+                }
+
+                result.code = 200;
+                result.success = true;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+        }
+
+
         [HttpPost]
         [Route("DeleteShopListMyweb")]
         public async Task<MessageModel<dynamic>> DeleteShopListMyweb()
@@ -1355,7 +1486,107 @@ namespace DPE.Core.Controllers
         }
 
 
-        
+        [HttpPost]
+        [Route("AddSkuDetailMyweb")]
+        public async Task<MessageModel<dynamic>> AddSkuDetailMyweb()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+
+                ShopSkuDetail shopskudetail = new ShopSkuDetail();
+                shopskudetail.id = string.IsNullOrEmpty(HttpContext.Request.Form["id"]) ? 0 : Convert.ToInt64(HttpContext.Request.Form["id"]);
+                shopskudetail.skuid = string.IsNullOrEmpty(HttpContext.Request.Form["skuid"]) ? 0 : Convert.ToInt64(HttpContext.Request.Form["skuid"].ToString());
+                shopskudetail.detaildesc = string.IsNullOrEmpty(HttpContext.Request.Form["detaildesc"]) ? "" : HttpContext.Request.Form["detaildesc"].ToString(); 
+                shopskudetail.detailicon = string.IsNullOrEmpty(HttpContext.Request.Form["detailicon"]) ? "" : HttpContext.Request.Form["detailicon"].ToString();
+                shopskudetail.detailname = string.IsNullOrEmpty(HttpContext.Request.Form["detailname"]) ? "" : HttpContext.Request.Form["detailname"].ToString();
+                shopskudetail.detailnum = string.IsNullOrEmpty(HttpContext.Request.Form["detailnum"]) ? 0 : Convert.ToInt32(HttpContext.Request.Form["detailnum"]);
+                shopskudetail.detailprice = string.IsNullOrEmpty(HttpContext.Request.Form["detailprice"]) ? 0:Convert.ToDecimal(HttpContext.Request.Form["detailprice"]);
+ 
+                long addid = 0;
+                if (shopskudetail.id == 0)
+                {
+                    shopskudetail.createtime = DateTime.Now;
+                    addid = await _ishopskudetailservices.Add(shopskudetail);
+                }
+                else
+                {
+                    var upmodel = await _ishopskudetailservices.QueryById(shopskudetail.id);
+                    addid = shopskudetail.id;
+                    shopskudetail.detailicon = upmodel.detailicon;
+                    await _ishoplistservices.Update(shopskudetail);
+                }
+                result.code = 200;
+                result.success = true;
+                result.response = addid;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+        }
+
+        [HttpPost]
+        [Route("AddSkuMyweb")]
+        public async Task<MessageModel<dynamic>> AddSkuMyweb()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+
+                ShopSku shopsku = new ShopSku();
+                shopsku.id = string.IsNullOrEmpty(HttpContext.Request.Form["id"]) ? 0 : Convert.ToInt64(HttpContext.Request.Form["id"]);
+                shopsku.shopid = string.IsNullOrEmpty(HttpContext.Request.Form["shopid"]) ? 0:Convert.ToInt64(HttpContext.Request.Form["shopid"].ToString());
+                shopsku.skudesc = string.IsNullOrEmpty(HttpContext.Request.Form["skudesc"]) ? "" : HttpContext.Request.Form["skudesc"].ToString();
+                shopsku.skuIcon = string.IsNullOrEmpty(HttpContext.Request.Form["skuIcon"]) ? "" : HttpContext.Request.Form["skuIcon"].ToString();
+                shopsku.skuname = string.IsNullOrEmpty(HttpContext.Request.Form["skuname"]) ? "" : HttpContext.Request.Form["skuname"].ToString();
+
+                long addid = 0;
+                if (shopsku.id == 0)
+                {
+                    shopsku.createtime = DateTime.Now;
+                    addid = await _ishopskuservices.Add(shopsku);
+                }
+                else
+                {
+                    addid = shopsku.id;
+                    await _ishopskuservices.Update(shopsku);
+                }
+                result.code = 200;
+                result.success = true;
+                result.response = addid;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+        }
+
+
         [HttpPost]
         [Route("uploadPicture")]
         public async Task<MessageModel<dynamic>> uploadPicture()
@@ -1465,7 +1696,60 @@ namespace DPE.Core.Controllers
 
         }
 
-        
+
+        [HttpPost]
+        [Route("uploadPictureSkuDetail")]
+        public async Task<MessageModel<dynamic>> uploadPictureSkuDetail()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+                var ss = Directory.GetCurrentDirectory();
+                var files = HttpContext.Request.Form.Files;
+                int id = Convert.ToInt32(HttpContext.Request.Form["id"]);
+                if (files.Count > 0)
+                {
+                    using (HttpClient client = new HttpClient())
+                    {
+                        var model = await _ishopskudetailservices.QueryById(id);
+                        model.detailicon = "skudetailimg_" + id + ".png";
+                        var resultz = _ishopskudetailservices.Update(model);
+                        if (resultz.Result)
+                        {
+                            var text = HttpContext.Request.Form.Files[0].OpenReadStream();
+                            string strPath = "";
+                            strPath = ss + @"//shopimg//skudetailimg_" + id + ".png";
+                            StreamHelp.StreamToFile(text, strPath);
+
+                        }
+
+                    }
+                    //return "添加成功";
+                }
+                result.code = 200;
+                result.success = true;
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+
+
+        }
+
 
         [HttpPost]
         [Route("ApplyOpenShopMyweb")]

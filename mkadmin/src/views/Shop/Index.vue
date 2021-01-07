@@ -57,14 +57,12 @@
       </el-form>
     </div>
         </el-form-item>
-
       <el-form-item label="商品详情" >
       <el-input v-model="Formtid.pDetailIcon" disabled auto-complete="off"></el-input>
       <div class="Thisform">
       <el-form ref="detailform" :model="detailform" label-width="80px">
       <input type="file" @change="getdetilFile($event)">
       </el-form>
-
     </div>
         </el-form-item>
         <el-form-item label="商品数量" >
@@ -89,28 +87,130 @@
         <el-option  label="再次购买" :value="1">再次购买</el-option>
         </el-select>
          </el-form-item>
-      <!--  <el-form-item label="priceType" >
-        <el-select v-model="Formtid.priceType">
-        <el-option label="1" value="1">1</el-option>
-        </el-select>
-         </el-form-item>
-        <el-form-item label="状态" >
-        <el-select v-model="Formtid.status">
-        <el-option label="1" value="1">正常</el-option>
-        </el-select>
-         </el-form-item>  -->
         <el-form-item label="商品分组" >
         <el-select v-model="Formtid.Shopgroup">
         <el-option label="默认" :value="1">默认</el-option>
         <el-option  label="商品2" :value="2">商品2</el-option>
         </el-select>
         </el-form-item>
-          
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click.native="levelFormVisible = false">取消</el-button>
         <el-button type="primary" @click.native="levelSubmit" :loading="levelLoading">提交</el-button>
       </div>
+    </el-dialog>
+
+     <!--sku明细增加-->
+    <el-dialog title="sku明细" :visible.sync="addskudtFormVisible" v-model="addskudtFormVisible" :close-on-click-modal="false">
+      <el-form  label-width="80px" >
+        <el-form-item label="id"  hidden>
+        <el-input v-model="Formadddt.id" auto-complete="off"></el-input>
+        </el-form-item>
+         <el-form-item label="skuid" hidden >
+        <el-input v-model="Formadddt.skuid" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="明细名称" >
+        <el-input v-model="Formadddt.detailname" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="明细描述" >
+        <el-input v-model="Formadddt.detaildesc" auto-complete="off"></el-input>
+        </el-form-item>
+            <el-form-item label="明细价格" >
+        <el-input v-model="Formadddt.detailprice" auto-complete="off"></el-input>
+        </el-form-item>
+         <el-form-item label="明细数量" >
+        <el-input v-model="Formadddt.detailnum" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="明细图片" >
+        <el-input v-model="Formadddt.detailicon" disabled auto-complete="off"></el-input>
+        <div class="Thisform">
+      <el-form ref="skudtform" :model="skudtform" label-width="80px">
+          <input type="file" @change="getskudtFile($event)">
+      </el-form>
+    </div>
+  </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click.native="addskudtFormVisible = false">取消</el-button>
+        <el-button type="primary" @click.native="addskudtSubmit" :loading="levelLoading">提交</el-button>
+      </div>
+    </el-dialog>
+
+    <!--sku增加-->
+    <el-dialog title="sku" :visible.sync="addskuFormVisible" v-model="addskuFormVisible" :close-on-click-modal="false">
+      <el-form  label-width="80px" >
+        <el-form-item label="id" hidden >
+        <el-input v-model="Formadd.id" auto-complete="off"></el-input>
+        </el-form-item>
+         <el-form-item label="shopid" hidden  >
+        <el-input v-model="Formadd.shopid" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="sku名称" >
+        <el-input v-model="Formadd.skuname" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="sku描述" >
+        <el-input v-model="Formadd.skudesc" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click.native="addskuFormVisible = false">取消</el-button>
+        <el-button type="primary" @click.native="addskuSubmit" :loading="levelLoading">提交</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="商品sku管理" :visible.sync="skuFormVisible" v-model="skuFormVisible" :close-on-click-modal="false">
+     <el-button type="primary" @click="addskuinfo" >新增sku</el-button>
+<el-table :data="skuinfolist" highlight-current-row @current-change="selectskuCurrentRow" v-loading="listLoading" @selection-change="selsskuChange" style="width: 100%;">
+      <el-table-column prop="skuinfo.id" label="编号" width="80" sortable>
+      </el-table-column>
+      <el-table-column prop="skuinfo.skuname" label="sku名称" width="" sortable>
+      </el-table-column>
+      <el-table-column prop="skuinfo.skudesc" label="sku描述" width="" sortable>
+      </el-table-column>
+    <!--  <el-table-column prop="skuinfo.skuIcon" label="sku图片" width="" sortable>
+      </el-table-column> -->
+      <el-table-column prop="skuinfo.createtime" label="创建时间" width="" sortable>
+      </el-table-column>
+       <el-table-column label="操作" width="" >
+        <el-row class="edita" slot-scope="skuinfo">  
+             <a href="#" @click="editsku(skuinfo.row.skuinfo)">编辑</a>
+             <a href="#" @click="showeditskuinfo(skuinfo.row)">sku明细</a>
+             <a href="#" @click="deleskuinfo(skuinfo.row.skuinfo.id)">删除</a>
+        </el-row>
+      </el-table-column>
+    </el-table>
+    <div slot="footer" class="dialog-footer">
+    <el-button @click.native="skuFormVisible = false">关闭</el-button>
+    </div>
+    </el-dialog>
+
+ <el-dialog title="sku明细" :visible.sync="skudtFormVisible" v-model="skudtFormVisible" :close-on-click-modal="false">
+     <el-button type="primary" @click="addskudt" >新增sku明细</el-button>
+<el-table :data="skudtinfo" highlight-current-row v-loading="listLoading" style="width: 100%;">
+      <el-table-column prop="id" label="编号" width="80" sortable>
+      </el-table-column>
+      <el-table-column prop="detailname" label="名称" width="" sortable>
+      </el-table-column>
+      <el-table-column prop="detaildesc" label="描述" width="" sortable>
+      </el-table-column>
+      <el-table-column prop="detailnum" label="数量" width="" sortable>
+      </el-table-column>
+       <el-table-column prop="detailprice" label="价格" width="" sortable>
+      </el-table-column>
+      <el-table-column prop="detailicon" label="sku图片" width="" sortable>
+      </el-table-column> 
+      <el-table-column prop="createtime" label="创建时间" width="" sortable>
+      </el-table-column>
+       <el-table-column label="操作" width="" >
+        <el-row class="edita" slot-scope="skuinfo">  
+             <a href="#" @click="editskudtinfo(skuinfo.row)">编辑</a>
+             <a href="#" @click="deleskudtinfo(skuinfo.row.id)">删除</a>
+        </el-row> 
+      </el-table-column>
+    </el-table>
+    <div slot="footer" class="dialog-footer">
+    <el-button @click.native="skudtFormVisible = false">关闭</el-button>
+    </div>
     </el-dialog>
 
   </section>
@@ -123,7 +223,9 @@ import {
   testapi,
   GetAdminBuyShopList ,AddTruckOrdersweb, 
   ChangeOrdersweb,GetShopListMyweb,
-  DeleteShopListMyweb,AddShopListMyweb,uploadPicture,uploadPictureDetail
+  DeleteShopListMyweb,AddShopListMyweb,uploadPicture,
+  uploadPictureDetail,GetShopSkuInfoMyweb,DeleteSkudetailInfoMyweb,DeleteSkuInfoMyweb,
+  uploadPictureSkuDetail ,AddSkuMyweb ,AddSkuDetailMyweb
 } from "../../api/api";
 import { getButtonList } from "../../promissionRouter";
 import Toolbar from "../../components/Toolbar";
@@ -134,15 +236,35 @@ export default {
     return {
       statusvalue:0,
      //推荐
+     addskuFormVisible:false,
+     addskudtFormVisible:false,
       tidFormVisible: false,
       tidLoading: false,
-       form: {
-      },
-       detailform: {
-      },
-       file: '',
+      form: {},
+      skudtform:{},
+      detailform: { },
+      file: '',
        detailfile:'',
-      //id minLevel price pNum pName pDesc pIcon status ptype priceType Shopgroup
+       skudetailfile:'',
+      //detailname detaildesc detailprice detailnum detailicon
+      Formadddt:
+      {
+        id:0,
+        skuid:0,
+        detailname :'',
+        detaildesc:'',
+        detailprice :0,
+        detailnum :0,
+        detailicon:'',
+      },
+      Formadd:
+      {
+      id:0,
+      shopid:0,
+      skuIcon:'',
+      skuname:'',
+      skudesc:'',
+      },
       Formtid: {
         pDetailIcon:"",
         id: 0,
@@ -157,6 +279,8 @@ export default {
         priceType: 1,
         Shopgroup: 1,
       },
+      skuFormVisible:false,
+      skudtFormVisible:false,
       levelFormVisible: false,
       levelLoading: false,
       Formlevel: {
@@ -168,23 +292,131 @@ export default {
         name: "",
       },
       users: [],
+      skuinfolist: [],
+      skudtinfo: [],
       roles: [],
       total: 0,
       buttonList: [],
       currentRow: null,
+      currentskuRow:null,
+      currentskudtRow:null,
       page: 1,
       listLoading: false,
       sels: [], //列表选中列
     };
   },
   methods: {
-     getFile(event) {
+    addskuinfo()
+    {
+        this.Formadd.id=0;
+        this.Formadd.shopid=this.currentRow.id;
+        this.Formadd.skuIcon='';
+        this.Formadd.skuname='';
+        this.Formadd.skudesc='';
+        this.addskuFormVisible=true;
+    },
+    addskudt()
+    {
+       this.addskudtFormVisible=true;
+       this.Formadddt.id=0;
+       this.Formadddt.detailname='';
+       this.Formadddt.detaildesc='';
+       this.Formadddt.detailnum=0;
+       this.Formadddt.detailicon='';
+       this.Formadddt.detailprice=0;
+       this.Formadddt.skudetailfile='';
+    },
+    editsku(model)
+    {
+       this.Formadd=model;
+      this.addskuFormVisible=true;
+    },
+    editskudtinfo(model)
+    {
+      this.Formadddt=model;
+      this.addskudtFormVisible=true;
+    },
+    deleskudtinfo(dtid)
+    {
+       this.$confirm("确认删除吗？", "提示", {}).then(() => {
+            DeleteSkudetailInfoMyweb({id:dtid}).then((res) => {
+              if (res.success) {
+                this.$message({
+                  message: "操作成功",
+                  type: "success",
+                });
+                this.editskuinfo();
+                this.skudtFormVisible=false;
+              } else {
+                this.$message({
+                  message: "操作失败请稍后再试！",
+                  type: "error",
+                });
+              }
+            });
+          });
+    },
+    showeditskuinfo(model)
+    {
+      this.skudtFormVisible=true;
+      this.skudtinfo=model.skudetailinfo;
+      this.Formadddt.skuid=model.skuinfo.id;
+    },
+    getskudetail()
+    {
+
+    },
+    deleskuinfo(skuid)
+    {
+      this.$confirm("确认删除吗？该明细下的商品也会跟着删除！", "提示", {}).then(() => {
+            DeleteSkuInfoMyweb({id:skuid}).then((res) => {
+              if (res.success) {
+                this.tidFormVisible = false;
+                this.$message({
+                  message: "操作成功",
+                  type: "success",
+                });
+                  this.editskuinfo();
+              } else {
+                this.$message({
+                  message: res.msg,
+                  type: "error",
+                });
+              }
+            });
+          });
+    },
+    editskuinfo()
+    {
+      let rows = this.currentRow;
+      if (!rows) {
+        this.$message({
+          message: "请选择要操作的一行数据！",
+          type: "error",
+        });
+        return;
+      } 
+       this.skuFormVisible=true;
+       this.listLoading = true;
+      //NProgress.start();
+      GetShopSkuInfoMyweb({id:rows.id}).then((res) => {
+        this.listLoading = false;
+        this.skuinfolist=res.response.datainfo
+        //NProgress.done();
+      });
+
+    },
+    getFile(event) {
       this.file = event.target.files[0];
         console.log(this.file)
     },
     getdetilFile(event) {
      this.detailfile = event.target.files[0];
      console.log(this.detailfile)
+    },
+     getskudtFile(event) {
+      this.skudetailfile = event.target.files[0];
+      console.log(this.skudetailfile )
     },
      onSubmit() {
       let that = this;
@@ -208,6 +440,19 @@ export default {
              // this.files="";
             });
     },
+    onskudtSubmit()
+    {
+      let that = this;
+      event.preventDefault();
+      let param = new FormData();
+      param.append("file", this.skudetailfile);
+      param.append("id", this.Formadddt.id);
+      console.log(this.skudetailfile)
+      console.log(this.Formadddt.id)
+      uploadPictureSkuDetail(param).then((res) => {
+             
+      });
+    },
     formatlv: function (row, column) {
           var tmpname="";
           if (row.minLevel == 0) tmpname= '会员'
@@ -224,35 +469,6 @@ export default {
           if (row.ptype == 1) tmpname= '再次购买'
       return tmpname;
     },
-      tidSubmit: function () {
-      this.$refs.Formtid.validate((valid) => {
-        if (valid) {
-          this.$confirm("确认提交吗？", "提示", {}).then(() => {
-            let para = {
-              detailid: this.Formlevel.detailid,
-              order: this.Formtid.Name,
-            };
-            AddTruckOrdersweb(para).then((res) => {
-              if (res.success) {
-                this.tidFormVisible = false;
-                this.$message({
-                  message: "操作成功",
-                  type: "success",
-                });
-                 
-                this.getUsers();
-              } else {
-                this.$message({
-                  message: "操作失败请稍后再试！",
-                  type: "error",
-                });
-              }
-            });
-          });
-        }
-      });
-    },
- //状态
     levelSubmit: function () {
       this.$refs.Formlevel.validate((valid) => {
         if (valid) {
@@ -305,8 +521,53 @@ export default {
         }
       });
     },
+    addskuSubmit:function()
+    {
+        let _this=this;
+        AddSkuMyweb(this.Formadd).then((res) => {
+        if (res.success) {
+        this.$message({
+        message: "操作成功",
+        type: "success",
+        });
+        this.addskuFormVisible=false;
+        this.editskuinfo();
+        } else {
+        this.$message({
+        message: "操作失败请稍后再试！",
+        type: "error",
+        });
+        }
+        });
+    },
+    addskudtSubmit:function()
+    {
+            let _this=this;
+            AddSkuDetailMyweb(this.Formadddt).then((res) => {
+              if (res.success) {
+                let resthis=res;
+                if(this.skudetailfile)
+                {
+                this.Formadddt.id=res.response;
+                this.onskudtSubmit();
+                }
+                this.$message({
+                  message: "操作成功",
+                  type: "success",
+                });
+              } else {
+                this.$message({
+                  message: "操作失败请稍后再试！",
+                  type: "error",
+                });
+              }
+            });
+    },
     selectCurrentRow(val) {
       this.currentRow = val;
+    },
+    selectskuCurrentRow(val) {
+      this.currentskuRow = val;
     },
     callFunction(item) {
       this.filters = {
@@ -419,6 +680,9 @@ export default {
     selsChange: function(sels) {
       this.sels = sels;
     },
+    selsskuChange: function(sels) {
+      this.sels = sels;
+    },
   },
   mounted() {
     this.getUsers();
@@ -431,4 +695,9 @@ export default {
 </script>
 
 <style scoped>
+.edita a
+{
+  margin-left:10px;
+
+}
 </style>

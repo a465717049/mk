@@ -542,6 +542,24 @@ export const GetShopListMyweb = params => {
 export const DeleteShopListMyweb = params => {
     return axios.post(`${base}/api/Shop/DeleteShopListMyweb`, qs.stringify(params)).then(res => res.data);
 };
+export const GetShopSkuInfoMyweb = params => {
+    return axios.post(`${base}/api/Shop/GetShopSkuInfoMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const DeleteSkudetailInfoMyweb = params => {
+    return axios.post(`${base}/api/Shop/DeleteSkudetailInfoMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const DeleteSkuInfoMyweb = params => {
+    return axios.post(`${base}/api/Shop/DeleteSkuInfoMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const AddSkuDetailMyweb = params => {
+    return axios.post(`${base}/api/Shop/AddSkuDetailMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const AddSkuMyweb = params => {
+    return axios.post(`${base}/api/Shop/AddSkuMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const uploadPictureSkuDetail = params => {
+    return axios.post(`${base}/api/Shop/uploadPictureSkuDetail`, params).then(res => res.data);
+};
 export const AddShopListMyweb = params => {
     return axios.post(`${base}/api/Shop/AddShopListMyweb`, qs.stringify(params)).then(res => res.data);
 };
