@@ -21,7 +21,7 @@
             <div class="goods base-flex flex-start p-58 borderR mb-80">
               <img :src="getimgurl(data.shopsku.detailicon)" class="img" alt />
               <div class="goods-info">
-                <div class="tip-titl">{{data.shopdetail.shopname}} : {{data.shopsku.detaildesc}}</div>
+                <div class="tip-titl">{{data.shopdetail.pName}} : {{data.shopsku.detaildesc}}</div>
                 <div>数量:{{data.shopnum}}    总价:{{data.shopprice}}</div>
 
               </div>
