@@ -17,12 +17,6 @@
       </el-table-column>
       <el-table-column prop="amount" label="ep金额" width="" sortable>
       </el-table-column>
-      <el-table-column prop="rate" label="汇率" width="" sortable>
-      </el-table-column>
-      <el-table-column prop="RMBrate" label="人命币汇率" width="" sortable>
-      </el-table-column>
-      <el-table-column prop="USDTrate" label="USDTrate" width="" sortable>
-      </el-table-column>
       <el-table-column prop="statusName" label="状态" width="" sortable>
       </el-table-column>
       <el-table-column prop="usdtAddress" label="usdt地址" width="" sortable>
@@ -230,7 +224,7 @@ export default {
   },
   mounted() {
     this.tidFormVisible = false;
-    this.getUsers();
+  //  this.getUsers();
     let routers = window.localStorage.router
       ? JSON.parse(window.localStorage.router)
       : [];

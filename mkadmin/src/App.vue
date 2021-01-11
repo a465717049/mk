@@ -133,7 +133,7 @@ export default {
   data() {
     return {
       sysName: "Manager",
-      sysNameShort: "DP",
+      sysNameShort: "MK",
       NewsVisible: false,
       SidebarVisible: false,
       collapsed: false,

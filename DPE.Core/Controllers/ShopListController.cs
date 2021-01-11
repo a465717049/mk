@@ -612,18 +612,6 @@ namespace DPE.Core.Controllers
                                             if (_ishoppingcartserivces.DeleteById(model.id).Result)
                                             {
                                                 successnum++;
-                                                if (_ishoppingcartserivces.DeleteById(model.id).Result)
-                                                {
-                                                    successnum++;
-                                                }
-                                                else
-                                                {
-                                                    result.code = 1002;
-                                                    result.msg = shopskudetialinfo.detailname + "结算异常请稍后再试";
-                                                    result.success = false;
-                                                    _unitOfWork.RollbackTran();
-                                                    return result;
-                                                }
                                             }
                                             else
                                             {
@@ -952,7 +940,6 @@ namespace DPE.Core.Controllers
                     result.code = 0;
                     result.msg = "操作成功";
                     result.success = true;
-
                 }
                 else
                 {
@@ -1005,7 +992,7 @@ namespace DPE.Core.Controllers
                 }
                 else 
                 {
-                    await _ishoppingcartserivces.Add(new ShoppingCart() { shopid = shopid, shoptotalnum = num, uid = _user.ID }); ;
+                    await _ishoppingcartserivces.Add(new ShoppingCart() { shopid = shopid, shoptotalnum = num, uid = _user.ID });
                    
                 }
                 result.code = 0;
@@ -1057,7 +1044,7 @@ namespace DPE.Core.Controllers
                 }
                 else
                 {
-                    await _ishoppingcartserivces.Add(new ShoppingCart() { shopid = shopid, shoptotalnum = num, uid = _user.ID }); ;
+                    await _ishoppingcartserivces.Add(new ShoppingCart() { shopid = shopid, shoptotalnum = num, uid = _user.ID });
 
                 }
                 result.code = 0;
