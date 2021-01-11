@@ -145,17 +145,6 @@ export default {
         if (json.code === 0) {
           console.log(json)
           this.data = json.response.list
-          this.data.forEach(el => {
-            let img = null
-            try {
-              img = require('@/assets/imgs/shop/goods-' + el.id + '.png')
-            } catch (err) {
-              // 图片 不存在则使用默认的图片
-              img = require('@/assets/imgs/shop/camea.png')
-            }
-            return (el.icon_url = img)
-          })
-          // this.username = json.response.nickname
         }
       })
     }
