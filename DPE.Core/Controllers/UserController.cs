@@ -2350,30 +2350,51 @@ namespace DPE.Core.Controllers
         [HttpPost]
         public async Task<MessageModel<dynamic>> adminResetlevel()
         {
-            long uid = Convert.ToInt64(HttpContext.Request.Form["uid"]);
-            int level = Convert.ToInt32(HttpContext.Request.Form["level"]);
+           
             MessageModel<dynamic> result = new MessageModel<dynamic>()
             {
                 success = true,
                 msg = "修改成功",
                 code = 200
             };
-
             try
             {
-                var model = await _sysUserInfoServices.QueryById(uid);
+                long uid = Convert.ToInt64(HttpContext.Request.Form["uid"]);
+                if (!string.IsNullOrEmpty(HttpContext.Request.Form["level"]))
+                {
+                    int level = Convert.ToInt32(HttpContext.Request.Form["level"]);
+                    var model = await _sysUserInfoServices.QueryById(uid);
 
-                if (model != null)
-                {
-                    model.honorLevel = level;
-                    await _sysUserInfoServices.Update(model);
+                    if (model != null)
+                    {
+                        model.uStatus = level;
+                        await _sysUserInfoServices.Update(model);
+                    }
+                    else
+                    {
+                        result.success = false;
+                        result.code = 500;
+                        result.msg = "修改失败";
+                    }
                 }
-                else
+                else 
                 {
-                    result.success = false;
-                    result.code = 500;
-                    result.msg = "修改失败";
+                    int level = Convert.ToInt32(HttpContext.Request.Form["zw"]);
+                    var model = await _sysUserInfoServices.QueryById(uid);
+
+                    if (model != null)
+                    {
+                        model.honorLevel = level;
+                        await _sysUserInfoServices.Update(model);
+                    }
+                    else
+                    {
+                        result.success = false;
+                        result.code = 500;
+                        result.msg = "修改失败";
+                    }
                 }
+                
                 return result;
             }
             catch
@@ -2390,8 +2411,7 @@ namespace DPE.Core.Controllers
         public async Task<MessageModel<dynamic>> adminResettid()
         {
 
-            long uid = Convert.ToInt64(HttpContext.Request.Form["uid"]);
-            long tid = Convert.ToInt64(HttpContext.Request.Form["tid"]);
+           
             MessageModel<dynamic> result = new MessageModel<dynamic>()
             {
                 success = true,
@@ -2401,11 +2421,20 @@ namespace DPE.Core.Controllers
 
             try
             {
+                long uid = Convert.ToInt64(HttpContext.Request.Form["uid"]);
+            
                 var model = await _sysUserInfoServices.QueryById(uid);
 
                 if (model != null)
                 {
-                    model.tid = tid;
+                    if (!string.IsNullOrEmpty(HttpContext.Request.Form["tid"]))
+                    {
+                        model.tid = Convert.ToInt64(HttpContext.Request.Form["tid"]);
+                    }
+                    else 
+                    {
+                        model.jid = Convert.ToInt64(HttpContext.Request.Form["jid"]);
+                    }
                     await _sysUserInfoServices.Update(model);
                 }
                 else

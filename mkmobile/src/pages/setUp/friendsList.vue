@@ -8,7 +8,6 @@
         <TopSearch @onSearch="search"></TopSearch>
       </div>
     </TopBar>
-   <router-link to="friendsListjid" class="router">我的安置</router-link>
     <ScrollRefresh
       @getData="loadinfo"
       :residualHeight="topbarHeight+bottomTabBarHeight+10"

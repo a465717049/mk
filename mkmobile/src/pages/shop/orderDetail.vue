@@ -19,9 +19,9 @@
               <div class="tag graytag" v-else-if="data.status===4">己完成</div>
             </div>
             <div class="goods base-flex flex-start p-58 borderR mb-80">
-              <img :src="imgicon" class="img" alt />
+              <img :src="getimgurl(data.shopsku.detailicon)" class="img" alt />
               <div class="goods-info">
-                <div class="tip-titl">{{data.shopname}}</div>
+                <div class="tip-titl">{{data.shopdetail.pName}} : {{data.shopsku.detaildesc}}</div>
                 <div>数量:{{data.shopnum}}    总价:{{data.shopprice}}</div>
 
               </div>
@@ -59,6 +59,7 @@
 import TopBar from 'components/TopBar'
 import TopSearch from 'components/TopSearch'
 import { http } from 'util/request'
+import { config } from 'util/config'
 import { GetShopList, GetUserInfo, GetShopDeatilLike, GetShopDetailsMyweb } from 'util/netApi'
 import { storage } from 'util/storage'
 import { accessToken, loginPro } from 'util/const.js'
@@ -82,7 +83,41 @@ export default {
       },
       data:
       {
-        shopid: 0,
+        shopdetail:{
+        Shopgroup: 1,
+        createTime: "2020-12-03 16:21",
+        id: 1,
+        isDelete: false,
+        minLevel: 1,
+        pDesc: "摩奇猴666套装",
+        pDetailIcon: "",
+        pIcon: "shopimg_1.png",
+        pName: "摩奇猴666套装",
+        pNum: 9993,
+        price: 666,
+        priceType: 1,
+        ptype: 0,
+        status: 1,
+        },
+        shopsku:
+        {
+        createtime: "2021-01-06 00:00",
+        detaildesc: "黑色-S码",
+        detailicon: "shopimg_1.png",
+        detailname: "S",
+        detailnum: 199,
+        detailprice: 300,
+        id: 1,
+        skuid: 1
+        },
+      shopskudetail:{
+      createtime: "2021-01-06 00:00",
+      id: 1,
+      shopid: 1,
+      skuIcon: "shopimg_1.png",
+      skudesc: "黑色的东西",
+      skuname: "黑色",},
+        shopidid: 0,
         showComfirm: true,
         tips: '即將更新！',
         trackingnumber: '',
@@ -190,6 +225,10 @@ export default {
     }
   },
   methods: {
+    getimgurl(imgurl)
+    {
+      return config.shopimgUrl+imgurl;
+    },
     onSearch (value) {
       this.ToGetShopDeatilLike(value)
     },
@@ -206,15 +245,6 @@ export default {
       http(GetShopDetailsMyweb, {id: this.shopid}, json => {
         if (json.code === 0) {
           this.data = json.response.datainfo[0]
-
-          let img = null
-          try {
-            img = require('@/assets/imgs/shop/goods-' + this.data.shopidid + '.png')
-          } catch (err) {
-            // 图片 不存在则使用默认的图片
-            img = require('@/assets/imgs/shop/camea.png')
-          }
-          this.imgicon = img
         }
       })
     }

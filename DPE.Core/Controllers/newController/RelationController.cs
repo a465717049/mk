@@ -99,7 +99,7 @@ namespace DPE.Core.Controllers
                     model.NickName = friendData.Rows[i]["NickName"].ToString();
                     model.photo = friendData.Rows[i]["photo"].ToString();
                     model.friendsNum =_sysUserInfoServices.GetFriendsList(model.uID, 0).Result.Rows.Count;
-                    model.performance = _iuserdataservices.QueryById(model.uID).Result.XProfit.ToString();
+                    model.performance = _iuserdataservices.QueryById(model.uID).Result.RProfit.ToString();
                     var relationData = await _sysUserInfoServices.GetRelationListbyid(model.uID);
                     int hynum = 0;
                     int jlnum = 0;
@@ -183,7 +183,7 @@ namespace DPE.Core.Controllers
                     model.NickName = friendData.Rows[i]["NickName"].ToString();
                     model.photo = friendData.Rows[i]["photo"].ToString();
                     model.friendsNum = _sysUserInfoServices.GetFriendsListJid(model.uID, 0).Result.Rows.Count;
-                    model.performance = _iuserdataservices.QueryById(model.uID).Result.XProfit.ToString();
+                    model.performance = _iuserdataservices.QueryById(model.uID).Result.LProfit.ToString();
                     var relationData = await _sysUserInfoServices.GetRelationListbyid(model.uID);
                     int hynum = 0;
                     int jlnum = 0;

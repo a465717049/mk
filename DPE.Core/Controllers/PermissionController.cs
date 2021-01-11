@@ -382,7 +382,7 @@ namespace DPE.Core.Controllers
                                                where child.IsDeleted == false
                                                orderby child.Id
                                                select new NavigationBar
-                                               {
+                                                  {
                                                    id = child.Id,
                                                    name = child.Name,
                                                    pid = child.Pid,

@@ -40,5 +40,10 @@ namespace DPE.Core.Model.Models
            public int? ptype { get; set; }
 
           public int? Shopgroup { get; set; }
+
+          public bool? isDelete { get; set; }
+
+
+         public string pDetailIcon { get; set;}
     }
 }
