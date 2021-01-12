@@ -6,13 +6,13 @@
         <img src="@/assets/imgs/login/head.png" class="img" alt />
         <div class="tips-part">
           <div class="tip-titl">提示</div>
-          <div>周三为提现日(平常提，每周三发)提现手续费：2%</div>
+          <div>周三为提现日(平常提，每周三发)<br />提现手续费：2%</div>
           <!-- <div>即将更新！</div> -->
         </div>
       </div>
       <div class="moneyWrap clearfix">
         <div class="left fl">
-          <div class="top" @click="ChangeTransType">{{form.oType}}</div>
+          <div class="top">EP</div>
           <div class="bottom">ACCOUNT</div>
         </div>
         <div class="right fr">{{account}}</div>

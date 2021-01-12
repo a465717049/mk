@@ -96,7 +96,7 @@ export default {
     },
   },
   mounted() {
-    this.getUsers();
+   // this.getUsers();
     let routers = window.localStorage.router
       ? JSON.parse(window.localStorage.router)
       : [];

@@ -564,6 +564,21 @@
             
             </summary>
         </member>
+        <member name="T:DPE.Core.Model.Models.ShopRole">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Model.Models.ShopSku">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:DPE.Core.Model.Models.ShopSkuDetail">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:DPE.Core.Model.Models.SP">
             <summary>
             

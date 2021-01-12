@@ -6,13 +6,13 @@
         <img src="@/assets/imgs/login/head.png" class="img" alt />
         <div class="tips-part">
           <div class="tip-titl">提示</div>
-          <div>EP可以提现，也可以兑换成为RP(注册分）</div>
+          <div>EP可以兑换成为RP(注册分）<br />EP也可以兑换PP(产品分)</div>
           <!-- <div>即将更新！</div> -->
         </div>
       </div>
       <div class="moneyWrap clearfix">
         <div class="left fl">
-          <div class="top" @click="ChangeTransType">{{form.oType}}</div>
+          <div class="top" >{{form.oType}}</div>
           <div class="bottom">ACCOUNT</div>
         </div>
         <div class="right fr">{{account}}</div>
@@ -69,7 +69,7 @@ export default {
 
       receiptTypeList: [
         { text: 'RP', value: 'RP' },
-       // { text: 'SP', value: 'SP' }
+        { text: 'PP', value: 'DPE' }
       ],
       transPassword: null,
       verificationCode: null,
@@ -97,24 +97,9 @@ export default {
     changeModel (v) {
       this.showComfirm = v
     },
-    ChangeTransType () {
-      return;
-      this.TogetUserInfo()
-      if (this.form.oType == 'EP') {
-        this.form.oType = 'RP'
-        this.receiptTypeList = [{ text: 'SP', value: 'SP' }]
-      } else {
-        this.form.oType = 'EP'
-        this.receiptTypeList = [
-          { text: 'RP', value: 'RP' },
-          { text: 'SP', value: 'SP' }
-        ]
-      }
-    },
     TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
-          console.log(json)
           if (this.form.oType == 'EP') {
             this.account = json.response.gold
           } else if (this.form.oType == 'RP') {

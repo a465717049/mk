@@ -39,7 +39,7 @@
       </ul>
       <div class="sumTitle">合计</div>
         <div class="sumInfo">
-          <span class="tit">需扣除您的RP：</span>
+          <span class="tit">需扣除您的：</span>
           <span class="num">{{showlevel}}</span>
         </div>
       <button class="next" @click="ToTranWithMe">确认升级</button>

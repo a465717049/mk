@@ -11,10 +11,10 @@
     >
       <div class="innerWrap" >
         <div class="goods base-flex flex-start p-58 borderR mb-80"  v-for="(key,value) in data" :key="value">
-          <img :src="key.shopdetail.pIcon" class="img" alt />
+          <img  :src="getimgurl(key.shopsku.detailicon)" class="img" alt />
           <div class="goods-info">
-            <div class="tip-titl">{{ key.shopdetail.pName }}</div>
-            <div>价格：{{ key.shopdetail.price }}</div>
+            <div class="tip-titl">{{ key.shopdetail.pName }} : {{key.shopsku.detaildesc}}</div>
+            <div>价格：{{ key.shopsku.detailprice }}</div>
             <!-- <div>赠送：面膜+修复水</div>    v-model="stepper"  @plus="onPlus" @minus="onMinus" -->
           </div>
           <van-field name="stepper" class="font42">
@@ -22,8 +22,8 @@
               <van-stepper
                 v-model="key.shopnum"
                 min="0"
-                @plus="onPlus(key.id)"
-                @minus="onMinus(key.id,key.shopnum)"
+                @plus="onPlus(key.id,key.shopdetail.ptype)"
+                @minus="onMinus(key.id,key.shopnum,key.shopdetail.ptype)"
                 class="font42"
               />
             </template>
@@ -47,19 +47,23 @@
           <!--   <li>摩奇猴套装系列（A001) 尺寸：XL 码</li> -->
         </ul>
         <div class="sumTitle">合计</div>
-        <div class="sumInfo">
-          <span class="tit">需扣除您</span>
-          <span class="num">{{ buytotalrp }}</span>
+        <div class="sumInfo" v-if="buytotalrp>0">
+          <span class="tit">需扣除您的金额：</span>
+          <span class="num">{{buytotalrp}}</span>
+          <span class="unit">（RMB)</span>
+        </div>
+          <div class="sumInfo" v-if="buytotalep>0">
+          <span class="tit">需扣除您的产品分：</span>
+          <span class="num">{{buytotalep}}</span>
           <span class="unit">（RMB)</span>
         </div>
         <div class="sumInfo">
-          <span class="tit"
-            >您目前帐户可购买商品的余额为：{{ totalrp }}（RMB)</span
+          <span class="tit">您目前帐户可购买商品的余额为：{{ totalrp+ totalep}}(RMB) </span
           >
         </div>
         <div class="buttonWrap">
           <router-link to="shop" class="router">
-            <!--@click="buyShop" -->
+            <!--@click="buyShop" totalep -->
             <button class="back">继续购物</button>
           </router-link>
           <button class="sure" @click="buyShop">立即购买</button>
@@ -70,8 +74,10 @@
     <YellowComfirm
       :show="isEnter"
       :tipTitle="tips"
+      :showConfirmBtn="isshowconfirm"
       @clickOver="clickOverpay"
       @clickOk="clickOk()"
+      @clickNo="clickNo()"
       @changeModel="changeModel"
     ></YellowComfirm>
   </div>
@@ -82,13 +88,16 @@ import headerImg from '../../assets/imgs/headerImg.png'
 import YellowComfirm from 'components/YellowComfirm'
 import ScrollRefresh from 'components/ScrollRefresh'
 import { http } from 'util/request'
+import { config } from 'util/config'
 import {
   CreateNewAccount,
   GetUserInfo,
   GetShopCartsweb,
   AddGoodsweb,
   BuyGoodsweb,
-  GetShopaddr
+  GetShopaddr,
+  GetShopCartsbyweb,
+  BuyGoodsbyweb
 } from 'util/netApi'
 import { storage } from 'util/storage'
 import { accessToken, loginPro } from 'util/const.js'
@@ -100,16 +109,38 @@ export default {
   },
   data () {
     return {
+      isshowconfirm:false,
       totalrp: 0,
+      totalep:0,
       buytotalrp: 0,
+      buytotalep: 0,
       buyaddr: '',
       buyname: '',
       buyphone: '',
       buyremark: '',
       data: [
         {
-          icon_url: null,
+          icon_url: require('@/assets/imgs/shop/camea.png'),
           id: 1,
+          shopsku:
+          {
+          createtime: "2021-01-06 00:00",
+          detaildesc: "黑色-S码",
+          detailicon: "shopimg_1.png",
+          detailname: "S",
+          detailnum: 200,
+          detailprice: 300,
+          id: 1,
+          skuid: 1,
+          },
+          shopskudetail:{
+            createtime: "2021-01-06 00:00",
+            id: 1,
+            shopid: 1,
+            skuIcon: "shopimg_1.png",
+            skudesc: "黑色的东西",
+            skuname: "黑色",
+          },
           shopdetail: {
             createTime: '',
             id: 0,
@@ -120,7 +151,8 @@ export default {
             pNum: 0,
             price: 0,
             priceType: 0,
-            status: 0
+            status: 0,
+            ptype:0,
           },
           shopid: 8,
           shopnum: 8,
@@ -133,7 +165,7 @@ export default {
       },
       carNum: 1,
       tips:
-        '',
+        '恭喜！注册成功了！登录ID: 100012登录密码：123456交易密码：123456请尽快登录修改并完善个人资料',
       isEnter: false,
       account: '2,000',
       price: 0,
@@ -141,6 +173,7 @@ export default {
       stepper: 1,
       startmax: 8,
       isreturn: 0,
+      nowid:0,
       addmodel: {},
       initData: {
         price: '',
@@ -156,19 +189,15 @@ export default {
   mounted () {},
   computed: {},
   methods: {
+     getimgurl(imgurl)
+    {
+        return config.shopimgUrl+imgurl
+    },
     getshopcartnum () {
-      http(GetShopCartsweb, null, json => {
+      var that = this;
+      http(GetShopCartsbyweb, null, json => {
         if (json.code === 0) {
-          this.data = json.response.data.list
-          this.data.forEach(el => {
-            let img = null
-            try {
-              img = require('@/assets/imgs/shop/goods-' + el.shopdetail.id + '.png')
-            } catch (err) {
-              img = require('@/assets/imgs/shop/camea.png')
-            }
-            return el.shopdetail.pIcon = img
-          })
+          that.data = json.response.data.list
           this.sumallshop()
         }
       })
@@ -176,11 +205,21 @@ export default {
     sumallshop () {
       var trp = 0
       var totalnum = 0
+      var ep = 0
       this.data.forEach(function (item) {
-        trp += item.shopnum * item.shopdetail.price
+        if(item.shopdetail.ptype==0)
+        {
+         trp += item.shopnum * item.shopsku.detailprice
         totalnum += item.shopnum
+        }else if(item.shopdetail.ptype==1)
+        {
+         ep += item.shopnum * item.shopsku.detailprice
+         totalnum += item.shopnum
+        }
+       
       })
       this.buytotalrp = trp
+      this.buytotalep = ep
       this.carNum = totalnum
     },
     goNext () {
@@ -190,13 +229,13 @@ export default {
       }
     },
     buyShop () {
-      if (this.totalrp < this.buytotalrp) {
-        this.isEnter = true
-        this.tips = '当前金额不足'
-        return
-      }
+     // if (this.totalrp < this.buytotalrp) {
+    //    this.isEnter = true
+    //    this.tips = '当前金额不足'
+    //    return
+    //  }
       http(
-        BuyGoodsweb,
+        BuyGoodsbyweb,
         {
           addr: this.buyaddr,
           phone: this.buyphone,
@@ -220,17 +259,25 @@ export default {
     },
     clickOk () {
       this.isEnter = false
-      if (this.isreturn == 1) {
-        this.$router.push({
-          name: 'relation',
-          params: { uid: this.addmodel.Jid }
+      console.log(this.nowid)
+      this.addshop(this.nowid, 1, '-')
+      //location.reload();
+    },
+    clickNo()
+    {
+        this.isEnter = false
+        this.data.forEach(el => {
+          if(el.id==this.nowid)
+          {
+            el.shopnum++;
+          }
         })
-      }
     },
     TogetUserInfo () {
       http(GetUserInfo, null, (json) => {
         if (json.code === 0) {
-          this.totalrp = json.response.gold
+          this.totalrp = json.response.apple
+          this.totalep=json.response.dynamicTotal
         }
       })
     },
@@ -240,23 +287,23 @@ export default {
       this.addshop(id, 1, '')
     },
     onMinus (id, index) {
-      this.price -= this.shopprice
-      this.addshop(id, 1, '-')
+     // this.addshop(id, 1, '-')
       if (index == 1) {
-        var newcar = []
-        this.data.forEach(element => {
-          if (element.id != id) {
-            newcar.push(element)
-          }
-          this.data = newcar
-        })
-        // location.reload()
+      this.tips='是否要删除当前商品?'
+      this.isshowconfirm=true
+      this.isEnter=true
+      this.nowid=id
+      }else
+      {
+         this.price -= this.shopprice
+         this.addshop(id, 1, '-')
       }
     },
     addshop (id, num, option) {
       http(AddGoodsweb, { shopid: id, num: num, option: option }, (json) => {
         if (json.code === 0) {
           this.sumallshop()
+          this.getshopcartnum()
         }
       })
     }

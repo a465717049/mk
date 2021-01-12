@@ -40,8 +40,8 @@
         </ul>-->
         <ul class="vipInfo">
           <li>呢称：{{initData.addname}}</li>
-          <li>安置ID: {{initData.addpid}}</li>
-          <li>接点ID: {{initData.addtid}}</li>
+          <li>安置ID: {{initData.addtid}}</li>
+          <li>接点ID: {{initData.addjid}}</li>
           <li>会员级别： {{nowvip}}</li>
         </ul>
         <div class="sumTitle">合计</div>
@@ -89,6 +89,7 @@ export default {
         positionId: '',
         area: '',
         addname: '',
+        addjid: 0,
         addpid: 0,
         addtid: 0,
         addlevle: '',
@@ -169,22 +170,17 @@ export default {
     this.TogetUserInfo()
     if (storage.getLocalStorage('joindata')) {
       this.addmodel = JSON.parse(storage.getLocalStorage('joindata'))
-      console.log(this.addmodel)
+      //console.log(this.addmodel)
       this.initData.price = this.addmodel.investmentAmount
       this.initData.addname = this.addmodel.NickName
-      this.initData.addtid = this.addmodel.Jid
+      this.initData.addjid = this.addmodel.Jid
+      this.initData.addtid = this.addmodel.Tid
       this.initData.addpid = this.addmodel.parentID
       this.initData.addprice = this.addmodel.investmentAmount
-      this.initData.addlevle = this.addmodel.levlename
 
       if (this.initData.addlevle == 666) { this.nowvip = '初级会员' }
       if (this.initData.addlevle == 2000) { this.nowvip = '中级会员' }
       if (this.initData.addlevle == 10000) { this.nowvip = '高级会员' }
-      if (this.addmodel.L == 0) {
-        this.initData.area = '蔬菜區'
-      } else {
-        this.initData.area = '水果區'
-      }
     }
     // this.isEnter = false
   }

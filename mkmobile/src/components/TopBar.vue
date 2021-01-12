@@ -86,12 +86,12 @@
                 </router-link>
               </li>
               <li>
-                <router-link to="activityList" class="router">
+                <router-link to="active" class="router">
                   <i class="iconfont iconarrow-right"></i>活动
                 </router-link>
               </li>
               <li>
-                <router-link to="#" class="router">
+                <router-link to="task" class="router">
                   <i class="iconfont iconarrow-right"></i>任务
                 </router-link>
               </li>

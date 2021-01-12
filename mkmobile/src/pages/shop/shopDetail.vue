@@ -24,6 +24,7 @@
               <img :src="image.image" />
             </van-swipe-item>
             <template #indicator>
+
               <div class="custom-indicator">
                 {{ current + 1 }}/{{ images.length }}
               </div>
@@ -67,6 +68,8 @@
                 </div>
               </div>
             </div>
+            <img style="width:100%;height:100%;" class="mt-100 mb-100" v-if="pDetailIcon"
+            :src="getimgurl(pDetailIcon)" alt />
           </div>
           <div class="buy border-radius mt-80">
               <ul class="detail-info  font42">
@@ -95,12 +98,15 @@
 import TopBar from 'components/TopBar'
 import YellowComfirm from 'components/YellowComfirm'
 import { http } from 'util/request'
+import {config} from 'util/config'
 import {
   GetShopDeatilList,
   GetUserInfo,
   BuyGoodsweb,
   AddGoodsweb,
-  GetShopCartsweb
+  GetShopCartsweb,
+  GetShopSkuDetailList,
+  GetShopSkuList
 } from 'util/netApi'
 import { storage } from 'util/storage'
 import banner1 from '../../assets/imgs/banner-00.png'
@@ -117,10 +123,29 @@ export default {
   },
   data () {
     return {
+      skuvalue: 0,
+      skudetailvalue: 0,
+      skuTypeList: [
+        { text: '黑', value: 1 }
+      ],
+      skudetailTypeList: [ ],
+      selectinfoList: [],
+      selectinfo:
+        {
+          createtime: '2021-01-06 00:00',
+          detaildesc: '黑色-L码',
+          detailicon: 'shopimg_1.png',
+          detailname: 'L',
+          detailnum: 100,
+          detailprice: 100,
+          id: 3,
+          skuid: 1
+        },
       showComfirm: false,
       carNum: 1,
       shopid: 0,
       images: [],
+      pDetailIcon: '',
       current: 0,
       // pName: "促销中",
       // pDesc: "促销中促销中促销中",
@@ -150,6 +175,33 @@ export default {
     }
   },
   methods: {
+    changetype () {
+      http(GetShopSkuDetailList, {id: this.skuvalue}, (json) => {
+        if (json.code === 0) {
+          var tmparray = []
+          this.selectinfoList = []
+          json.response.list.forEach(el => {
+            this.selectinfoList.push(el)
+            tmparray.push({ text: el.detailname, value: el.id })
+          })
+          this.skudetailTypeList = tmparray
+        }
+      })
+    },
+    changetypedetail () {
+      this.selectinfoList.forEach(el => {
+        if (el.id == this.skudetailvalue) {
+          this.price = el.detailprice
+          this.shopprice = el.detailprice
+          this.startmax = el.detailnum
+          // this.pDetailIcon=el.detailicon
+          this.images = [{image: this.getimgurl(el.detailicon)}]
+        }
+      })
+    },
+    getimgurl (imgurl) {
+      return config.shopimgUrl + imgurl
+    },
     onChangeSwiper (index) {
       this.current = index
     },
@@ -184,6 +236,17 @@ export default {
         }
       )
     },
+    getshopskuinfo (shopid) {
+      http(GetShopSkuList, {shopid: shopid}, (json) => {
+        if (json.code === 0) {
+          var tmparray = []
+          json.response.list.forEach(el => {
+            tmparray.push({ text: el.skuname, value: el.id })
+          })
+          this.skuTypeList = tmparray
+        }
+      })
+    },
     getshopcartnum () {
       http(GetShopCartsweb, null, (json) => {
         if (json.code === 0) {
@@ -192,7 +255,7 @@ export default {
       })
     },
     addshop () {
-      http(AddGoodsweb, { shopid: this.shopid, num: this.stepper }, (json) => {
+      http(AddGoodsweb, { shopid: this.skudetailvalue, num: this.stepper }, (json) => {
         if (json.code === 0) {
           this.getshopcartnum()
         }
@@ -200,23 +263,17 @@ export default {
     },
     ToGetShopDeatilList (tmpshopid) {
       http(GetShopDeatilList, { shopid: tmpshopid }, (json) => {
-        console.log(json)
         if (json.code === 0) {
           var shop = json.response.list[0]
-          console.log(shop)
           this.pName = shop.pName
           this.pInfo = [shop.pDesc]
           this.pDesc = shop.pDesc
-          this.price = shop.price
-          this.shopprice = shop.price
-          this.startmax = shop.pNum
-          let img = null
-          try {
-            img = require('@/assets/imgs/shop/goods-' + shop.id + '.png')
-          } catch (err) {
-            img = require('@/assets/imgs/shop/camea.png')
-          }
-          this.images = [{image: img}]
+          //   this.price = shop.price
+          //     this.shopprice = shop.price
+          //  this.startmax = shop.pNum
+          this.pDetailIcon = shop.pDetailIcon
+          this.images = [{image: this.getimgurl(shop.pIcon)}]
+          this.getshopskuinfo(tmpshopid)
         }
       })
     }
@@ -234,6 +291,106 @@ export default {
 }
 </script>
 <style lang='less' scoped>
+  ul {
+    width: 90%;
+    margin: 0 auto;
+    li {
+      .title {
+        font-size: 42px;
+        margin: 60px 0 22px;
+        font-weight: 800;
+        letter-spacing: 10px;
+        padding-left: 20px;
+      }
+      input {
+        height: 130px;
+        line-height: 130px;
+        color: #9e9e9f;
+        width: 120px;
+        padding: 0 30px;
+        border-radius: 20px;
+        font-size: 60px;
+        font-weight: 600;
+        letter-spacing: 10px;
+      }
+      /deep/ .van-dropdown-menu__bar {
+        height: 130px;
+        line-height: 130px;
+        color: #9e9e9f;
+        font-weight: 600;
+        width: 100%;
+        padding: 0 20px;
+        border-radius: 20px;
+        letter-spacing: 10px;
+
+      }
+      /deep/ .van-ellipsis {
+        font-size: 42px;
+        color: #9e9e9f;
+        font-weight: 600;
+        letter-spacing: 10px;
+      }
+      /deep/ .van-dropdown-menu__title {
+        height: 130px;
+        line-height: 130px;
+        display: inline-block;
+        width: 98%;
+      }
+      /deep/ .van-dropdown-menu__title::after {
+        border: 0.1467rem solid;
+        border-color: transparent transparent #dcdee0 #dcdee0;
+        margin-top: -10px;
+        top: 37%;
+      }
+      /deep/ .van-dropdown-menu__title--down::after {
+        top: 55% !important;
+      }
+      /deep/ .van-dropdown-item__content {
+        // height: 148px;
+        // line-height: 148px;
+        display: inline-block;
+        width: 90%;
+        border-radius: 0 0 40px 40px;
+      }
+      /deep/ .van-dropdown-item__content {
+        left: 5%;
+      }
+      /deep/ .van-dropdown-item__option {
+        height: 148px;
+        line-height: 148px;
+        padding: 0 80px;
+        font-size: 40px;
+      }
+      /deep/ .van-dropdown-item__option--active {
+        color: #efb618;
+      }
+      /deep/ .van-icon-success::before {
+        color: #efb618;
+      }
+
+      .verification {
+        display: flex;
+        border-radius: 40px;
+        overflow: hidden;
+        padding: 20px 0;
+        background-color: #fff;
+        height: 148px;
+        input {
+          display: inline-block;
+          width: 60%;
+          box-sizing: border-box;
+          height: 110px;
+          border-radius: 0;
+
+          border-right: 1px solid #999;
+        }
+        img {
+          display: inline-block;
+          width: 39%;
+        }
+      }
+    }
+  }
 .shop-part {
   .innerScroll {
     /deep/.wrapper {

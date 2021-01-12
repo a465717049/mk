@@ -1,6 +1,6 @@
 <template>
   <div class="newsIndexWrapper">
-    <TopBar class="center-one-search">资 讯</TopBar>
+    <TopBar class="center-one-search">{{this.ntype==1?"活动":this.ntype==2?"任务":"公告"}}</TopBar>
      <ScrollRefresh
       @getData="ToGetNewsWeb"
       :residualHeight="topbarHeight+bottomTabBarHeight+10"
@@ -57,33 +57,26 @@ export default {
         iconLeft: 'iconmenu2',
         iconRight: ''
       },
-      ntype: null,
+     
       newsList: [
       ]
     }
   },
-  watch: {
-    ntype (val) {
-      this.value = this.ntype
-
-      this.ToGetNewsWeb()
-    }
-  },
+ 
   components: {
     TopBar,
     ScrollRefresh
   },
   computed: {},
   mounted () {
-    this.ntype = this.$route.query.type
     this.ToGetNewsWeb()
   },
   methods: {
-    onNext (value) {
-      this.$router.push('./NewsDetail?id=' + value)
+   onNext (value) {
+      this.$router.push('./NewsDetail?type=3&id=' + value)
     },
     ToGetNewsWeb () {
-      http(GetNewsWeb, { type: 0 }, json => {
+      http(GetNewsWeb, { type: 3 }, json => {
         if (json.code === 0) {
           this.newsList = json.response
         }
@@ -92,7 +85,6 @@ export default {
 
     getTabbar () {
       http(goodscollectionList).then(res => {
-        console.log('11')
       })
     }
   },

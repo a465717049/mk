@@ -162,6 +162,90 @@ namespace DPE.Core.Controllers
         }
 
 
+        /// <summary>
+        /// 朋友清单
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<MessageModel<dynamic>> GetFriendsListJid(long uid)
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+
+            try
+            {
+                var friendData = await _sysUserInfoServices.GetFriendsListJid(_user.ID, uid);
+
+                List<showfriend> list = new List<showfriend>();
+                for (int i = 0; i < friendData.Rows.Count; i++)
+                {
+                    showfriend model = new showfriend();
+                    model.uID = Convert.ToInt64(friendData.Rows[i]["uID"]);
+                    model.NickName = friendData.Rows[i]["NickName"].ToString();
+                    model.photo = friendData.Rows[i]["photo"].ToString();
+                    model.friendsNum = _sysUserInfoServices.GetFriendsListJid(model.uID, 0).Result.Rows.Count;
+                    model.performance = _iuserdataservices.QueryById(model.uID).Result.XProfit.ToString();
+                    var relationData = await _sysUserInfoServices.GetRelationListbyid(model.uID);
+                    int hynum = 0;
+                    int jlnum = 0;
+                    int zjnum = 0;
+                    int zcnum = 0;
+                    int dsnum = 0;
+                    int hhrnum = 0;
+                    for (int j = 0; j < relationData.Rows.Count; j++)
+                    {
+                        List<string> ss = new List<string>();
+                        string index = relationData.Rows[j]["honorLevel"].ToString();
+                        if (index.Equals("0"))
+                        {
+                            hynum = Convert.ToInt32(relationData.Rows[j]["qty"]);
+                        }
+                        else if (index.Equals("1"))
+                        {
+                            jlnum = Convert.ToInt32(relationData.Rows[j]["qty"]);
+                        }
+                        else if (index.Equals("2"))
+                        {
+                            zjnum = Convert.ToInt32(relationData.Rows[j]["qty"]);
+                        }
+                        else if (index.Equals("3"))
+                        {
+                            zcnum = Convert.ToInt32(relationData.Rows[j]["qty"]);
+                        }
+                        else if (index.Equals("4"))
+                        {
+                            dsnum = Convert.ToInt32(relationData.Rows[j]["qty"]);
+                        }
+                        else if (index.Equals("5"))
+                        {
+                            hhrnum = Convert.ToInt32(relationData.Rows[j]["qty"]);
+                        }
+                        ss.Add("会员" + hynum + "个");
+                        ss.Add("经理" + jlnum + "个");
+                        ss.Add("总监" + zjnum + "个");
+                        ss.Add("总裁" + zcnum + "个");
+                        ss.Add("董事" + dsnum + "个");
+                        ss.Add("合伙人" + hhrnum + "个");
+                        model.honors = ss;
+                    }
+                    list.Add(model);
+
+                }
+                result.code = 0;
+                result.success = true;
+                result.response = list;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.success = false;
+                result.code = 1007;
+                result.msg = ex.Message;
+                return result;
+            }
+        }
+
+
         [HttpPost]
         public async Task<MessageModel<dynamic>> GetFriendsListbyId(long uid)
         {

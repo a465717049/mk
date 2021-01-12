@@ -19,6 +19,7 @@ namespace DPE.Core.Model.Models
         public string googleCode { get; set; }
         public string TradePass { get; set; }
         public long TransUserID { get; set; }
+        public int Tid { get; set; }
         public int Jid { get; set; }
         public int L { get; set; }
 

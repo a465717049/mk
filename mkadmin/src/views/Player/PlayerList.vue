@@ -5,9 +5,9 @@
       <div slot="header" class="clearfix">
         <span>玩家数据</span>
       </div>
-      <div class="text item"><i class="el-icon-edit"></i>会员总数：{{dayinfo.total}}（主：{{dayinfo.maintotal}}, 子：{{dayinfo.sontotal}} ）</div><br />
-      <div class="text item"><i class="el-icon-edit"></i>本周新增：{{dayinfo.weektotal}} （ 主：{{dayinfo.weekmaintotal}}, 子：{{dayinfo.weeksontotal}} ） </div><br />
-      <div class="text item"><i class="el-icon-edit"></i>今天新增：{{dayinfo.daytotal}} （主：{{dayinfo.daymaintotal}}, 子：{{dayinfo.daysontotal}} ） </div>
+      <div class="text item"><i class="el-icon-edit"></i>会员总数：{{dayinfo.total}}</div><br />
+      <div class="text item"><i class="el-icon-edit"></i>本周新增：{{dayinfo.weektotal}}  </div><br />
+      <div class="text item"><i class="el-icon-edit"></i>今天新增：{{dayinfo.daytotal}} </div>
 
     </el-card>
     <!--工具条-->
@@ -27,13 +27,13 @@
       </el-table-column>
       <el-table-column prop="ison" :formatter="formatSon" label="主/子" width="" sortable>
       </el-table-column>
-      <el-table-column prop="lv_name" label="荣誉" width="" sortable>
+      <el-table-column prop="lv_name" :formatter="formatlv" label="职位" width="" sortable>
       </el-table-column>
-      <el-table-column prop="farmers" :formatter="formatfarmers" label="三星/二星" width="130" sortable>
+      <el-table-column prop="farmers" :formatter="formatfarmers" label="等级" width="" sortable>
       </el-table-column>
       <el-table-column prop="tid" label="推荐ID" width="100" sortable>
       </el-table-column>
-      <el-table-column prop="jid" label="接点ID" width="100" sortable>
+      <el-table-column prop="jid" label="安置ID" width="100" sortable>
       </el-table-column>
       <el-table-column prop="gold" label="EP" width="100" sortable>
       </el-table-column>
@@ -78,8 +78,11 @@
     <!--推荐界面-->
     <el-dialog title="更改推荐人" :visible.sync="tidFormVisible" v-model="tidFormVisible" :close-on-click-modal="false">
       <el-form :model="Formtid" label-width="80px" :rules="Formtids" ref="Formtid">
-        <el-form-item label="推荐人" prop="Name">
+        <el-form-item v-if="showtid" label="推荐人" >
           <el-input v-model="Formtid.Name" auto-complete="off"></el-input>
+        </el-form-item>
+          <el-form-item v-if="showjid" label="安置ID" >
+          <el-input v-model="Formtid.jid" auto-complete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -156,6 +159,8 @@ export default {
       filters: {
         name: "",
       },
+      showjid:false,
+      showtid:false,
       dayinfo: {
         total: 0,
         maintotal: 0,
@@ -181,11 +186,13 @@ export default {
       tidFormVisible: false,
       tidLoading: false,
       Formtids: {
-        Name: [{ required: true, message: "请输入推荐人", trigger: "blur" }],
+       // Name: [{ required: true, message: "请输入推荐人", trigger: "blur" }],
+       // JID: [{ required: true, message: "请输入安置ID", trigger: "blur" }],
       },
       Formtid: {
         Id: 0,
         Name: "",
+        jid:"",
       },
       //密码
       pwdFormVisible: false,
@@ -250,12 +257,35 @@ export default {
       this.$refs.Formtid.validate((valid) => {
         if (valid) {
           this.$confirm("确认提交吗？", "提示", {}).then(() => {
-            let para = {
+            var para = {}
+            if(this.showtid)
+            {
+              para={
               uid: this.Formtid.Id,
               tid: this.Formtid.Name,
-            };
+              };
+            }else
+            {
+               para={
+              uid: this.Formtid.Id,
+              jid: this.Formtid.jid,
+              };
+            }
+            console.log(para)
             adminResettid(para).then((res) => {
-              console.log(res);
+               if (res.success) {
+                this.$message({
+                  message: "操作成功",
+                  type: "success",
+                });
+                this.tidFormVisible=false;
+                this.getUsers();
+              } else {
+                this.$message({
+                  message: "操作失败请稍后再试！",
+                  type: "error",
+                });
+              }
             });
           });
         }
@@ -332,7 +362,24 @@ export default {
         });
         return;
       }
+        this.showtid=true;
+      this.showjid=false;
+    
       this.Formtid.Id = rows.uid;
+      this.tidFormVisible = true;
+    },
+     changejid(index, row) {
+      let rows = this.currentRow;
+      if (!rows) {
+        this.$message({
+          message: "请选择要操作的一行数据！",
+          type: "error",
+        });
+        return;
+      }
+      this.showjid=true;
+      this.showtid=false;
+      this.Formtid.jid = rows.jid;
       this.tidFormVisible = true;
     },
     resetpwd(index, row) {
@@ -378,8 +425,18 @@ export default {
     formatSon: function (row, column) {
       return row.ison == 1 ? "子" : row.ison == 0 ? "主" : "未知";
     },
+    formatlv: function (row, column) {
+          var tmpname="";
+          if (row.lv_name == 0) tmpname= '会员'
+          if (row.lv_name == 1) tmpname= '经理'
+          if (row.lv_name == 2) tmpname= '总监'
+          if (row.lv_name == 3) tmpname= '总裁'
+          if (row.lv_name == 4) tmpname= '董事'
+          if (row.lv_name == 5) tmpname= '合伙人'
+      return tmpname;
+    },
     formatfarmers: function (row, column) {
-      return row.farmers == 1 ? "三星" : row.farmers == 0 ? "二星" : "未知";
+      return row.farmers == 1 ? "初级会员" : row.farmers == 2 ? "中级会员" : "高级会员";
     },
     callFunction(item) {
       this.filters = {
@@ -412,7 +469,7 @@ export default {
     },
   },
   mounted() {
-    this.getUsers();
+    //this.getUsers();
     let routers = window.localStorage.router
       ? JSON.parse(window.localStorage.router)
       : [];

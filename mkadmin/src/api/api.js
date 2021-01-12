@@ -7,7 +7,7 @@ import Vue from 'vue';
 
 import applicationUserManager from "../Auth/applicationusermanager";
 
-let base = 'https://api.a8dog.top'; //'https://api.snptw.cn';
+let base = 'http://localhost:8083'; //'https://api.snptw.cn' https://api.a8dog.top;
 // 如果是IIS部署，用这个，因为 IIS 只能是 CORS 跨域，不能代理
 // let base = process.env.NODE_ENV=="production"? 'http://localhost:8081':'';
 
@@ -450,6 +450,11 @@ export const adminResetanswer = params => {
     return axios.post(`${base}/api/User/adminResetanswer`, qs.stringify(params)).then(res => res.data);
 };
 
+export const GetOpenShopMyweb = params => {
+    return axios.post(`${base}/api/Shop/GetOpenShopMyweb`, qs.stringify(params)).then(res => res.data);
+};
+
+
 //adminResetidcard
 export const adminResetidcard = params => {
     return axios.post(`${base}/api/User/adminResetidcard`, qs.stringify(params)).then(res => res.data);
@@ -527,6 +532,43 @@ export const GetAdminRPExchange = params => {
 //GetAdminBuyShopList
 export const GetAdminBuyShopList = params => {
     return axios.post(`${base}/api/Shop/GetAdminBuyShopList`, qs.stringify(params)).then(res => res.data);
+};
+export const ApplyOpenShopMyweb = params => {
+    return axios.post(`${base}/api/Shop/ApplyOpenShopMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const GetShopListMyweb = params => {
+    return axios.post(`${base}/api/Shop/GetShopListMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const DeleteShopListMyweb = params => {
+    return axios.post(`${base}/api/Shop/DeleteShopListMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const GetShopSkuInfoMyweb = params => {
+    return axios.post(`${base}/api/Shop/GetShopSkuInfoMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const DeleteSkudetailInfoMyweb = params => {
+    return axios.post(`${base}/api/Shop/DeleteSkudetailInfoMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const DeleteSkuInfoMyweb = params => {
+    return axios.post(`${base}/api/Shop/DeleteSkuInfoMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const AddSkuDetailMyweb = params => {
+    return axios.post(`${base}/api/Shop/AddSkuDetailMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const AddSkuMyweb = params => {
+    return axios.post(`${base}/api/Shop/AddSkuMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const uploadPictureSkuDetail = params => {
+    return axios.post(`${base}/api/Shop/uploadPictureSkuDetail`, params).then(res => res.data);
+};
+export const AddShopListMyweb = params => {
+    return axios.post(`${base}/api/Shop/AddShopListMyweb`, qs.stringify(params)).then(res => res.data);
+};
+export const uploadPicture = params => {
+    return axios.post(`${base}/api/Shop/uploadPicture`, params).then(res => res.data);
+};
+
+export const uploadPictureDetail = params => {
+    return axios.post(`${base}/api/Shop/uploadPictureDetail`, params).then(res => res.data);
 };
 //ChangeOrdersweb
 export const ChangeOrdersweb = params => {

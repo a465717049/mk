@@ -12,13 +12,16 @@ using DPE.Core.Model.Models;
 using DPE.Core.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.IO;
 using System.Reflection;
 
 namespace DPE.Core
@@ -58,10 +61,9 @@ namespace DPE.Core
             services.AddHttpContextSetup();
             services.AddAppConfigSetup();
             services.AddHttpApi();
-            
             //消息队列
-       //     services.AddSingleton(new RabbitMQClient());
-        //    services.AddHostedService<RabbitMessageLister>();
+            //     services.AddSingleton(new RabbitMQClient());
+            //    services.AddHostedService<RabbitMessageLister>();
 
             if (Permissions.IsUseIds4)
             {
@@ -113,7 +115,6 @@ namespace DPE.Core
         {
             //允许跨域
             app.UseOptions();
-
             // Ip限流,尽量放管道外层
             app.UseIpRateLimiting();
             // 记录请求与返回数据 
@@ -149,6 +150,13 @@ namespace DPE.Core
             app.UseHttpsRedirection();
             // 使用静态文件
             app.UseStaticFiles();
+
+            app.UseStaticFiles(new StaticFileOptions() 
+            {
+                 FileProvider= new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(),"shopimg")),
+                 RequestPath=new PathString(value:"/shopimg")
+            
+            });
             // 使用cookie
             app.UseCookiePolicy();
             // 返回错误码

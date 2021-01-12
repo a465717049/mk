@@ -160,7 +160,7 @@ export default {
         },
         {
           name: '产品积分',
-          type: 'dp',
+          type: 'dpe',
           count: 0
         }
       ],
@@ -242,7 +242,7 @@ export default {
             {
               name: '产品积分',
               type: 'dp',
-              count: json.response.dpe
+              count: json.response.apple
             }
           ]
 
