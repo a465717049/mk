@@ -585,7 +585,7 @@ namespace DPE.Core.Controllers
                             shopmodel.shopordernumber = creatOrderNumber();
 
                             var addresult = await _ishopbuydetailserivces.Add(shopmodel);
-                            if (addresult > 0)
+                            if (addresult > 0) 
                             {
 
                                 shopskudetialinfo.detailnum -= model.shoptotalnum;
