@@ -553,7 +553,7 @@ namespace DPE.Core.Controllers
                             //特殊商品
                             if (shopdetail.ptype == 1)
                             {
-                                if (epinfo.amount < totalshopprice)
+                                if (epinfo.amount < totalshopprice && rpinfo.amount < totalshopprice)
                                 {
                                     result.code = 1002;
                                     result.msg = "金额不够,无法购买商品";
@@ -595,35 +595,71 @@ namespace DPE.Core.Controllers
                                 {
                                     if (shopdetail.ptype == 1)
                                     {
-                                        epinfo.amount = epinfo.amount - totalshopprice;
-                                        if (_iepservices.Update(epinfo).Result)
+                                        if (rpinfo.amount >= totalshopprice)
                                         {
-                                            if (_iepexchangeservices.Add(new EPexchange()
+                                            rpinfo.amount = rpinfo.amount - totalshopprice;
+                                            if (_irpservices.Update(rpinfo).Result)
                                             {
-                                                amount = -totalshopprice,
-                                                createTime = DateTime.Now,
-                                                uID = _user.ID,
-                                                lastTotal = epinfo.amount + totalshopprice,
-                                                stype = 88,
-                                                remark = "购买商品",
-                                                fromID = _user.ID
-                                            }).Result > 0)
-                                            {
-                                            }
-
-                                            if (_ishoppingcartserivces.DeleteById(model.id).Result)
-                                            {
-                                                successnum++;
-                                            }
-                                            else
-                                            {
-                                                result.code = 1002;
-                                                result.msg = shopskudetialinfo.detailname + "结算异常请稍后再试";
-                                                result.success = false;
-                                                _unitOfWork.RollbackTran();
-                                                return result;
+                                                if (_irpexchangeservices.Add(new RPexchange()
+                                                {
+                                                    amount = -totalshopprice,
+                                                    createTime = DateTime.Now,
+                                                    uID = _user.ID,
+                                                    lastTotal = rpinfo.amount + totalshopprice,
+                                                    stype = 88,
+                                                    remark = "购买商品",
+                                                    fromID = _user.ID
+                                                }).Result > 0)
+                                                {
+                                                }
+                                                if (_ishoppingcartserivces.DeleteById(model.id).Result)
+                                                {
+                                                    successnum++;
+                                                }
+                                                else
+                                                {
+                                                    result.code = 1002;
+                                                    result.msg = shopskudetialinfo.detailname + "结算异常请稍后再试";
+                                                    result.success = false;
+                                                    _unitOfWork.RollbackTran();
+                                                    return result;
+                                                }
                                             }
                                         }
+                                        else
+                                        {
+                                            epinfo.amount = epinfo.amount - totalshopprice;
+                                            if (_iepservices.Update(epinfo).Result)
+                                            {
+                                                if (_iepexchangeservices.Add(new EPexchange()
+                                                {
+                                                    amount = -totalshopprice,
+                                                    createTime = DateTime.Now,
+                                                    uID = _user.ID,
+                                                    lastTotal = epinfo.amount + totalshopprice,
+                                                    stype = 88,
+                                                    remark = "购买商品",
+                                                    fromID = _user.ID
+                                                }).Result > 0)
+                                                {
+                                                }
+
+                                                if (_ishoppingcartserivces.DeleteById(model.id).Result)
+                                                {
+                                                    successnum++;
+                                                }
+                                                else
+                                                {
+                                                    result.code = 1002;
+                                                    result.msg = shopskudetialinfo.detailname + "结算异常请稍后再试";
+                                                    result.success = false;
+                                                    _unitOfWork.RollbackTran();
+                                                    return result;
+                                                }
+                                            }
+                                        }
+
+                                     
                                     }
                                     else
                                     {
