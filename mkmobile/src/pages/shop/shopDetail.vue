@@ -10,48 +10,44 @@
       class="innerScroll"
     >
       <div class="scrollPart" ref="scrollPart">
-        <div class="shop-detail font40 center relative">
+        <div class="shop-detail font40  relative">
           <span class="tag" v-show="ptag">{{ ptag }}</span>
           <div class="monkey">
             <div class="monkeywrap">
               <img src="../../assets/imgs/login/head.png" alt class="head" />
-              <img src="../../assets/imgs/login/eye5.png" alt class="eye" />
+              <!-- <img src="../../assets/imgs/login/eye5.png" alt class="eye" /> -->
             </div>
-            <span class="moki">MOKI minkey 摩奇猴</span>
+            <!-- <span class="moki">MOKI minkey 摩奇猴</span> -->
           </div>
           <van-swipe :autoplay="4000" class="sweiper1" @change="onChangeSwiper">
             <van-swipe-item v-for="(image, index) in images" :key="index">
               <img :src="image.image" />
             </van-swipe-item>
             <template #indicator>
-          
+
               <div class="custom-indicator">
                 {{ current + 1 }}/{{ images.length }}
               </div>
             </template>
           </van-swipe>
-          <div class="buy border-top-radius mt-80">
-            <!-- <div class="title Tleft font-weight pt-60 font60">{{pName}}</div> -->
-            <ul class="detail-info pt-60 Tleft font42">
-              <li v-for="(item, index) in pInfo" :key="index" class="info-item">
-                {{ item }}
-              </li>
-            </ul>
-                  <div>
-            <ul>
-            <li>
-            <div class="title">颜色</div>
-            <van-dropdown-menu >
-            <van-dropdown-item @change="changetype" v-model="skuvalue" :options="skuTypeList" />
-            </van-dropdown-menu>
-            </li>
-             <li>
-            <div class="title">尺寸</div>
-            <van-dropdown-menu >
-            <van-dropdown-item @change="changetypedetail" v-model="skudetailvalue" :options="skudetailTypeList" />
-            </van-dropdown-menu>
-            </li>
-            </ul>
+          <!-- <img class="shop-img center mt-100 mb-100" :src="pIcon" alt /> -->
+          <div class="buy  mt-80">
+            <div class="goodsName">{{pName}}
+              南极人 男士内裤男3A抑菌平角裤纯色95%精梳棉质中腰男式四角裤衩u凸短裤头4条礼盒装NHT9999 混色4条XL
+            </div>
+             <div class="price">￥ {{ price }}</div>
+            <div class="skuSelect">
+              <ul class="classifyUl">
+                <li class="classifyLi" v-for="(item,index) in skuList" :key="index">
+                  <div class="itemName">{{item.itemName}}</div>
+                  <ul class="itemInfo ">
+                    <li class="itemDetail " :class="{active:itemIndex===1}" v-for="(goodsInfo,itemIndex) in item.goods" :key="itemIndex">
+                      <img :src="goodsInfo.img" v-if="goodsInfo.img" alt="" class="goodsImg">
+                      <span class="goodsInfo">{{goodsInfo.info}}</span>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
             </div>
             <div class="base-flex mt-40">
               <van-field name="stepper" class="font42">
@@ -65,20 +61,26 @@
                   />
                 </template>
               </van-field>
-              <span class="price"> {{ price }}</span>
-            </div>
-      
-            <div class="base-flex mt-40">
-              <div class="heart borderR">
-                <i class="iconfont icongouwucheman" @click="addshop"></i>
+              <div class="base-flex ">
+                <div class="addShop borderR">
+                  <i class="iconfont icongouwucheman" @click="addshop"></i>
+                  <span>加入购物车</span>
+                </div>
               </div>
-              <router-link to="shopCar" class="router">
-                <!--@click="buyShop" -->
-                <button class="buy-btn center borderR">立即购买</button>
-              </router-link>
             </div>
-            <img style="width:100%;height:100%;" class="mt-100 mb-100" v-if="pDetailIcon" 
-            :src="getimgurl(pDetailIcon)" alt /> 
+            <img style="width:100%;height:100%;" class="mt-100 mb-100" v-if="pDetailIcon"
+            :src="getimgurl(pDetailIcon)" alt />
+          </div>
+          <div class="buy border-radius mt-80">
+              <ul class="detail-info  font42">
+              <li v-for="(item, index) in pInfoList" :key="index" class="info-item">
+                {{ item }}
+              </li>
+            </ul>
+          </div>
+          <div class="buy border-radius mt-80 mb100">
+              <img :src="banner1" alt="" class="adImg">
+              <img :src="adInfo" alt="" class="adInfo">
           </div>
         </div>
       </div>
@@ -108,6 +110,7 @@ import {
 } from 'util/netApi'
 import { storage } from 'util/storage'
 import banner1 from '../../assets/imgs/banner-00.png'
+import adInfo from '../../assets/imgs/adInfo.png'
 import banner2 from '../../assets/imgs/banner-01.png'
 import { accessToken, loginPro } from 'util/const.js'
 import ScrollRefresh from 'components/ScrollRefresh'
@@ -120,34 +123,40 @@ export default {
   },
   data () {
     return {
-      skuvalue:0,
-      skudetailvalue:0,
+      skuvalue: 0,
+      skudetailvalue: 0,
       skuTypeList: [
-        { text: '黑', value: 1 },
+        { text: '黑', value: 1 }
       ],
       skudetailTypeList: [ ],
-      selectinfoList:[],
+      selectinfoList: [],
       selectinfo:
         {
-        createtime: "2021-01-06 00:00",
-        detaildesc: "黑色-L码",
-        detailicon: "shopimg_1.png",
-        detailname: "L",
-        detailnum: 100,
-        detailprice: 100,
-        id: 3,
-        skuid: 1,
+          createtime: '2021-01-06 00:00',
+          detaildesc: '黑色-L码',
+          detailicon: 'shopimg_1.png',
+          detailname: 'L',
+          detailnum: 100,
+          detailprice: 100,
+          id: 3,
+          skuid: 1
         },
       showComfirm: false,
       carNum: 1,
       shopid: 0,
       images: [],
-      pDetailIcon:"",
+      pDetailIcon: '',
       current: 0,
       // pName: "促销中",
       // pDesc: "促销中促销中促销中",
-      pInfo: ['品牌： '],
-      pIcon:null,
+      pInfoList: [
+        '品牌： MOKI MONKEY',
+        '商品产地：孟加拉国、越南等（批次不同产地不同，以 实际发货为准）',
+        '货号：MOKI- 100 ',
+        '类别：平角裤腰型',
+        '材质：聚合烯矿丝棉'
+      ],
+      pIcon: null,
       ptag: '',
       price: 0,
       shopprice: 0,
@@ -159,41 +168,39 @@ export default {
         iconRight: 'icongouwucheman'
       },
       tips: '',
-      tipsObj: {}
+      tipsObj: {},
+      banner1: banner1,
+      adInfo: adInfo,
+      skuList: [{itemName: '选择颜色', goods: [{img: banner1, info: '1呼吸棉4条'}, {img: banner1, info: '2绅士健康呼4条'}, {img: banner1, info: '3绅士健康呼吸棉4条'}, {img: banner1, info: '4绅士健康呼吸棉4条'}, {img: banner1, info: '5绅士健康呼吸棉4条'}]}, {itemName: '选择尺码', goods: [{info: 'L(体重80)'}, {info: 'XL(体重105)'}, {info: 'XL(体重105)'}, {info: 'XL(体重105)'}, {info: 'XL(体重105)'}]}]
     }
   },
   methods: {
     changetype () {
-      http(GetShopSkuDetailList, {id:this.skuvalue}, (json) => {
+      http(GetShopSkuDetailList, {id: this.skuvalue}, (json) => {
         if (json.code === 0) {
-          var tmparray=[];
-          this.selectinfoList=[];
+          var tmparray = []
+          this.selectinfoList = []
           json.response.list.forEach(el => {
-          this.selectinfoList.push(el);
-          tmparray.push( { text: el.detailname, value: el.id });
-          });
-          this.skudetailTypeList=tmparray;
+            this.selectinfoList.push(el)
+            tmparray.push({ text: el.detailname, value: el.id })
+          })
+          this.skudetailTypeList = tmparray
         }
       })
     },
-    changetypedetail()
-    {
-       this.selectinfoList.forEach(el=>
-       {
-               if(el.id==this.skudetailvalue)
-               {
-              this.price = el.detailprice
-              this.shopprice = el.detailprice
-              this.startmax = el.detailnum
-             // this.pDetailIcon=el.detailicon
-              this.images = [{image: this.getimgurl(el.detailicon)}]
-               }
-       });
-
+    changetypedetail () {
+      this.selectinfoList.forEach(el => {
+        if (el.id == this.skudetailvalue) {
+          this.price = el.detailprice
+          this.shopprice = el.detailprice
+          this.startmax = el.detailnum
+          // this.pDetailIcon=el.detailicon
+          this.images = [{image: this.getimgurl(el.detailicon)}]
+        }
+      })
     },
-     getimgurl(imgurl)
-    {
-        return config.shopimgUrl+imgurl;
+    getimgurl (imgurl) {
+      return config.shopimgUrl + imgurl
     },
     onChangeSwiper (index) {
       this.current = index
@@ -229,15 +236,14 @@ export default {
         }
       )
     },
-    getshopskuinfo(shopid)
-    {
-       http(GetShopSkuList, {shopid:shopid}, (json) => {
+    getshopskuinfo (shopid) {
+      http(GetShopSkuList, {shopid: shopid}, (json) => {
         if (json.code === 0) {
-          var tmparray=[];
+          var tmparray = []
           json.response.list.forEach(el => {
-              tmparray.push( { text: el.skuname, value: el.id });
-          });
-          this.skuTypeList=tmparray;
+            tmparray.push({ text: el.skuname, value: el.id })
+          })
+          this.skuTypeList = tmparray
         }
       })
     },
@@ -262,12 +268,12 @@ export default {
           this.pName = shop.pName
           this.pInfo = [shop.pDesc]
           this.pDesc = shop.pDesc
-       //   this.price = shop.price
-      //     this.shopprice = shop.price
-      //  this.startmax = shop.pNum
-          this.pDetailIcon=shop.pDetailIcon
+          //   this.price = shop.price
+          //     this.shopprice = shop.price
+          //  this.startmax = shop.pNum
+          this.pDetailIcon = shop.pDetailIcon
           this.images = [{image: this.getimgurl(shop.pIcon)}]
-          this.getshopskuinfo(tmpshopid);
+          this.getshopskuinfo(tmpshopid)
         }
       })
     }
@@ -316,7 +322,7 @@ export default {
         padding: 0 20px;
         border-radius: 20px;
         letter-spacing: 10px;
-      
+
       }
       /deep/ .van-ellipsis {
         font-size: 42px;
@@ -406,15 +412,17 @@ export default {
     }
     .buy {
       // height: 45vh;
-      padding: 0 58px;
+      width: 98vw;
+      margin: 40px auto 0;
+      padding: 57px 46px;
       background: #dce2eb;
-      border-radius: 56px 56px 0 0;
-      padding-bottom: 150px;
+      border-radius: 56px;
+      // padding-bottom: 150px;
       /deep/.van-stepper__plus {
         width: 84px;
         height: 84px;
         border-radius: 42px;
-        border: 4px solid rgba(100, 24, 195, 1);
+        border: 6px solid rgba(100, 24, 195, 1);
         margin-left: 15px;
         background: #dce2eb;
       }
@@ -441,7 +449,7 @@ export default {
         width: 84px;
         height: 84px;
         border-radius: 42px;
-        border: 4px solid rgba(100, 24, 195, 1);
+        border:6px solid rgba(100, 24, 195, 1);
         margin-right: 15px;
         background: #dce2eb;
       }
@@ -459,15 +467,35 @@ export default {
         width: 60px;
         line-height: 84px;
       }
-      .heart {
-        width: 221px;
-        height: 163px;
-        left: 163px;
+      .goodsName{
+        font-size: 30px;
+        font-weight: bold;
+        color: #2E2E35;
+        line-height: 50px;
+        text-align: left;
+      }
+      .addShop {
+        width: 360px;
+        height: 103px;
+        line-height: 103px;
+        // left: 163px;
         background: #a9cd60;
         margin-right: 40px;
+        font-size: 38px;
+        font-family: Yuanti SC;
+        font-weight: bold;
+        color: #FFFFFF;
+        text-align: center;
+        vertical-align: middle;
+        display: flex;
+        justify-content: space-evenly;
         > i {
-          font-size: 100px;
+          font-size: 70px;
           color: white;
+        }
+        span{
+          display: inline-block;
+          line-height: 103px;
         }
       }
       .buy-btn {
@@ -480,9 +508,19 @@ export default {
         font-size: 53px;
         color: #191819;
       }
+      .adImg{
+        width: 100%;
+        margin-bottom: 20px;
+      }
+       .adInfo{
+        width: 100%;
+      }
+
     }
+     .mb100{
+        padding-bottom: 100px !important;
+      }
     .detail-info {
-      padding-left: 104px;
       li {
         font-weight: bold;
         color: #191819;
@@ -493,7 +531,9 @@ export default {
     .price {
       font-size: 67px;
       font-weight: bold;
-      color: #f00833;
+      color: #B61313;
+      padding-bottom: 20px;
+      border-bottom: 1px dotted #999;
     }
     .tag {
       height: 69px;
@@ -551,12 +591,12 @@ export default {
     align-items: center;
     .monkeywrap {
       width: 135px;
-      height: 107px;
+      height: 137px;
       position: relative;
 
       .head {
         width: 135px;
-        height: 107px;
+        height: 137px;
         position: absolute;
         top: 0;
         left: 0;
@@ -574,6 +614,41 @@ export default {
       font-size: 20px;
       font-weight: bold;
       color: #191819;
+    }
+  }
+
+  .skuSelect{
+    padding-top: 30px;
+    .classifyUl{
+      .classifyLi{
+        display: flex;
+        .itemName{
+          width: 200px;
+        }
+        .itemInfo{
+          flex: 1;
+          .itemDetail{
+            height: 100px;
+            margin-right: 30px;
+            line-height: 100px;
+            display: inline-block;
+            border: 3px solid #AAAFB6;
+            margin-bottom: 30px;
+            padding: 0 20px;
+            .goodsImg{
+              width: 100px;
+            }
+            .goodsInfo{
+              font-size: 26px;
+              color:'#333'
+            }
+
+          }
+            .itemDetail.active{
+              border: 3px solid #B61313;
+            }
+        }
+      }
     }
   }
 }
