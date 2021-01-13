@@ -560,6 +560,10 @@ export const AddSkuMyweb = params => {
 export const uploadPictureSkuDetail = params => {
     return axios.post(`${base}/api/Shop/uploadPictureSkuDetail`, params).then(res => res.data);
 };
+export const uploadPictureSku = params => {
+    return axios.post(`${base}/api/Shop/uploadPictureSku`, params).then(res => res.data);
+};
+
 export const AddShopListMyweb = params => {
     return axios.post(`${base}/api/Shop/AddShopListMyweb`, qs.stringify(params)).then(res => res.data);
 };

@@ -33,7 +33,7 @@
           <!-- <img class="shop-img center mt-100 mb-100" :src="pIcon" alt /> -->
           <div class="buy  mt-80">
             <div class="goodsName">{{pName}}
-              南极人 男士内裤男3A抑菌平角裤纯色95%精梳棉质中腰男式四角裤衩u凸短裤头4条礼盒装NHT9999 混色4条XL
+             <!-- 南极人 男士内裤男3A抑菌平角裤纯色95%精梳棉质中腰男式四角裤衩u凸短裤头4条礼盒装NHT9999 混色4条XL -->
             </div>
              <div class="price">￥ {{ price }}</div>
             <div class="skuSelect">
@@ -41,9 +41,22 @@
                 <li class="classifyLi" v-for="(item,index) in skuList" :key="index">
                   <div class="itemName">{{item.itemName}}</div>
                   <ul class="itemInfo ">
-                    <li class="itemDetail " :class="{active:itemIndex===1}" v-for="(goodsInfo,itemIndex) in item.goods" :key="itemIndex">
-                      <img :src="goodsInfo.img" v-if="goodsInfo.img" alt="" class="goodsImg">
+                    <li class="itemDetail " @click="selectindex(itemIndex,goodsInfo)" 
+                    :class="{active:itemIndex===activeClass}" v-for="(goodsInfo,itemIndex) in item.goods" :key="itemIndex">
+                      <img :src="getimgurl(goodsInfo.img)" v-if="goodsInfo.img" alt="" class="goodsImg">
                       <span class="goodsInfo">{{goodsInfo.info}}</span>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+               <ul class="classifyUl">
+                <li class="classifyLi" v-for="(item,index) in skudtList" :key="index">
+                  <div class="itemName">{{item.itemName}}</div>
+                  <ul class="itemInfo">
+                    <li class="itemDetailinfo " @click="selectdtindex(itemIndex,goodsInfo)" 
+                    :class="{active:itemIndex===activedtClass}" v-for="(goodsInfo,itemIndex) in item.goods" :key="itemIndex">
+                    <!--  <img :src="goodsInfo.img" v-if="goodsInfo.img" alt="" class="goodsImg"> -->
+                      <span class="goodsInfo">{{goodsInfo.detailname}}</span>
                     </li>
                   </ul>
                 </li>
@@ -68,19 +81,17 @@
                 </div>
               </div>
             </div>
-            <img style="width:100%;height:100%;" class="mt-100 mb-100" v-if="pDetailIcon"
-            :src="getimgurl(pDetailIcon)" alt />
           </div>
           <div class="buy border-radius mt-80">
               <ul class="detail-info  font42">
               <li v-for="(item, index) in pInfoList" :key="index" class="info-item">
-                {{ item }}
+                {{ item.info }}
               </li>
             </ul>
           </div>
-          <div class="buy border-radius mt-80 mb100">
-              <img :src="banner1" alt="" class="adImg">
-              <img :src="adInfo" alt="" class="adInfo">
+          <div class="buy border-radius mt-80 mb100" v-if="pDetailIcon">
+             <!-- <img :src="getimgurl(pDetailIcon)" alt="" class="adImg"> -->
+              <img :src="getimgurl(pDetailIcon)" alt="" class="adInfo">
           </div>
         </div>
       </div>
@@ -123,6 +134,8 @@ export default {
   },
   data () {
     return {
+      activeClass :-1,
+      activedtClass:-1,
       skuvalue: 0,
       skudetailvalue: 0,
       skuTypeList: [
@@ -147,7 +160,7 @@ export default {
       images: [],
       pDetailIcon: '',
       current: 0,
-      // pName: "促销中",
+      pName: "促销中",
       // pDesc: "促销中促销中促销中",
       pInfoList: [
         '品牌： MOKI MONKEY',
@@ -171,20 +184,35 @@ export default {
       tipsObj: {},
       banner1: banner1,
       adInfo: adInfo,
-      skuList: [{itemName: '选择颜色', goods: [{img: banner1, info: '1呼吸棉4条'}, {img: banner1, info: '2绅士健康呼4条'}, {img: banner1, info: '3绅士健康呼吸棉4条'}, {img: banner1, info: '4绅士健康呼吸棉4条'}, {img: banner1, info: '5绅士健康呼吸棉4条'}]}, {itemName: '选择尺码', goods: [{info: 'L(体重80)'}, {info: 'XL(体重105)'}, {info: 'XL(体重105)'}, {info: 'XL(体重105)'}, {info: 'XL(体重105)'}]}]
+      skuList: [],
+      skudtList: []
     }
   },
   methods: {
-    changetype () {
-      http(GetShopSkuDetailList, {id: this.skuvalue}, (json) => {
+    selectindex(thisindex,item)
+    {
+    this.activeClass=thisindex;
+    this.changetype(item.id);
+     this.images = [{image: this.getimgurl(item.img)}]
+     this.price=0;
+     this.skudetailvalue=0;
+      this.activedtClass=-1;
+    },
+    selectdtindex(thisindex,item)
+    {
+     this.activedtClass=thisindex;
+     this.price=item.detailprice;
+     this.skudetailvalue=item.id;
+     console.log(item)
+    },
+    changetype (thisskuvalue) {
+      http(GetShopSkuDetailList, {id: thisskuvalue}, (json) => {
         if (json.code === 0) {
-          var tmparray = []
-          this.selectinfoList = []
+          var tmpa=[];
           json.response.list.forEach(el => {
-            this.selectinfoList.push(el)
-            tmparray.push({ text: el.detailname, value: el.id })
+            tmpa.push(el)
           })
-          this.skudetailTypeList = tmparray
+         this.skudtList = [ { itemName: '选择尺码',  goods:tmpa}]
         }
       })
     },
@@ -239,11 +267,14 @@ export default {
     getshopskuinfo (shopid) {
       http(GetShopSkuList, {shopid: shopid}, (json) => {
         if (json.code === 0) {
-          var tmparray = []
+          var tmpa=[];
           json.response.list.forEach(el => {
-            tmparray.push({ text: el.skuname, value: el.id })
+            tmpa.push({ 
+              id:el.id,
+              info:el.skuname, 
+              img: el.skuIcon })
           })
-          this.skuTypeList = tmparray
+         this.skuList = [ { itemName: '选择颜色',  goods:tmpa}]
         }
       })
     },
@@ -255,6 +286,12 @@ export default {
       })
     },
     addshop () {
+      if(this.skudetailvalue==0)
+      {
+        this.tips="请选择商品";
+        this.showComfirm=true;
+        return;
+      }
       http(AddGoodsweb, { shopid: this.skudetailvalue, num: this.stepper }, (json) => {
         if (json.code === 0) {
           this.getshopcartnum()
@@ -266,8 +303,8 @@ export default {
         if (json.code === 0) {
           var shop = json.response.list[0]
           this.pName = shop.pName
-          this.pInfo = [shop.pDesc]
-          this.pDesc = shop.pDesc
+          this.pInfoList = [{ info:shop.pDesc },]
+       //   this.pDesc = shop.pDesc
           //   this.price = shop.price
           //     this.shopprice = shop.price
           //  this.startmax = shop.pNum
@@ -291,6 +328,11 @@ export default {
 }
 </script>
 <style lang='less' scoped>
+  .tmpclass
+  {
+    text-align: center;
+    width: 50px;
+  }
   ul {
     width: 90%;
     margin: 0 auto;
@@ -642,8 +684,28 @@ export default {
               font-size: 26px;
               color:'#333'
             }
-
           }
+           .itemDetailinfo{
+            width:1.444444rem;
+            text-align: center;
+            height: 100px;
+            margin-right: 30px;
+            line-height: 100px;
+            display: inline-block;
+            border: 3px solid #AAAFB6;
+            margin-bottom: 30px;
+            padding: 0 20px;
+            .goodsImg{
+              width: 100px;
+            }
+            .goodsInfo{
+              font-size: 26px;
+              color:'#333'
+            }
+
+          } .itemDetailinfo.active{
+              border: 3px solid #B61313;
+            }
             .itemDetail.active{
               border: 3px solid #B61313;
             }

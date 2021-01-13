@@ -1556,8 +1556,9 @@ namespace DPE.Core.Controllers
                 }
                 else
                 {
+                    var upmodel = await _ishopskuservices.QueryById(shopsku.id);
                     addid = shopsku.id;
-                    await _ishopskuservices.Update(shopsku);
+                    await _ishopskuservices.Update(upmodel);
                 }
                 result.code = 200;
                 result.success = true;
@@ -1714,6 +1715,59 @@ namespace DPE.Core.Controllers
                             var text = HttpContext.Request.Form.Files[0].OpenReadStream();
                             string strPath = "";
                             strPath = ss + @"//shopimg//skudetailimg_" + id + ".png";
+                            StreamHelp.StreamToFile(text, strPath);
+
+                        }
+
+                    }
+                    //return "添加成功";
+                }
+                result.code = 200;
+                result.success = true;
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+
+
+        }
+
+        [HttpPost]
+        [Route("uploadPictureSku")]
+        public async Task<MessageModel<dynamic>> uploadPictureSku()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+                var ss = Directory.GetCurrentDirectory();
+                var files = HttpContext.Request.Form.Files;
+                int id = Convert.ToInt32(HttpContext.Request.Form["id"]);
+                if (files.Count > 0)
+                {
+                    using (HttpClient client = new HttpClient())
+                    {
+                        var model = await _ishopskuservices.QueryById(id);
+                        model.skuIcon = "skuimg_" + id + ".png";
+                        var resultz = _ishopskuservices.Update(model);
+                        if (resultz.Result)
+                        {
+                            var text = HttpContext.Request.Form.Files[0].OpenReadStream();
+                            string strPath = "";
+                            strPath = ss + @"//shopimg//skuimg_" + id + ".png";
                             StreamHelp.StreamToFile(text, strPath);
 
                         }
