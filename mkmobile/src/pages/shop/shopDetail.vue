@@ -203,6 +203,7 @@ export default {
      this.activedtClass=thisindex;
      this.price=item.detailprice;
      this.skudetailvalue=item.id;
+     this.shopprice=item.detailprice;
      console.log(item)
     },
     changetype (thisskuvalue) {

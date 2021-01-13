@@ -536,6 +536,7 @@ namespace DPE.Core.Controllers
 
                         var dpeinfo = (await _idpeservices.Query(x => x.uID == _user.ID)).First();
                         var epinfo = (await _iepservices.Query(x => x.uID == _user.ID)).First();
+                        var rpinfo = (await _irpservices.Query(x => x.uID == _user.ID)).First();
 
                         if (shopskudetialinfo != null)
                         {
@@ -548,10 +549,11 @@ namespace DPE.Core.Controllers
                                 return result;
                             }
 
+                            decimal totalshopprice = Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice);
                             //特殊商品
                             if (shopdetail.ptype == 1)
                             {
-                                if (epinfo.amount < Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice))
+                                if (epinfo.amount < totalshopprice)
                                 {
                                     result.code = 1002;
                                     result.msg = "金额不够,无法购买商品";
@@ -562,7 +564,7 @@ namespace DPE.Core.Controllers
                             }
                             else
                             {
-                                if (dpeinfo.amount < Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice))
+                                if (dpeinfo.amount < totalshopprice)
                                 {
                                     result.code = 1002;
                                     result.msg = "产品分不够,无法购买商品";
@@ -576,7 +578,7 @@ namespace DPE.Core.Controllers
                             shopmodel.buyNum = model.shoptotalnum;
                             shopmodel.buyuid = _user.ID;
                             shopmodel.createTime = DateTime.Now;
-                            shopmodel.price = Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice);
+                            shopmodel.price = totalshopprice;
                             shopmodel.status = 1;
                             shopmodel.buyaddr = addr;
                             shopmodel.buyname = name;
@@ -593,15 +595,15 @@ namespace DPE.Core.Controllers
                                 {
                                     if (shopdetail.ptype == 1)
                                     {
-                                        epinfo.amount = epinfo.amount - Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice);
+                                        epinfo.amount = epinfo.amount - totalshopprice;
                                         if (_iepservices.Update(epinfo).Result)
                                         {
                                             if (_iepexchangeservices.Add(new EPexchange()
                                             {
-                                                amount = -Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice),
+                                                amount = -totalshopprice,
                                                 createTime = DateTime.Now,
                                                 uID = _user.ID,
-                                                lastTotal = epinfo.amount + Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice),
+                                                lastTotal = epinfo.amount + totalshopprice,
                                                 stype = 88,
                                                 remark = "购买商品",
                                                 fromID = _user.ID
@@ -625,15 +627,15 @@ namespace DPE.Core.Controllers
                                     }
                                     else
                                     {
-                                        dpeinfo.amount = dpeinfo.amount - Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice);
+                                        dpeinfo.amount = dpeinfo.amount - totalshopprice;
                                         if (_idpeservices.Update(dpeinfo).Result)
                                         {
                                             if (_idpeexchangeservices.Add(new DPEexchange()
                                             {
-                                                amount = -Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice),
+                                                amount = -totalshopprice,
                                                 createTime = DateTime.Now,
                                                 uID = _user.ID,
-                                                lastTotal = dpeinfo.amount + Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice),
+                                                lastTotal = dpeinfo.amount + totalshopprice,
                                                 stype = 88,
                                                 remark = "购买商品",
                                                 fromID = _user.ID
