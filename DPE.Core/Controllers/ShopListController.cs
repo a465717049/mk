@@ -536,6 +536,7 @@ namespace DPE.Core.Controllers
 
                         var dpeinfo = (await _idpeservices.Query(x => x.uID == _user.ID)).First();
                         var epinfo = (await _iepservices.Query(x => x.uID == _user.ID)).First();
+                        var rpinfo = (await _irpservices.Query(x => x.uID == _user.ID)).First();
 
                         if (shopskudetialinfo != null)
                         {
@@ -548,10 +549,11 @@ namespace DPE.Core.Controllers
                                 return result;
                             }
 
+                            decimal totalshopprice = Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice);
                             //特殊商品
                             if (shopdetail.ptype == 1)
                             {
-                                if (epinfo.amount < Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice))
+                                if (epinfo.amount < totalshopprice && rpinfo.amount < totalshopprice)
                                 {
                                     result.code = 1002;
                                     result.msg = "金额不够,无法购买商品";
@@ -562,7 +564,7 @@ namespace DPE.Core.Controllers
                             }
                             else
                             {
-                                if (dpeinfo.amount < Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice))
+                                if (dpeinfo.amount < totalshopprice)
                                 {
                                     result.code = 1002;
                                     result.msg = "产品分不够,无法购买商品";
@@ -576,7 +578,7 @@ namespace DPE.Core.Controllers
                             shopmodel.buyNum = model.shoptotalnum;
                             shopmodel.buyuid = _user.ID;
                             shopmodel.createTime = DateTime.Now;
-                            shopmodel.price = Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice);
+                            shopmodel.price = totalshopprice;
                             shopmodel.status = 1;
                             shopmodel.buyaddr = addr;
                             shopmodel.buyname = name;
@@ -585,7 +587,7 @@ namespace DPE.Core.Controllers
                             shopmodel.shopordernumber = creatOrderNumber();
 
                             var addresult = await _ishopbuydetailserivces.Add(shopmodel);
-                            if (addresult > 0)
+                            if (addresult > 0) 
                             {
 
                                 shopskudetialinfo.detailnum -= model.shoptotalnum;
@@ -593,47 +595,83 @@ namespace DPE.Core.Controllers
                                 {
                                     if (shopdetail.ptype == 1)
                                     {
-                                        epinfo.amount = epinfo.amount - Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice);
-                                        if (_iepservices.Update(epinfo).Result)
+                                        if (rpinfo.amount >= totalshopprice)
                                         {
-                                            if (_iepexchangeservices.Add(new EPexchange()
+                                            rpinfo.amount = rpinfo.amount - totalshopprice;
+                                            if (_irpservices.Update(rpinfo).Result)
                                             {
-                                                amount = -Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice),
-                                                createTime = DateTime.Now,
-                                                uID = _user.ID,
-                                                lastTotal = epinfo.amount + Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice),
-                                                stype = 88,
-                                                remark = "购买商品",
-                                                fromID = _user.ID
-                                            }).Result > 0)
-                                            {
-                                            }
-
-                                            if (_ishoppingcartserivces.DeleteById(model.id).Result)
-                                            {
-                                                successnum++;
-                                            }
-                                            else
-                                            {
-                                                result.code = 1002;
-                                                result.msg = shopskudetialinfo.detailname + "结算异常请稍后再试";
-                                                result.success = false;
-                                                _unitOfWork.RollbackTran();
-                                                return result;
+                                                if (_irpexchangeservices.Add(new RPexchange()
+                                                {
+                                                    amount = -totalshopprice,
+                                                    createTime = DateTime.Now,
+                                                    uID = _user.ID,
+                                                    lastTotal = rpinfo.amount + totalshopprice,
+                                                    stype = 88,
+                                                    remark = "购买商品",
+                                                    fromID = _user.ID
+                                                }).Result > 0)
+                                                {
+                                                }
+                                                if (_ishoppingcartserivces.DeleteById(model.id).Result)
+                                                {
+                                                    successnum++;
+                                                }
+                                                else
+                                                {
+                                                    result.code = 1002;
+                                                    result.msg = shopskudetialinfo.detailname + "结算异常请稍后再试";
+                                                    result.success = false;
+                                                    _unitOfWork.RollbackTran();
+                                                    return result;
+                                                }
                                             }
                                         }
+                                        else
+                                        {
+                                            epinfo.amount = epinfo.amount - totalshopprice;
+                                            if (_iepservices.Update(epinfo).Result)
+                                            {
+                                                if (_iepexchangeservices.Add(new EPexchange()
+                                                {
+                                                    amount = -totalshopprice,
+                                                    createTime = DateTime.Now,
+                                                    uID = _user.ID,
+                                                    lastTotal = epinfo.amount + totalshopprice,
+                                                    stype = 88,
+                                                    remark = "购买商品",
+                                                    fromID = _user.ID
+                                                }).Result > 0)
+                                                {
+                                                }
+
+                                                if (_ishoppingcartserivces.DeleteById(model.id).Result)
+                                                {
+                                                    successnum++;
+                                                }
+                                                else
+                                                {
+                                                    result.code = 1002;
+                                                    result.msg = shopskudetialinfo.detailname + "结算异常请稍后再试";
+                                                    result.success = false;
+                                                    _unitOfWork.RollbackTran();
+                                                    return result;
+                                                }
+                                            }
+                                        }
+
+                                     
                                     }
                                     else
                                     {
-                                        dpeinfo.amount = dpeinfo.amount - Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice);
+                                        dpeinfo.amount = dpeinfo.amount - totalshopprice;
                                         if (_idpeservices.Update(dpeinfo).Result)
                                         {
                                             if (_idpeexchangeservices.Add(new DPEexchange()
                                             {
-                                                amount = -Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice),
+                                                amount = -totalshopprice,
                                                 createTime = DateTime.Now,
                                                 uID = _user.ID,
-                                                lastTotal = dpeinfo.amount + Convert.ToDecimal(model.shoptotalnum * shopskudetialinfo.detailprice),
+                                                lastTotal = dpeinfo.amount + totalshopprice,
                                                 stype = 88,
                                                 remark = "购买商品",
                                                 fromID = _user.ID
@@ -1556,8 +1594,9 @@ namespace DPE.Core.Controllers
                 }
                 else
                 {
+                    var upmodel = await _ishopskuservices.QueryById(shopsku.id);
                     addid = shopsku.id;
-                    await _ishopskuservices.Update(shopsku);
+                    await _ishopskuservices.Update(upmodel);
                 }
                 result.code = 200;
                 result.success = true;
@@ -1714,6 +1753,59 @@ namespace DPE.Core.Controllers
                             var text = HttpContext.Request.Form.Files[0].OpenReadStream();
                             string strPath = "";
                             strPath = ss + @"//shopimg//skudetailimg_" + id + ".png";
+                            StreamHelp.StreamToFile(text, strPath);
+
+                        }
+
+                    }
+                    //return "添加成功";
+                }
+                result.code = 200;
+                result.success = true;
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+
+
+        }
+
+        [HttpPost]
+        [Route("uploadPictureSku")]
+        public async Task<MessageModel<dynamic>> uploadPictureSku()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+                var ss = Directory.GetCurrentDirectory();
+                var files = HttpContext.Request.Form.Files;
+                int id = Convert.ToInt32(HttpContext.Request.Form["id"]);
+                if (files.Count > 0)
+                {
+                    using (HttpClient client = new HttpClient())
+                    {
+                        var model = await _ishopskuservices.QueryById(id);
+                        model.skuIcon = "skuimg_" + id + ".png";
+                        var resultz = _ishopskuservices.Update(model);
+                        if (resultz.Result)
+                        {
+                            var text = HttpContext.Request.Form.Files[0].OpenReadStream();
+                            string strPath = "";
+                            strPath = ss + @"//shopimg//skuimg_" + id + ".png";
                             StreamHelp.StreamToFile(text, strPath);
 
                         }

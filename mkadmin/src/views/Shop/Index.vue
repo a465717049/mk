@@ -151,11 +151,21 @@
         <el-form-item label="sku描述" >
         <el-input v-model="Formadd.skudesc" auto-complete="off"></el-input>
         </el-form-item>
-      </el-form>
+        
+        <el-form-item label="sku图片" >
+        <el-input v-model="Formadd.skuIcon" disabled auto-complete="off"></el-input>
+        <div class="Thisform">
+        <el-form ref="skuform" :model="skuform" label-width="80px">
+        <input type="file" @change="getskuFile($event)">
+        </el-form>
+        </div>
+        </el-form-item>
+           </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click.native="addskuFormVisible = false">取消</el-button>
         <el-button type="primary" @click.native="addskuSubmit" :loading="levelLoading">提交</el-button>
       </div>
+  
     </el-dialog>
 
     <el-dialog title="商品sku管理" :visible.sync="skuFormVisible" v-model="skuFormVisible" :close-on-click-modal="false">
@@ -167,8 +177,8 @@
       </el-table-column>
       <el-table-column prop="skuinfo.skudesc" label="sku描述" width="" sortable>
       </el-table-column>
-    <!--  <el-table-column prop="skuinfo.skuIcon" label="sku图片" width="" sortable>
-      </el-table-column> -->
+     <el-table-column prop="skuinfo.skuIcon" label="sku图片" width="" sortable>
+      </el-table-column> 
       <el-table-column prop="skuinfo.createtime" label="创建时间" width="" sortable>
       </el-table-column>
        <el-table-column label="操作" width="" >
@@ -225,7 +235,7 @@ import {
   ChangeOrdersweb,GetShopListMyweb,
   DeleteShopListMyweb,AddShopListMyweb,uploadPicture,
   uploadPictureDetail,GetShopSkuInfoMyweb,DeleteSkudetailInfoMyweb,DeleteSkuInfoMyweb,
-  uploadPictureSkuDetail ,AddSkuMyweb ,AddSkuDetailMyweb
+  uploadPictureSkuDetail ,AddSkuMyweb ,AddSkuDetailMyweb,uploadPictureSku
 } from "../../api/api";
 import { getButtonList } from "../../promissionRouter";
 import Toolbar from "../../components/Toolbar";
@@ -242,10 +252,12 @@ export default {
       tidLoading: false,
       form: {},
       skudtform:{},
+      skuform:{},
       detailform: { },
       file: '',
        detailfile:'',
        skudetailfile:'',
+       skufile:'',
       //detailname detaildesc detailprice detailnum detailicon
       Formadddt:
       {
@@ -414,9 +426,14 @@ export default {
      this.detailfile = event.target.files[0];
      console.log(this.detailfile)
     },
-     getskudtFile(event) {
+    getskudtFile(event) {
       this.skudetailfile = event.target.files[0];
       console.log(this.skudetailfile )
+    },
+    getskuFile(event)
+    {
+     this.skufile = event.target.files[0];
+       console.log(this.skufile )
     },
      onSubmit() {
       let that = this;
@@ -450,6 +467,17 @@ export default {
       console.log(this.skudetailfile)
       console.log(this.Formadddt.id)
       uploadPictureSkuDetail(param).then((res) => {
+             
+      });
+    },
+     onskuSubmit()
+    {
+      let that = this;
+      event.preventDefault();
+      let param = new FormData();
+      param.append("file", this.skufile);
+      param.append("id", this.Formadd.id);
+      uploadPictureSku(param).then((res) => {
              
       });
     },
@@ -526,6 +554,11 @@ export default {
         let _this=this;
         AddSkuMyweb(this.Formadd).then((res) => {
         if (res.success) {
+        if(this.skufile)
+        {
+        this.Formadd.id=res.response;
+        this.onskuSubmit();
+        }
         this.$message({
         message: "操作成功",
         type: "success",
