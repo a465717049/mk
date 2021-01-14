@@ -904,8 +904,9 @@ namespace DPE.Core.Controllers
                             select new
                             {
                                 item,
-                                shopname = _ishoplistservices.QueryById(_ishopskuservices.QueryById(_ishopskudetailservices.QueryById(item.shopid).Result.skuid).Result.shopid).Result.pName
-
+                                shopskudt = _ishopskudetailservices.QueryById(item.shopid).Result,
+                                shopsku = _ishopskuservices.QueryById(_ishopskudetailservices.QueryById(item.shopid).Result.skuid).Result,
+                                shopinfo = _ishoplistservices.QueryById(_ishopskuservices.QueryById(_ishopskudetailservices.QueryById(item.shopid).Result.skuid).Result.shopid).Result
                             })
                 };
                 result.code = 200;
@@ -1287,15 +1288,15 @@ namespace DPE.Core.Controllers
                 }
                 long id =Convert.ToInt64(HttpContext.Request.Form["id"]);
 
-                var data = await _ishopskuservices.Query(x => x.shopid == id);
+                var data = await _ishopskuservices.Query(x => x.shopid == id && !x.isdelete);
                 result.code = 0;
                 result.response = new
                 {
                     datainfo = (from item in data
                                 select new
                                 {
-                                 skuinfo= item,
-                                 skudetailinfo=_ishopskudetailservices.Query(z=>z.skuid==item.id).Result
+                                 skuinfo= item, 
+                                 skudetailinfo=_ishopskudetailservices.Query(z=>z.skuid==item.id && !z.isdelete).Result
                                 }).ToList()
                 };
                 result.success = true;
@@ -1330,7 +1331,8 @@ namespace DPE.Core.Controllers
                 var detailinfo =await _ishopskudetailservices.Query(x => x.skuid == id);
                 foreach (ShopSkuDetail skudetail in detailinfo) 
                 {
-                    if (! _ishopskudetailservices.Delete(skudetail).Result) 
+                    skudetail.isdelete = true;
+                    if (! _ishopskudetailservices.Update(skudetail).Result) 
                     {
                         _unitOfWork.RollbackTran();
                         result.code = 300;
@@ -1340,7 +1342,9 @@ namespace DPE.Core.Controllers
                     }
                 }
 
-                if (!_ishopskuservices.DeleteById(id).Result) 
+                var skuinfo = await _ishopskuservices.QueryById(id);
+                skuinfo.isdelete = true;
+                if (!_ishopskuservices.Update(skuinfo).Result) 
                 {
                     _unitOfWork.RollbackTran();
                     result.code = 300;
@@ -1379,7 +1383,9 @@ namespace DPE.Core.Controllers
                     return result;
                 }
                 long id = Convert.ToInt64(HttpContext.Request.Form["id"]);
-                if (!_ishopskudetailservices.DeleteById(id).Result)
+                var skudt = await _ishopskudetailservices.QueryById(id);
+                skudt.isdelete = true;
+                if (!_ishopskudetailservices.Update(skudt).Result)
                 {
                     result.code = 300;
                     result.msg = "删除明细失败!请稍后再试";
@@ -1595,6 +1601,8 @@ namespace DPE.Core.Controllers
                 else
                 {
                     var upmodel = await _ishopskuservices.QueryById(shopsku.id);
+                    upmodel.skuname = shopsku.skuname;
+                    upmodel.skudesc = shopsku.skudesc;
                     addid = shopsku.id;
                     await _ishopskuservices.Update(upmodel);
                 }

@@ -588,6 +588,9 @@ export default {
                   message: "操作成功",
                   type: "success",
                 });
+                 this.addskudtFormVisible=false;
+                 this.skudtFormVisible=false;
+                 this.editskuinfo();
               } else {
                 this.$message({
                   message: "操作失败请稍后再试！",

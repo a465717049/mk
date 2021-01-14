@@ -21,7 +21,7 @@ namespace DPE.Core.Model.Models
         public string skuIcon    {get;set;}
         public string skuname    {get;set;}
         public string   skudesc    {get;set;}
-        public DateTime createtime { get; set; } 
-
+        public DateTime createtime { get; set; }
+        public bool isdelete { get; set; }
     }
 }
