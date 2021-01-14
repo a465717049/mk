@@ -190,13 +190,13 @@ export default {
   },
   methods: {
     selectindex(thisindex,item)
-    {
+    { 
     this.activeClass=thisindex;
     this.changetype(item.id);
-     this.images = [{image: this.getimgurl(item.img)}]
-     this.price=0;
-     this.skudetailvalue=0;
-      this.activedtClass=-1;
+    this.images = [{image: this.getimgurl(item.img)}]
+    this.price=0;
+    this.skudetailvalue=0;
+    this.activedtClass=-1;
     },
     selectdtindex(thisindex,item)
     {
@@ -214,6 +214,7 @@ export default {
             tmpa.push(el)
           })
          this.skudtList = [ { itemName: '选择尺码',  goods:tmpa}]
+         this.selectdtindex(0,tmpa[0])
         }
       })
     },
@@ -276,6 +277,11 @@ export default {
               img: el.skuIcon })
           })
          this.skuList = [ { itemName: '选择颜色',  goods:tmpa}]
+         if(json.response.list.length>0)
+         {
+           this.selectindex(0,tmpa[0])
+
+         }
         }
       })
     },
