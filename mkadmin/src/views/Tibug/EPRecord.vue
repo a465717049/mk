@@ -5,15 +5,9 @@
 
     <!--列表-->
     <el-table :data="users" highlight-current-row @current-change="selectCurrentRow" v-loading="listLoading" @selection-change="selsChange" @row-dblclick="handledbClick" style="width: 100%;">
-      <el-table-column type="selection" width="50">
-      </el-table-column>
-      <el-table-column type="index" width="80">
-      </el-table-column>
       <el-table-column prop="id" label="编号" width="" sortable>
       </el-table-column>
       <el-table-column prop="uID" label="UID" width="" sortable>
-      </el-table-column>
-      <el-table-column label="usdt金额" width="" :formatter="formattdDetail" sortable>
       </el-table-column>
       <el-table-column prop="amount" label="ep金额" width="" sortable>
       </el-table-column>
@@ -21,7 +15,15 @@
       </el-table-column>
       <el-table-column prop="usdtAddress" label="usdt地址" width="" sortable>
       </el-table-column>
-      <el-table-column prop="phone" label="手机号" width="" sortable>
+      <el-table-column prop="alipayaccount" label="支付宝账号" width="" sortable>
+      </el-table-column>
+       <el-table-column prop="alipayname" label="支付宝姓名" width="" sortable>
+      </el-table-column>
+        <el-table-column prop="bankname" label="银行卡姓名" width="" sortable>
+      </el-table-column>
+       <el-table-column prop="bankaddr" label="开户行" width="" sortable>
+      </el-table-column>
+    <el-table-column prop="bankidcard" label="银行卡号" width="" sortable>
       </el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="" sortable>
       </el-table-column>
