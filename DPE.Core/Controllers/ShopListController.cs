@@ -904,7 +904,7 @@ namespace DPE.Core.Controllers
                             select new
                             {
                                 item,
-                                shopname = _ishoplistservices.QueryById(item.shopid).Result.pName
+                                shopname = _ishoplistservices.QueryById(_ishopskuservices.QueryById(_ishopskudetailservices.QueryById(item.shopid).Result.skuid).Result.shopid).Result.pName
 
                             })
                 };
