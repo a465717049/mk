@@ -15,7 +15,11 @@
       </el-table-column>
       <el-table-column prop="item.shopordernumber" label="购买订单号" width="" sortable>
       </el-table-column>
-        <el-table-column prop="shopname" label="购买商品" width="" sortable>
+        <el-table-column prop="shopinfo.pName" label="购买商品" width="" sortable>
+      </el-table-column>
+        <el-table-column prop="shopsku.skuname" label="商品规格" width="" sortable>
+      </el-table-column>
+        <el-table-column prop="shopskudt.detailname" label="商品尺码" width="" sortable>
       </el-table-column>
             <el-table-column prop="item.buyNum" label="购买数量" width="" sortable>
       </el-table-column>
