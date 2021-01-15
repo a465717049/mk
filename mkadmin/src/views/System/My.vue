@@ -7,12 +7,12 @@
     style="margin:20px;width:60%;min-width:600px;"
   >
     <el-form-item label="我的昵称">
-      <el-input v-model="editForm.uRealName"></el-input>
+      <el-input v-model="editForm.uNickName"></el-input>
     </el-form-item>
 
     <el-form-item label="旧密码" prop="uLoginPWD">
       <el-input v-model="editForm.uLoginPWD" type="text" auto-complete="off"></el-input>
-    </el-form-item>
+    </el-form-item> 
     <el-form-item label="新密码" prop="uLoginPWDNew">
       <el-input v-model="editForm.uLoginPWDNew" show-password auto-complete="off"></el-input>
     </el-form-item>
@@ -20,6 +20,7 @@
       <el-input v-model="editForm.uLoginPWDConfirm" show-password auto-complete="off"></el-input>
     </el-form-item>
 
+<!--
     <el-form-item label="头像">
       <el-upload
         class="avatar-uploader"
@@ -34,11 +35,11 @@
         <i v-else class="el-icon-plus avatar-uploader-icon plus-sign"></i>
       </el-upload>
     </el-form-item>
-
-    <el-form-item label="留言/备注">
+-->
+   <!-- <el-form-item label="留言/备注">
       <el-input type="textarea" v-model="editForm.desc"></el-input>
-    </el-form-item>
-    <el-form-item>
+    </el-form-item>-->
+    <el-form-item> 
       <el-button @click="onSubmit" type="primary">更新</el-button>
       <el-button @click.native.prevent>取消</el-button>
     </el-form-item>
@@ -46,14 +47,22 @@
 </template>
 
 <script>
+import util from "../../../util/date";
+import {
+  getUserByToken,changepwdbyadmin
+} from "../../api/api";
+import { getButtonList } from "../../promissionRouter";
+import Toolbar from "../../components/Toolbar";
+
 export default {
+  components: { Toolbar },
   data() {
     return {
       editForm: {
         id: 0,
         uID: 0,
         RID: 0,
-        uLoginName: "",
+        uNickName: "",
         uRealName: "",
         name: "",
         sex: -1,
@@ -61,6 +70,9 @@ export default {
         birth: "",
         desc: "",
         addr: "",
+        uLoginPWD:"",
+        uLoginPWDNew:"",
+        uLoginPWDConfirm:"",
         tdLogo: ""
       },
       token: {
@@ -87,10 +99,102 @@ export default {
   },
   methods: {
     onSubmit() {
+
+
+      if(!this.editForm.uNickName)
+      {
       this.$message({
-        message: "失败！该操作无权限",
-        type: "error"
+      message: "请输入昵称",
+      type: "error"
       });
+      return;
+      }
+
+      if(!this.editForm.uLoginPWD)
+      {
+      this.$message({
+      message: "请输入旧密码",
+      type: "error"
+      });
+      return;
+      }
+
+      if(!this.editForm.uLoginPWDNew)
+      {
+      this.$message({
+      message: "请输入新密码",
+      type: "error"
+      });
+      return;
+      }
+
+      
+      if(this.editForm.uLoginPWDNew.length<6)
+      {
+      this.$message({
+      message: "新密码最少输入6位",
+      type: "error"
+      });
+      return;
+      }
+
+
+      if(!this.editForm.uLoginPWDConfirm)
+      {
+      this.$message({
+      message: "请输入确认密码",
+      type: "error"
+      });
+      return;
+      }
+
+       if(this.editForm.uLoginPWDConfirm !=this.editForm.uLoginPWDNew )
+      {
+      this.$message({
+      message: "请确保确认密码和新密码相同",
+      type: "error"
+      });
+      return;
+      }
+      
+
+        changepwdbyadmin({
+          nickname:this.editForm.uNickName,
+          pwd:this.editForm.uLoginPWD,
+          newpwd:this.editForm.uLoginPWDNew}).then((res) => {
+            if (res.success) {
+              this.$message({
+                message: "修改成功",
+                type: "success",
+              });
+          let _this=this;
+          setTimeout(function()
+          {
+          window.localStorage.removeItem("user");
+          window.localStorage.removeItem("Token");
+          window.localStorage.removeItem("TokenExpire");
+          window.localStorage.removeItem("NavigationBar");
+          window.localStorage.removeItem("refreshtime");
+          window.localStorage.removeItem("router");
+          sessionStorage.removeItem("Tags");
+
+          global.antRouter = [];
+
+          this.tagsList = [];
+          this.routes = [];
+          this.$store.commit("saveTagsData", "");
+
+          this.$router.push("/login");
+          window.location.reload();
+          },2000)
+          
+            } else {
+              this.$message({
+                message:res.msg,
+                type: "error",
+              });
+            }
+          });
     },
     handleAvatarSuccess(res, file) {
       this.editForm.tdLogo = "/" + res.response;
@@ -103,7 +207,8 @@ export default {
     };
 
     var user = JSON.parse(window.localStorage.user);
-    this.editForm.uRealName = user ? user.uRealName : "";
+    this.editForm.uNickName=user.uNickName;
+    //this.editForm.uRealName = user ? user.uRealName : "";
   }
 };
 </script>

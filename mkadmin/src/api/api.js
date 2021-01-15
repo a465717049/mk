@@ -368,6 +368,7 @@ export const getRequestApiinfoByInManageGold = params => {
     });
 };
 
+
 // Task管理
 export const getTaskListPage = params => {
     return axios.post(`${base}/api/TasksQz/get`, {
@@ -581,4 +582,8 @@ export const ChangeOrdersweb = params => {
 //AddTruckOrdersweb ChangeOrdersweb
 export const AddTruckOrdersweb = params => {
     return axios.post(`${base}/api/Shop/AddTruckOrdersweb`, qs.stringify(params)).then(res => res.data);
+};
+
+export const changepwdbyadmin = params => {
+    return axios.post(`${base}/api/User/changepwdbyadmin`, qs.stringify(params)).then(res => res.data);
 };

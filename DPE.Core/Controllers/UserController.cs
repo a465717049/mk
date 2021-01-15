@@ -261,7 +261,7 @@ namespace DPE.Core.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         // DELETE: api/ApiWithActions/5
-        [HttpDelete]
+        [HttpDelete]    
         public async Task<MessageModel<string>> Delete(int id)
         {
             var data = new MessageModel<string>();
@@ -2334,6 +2334,49 @@ namespace DPE.Core.Controllers
                     result.msg = "修改失败";
                 }
                 return result;
+            }
+            catch
+            {
+                result.success = false;
+                result.code = 500;
+                result.msg = "修改失败";
+                return result;
+            }
+
+        }
+
+
+        //修改密码
+        [HttpPost]
+        public async Task<MessageModel<dynamic>> changepwdbyadmin()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                string nickname = HttpContext.Request.Form["nickname"];
+                string pwd = HttpContext.Request.Form["pwd"];
+                string newpwd = HttpContext.Request.Form["newpwd"];
+                var model = await _sysUserInfoServices.Query(x=>x.uID==_user.ID && x.uLoginPWD.Equals(MD5Helper.MD5Encrypt32(pwd)));
+                if (model.Count > 0)
+                {
+                    sysUserInfo user = model.First();
+                    user.uLoginPWD = MD5Helper.MD5Encrypt32(newpwd);
+                    user.uNickName = nickname;
+                    await _sysUserInfoServices.Update(user);
+                    result.code = 0;
+                    result.success = true;
+                    return result;
+                }
+                else 
+                {
+                    result.success = false;
+                    result.code = 500;
+                    result.msg = "原密码输入错误,请重新确认！";
+                    return result;
+                }
+
+              
             }
             catch
             {

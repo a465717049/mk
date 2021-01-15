@@ -370,7 +370,7 @@ export default {
       window.localStorage.user ? window.localStorage.user : null
     );
     if (user) {
-      this.sysUserName = user.uRealName || "admin";
+      this.sysUserName = user.uNickName || "admin";
       this.sysUserAvatar = user.avatar || "../assets/user.png";
     }
 
