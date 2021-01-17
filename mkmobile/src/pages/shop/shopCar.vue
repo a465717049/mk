@@ -13,7 +13,8 @@
         <div class="goods base-flex flex-start p-58 borderR mb-80"  v-for="(key,value) in data" :key="value">
           <img  :src="getimgurl(key.shopskudetail.skuIcon)" class="img" alt />
           <div class="goods-info">
-            <div class="tip-titl">{{ key.shopdetail.pName }} : {{key.shopsku.detaildesc}}</div>
+            <div class="tip-titl">{{ key.shopdetail.pName }} : {{key.shopskudetail.skuname}} 
+              - {{key.shopsku.detailname}}</div>
             <div>价格：{{ key.shopsku.detailprice }}</div>
             <!-- <div>赠送：面膜+修复水</div>    v-model="stepper"  @plus="onPlus" @minus="onMinus" -->
           </div>
@@ -210,7 +211,7 @@ export default {
         if(item.shopdetail.ptype==0)
         {
 
-         trp += item.shopnum * item.shopsku.detailprice
+         pp += item.shopnum * item.shopsku.detailprice
         totalnum += item.shopnum
         }else if(item.shopdetail.ptype==1)
         {
