@@ -305,7 +305,8 @@ export default {
         }
       })
     },
-    ToGetShopDeatilList (tmpshopid) {
+    ToGetShopDeatilList () {
+     var  tmpshopid= this.shopid
       http(GetShopDeatilList, { shopid: tmpshopid }, (json) => {
         if (json.code === 0) {
           var shop = json.response.list[0]
@@ -325,7 +326,7 @@ export default {
   created () {
     if (this.$route.query.id) {
       this.shopid = this.$route.query.id
-      this.ToGetShopDeatilList(this.shopid)
+      this.ToGetShopDeatilList()
       this.getshopcartnum()
     }
   },
@@ -454,10 +455,10 @@ export default {
   }
   .shop-detail {
     background: #c6d0de;
-    padding-top: 200px;
+    padding-top: 20px;
     .shop-img {
-      width: 652px;
-      height: 882px;
+      width: 100%;
+      height: auto;
     }
     .buy {
       // height: 45vh;
@@ -599,12 +600,13 @@ export default {
   }
   .sweiper1 {
     margin: 0 auto;
-    padding-bottom: 222px;
-    width: 602px;
-    height: 600px;
+    padding-bottom: 22px;
+    width: 100%;
+    height: auto;
+    text-align: center;
     img {
-      width: 100%;
-      height: 373px;
+      width: calc(100vw - 400px);
+      height: auto;
     }
     /deep/ .van-swipe-item {
       overflow: hidden;
@@ -637,6 +639,7 @@ export default {
     right: 66px;
     display: flex;
     flex-direction: column;
+    z-index: 666;
     align-items: center;
     .monkeywrap {
       width: 135px;
@@ -685,7 +688,11 @@ export default {
             margin-bottom: 30px;
             padding: 0 20px;
             .goodsImg{
-              width: 100px;
+              padding: 0;
+              margin-top: -14px;
+              margin-left: -21px;
+              width: 96px;
+              height: 96px;
             }
             .goodsInfo{
               font-size: 26px;
