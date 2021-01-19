@@ -19,8 +19,10 @@ using DPE.Core.Model.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml;
 
 namespace DPE.Core.Controllers
 {
@@ -53,6 +55,9 @@ namespace DPE.Core.Controllers
         readonly IShopSkuServices _ishopskuservices;
         readonly IShopSkuDetailServices _ishopskudetailservices;
 
+        private IHostingEnvironment _hostingEnvironment;
+
+        readonly IDownExcelRecordServices _idownexcelrecordservices;
 
         readonly IOpenShopServices _iopenshopservices;
         public ShopListController(ISysUserInfoServices isysuserinfoservices, IUnitOfWork unitOfWork, IUser user,
@@ -62,7 +67,8 @@ namespace DPE.Core.Controllers
             IRPexchangeServices irpexchangeservices, IRPServices irpservices,
             IShoppingCartSerivces ishoppingcartserivces, IOpenShopServices iopenshopservices,
             IEPexchangeServices iepexchangeservices,
-            IEPServices iepservices, IShopRoleServices ishoproleservices, IShopSkuServices ishopskuservices, IShopSkuDetailServices ishopskudetailservices)
+            IEPServices iepservices, IShopRoleServices ishoproleservices, 
+            IShopSkuServices ishopskuservices, IShopSkuDetailServices ishopskudetailservices , IHostingEnvironment hostingEnvironment, IDownExcelRecordServices idownexcelrecordservices)
         {
             this._user = user;
             _userInfoServices = userInfoServices;
@@ -82,6 +88,8 @@ namespace DPE.Core.Controllers
             _ishoproleservices = ishoproleservices;
             _ishopskuservices = ishopskuservices;
             _ishopskudetailservices = ishopskudetailservices;
+            _hostingEnvironment = hostingEnvironment;
+            _idownexcelrecordservices = idownexcelrecordservices;
         }
 
 
@@ -880,7 +888,8 @@ namespace DPE.Core.Controllers
                 int pagesize = Convert.ToInt32(HttpContext.Request.Form["pagesize"]);
                 string key = HttpContext.Request.Form["key"];
                 string stype = HttpContext.Request.Form["stype"];
-
+                string startdt = HttpContext.Request.Form["startdt"];
+                string enddt = HttpContext.Request.Form["enddt"];
                 if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
                 {
                     key = "";
@@ -890,10 +899,35 @@ namespace DPE.Core.Controllers
                 {
                     stype = "";
                 }
+
+                DateTime dt1 = new DateTime();
+                DateTime dt2 = new DateTime();
+
+
+                if (string.IsNullOrEmpty(startdt) || string.IsNullOrWhiteSpace(startdt))
+                {
+                    dt1 = Convert.ToDateTime("1999-01-01");
+                }
+                else 
+                {
+                    dt1 = Convert.ToDateTime(startdt);
+                }
+
+
+                if (string.IsNullOrEmpty(enddt) || string.IsNullOrWhiteSpace(enddt))
+                {
+                    dt2 = DateTime.Now;
+                }
+                else 
+                {
+                    dt2 = Convert.ToDateTime(enddt);
+                }
+
+
                 pagesize = pagesize == 0 ? 20 : pagesize;
                 pageindex = pageindex == 0 ? 1 : pageindex;
                 var data = await _ishopbuydetailserivces.QueryPage(x => x.status.ToString().Contains(stype) &&
-              (x.buyuid.ToString().Contains(key) || x.buyaddr.Contains(key)), pageindex, pagesize, " createTime DESC ");
+              (x.buyuid.ToString().Contains(key) || x.buyaddr.Contains(key)) && (x.createTime>=dt1 && x.createTime<=dt2) , pageindex, pagesize, " createTime DESC ");
 
                 result.response = new
                 {
@@ -2047,5 +2081,245 @@ namespace DPE.Core.Controllers
             }
 
         }
+
+
+        #region 导出
+        [HttpPost]
+        [Route("OrderOutAllPut")]
+        public  IActionResult OrderOutAllPut()
+        {
+            try
+            {
+ 
+                var sWebRootFolder = Directory.GetCurrentDirectory() + @"//shopimg//downinfo//";
+                var nowdate =DateTime.Now;
+                Random rad = new Random();
+                int value = rad.Next(1000, 10000);
+                string sFileName = string.Format("{0}{1}{2}{3}_{4}.xlsx","订单列表详细",nowdate.Year.ToString(), nowdate.Month.ToString(), nowdate.Day.ToString(),value.ToString());
+                FileInfo file = new FileInfo(Path.Combine(sWebRootFolder, sFileName));
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                int pageindex = 1;
+                int pagesize = 999999;
+                string key = HttpContext.Request.Form["key"];
+                string stype = HttpContext.Request.Form["stype"];
+                string startdt = HttpContext.Request.Form["startdt"];
+                string enddt = HttpContext.Request.Form["enddt"];
+                using (ExcelPackage package = new ExcelPackage(file))
+                {
+                    if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+                    {
+                        key = "";
+                    }
+
+                    if (string.IsNullOrEmpty(stype) || string.IsNullOrWhiteSpace(stype))
+                    {
+                        stype = "";
+                    }
+
+                    DateTime dt1 = new DateTime();
+                    DateTime dt2 = new DateTime();
+
+
+                    if (string.IsNullOrEmpty(startdt) || string.IsNullOrWhiteSpace(startdt))
+                    {
+                        dt1 = Convert.ToDateTime("1999-01-01");
+                    }
+                    else
+                    {
+                        dt1 = Convert.ToDateTime(startdt);
+                    }
+
+
+                    if (string.IsNullOrEmpty(enddt) || string.IsNullOrWhiteSpace(enddt))
+                    {
+                        dt2 = DateTime.Now;
+                    }
+                    else
+                    {
+                        dt2 = Convert.ToDateTime(enddt);
+                    }
+                    var data = _ishopbuydetailserivces.QueryPage(x => x.status.ToString().Contains(stype) &&
+                  (x.buyuid.ToString().Contains(key) || x.buyaddr.Contains(key)) && (x.createTime >= dt1 && x.createTime <= dt2), pageindex, pagesize, " createTime DESC ");
+
+
+                    var datalist = (from item in data.Result.data
+                                    select new
+                                    {
+                                        item,
+                                        shopskudt = _ishopskudetailservices.QueryById(item.shopid).Result,
+                                        shopsku = _ishopskuservices.QueryById(_ishopskudetailservices.QueryById(item.shopid).Result.skuid).Result,
+                                        shopinfo = _ishoplistservices.QueryById(_ishopskuservices.QueryById(_ishopskudetailservices.QueryById(item.shopid).Result.skuid).Result.shopid).Result
+                                    }).ToList();
+
+                    // 添加worksheet
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("worksheet");
+                    //添加头
+                    worksheet.Cells[1, 1].Value = "编号";
+                    worksheet.Cells[1, 2].Value = "购买者";
+                    worksheet.Cells[1, 3].Value = "购买订单号";
+                    worksheet.Cells[1, 4].Value = "购买商品";
+                    worksheet.Cells[1, 5].Value = "订单类型";
+                    worksheet.Cells[1, 6].Value = "商品规格";
+                    worksheet.Cells[1, 7].Value = "商品尺码";
+                    worksheet.Cells[1, 8].Value = "购买数量";
+                    worksheet.Cells[1, 9].Value = "购买价格";
+                    worksheet.Cells[1, 10].Value = "购买状态";
+                    worksheet.Cells[1, 11].Value = "购买名";
+                    worksheet.Cells[1, 12].Value = "手机";
+                    worksheet.Cells[1, 13].Value = "地址";
+                    worksheet.Cells[1, 14].Value = "快递单号";
+                    worksheet.Cells[1, 15].Value = "备注";
+                    worksheet.Cells[1, 16].Value = "购买时间";
+
+
+                    for (int i = 0; i < datalist.Count(); i++) 
+                    {
+                        int j = i + 2;
+                        worksheet.Cells[j, 1].Value = datalist[i].item.id;
+                        worksheet.Cells[j, 2].Value = datalist[i].item.buyuid;
+                        worksheet.Cells[j, 3].Value = datalist[i].item.shopordernumber;
+                        worksheet.Cells[j, 4].Value = datalist[i].shopinfo.pName;
+                        worksheet.Cells[j, 5].Value = datalist[i].shopinfo.ptype;
+                        worksheet.Cells[j, 6].Value = datalist[i].shopsku.skuname;
+                        worksheet.Cells[j, 7].Value = datalist[i].shopskudt.detailname;
+                        worksheet.Cells[j, 8].Value = datalist[i].item.buyNum;
+                        worksheet.Cells[j, 9].Value = datalist[i].item.price;
+                        var tmps = "";
+                        // 未发货 配送中 确认收货 己完成
+                        int status =Convert.ToInt32(datalist[i].item.status);
+                        if (status == 1)
+                        {
+                            tmps = "未发货";
+                        }
+                        else if (status == 2)
+                        {
+                            tmps = "配送中";
+                        }
+                        else if (status == 3)
+                        {
+                            tmps = "确认收货";
+                        }
+                        else
+                        {
+                            tmps = "己完成";
+                        }
+                        worksheet.Cells[j, 10].Value = tmps;
+                        worksheet.Cells[j, 11].Value = datalist[i].item.buyname;
+                        worksheet.Cells[j, 12].Value = datalist[i].item.buyphone;
+                        worksheet.Cells[j, 13].Value = datalist[i].item.buyaddr;
+                        worksheet.Cells[j, 14].Value = datalist[i].item.trackingnumber;
+                        worksheet.Cells[j, 15].Value = datalist[i].item.reamrk;
+                        worksheet.Cells[j, 16].Value = datalist[i].item.createTime.ToString("yyyy-MM-dd hh:mm:ss"); 
+                    }
+                    package.Save();
+                   _idownexcelrecordservices.Add(new DownExcelRecord() { downdate=DateTime.Now, downname=sFileName, isdelete=false, downtype="buyorder" } );
+                }
+                var returnFile = File(sFileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                returnFile.FileDownloadName = sFileName;
+                
+                return returnFile;
+            
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
+
+
+        [HttpPost]
+        [Route("GetDownExcelList")]
+        public async Task<MessageModel<dynamic>> GetDownExcelList()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+                int pageindex = Convert.ToInt32(HttpContext.Request.Form["pageindex"]);
+                int pagesize = Convert.ToInt32(HttpContext.Request.Form["pagesize"]);
+                string key = HttpContext.Request.Form["key"];
+
+                if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+                {
+                    key = "";
+                }
+                pagesize = pagesize == 0 ? 20 : pagesize;
+                pageindex = pageindex == 0 ? 1 : pageindex;
+                var data = await _idownexcelrecordservices.QueryPage(x =>
+              (x.downname.ToString().Contains(key) || x.downtype.Contains(key)), pageindex, pagesize, " id DESC ");
+
+                result.response = new
+                {
+                    dataCount = data.dataCount,
+                    page = data.page,
+                    pageCount = data.pageCount,
+                    data = data.data
+                };
+                result.code = 200;
+                result.success = true;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("DeleteDownExcelList")]
+        public async Task<MessageModel<dynamic>> DeleteDownExcelList()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+                string id = HttpContext.Request.Form["id"];
+
+                if (!string.IsNullOrEmpty(id)) 
+                {
+                    var downmodel =await _idownexcelrecordservices.QueryById(id);
+                    var sWebRootFolder = Directory.GetCurrentDirectory() + @"//shopimg//downinfo//"+ downmodel.downname;
+
+                    if (System.IO.File.Exists(Path.GetFullPath(sWebRootFolder)))
+                    {
+                        System.IO.File.Delete(Path.GetFullPath(sWebRootFolder));
+                    }
+                    await _idownexcelrecordservices.Delete(downmodel);
+                }
+                result.code = 0;
+                result.success = true;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+        }
+
+        #endregion
+
     }
 }

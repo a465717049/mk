@@ -51,14 +51,17 @@
         </el-form-item>
         <el-form-item label="商品图片" >
         <el-input v-model="Formtid.pIcon" disabled auto-complete="off"></el-input>
+        <img v-if="shoptmpimg" :src="getimgurl(shoptmpimg)" height="128" width="128" />
         <div class="Thisform">
       <el-form ref="form" :model="form" label-width="80px">
           <input type="file" @change="getFile($event)">
       </el-form>
+        
     </div>
         </el-form-item>
       <el-form-item label="商品详情" >
       <el-input v-model="Formtid.pDetailIcon" disabled auto-complete="off"></el-input>
+      <img  v-if="shopdetailtmpimg" :src="getimgurl(shopdetailtmpimg)" height="128" width="128" />
       <div class="Thisform">
       <el-form ref="detailform" :model="detailform" label-width="80px">
       <input type="file" @change="getdetilFile($event)">
@@ -123,6 +126,7 @@
         </el-form-item>
         <el-form-item label="明细图片" >
         <el-input v-model="Formadddt.detailicon" disabled auto-complete="off"></el-input>
+        <img  v-if="shopskudttmpimg" :src="getimgurl(shopskudttmpimg)" height="128" width="128" />
         <div class="Thisform">
       <el-form ref="skudtform" :model="skudtform" label-width="80px">
           <input type="file" @change="getskudtFile($event)">
@@ -154,6 +158,7 @@
         
         <el-form-item label="sku图片" >
         <el-input v-model="Formadd.skuIcon" disabled auto-complete="off"></el-input>
+          <img v-if="shopskutmpimg" :src="getimgurl(shopskutmpimg)"  height="128" width="128" />
         <div class="Thisform">
         <el-form ref="skuform" :model="skuform" label-width="80px">
         <input type="file" @change="getskuFile($event)">
@@ -235,7 +240,8 @@ import {
   ChangeOrdersweb,GetShopListMyweb,
   DeleteShopListMyweb,AddShopListMyweb,uploadPicture,
   uploadPictureDetail,GetShopSkuInfoMyweb,DeleteSkudetailInfoMyweb,DeleteSkuInfoMyweb,
-  uploadPictureSkuDetail ,AddSkuMyweb ,AddSkuDetailMyweb,uploadPictureSku
+  uploadPictureSkuDetail ,AddSkuMyweb ,AddSkuDetailMyweb,uploadPictureSku,
+  configimgurl 
 } from "../../api/api";
 import { getButtonList } from "../../promissionRouter";
 import Toolbar from "../../components/Toolbar";
@@ -245,9 +251,14 @@ export default {
   data() {
     return {
       statusvalue:0,
+      shoptmpimg:"",
+      shopdetailtmpimg:"",
+      shopskutmpimg:"",
+      shopskudttmpimg:"",
+      
      //推荐
-     addskuFormVisible:false,
-     addskudtFormVisible:false,
+      addskuFormVisible:false,
+      addskudtFormVisible:false,
       tidFormVisible: false,
       tidLoading: false,
       form: {},
@@ -318,6 +329,16 @@ export default {
     };
   },
   methods: {
+    getimgurl(imgurl)
+    {   
+    if(imgurl.length<200)
+    {
+    return configimgurl+imgurl;
+    }else
+    {
+    return imgurl;
+    }
+    },
     addskuinfo()
     {
         this.Formadd.id=0;
@@ -325,6 +346,7 @@ export default {
         this.Formadd.skuIcon='';
         this.Formadd.skuname='';
         this.Formadd.skudesc='';
+        this.shopskutmpimg='';
         this.addskuFormVisible=true;
     },
     addskudt()
@@ -337,15 +359,18 @@ export default {
        this.Formadddt.detailicon='';
        this.Formadddt.detailprice=0;
        this.Formadddt.skudetailfile='';
+       this.shopskudttmpimg='';
     },
     editsku(model)
-    {
-       this.Formadd=model;
+    { 
+      this.Formadd=model;
+      this.shopskutmpimg=model.skuIcon;
       this.addskuFormVisible=true;
     },
     editskudtinfo(model)
     {
       this.Formadddt=model;
+      this.shopskudttmpimg=model.detailicon;
       this.addskudtFormVisible=true;
     },
     deleskudtinfo(dtid)
@@ -409,6 +434,7 @@ export default {
         return;
       } 
        this.skuFormVisible=true;
+       
        this.listLoading = true;
       //NProgress.start();
       GetShopSkuInfoMyweb({id:rows.id}).then((res) => {
@@ -420,20 +446,47 @@ export default {
     },
     getFile(event) {
       this.file = event.target.files[0];
-        console.log(this.file)
+
+        let _this=this;
+        if (!event || !window.FileReader) return  
+        let reader = new FileReader()
+        reader.readAsDataURL(this.file)
+        reader.onloadend = function () {
+        _this.shoptmpimg=this.result;
+        }
     },
     getdetilFile(event) {
      this.detailfile = event.target.files[0];
-     console.log(this.detailfile)
+      let _this=this;
+        if (!event || !window.FileReader) return  
+        let reader = new FileReader()
+        reader.readAsDataURL(this.detailfile)
+        reader.onloadend = function () {
+        _this.shopdetailtmpimg=this.result;
+        }
     },
     getskudtFile(event) {
       this.skudetailfile = event.target.files[0];
       console.log(this.skudetailfile )
+       let _this=this;
+        if (!event || !window.FileReader) return  
+        let reader = new FileReader()
+        reader.readAsDataURL(this.skudetailfile)
+        reader.onloadend = function () {
+        _this.shopskudttmpimg=this.result;
+        }
     },
     getskuFile(event)
     {
      this.skufile = event.target.files[0];
        console.log(this.skufile )
+        let _this=this;
+        if (!event || !window.FileReader) return  
+        let reader = new FileReader()
+        reader.readAsDataURL(this.skufile)
+        reader.onloadend = function () {
+        _this.shopskutmpimg=this.result;
+        }
     },
      onSubmit() {
       let that = this;
@@ -639,7 +692,9 @@ export default {
        this.Formtid.Shopgroup=rows.Shopgroup;
        this.Formtid.pDetailIcon=rows.pDetailIcon;
        this.levelFormVisible=true;
-     
+
+       this.shoptmpimg=rows.pIcon;
+       this.shopdetailtmpimg=rows.pDetailIcon;
     },
       deleteshop(index, row) {
       let rows = this.currentRow;
@@ -691,6 +746,8 @@ export default {
         this.Formtid.ptype=0;
         this.Formtid.priceType=1;
         this.Formtid.Shopgroup=1;
+        this.shoptmpimg="";
+        this.shopdetailtmpimg="";
         this.levelFormVisible=true;
     },
     handleCurrentChange(val) {

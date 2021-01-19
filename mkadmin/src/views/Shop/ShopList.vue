@@ -1,7 +1,37 @@
 <template>
   <section>
     <!--工具条-->
-    <toolbar :buttonList="buttonList" @callFunction="callFunction"></toolbar>
+    
+    <toolbar :buttonList="buttonList" @callFunction="callFunction">
+    </toolbar>
+
+   <el-col  :span="24" class="toolbar" style="padding-bottom: 0px;">
+    <el-form :inline="true" >
+    <el-form-item>
+       <el-select v-model="cktype" placeholder="订单状态">
+      <el-option label="全部状态" value="">全部状态</el-option>
+      <el-option label="未发货" value="1">未发货</el-option>
+      <el-option  label="配送中" value="2">配送中</el-option>
+      <el-option  label="确认收货" value="3">确认收货</el-option>
+      <el-option label="己完成" value="4">己完成</el-option>
+        </el-select>
+      </el-form-item>
+       <!--   <el-form-item>
+       <el-select v-model="ordertype" placeholder="订单类型">
+      <el-option label="全部类型" value="">全部类型</el-option>
+      <el-option label="普通商品" value="0">普通商品</el-option>
+      <el-option  label="复购商品" value="1">复购商品</el-option>
+        </el-select>
+      </el-form-item> -->
+      <el-form-item>
+        <el-input type="date" v-model="startdate"></el-input> 
+      </el-form-item>
+        <el-form-item>
+      <el-input type="date" v-model="enddate"></el-input>
+      </el-form-item>
+    </el-form>
+  </el-col>
+       
 
     <!--列表-->
     <el-table :data="users" highlight-current-row @current-change="selectCurrentRow" v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
@@ -16,6 +46,8 @@
       <el-table-column prop="item.shopordernumber" label="购买订单号" width="" sortable>
       </el-table-column>
         <el-table-column prop="shopinfo.pName" label="购买商品" width="" sortable>
+      </el-table-column>
+      <el-table-column prop="shopinfo.ptype" label="订单类型" :formatter="formatptype" width="" sortable>
       </el-table-column>
         <el-table-column prop="shopsku.skuname" label="商品规格" width="" sortable>
       </el-table-column>
@@ -77,6 +109,29 @@
       </div>
     </el-dialog>
 
+
+     <!--导出记录-->
+      <el-dialog title="导出记录" :visible.sync="outinfoVisible" v-model="outinfoVisible" :close-on-click-modal="false">
+      <el-button type="primary" @click="sumbitoutput" >新增当前查询记录</el-button>
+      <el-table :data="downinfo" highlight-current-row v-loading="listLoading" style="width: 100%;">
+      <el-table-column prop="id" label="编号" width="80" sortable>
+      </el-table-column>
+      <el-table-column prop="downname" label="下载名称" width="" sortable>
+      </el-table-column>
+      <el-table-column prop="downdate" label="下载时间" width="" sortable>
+      </el-table-column>
+      <el-table-column label="操作" width="" >
+      <el-row class="edita" slot-scope="downinfo">  
+      <a href="#" @click="downexcel(downinfo.row.downname)">下载</a>   
+      <a style="margin-left:20px" href="#" @click="deleteexcel(downinfo.row.id)">删除</a>
+      </el-row> 
+      </el-table-column>
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+      <el-button @click.native="outinfoVisible = false">关闭</el-button>
+      </div>
+      </el-dialog>
+
   </section>
 </template>
 
@@ -85,7 +140,7 @@ import util from "../../../util/date";
 import {
   GetEPUserSell,
   testapi,
-  GetAdminBuyShopList ,AddTruckOrdersweb, ChangeOrdersweb
+  GetAdminBuyShopList ,AddTruckOrdersweb, ChangeOrdersweb,OrderOutAllPut,GetDownExcelList,dowmexcel,DeleteDownExcelList
 } from "../../api/api";
 import { getButtonList } from "../../promissionRouter";
 import Toolbar from "../../components/Toolbar";
@@ -94,7 +149,18 @@ export default {
   components: { Toolbar },
   data() {
     return {
+      downinfo:
+      [{
+      id:0,
+      downname:'',
+      downdate:'',
+      }],
+      outinfoVisible:false,
+      cktype:"",
+      startdate:"",
+      enddate:"", 
       statusvalue:0,
+      ordertype:"",
      formatStatus: function (row, column) {
        var tmps="";
        // 未发货 配送中 确认收货 己完成
@@ -110,6 +176,17 @@ export default {
        }else
        {
           tmps="己完成";
+       }
+      return tmps;
+    },
+    formatptype: function (row, column) {
+       var tmps="";
+       if(row.shopinfo.ptype ==1)
+       {
+         tmps="复购商品";
+       }else
+       {
+          tmps="普通商品";
        }
       return tmps;
     },
@@ -145,6 +222,82 @@ export default {
     };
   },
   methods: {
+     downexcel(thisurl)
+     {
+      window.open(dowmexcel+thisurl)
+     }, deleteexcel(thisid)
+     {
+        this.$confirm("确认删除吗？", "提示", {}).then(() => {
+
+            DeleteDownExcelList({id:thisid}).then((res) => {
+              if (res.success) {
+                this.tidFormVisible = false;
+                this.$message({
+                  message: "操作成功",
+                  type: "success",
+                });
+                this.getorderoutput();
+              } else {
+                this.$message({
+                  message: "操作失败请稍后再试！",
+                  type: "error",
+                });
+              }
+            });
+          });
+
+     },
+    orderoutput()
+    {
+      this.outinfoVisible=true;
+      this.getorderoutput();
+     },
+     getorderoutput()
+     {
+
+        let para = {
+        pageSize: 20,
+        pageIndex: 1,
+        key: "",
+      };
+      //NProgress.start();
+      GetDownExcelList(para).then((res) => {
+        this.downinfo=res.response.data;
+        
+        //NProgress.done();
+      });
+     },
+     sumbitoutput()
+     {
+        let para = {
+        pageSize: 20,
+        pageIndex: this.page,
+        stype: this.cktype,
+        startdt:this.startdate,
+        enddt:this.enddate,
+        ordertype:this.ordertype,
+      };
+        this.listLoading = true;
+        OrderOutAllPut(para).then((res) => {
+        this.getorderoutput();
+        this.listLoading = false;
+        this.$message({
+        message: "操作成功",
+        type: "success",
+        });
+        });
+     },
+      setQueryConfig (queryConfig)
+      {
+      var _str = "?";
+      for(var o in queryConfig){
+      if(queryConfig[o] != -1){
+      _str += o + "=" + queryConfig[o] + "&";
+      }
+      }
+      var _str = _str.substring(0, _str.length-1);
+      return _str;
+      },
       tidSubmit: function () {
       this.$refs.Formtid.validate((valid) => {
         if (valid) {
@@ -249,7 +402,10 @@ export default {
         type: 1,
         pageSize: 20,
         pageIndex: this.page,
-        cktype: "",
+        stype: this.cktype,
+        startdt:this.startdate,
+        enddt:this.enddate,
+        ordertype:this.ordertype,
       };
       this.listLoading = true;
       //NProgress.start();
@@ -265,7 +421,7 @@ export default {
     },
   },
   mounted() {
-    //this.getUsers();
+    // this.getUsers();
     let routers = window.localStorage.router
       ? JSON.parse(window.localStorage.router)
       : [];

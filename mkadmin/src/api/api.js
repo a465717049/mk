@@ -7,10 +7,12 @@ import Vue from 'vue';
 
 import applicationUserManager from "../Auth/applicationusermanager";
 
-let base = 'https://api.a8dog.top'; //'https://api.snptw.cn' https://api.a8dog.top;
+let base = 'http://localhost:8083'; //'https://api.snptw.cn' https://api.a8dog.top;
+
 // 如果是IIS部署，用这个，因为 IIS 只能是 CORS 跨域，不能代理
 // let base = process.env.NODE_ENV=="production"? 'http://localhost:8081':'';
-
+export const configimgurl = 'http://localhost:8083/shopimg/';
+export const dowmexcel = 'http://localhost:8083/shopimg/downinfo/';
 
 // 请求延时
 axios.defaults.timeout = 20000
@@ -455,6 +457,16 @@ export const GetOpenShopMyweb = params => {
     return axios.post(`${base}/api/Shop/GetOpenShopMyweb`, qs.stringify(params)).then(res => res.data);
 };
 
+export const OrderOutAllPut = params => {
+    return axios.post(`${base}/api/Shop/OrderOutAllPut`, qs.stringify(params)).then(res => res.data);
+};
+
+export const GetDownExcelList = params => {
+    return axios.post(`${base}/api/Shop/GetDownExcelList`, qs.stringify(params)).then(res => res.data);
+};
+export const DeleteDownExcelList = params => {
+    return axios.post(`${base}/api/Shop/DeleteDownExcelList`, qs.stringify(params)).then(res => res.data);
+};
 
 //adminResetidcard
 export const adminResetidcard = params => {

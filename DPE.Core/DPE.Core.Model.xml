@@ -74,6 +74,11 @@
             
             </summary>
         </member>
+        <member name="T:DPE.Core.Model.Models.DownExcelRecord">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:DPE.Core.Model.Models.DPE">
             <summary>
             
