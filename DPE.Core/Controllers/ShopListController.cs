@@ -1041,7 +1041,7 @@ namespace DPE.Core.Controllers
             MessageModel<dynamic> result = new MessageModel<dynamic>();
             try
             {
-                var addshop = await _ishoppingcartserivces.Query(x => x.id == shopid && x.uid == _user.ID);
+                var addshop = await _ishoppingcartserivces.Query(x => x.shopid == shopid && x.uid == _user.ID);
                 if (addshop.Count() > 0)
                 {
                     var model = addshop.First();
@@ -2259,9 +2259,9 @@ namespace DPE.Core.Controllers
                 result.response = new
                 {
                     dataCount = data.dataCount,
-                    page = data.page,
+                    page = data.page,   
                     pageCount = data.pageCount,
-                    data = data.data
+                    data = data.data    
                 };
                 result.code = 200;
                 result.success = true;
@@ -2279,7 +2279,7 @@ namespace DPE.Core.Controllers
 
 
         [HttpPost]
-        [Route("DeleteDownExcelList")]
+        [Route("DeleteDownExcelList")]  
         public async Task<MessageModel<dynamic>> DeleteDownExcelList()
         {
 

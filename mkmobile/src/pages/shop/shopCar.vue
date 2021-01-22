@@ -23,8 +23,8 @@
               <van-stepper
                 v-model="key.shopnum"
                 min="0"
-                @plus="onPlus(key.id,key.shopdetail.ptype)"
-                @minus="onMinus(key.id,key.shopnum,key.shopdetail.ptype)"
+                @plus="onPlus(key.shopsku.id,key.shopdetail.ptype)"
+                @minus="onMinus(key.shopsku.id,key.shopnum,key.shopdetail.ptype)"
                 class="font42"
               />
             </template>
@@ -316,6 +316,7 @@ export default {
     }
   },
   created () {
+
     this.TogetUserInfo()
     this.getshopcartnum()
     http(GetShopaddr, null, (json) => {
