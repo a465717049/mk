@@ -694,10 +694,10 @@ export default {
             padding: 0 20px;
             .goodsImg{
               padding: 0;
-              margin-top: -14px;
-              margin-left: -21px;
+              margin-top: -10px;
+              margin-left: -20px;
               width: 96px;
-              height: 96px;
+              height: 94px;
             }
             .goodsInfo{
               font-size: 26px;
