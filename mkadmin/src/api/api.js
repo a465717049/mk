@@ -11,7 +11,7 @@ let base = 'http://localhost:8083'; //'https://api.snptw.cn' https://api.a8dog.t
 
 // 如果是IIS部署，用这个，因为 IIS 只能是 CORS 跨域，不能代理
 // let base = process.env.NODE_ENV=="production"? 'http://localhost:8081':'';
-export const configimgurl = 'http://localhost:8083/shopimg/';
+export const configimgurl = 'https://api.a8dog.top/shopimg/';
 export const dowmexcel = 'http://localhost:8083/shopimg/downinfo/';
 
 // 请求延时
@@ -570,12 +570,20 @@ export const AddSkuDetailMyweb = params => {
 export const AddSkuMyweb = params => {
     return axios.post(`${base}/api/Shop/AddSkuMyweb`, qs.stringify(params)).then(res => res.data);
 };
+export const AddSkuAndDetail = params => {
+    return axios.post(`${base}/api/Shop/AddSkuAndDetail`, qs.stringify(params)).then(res => res.data);
+};
+
 export const uploadPictureSkuDetail = params => {
     return axios.post(`${base}/api/Shop/uploadPictureSkuDetail`, params).then(res => res.data);
 };
 export const uploadPictureSku = params => {
     return axios.post(`${base}/api/Shop/uploadPictureSku`, params).then(res => res.data);
 };
+export const uploadShopdetialexcel = params => {
+    return axios.post(`${base}/api/Shop/uploadShopdetialexcel`, params).then(res => res.data);
+};
+
 
 export const AddShopListMyweb = params => {
     return axios.post(`${base}/api/Shop/AddShopListMyweb`, qs.stringify(params)).then(res => res.data);
