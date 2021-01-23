@@ -218,7 +218,7 @@ export default {
           })
          this.skudtList = [ { itemName: '选择尺码',  goods:tmpa}]
          this.selectdtindex(0,tmpa[0])
-        this.isfig=false;
+         this.isfig=false;
         }
       })
     },
@@ -297,7 +297,6 @@ export default {
       })
     },
     addshop () {
-      
       if(this.skudetailvalue==0)
       {
         this.tips="请选择商品";
@@ -336,6 +335,7 @@ export default {
     }
   },
   mounted () {
+        console.log(ScrollRefresh)
     // this.scrollInit()
   }
 }
