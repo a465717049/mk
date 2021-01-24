@@ -117,7 +117,7 @@ namespace DPE.Core.Controllers
                 role.Add(new ShopRole() { uId = _user.ID, shopRoleId = 1 });
             }
             var roleid = role.Select(x => x.shopRoleId);
-            var spinfo = await _ishoplistservices.Query(x => x.ptype == ptype && roleid.Contains(x.Shopgroup.Value) && x.isDelete == false) ;
+            var spinfo = await _ishoplistservices.Query(x => x.ptype == ptype && roleid.Contains(x.Shopgroup.Value) && x.isDelete == false && x.isgrounding) ;
             return new MessageModel<ShopListViewModels>()
             {
                 success = true,
@@ -1934,7 +1934,6 @@ namespace DPE.Core.Controllers
                                 strPath = ss + @"//shopimg//skuimg_" + id + ".png";
                                 StreamHelp.StreamToFile(text, strPath);
                             }
-
                         }
 
                     }
@@ -1956,6 +1955,54 @@ namespace DPE.Core.Controllers
 
         }
 
+
+
+        [HttpPost]
+        [Route("UpdateGrounding")]
+        public async Task<MessageModel<dynamic>> UpdateGrounding()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+
+                long id = Convert.ToInt64(HttpContext.Request.Form["id"]);
+                var model =await _ishoplistservices.QueryById(id);
+                if (model != null) 
+                {
+                    if (model.isgrounding)
+                    {
+                        model.isgrounding = false;
+                    }
+                    else 
+                    {
+                        model.isgrounding = true;
+                    }
+                    await _ishoplistservices.Update(model);
+                }
+                
+                result.code = 200;
+                result.success = true;
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+
+
+        }
 
         [HttpPost]
         [Route("ApplyOpenShopMyweb")]

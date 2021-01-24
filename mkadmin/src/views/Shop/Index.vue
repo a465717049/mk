@@ -37,6 +37,14 @@
       </el-table-column> -->
          <el-table-column prop="createTime" label="创建时间" width="" sortable>
       </el-table-column>
+          <el-table-column label="操作" align="center" width="" >
+        <el-row class="edita" slot-scope="sholistinfo">  
+             <a href="#" @click="groundingshop(sholistinfo.row.id)">
+               <p v-if="sholistinfo.row.isgrounding">下架</p>
+                <p v-else>上架</p>	
+             </a>
+        </el-row>
+      </el-table-column>
     </el-table>
 
  <!--工具条-->
@@ -297,7 +305,7 @@ import {
   DeleteShopListMyweb,AddShopListMyweb,uploadPicture,
   uploadPictureDetail,GetShopSkuInfoMyweb,DeleteSkudetailInfoMyweb,DeleteSkuInfoMyweb,
   uploadPictureSkuDetail ,AddSkuMyweb ,AddSkuDetailMyweb,uploadPictureSku,
-  configimgurl ,AddSkuAndDetail
+  configimgurl ,AddSkuAndDetail,UpdateGrounding
 } from "../../api/api";
 import { getButtonList } from "../../promissionRouter";
 import Toolbar from "../../components/Toolbar";
@@ -390,6 +398,26 @@ export default {
     };
   },
   methods: {
+    groundingshop(thisid)
+    {
+        this.$confirm("确认上下架该商品吗？", "提示", {}).then(() => {
+            UpdateGrounding({id:thisid}).then((res) => {
+              if (res.success) {
+                this.tidFormVisible = false;
+                this.$message({
+                  message: "操作成功",
+                  type: "success",
+                });
+                  this.getUsers();
+              } else {
+                this.$message({
+                  message: res.msg,
+                  type: "error",
+                });
+              }
+            });
+          });
+    },
     getimgurl(imgurl)
     {   
     if(imgurl.length<200)
