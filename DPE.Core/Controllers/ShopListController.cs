@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using OfficeOpenXml;
 
 namespace DPE.Core.Controllers
@@ -116,7 +117,7 @@ namespace DPE.Core.Controllers
                 role.Add(new ShopRole() { uId = _user.ID, shopRoleId = 1 });
             }
             var roleid = role.Select(x => x.shopRoleId);
-            var spinfo = await _ishoplistservices.Query(x => x.ptype == ptype && roleid.Contains(x.Shopgroup.Value) && x.isDelete == false) ;
+            var spinfo = await _ishoplistservices.Query(x => x.ptype == ptype && roleid.Contains(x.Shopgroup.Value) && x.isDelete == false && x.isgrounding) ;
             return new MessageModel<ShopListViewModels>()
             {
                 success = true,
@@ -916,11 +917,11 @@ namespace DPE.Core.Controllers
 
                 if (string.IsNullOrEmpty(enddt) || string.IsNullOrWhiteSpace(enddt))
                 {
-                    dt2 = DateTime.Now;
+                    dt2 = DateTime.Now.AddDays(1);
                 }
                 else 
                 {
-                    dt2 = Convert.ToDateTime(enddt);
+                    dt2 = Convert.ToDateTime(enddt).AddDays(1);
                 }
 
 
@@ -1656,6 +1657,76 @@ namespace DPE.Core.Controllers
 
 
         [HttpPost]
+        [Route("AddSkuAndDetail")]
+        public async Task<MessageModel<dynamic>> AddSkuAndDetail()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+
+                List<ShopSku> skulist = new List<ShopSku>();
+                List<ShopSkuDetail> skudtlist = new List<ShopSkuDetail>();
+                string strskulist = string.IsNullOrEmpty(HttpContext.Request.Form["strskulist"]) ? "" : HttpContext.Request.Form["strskulist"].ToString();
+                string strskudtlist = string.IsNullOrEmpty(HttpContext.Request.Form["strskudtlist"]) ? "" : HttpContext.Request.Form["strskudtlist"].ToString();
+
+                List<int> resultnum = new List<int>();
+                List<int> resultdtnum = new List<int>();
+                if (!string.IsNullOrEmpty(strskulist))
+                {
+                    skulist = JsonConvert.DeserializeObject<List<ShopSku>>(strskulist);
+                    if (!string.IsNullOrEmpty(strskudtlist))
+                    {
+                        skudtlist = JsonConvert.DeserializeObject<List<ShopSkuDetail>>(strskudtlist);
+                    }
+                    foreach (ShopSku model in skulist)
+                    {
+                        model.createtime = DateTime.Now;
+                        int snum = await _ishopskuservices.Add(model);
+                        if (snum > 0)
+                        {
+                            resultnum.Add(snum);
+                            foreach (ShopSkuDetail modeldt in skudtlist)
+                            {
+                                modeldt.createtime = DateTime.Now;
+                                modeldt.skuid = snum;
+                                int numdt= await _ishopskudetailservices.Add(modeldt);
+                                if (numdt > 0) 
+                                {
+                                    resultdtnum.Add(numdt);
+                                }
+                            }
+                        }
+                    }
+
+                }
+                result.code = 200;
+                result.success = true;
+                result.response =new
+                { //resultnum resultdtnum
+                    resultnum,
+                    resultdtnum
+                };
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+        }
+
+
+        [HttpPost]
         [Route("uploadPicture")]
         public async Task<MessageModel<dynamic>> uploadPicture()
         {
@@ -1672,26 +1743,27 @@ namespace DPE.Core.Controllers
                 }
                 var ss = Directory.GetCurrentDirectory();
                 var files = HttpContext.Request.Form.Files;
-                int id =Convert.ToInt32(HttpContext.Request.Form["id"]);
-                if (files.Count>0)
+                var ids = HttpContext.Request.Form["id"].ToString().Split(',');
+                if (files.Count > 0)
                 {
                     using (HttpClient client = new HttpClient())
                     {
-
-                        var model = await _ishoplistservices.QueryById(id);
-                        model.pIcon = "shopimg_" + id + ".png";
-                       var resultz =  _ishoplistservices.Update(model);
-
-                        if (resultz.Result) 
+                        foreach (string modelid in ids)
                         {
-                            var text = HttpContext.Request.Form.Files[0].OpenReadStream();
-                            string strPath = "";
-                            strPath = ss + @"//shopimg//shopimg_" + id + ".png";
-                            StreamHelp.StreamToFile(text, strPath);
-                        }
-                  
+                            int id = Convert.ToInt32(modelid);
 
-                      
+                            var model = await _ishoplistservices.QueryById(id);
+                            model.pIcon = "shopimg_" + id + ".png";
+                            var resultz = _ishoplistservices.Update(model);
+
+                            if (resultz.Result)
+                            {
+                                var text = HttpContext.Request.Form.Files[0].OpenReadStream();
+                                string strPath = "";
+                                strPath = ss + @"//shopimg//shopimg_" + id + ".png";
+                                StreamHelp.StreamToFile(text, strPath);
+                            }
+                        }
                     }
                     //return "添加成功";
                 }
@@ -1728,21 +1800,25 @@ namespace DPE.Core.Controllers
                 }
                 var ss = Directory.GetCurrentDirectory();
                 var files = HttpContext.Request.Form.Files;
-                int id = Convert.ToInt32(HttpContext.Request.Form["id"]);
+                var ids = HttpContext.Request.Form["id"].ToString().Split(',');
                 if (files.Count > 0)
                 {
                     using (HttpClient client = new HttpClient())
                     {
-                        var model = await _ishoplistservices.QueryById(id);
-                        model.pDetailIcon = "shopdetailimg_" + id + ".png";
-                       var resultz=  _ishoplistservices.Update(model);
-                        if (resultz.Result)
+                        foreach (string modelid in ids)
                         {
-                            var text = HttpContext.Request.Form.Files[0].OpenReadStream();
-                            string strPath = "";
-                            strPath = ss + @"//shopimg//shopdetailimg_" + id + ".png";
-                            StreamHelp.StreamToFile(text, strPath);
+                            int id = Convert.ToInt32(modelid);
+                            var model = await _ishoplistservices.QueryById(id);
+                            model.pDetailIcon = "shopdetailimg_" + id + ".png";
+                            var resultz = _ishoplistservices.Update(model);
+                            if (resultz.Result)
+                            {
+                                var text = HttpContext.Request.Form.Files[0].OpenReadStream();
+                                string strPath = "";
+                                strPath = ss + @"//shopimg//shopdetailimg_" + id + ".png";
+                                StreamHelp.StreamToFile(text, strPath);
 
+                            }
                         }
 
                     }
@@ -1782,21 +1858,25 @@ namespace DPE.Core.Controllers
                 }
                 var ss = Directory.GetCurrentDirectory();
                 var files = HttpContext.Request.Form.Files;
-                int id = Convert.ToInt32(HttpContext.Request.Form["id"]);
+                var ids = HttpContext.Request.Form["id"].ToString().Split(',');
                 if (files.Count > 0)
                 {
                     using (HttpClient client = new HttpClient())
                     {
-                        var model = await _ishopskudetailservices.QueryById(id);
-                        model.detailicon = "skudetailimg_" + id + ".png";
-                        var resultz = _ishopskudetailservices.Update(model);
-                        if (resultz.Result)
+                        foreach (string modelid in ids) 
                         {
-                            var text = HttpContext.Request.Form.Files[0].OpenReadStream();
-                            string strPath = "";
-                            strPath = ss + @"//shopimg//skudetailimg_" + id + ".png";
-                            StreamHelp.StreamToFile(text, strPath);
+                            int id = Convert.ToInt32(modelid);
+                            var model = await _ishopskudetailservices.QueryById(id);
+                            model.detailicon = "skudetailimg_" + id + ".png";
+                            var resultz = _ishopskudetailservices.Update(model);
+                            if (resultz.Result)
+                            {
+                                var text = HttpContext.Request.Form.Files[0].OpenReadStream();
+                                string strPath = "";
+                                strPath = ss + @"//shopimg//skudetailimg_" + id + ".png";
+                                StreamHelp.StreamToFile(text, strPath);
 
+                            }
                         }
 
                     }
@@ -1835,21 +1915,25 @@ namespace DPE.Core.Controllers
                 }
                 var ss = Directory.GetCurrentDirectory();
                 var files = HttpContext.Request.Form.Files;
-                int id = Convert.ToInt32(HttpContext.Request.Form["id"]);
+
+                var ids = HttpContext.Request.Form["id"].ToString().Split(',');
                 if (files.Count > 0)
                 {
                     using (HttpClient client = new HttpClient())
                     {
-                        var model = await _ishopskuservices.QueryById(id);
-                        model.skuIcon = "skuimg_" + id + ".png";
-                        var resultz = _ishopskuservices.Update(model);
-                        if (resultz.Result)
+                        foreach (string modelid in ids) 
                         {
-                            var text = HttpContext.Request.Form.Files[0].OpenReadStream();
-                            string strPath = "";
-                            strPath = ss + @"//shopimg//skuimg_" + id + ".png";
-                            StreamHelp.StreamToFile(text, strPath);
-
+                            int id = Convert.ToInt32(modelid);
+                            var model = await _ishopskuservices.QueryById(id);
+                            model.skuIcon = "skuimg_" + id + ".png";
+                            var resultz = _ishopskuservices.Update(model);
+                            if (resultz.Result)
+                            {
+                                var text = HttpContext.Request.Form.Files[0].OpenReadStream();
+                                string strPath = "";
+                                strPath = ss + @"//shopimg//skuimg_" + id + ".png";
+                                StreamHelp.StreamToFile(text, strPath);
+                            }
                         }
 
                     }
@@ -1871,6 +1955,54 @@ namespace DPE.Core.Controllers
 
         }
 
+
+
+        [HttpPost]
+        [Route("UpdateGrounding")]
+        public async Task<MessageModel<dynamic>> UpdateGrounding()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+
+                long id = Convert.ToInt64(HttpContext.Request.Form["id"]);
+                var model =await _ishoplistservices.QueryById(id);
+                if (model != null) 
+                {
+                    if (model.isgrounding)
+                    {
+                        model.isgrounding = false;
+                    }
+                    else 
+                    {
+                        model.isgrounding = true;
+                    }
+                    await _ishoplistservices.Update(model);
+                }
+                
+                result.code = 200;
+                result.success = true;
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+
+
+        }
 
         [HttpPost]
         [Route("ApplyOpenShopMyweb")]
@@ -2154,62 +2286,167 @@ namespace DPE.Core.Controllers
                     // 添加worksheet
                     ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("worksheet");
                     //添加头
-                    worksheet.Cells[1, 1].Value = "编号";
-                    worksheet.Cells[1, 2].Value = "购买者";
-                    worksheet.Cells[1, 3].Value = "购买订单号";
-                    worksheet.Cells[1, 4].Value = "购买商品";
-                    worksheet.Cells[1, 5].Value = "订单类型";
-                    worksheet.Cells[1, 6].Value = "商品规格";
-                    worksheet.Cells[1, 7].Value = "商品尺码";
-                    worksheet.Cells[1, 8].Value = "购买数量";
-                    worksheet.Cells[1, 9].Value = "购买价格";
-                    worksheet.Cells[1, 10].Value = "购买状态";
-                    worksheet.Cells[1, 11].Value = "购买名";
-                    worksheet.Cells[1, 12].Value = "手机";
-                    worksheet.Cells[1, 13].Value = "地址";
-                    worksheet.Cells[1, 14].Value = "快递单号";
-                    worksheet.Cells[1, 15].Value = "备注";
-                    worksheet.Cells[1, 16].Value = "购买时间";
+                    //worksheet.Cells[1, 1].Value = "编号";
+                    //worksheet.Cells[1, 2].Value = "购买者";
+                    //worksheet.Cells[1, 3].Value = "购买订单号";
+                    //worksheet.Cells[1, 4].Value = "购买商品";
+                    //worksheet.Cells[1, 5].Value = "订单类型";
+                    //worksheet.Cells[1, 6].Value = "商品规格";
+                    //worksheet.Cells[1, 7].Value = "商品尺码";
+                    //worksheet.Cells[1, 8].Value = "购买数量";
+                    //worksheet.Cells[1, 9].Value = "购买价格";
+                    //worksheet.Cells[1, 10].Value = "购买状态";
+                    //worksheet.Cells[1, 11].Value = "购买名";
+                    //worksheet.Cells[1, 12].Value = "手机";
+                    //worksheet.Cells[1, 13].Value = "地址";
+                    //worksheet.Cells[1, 14].Value = "快递单号";
+                    //worksheet.Cells[1, 15].Value = "备注";
+                    //worksheet.Cells[1, 16].Value = "购买时间";
+
+                    // 店铺	平台单号	买家会员	支付金额	商品名称	商品代码	规格代码	规格名称	是否赠品	数量	价格	
+                    // 商品备注	运费	买家留言	收货人	联系电话	联系手机	收货地址	省	市	区	邮编	
+                    //    订单创建时间	订单付款时间	发货时间	物流单号	物流公司	卖家备注
+                    //    发票种类	发票类型	发票抬头	纳税人识别号	开户行	账号	地址	电话
+                    //    是否手机订单	是否货到付款	支付方式	支付交易号	真实姓名	身份证号	
+                    //    仓库名称	预计发货时间	预计送达时间	订单类型	是否分销商订单	业务员
+                    worksheet.Cells[1, 1].Value = "店铺";
+                    worksheet.Cells[1, 2].Value = "平台单号";
+                    worksheet.Cells[1, 3].Value = "买家会员";
+                    worksheet.Cells[1, 4].Value = "支付金额";
+                    worksheet.Cells[1, 5].Value = "商品名称";
+                    worksheet.Cells[1, 6].Value = "商品代码";
+                    worksheet.Cells[1, 7].Value = "规格代码";
+                    worksheet.Cells[1, 8].Value = "规格名称";
+                    worksheet.Cells[1, 9].Value = "是否赠品";
+                    worksheet.Cells[1, 10].Value = "数量";
+                    worksheet.Cells[1, 11].Value = "价格";
+                    worksheet.Cells[1, 12].Value = "商品备注";
+                    worksheet.Cells[1, 13].Value = "运费";
+                    worksheet.Cells[1, 14].Value = "买家留言";
+                    worksheet.Cells[1, 15].Value = "收货人";
+                    worksheet.Cells[1, 16].Value = "联系电话";
+                    worksheet.Cells[1, 17].Value = "联系手机";
+                    worksheet.Cells[1, 18].Value = "收货地址";
+                    worksheet.Cells[1, 19].Value = "省";
+                    worksheet.Cells[1, 20].Value = "市";
+                    worksheet.Cells[1, 21].Value = "区";
+                    worksheet.Cells[1, 22].Value = "邮编";
+                    worksheet.Cells[1, 23].Value = "订单创建时间";
+                    worksheet.Cells[1, 24].Value = "订单付款时间";
+                    worksheet.Cells[1, 25].Value = "发货时间";
+                    worksheet.Cells[1, 26].Value = "物流单号";
+                    worksheet.Cells[1, 27].Value = "物流公司";
+                    worksheet.Cells[1, 28].Value = "卖家备注";
+                    worksheet.Cells[1, 29].Value = "发票类型";
+                    worksheet.Cells[1, 30].Value = "发票抬头";
+                    worksheet.Cells[1, 31].Value = "纳税人识别号";
+                    worksheet.Cells[1, 32].Value = "账号";
+                    worksheet.Cells[1, 33].Value = "地址";
+                    worksheet.Cells[1, 34].Value = "电话";
+                    worksheet.Cells[1, 35].Value = "是否手机订单";
+                    worksheet.Cells[1, 36].Value = "是否货到付款";
+                    worksheet.Cells[1, 37].Value = "支付方式";
+                    worksheet.Cells[1, 38].Value = "支付交易号";
+                    worksheet.Cells[1, 39].Value = "真实姓名";
+                    worksheet.Cells[1, 40].Value = "身份证号";
+                    worksheet.Cells[1, 41].Value = "仓库名称";
+                    worksheet.Cells[1, 42].Value = "预计发货时间";
+                    worksheet.Cells[1, 43].Value = "预计送达时间";
+                    worksheet.Cells[1, 44].Value = "订单类型";
+                    worksheet.Cells[1, 45].Value = "是否分销商订单";
+                    worksheet.Cells[1, 46].Value = "业务员";
+
 
 
                     for (int i = 0; i < datalist.Count(); i++) 
                     {
                         int j = i + 2;
-                        worksheet.Cells[j, 1].Value = datalist[i].item.id;
-                        worksheet.Cells[j, 2].Value = datalist[i].item.buyuid;
-                        worksheet.Cells[j, 3].Value = datalist[i].item.shopordernumber;
-                        worksheet.Cells[j, 4].Value = datalist[i].shopinfo.pName;
-                        worksheet.Cells[j, 5].Value = datalist[i].shopinfo.ptype;
-                        worksheet.Cells[j, 6].Value = datalist[i].shopsku.skuname;
-                        worksheet.Cells[j, 7].Value = datalist[i].shopskudt.detailname;
-                        worksheet.Cells[j, 8].Value = datalist[i].item.buyNum;
-                        worksheet.Cells[j, 9].Value = datalist[i].item.price;
-                        var tmps = "";
-                        // 未发货 配送中 确认收货 己完成
-                        int status =Convert.ToInt32(datalist[i].item.status);
-                        if (status == 1)
-                        {
-                            tmps = "未发货";
-                        }
-                        else if (status == 2)
-                        {
-                            tmps = "配送中";
-                        }
-                        else if (status == 3)
-                        {
-                            tmps = "确认收货";
-                        }
-                        else
-                        {
-                            tmps = "己完成";
-                        }
-                        worksheet.Cells[j, 10].Value = tmps;
-                        worksheet.Cells[j, 11].Value = datalist[i].item.buyname;
-                        worksheet.Cells[j, 12].Value = datalist[i].item.buyphone;
-                        worksheet.Cells[j, 13].Value = datalist[i].item.buyaddr;
-                        worksheet.Cells[j, 14].Value = datalist[i].item.trackingnumber;
-                        worksheet.Cells[j, 15].Value = datalist[i].item.reamrk;
-                        worksheet.Cells[j, 16].Value = datalist[i].item.createTime.ToString("yyyy-MM-dd hh:mm:ss"); 
+                        //worksheet.Cells[j, 1].Value = datalist[i].item.id;
+                        //worksheet.Cells[j, 2].Value = datalist[i].item.buyuid;
+                        //worksheet.Cells[j, 3].Value = datalist[i].item.shopordernumber;
+                        //worksheet.Cells[j, 4].Value = datalist[i].shopinfo.pName;
+                        //worksheet.Cells[j, 5].Value = datalist[i].shopinfo.ptype;
+                        //worksheet.Cells[j, 6].Value = datalist[i].shopsku.skuname;
+                        //worksheet.Cells[j, 7].Value = datalist[i].shopskudt.detailname;
+                        //worksheet.Cells[j, 8].Value = datalist[i].item.buyNum;
+                        //worksheet.Cells[j, 9].Value = datalist[i].item.price;
+                        //var tmps = "";
+                        //// 未发货 配送中 确认收货 己完成
+                        //int status =Convert.ToInt32(datalist[i].item.status);
+                        //if (status == 1)
+                        //{
+                        //    tmps = "未发货";
+                        //}
+                        //else if (status == 2)
+                        //{
+                        //    tmps = "配送中";
+                        //}
+                        //else if (status == 3)
+                        //{
+                        //    tmps = "确认收货";
+                        //}
+                        //else
+                        //{
+                        //    tmps = "己完成";
+                        //}
+                        //worksheet.Cells[j, 10].Value = tmps;
+                        //worksheet.Cells[j, 11].Value = datalist[i].item.buyname;
+                        //worksheet.Cells[j, 12].Value = datalist[i].item.buyphone;
+                        //worksheet.Cells[j, 13].Value = datalist[i].item.buyaddr;
+                        //worksheet.Cells[j, 14].Value = datalist[i].item.trackingnumber;
+                        //worksheet.Cells[j, 15].Value = datalist[i].item.reamrk;
+                        //worksheet.Cells[j, 16].Value = datalist[i].item.createTime.ToString("yyyy-MM-dd hh:mm:ss");
+
+                        var shopskudt = _ishopskudetailservices.QueryById(datalist[i].item.shopid).Result;
+                        var user = _isysuserinfoservices.QueryById(datalist[i].item.buyuid).Result;
+                        var shopsku = _ishopskuservices.QueryById(_ishopskudetailservices.QueryById(datalist[i].item.shopid).Result.skuid).Result;
+                        var shopinfo = _ishoplistservices.QueryById(_ishopskuservices.QueryById(_ishopskudetailservices.QueryById(datalist[i].item.shopid).Result.skuid).Result.shopid).Result;
+                        worksheet.Cells[j, 1].Value = "摩奇猴";
+                        worksheet.Cells[j, 2].Value = datalist[i].item.shopordernumber;
+                        worksheet.Cells[j, 3].Value = datalist[i].item.buyuid;
+                        worksheet.Cells[j, 4].Value = datalist[i].item.price;
+                        worksheet.Cells[j, 5].Value = shopinfo.pName+"-"+shopsku.skuname+"-"+shopskudt.detailname;
+                        worksheet.Cells[j, 6].Value = shopinfo.id;
+                        worksheet.Cells[j, 7].Value = shopsku.skuname;
+                        worksheet.Cells[j, 8].Value = shopskudt.detailname;
+                        worksheet.Cells[j, 9].Value = shopskudt.detailprice == 0 ? "是" : "否";
+                        worksheet.Cells[j, 10].Value = datalist[i].item.buyNum;
+                        worksheet.Cells[j, 11].Value = datalist[i].item.price;
+                        worksheet.Cells[j, 12].Value = "";
+                        worksheet.Cells[j, 13].Value = "";
+                        worksheet.Cells[j, 14].Value = datalist[i].item.reamrk;
+                        worksheet.Cells[j, 15].Value = datalist[i].item.buyname;
+                        worksheet.Cells[j, 16].Value = datalist[i].item.buyphone;
+                        worksheet.Cells[j, 17].Value = datalist[i].item.buyphone;
+                        worksheet.Cells[j, 18].Value = datalist[i].item.buyaddr;
+                        worksheet.Cells[j, 19].Value = "";
+                        worksheet.Cells[j, 20].Value = "";
+                        worksheet.Cells[j, 21].Value = "";
+                        worksheet.Cells[j, 22].Value = "";
+                        worksheet.Cells[j, 23].Value = datalist[i].item.createTime.ToString("yyyy-MM-dd hh:mm:ss");
+                        worksheet.Cells[j, 24].Value = datalist[i].item.createTime.ToString("yyyy-MM-dd hh:mm:ss");
+                        worksheet.Cells[j, 25].Value = datalist[i].item.sendoutdate;
+                        worksheet.Cells[j, 26].Value = datalist[i].item.trackingnumber;
+                        worksheet.Cells[j, 27].Value = datalist[i].item.company;
+                        worksheet.Cells[j, 28].Value = datalist[i].item.reamrk;
+                        worksheet.Cells[j, 29].Value = "";
+                        worksheet.Cells[j, 30].Value = "";
+                        worksheet.Cells[j, 31].Value = "";
+                        worksheet.Cells[j, 32].Value = "";
+                        worksheet.Cells[j, 33].Value = "";
+                        worksheet.Cells[j, 34].Value = "";
+                        worksheet.Cells[j, 35].Value = "";
+                        worksheet.Cells[j, 36].Value = "";
+                        worksheet.Cells[j, 37].Value = "";
+                        worksheet.Cells[j, 38].Value = "";
+                        worksheet.Cells[j, 39].Value = user.uRealName;
+                        worksheet.Cells[j, 40].Value = "";
+                        worksheet.Cells[j, 41].Value = "";
+                        worksheet.Cells[j, 42].Value = "";
+                        worksheet.Cells[j, 43].Value = "";
+                        worksheet.Cells[j, 44].Value = shopinfo.ptype==1?"复购商品":"普通商品";
+                        worksheet.Cells[j, 45].Value = "";
+                        worksheet.Cells[j, 46].Value = "";
                     }
                     package.Save();
                    _idownexcelrecordservices.Add(new DownExcelRecord() { downdate=DateTime.Now, downname=sFileName, isdelete=false, downtype="buyorder" } );
@@ -2317,6 +2554,86 @@ namespace DPE.Core.Controllers
                 result.success = false;
                 return result;
             }
+        }
+
+        [HttpPost]
+        [Route("uploadShopdetialexcel")]
+        public async Task<MessageModel<dynamic>> uploadShopdetialexcel()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                if (_user.ID == 0)
+                {
+                    result.code = 10001;
+                    result.msg = "用户信息已过期，请重新登陆";
+                    result.success = false;
+                    return result;
+                }
+                var ss = Directory.GetCurrentDirectory();
+                var files = HttpContext.Request.Form.Files;
+                int resultnum = 0;
+                if (files.Count > 0)
+                {
+                    using (HttpClient client = new HttpClient())
+                    {
+                        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                        using (ExcelPackage package = new ExcelPackage(files[0].OpenReadStream()))
+                        {
+
+                            ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                            //2:平台单号   26 ：物流单号  27：物流公司   trackingnumber company
+                            int rowCount = worksheet.Dimension.Rows;
+                            int ColCount = worksheet.Dimension.Columns;
+                            if (rowCount > 1) 
+                            {
+                                for (int row = 2; row <= rowCount; row++)
+                                {
+                                    var ordernumber = worksheet.Cells[row, 2].Value;
+                                    var sendoutdate = worksheet.Cells[row, 25].Value;
+                                    var trackingnumber = worksheet.Cells[row, 26].Value;
+                                    var company = worksheet.Cells[row, 27].Value;
+                                    if (ordernumber != null && trackingnumber !=null && company!=null) 
+                                    {
+                                        var shopdetail = await _ishopbuydetailserivces.Query(x => x.shopordernumber.Equals(ordernumber.ToString()));
+                                        if (shopdetail.Count > 0) 
+                                        {
+                                            ShopBuyDetail model = shopdetail.First();
+                                            if (string.IsNullOrEmpty(model.trackingnumber) && model.status==1) 
+                                            {
+                                                model.trackingnumber = trackingnumber.ToString();
+                                                model.company = company.ToString();
+                                                model.sendoutdate = sendoutdate != null ? Convert.ToDateTime(sendoutdate) : DateTime.Now;
+                                                model.status = 5;
+                                                await _ishopbuydetailserivces.Update(model);
+                                                resultnum++;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
+                    //return "添加成功";
+                }
+                result.code = 200;
+                result.success = true;
+                result.msg = "更新" + resultnum + "条数据!";
+                result.response = resultnum;
+                return result;
+
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+
+
         }
 
         #endregion

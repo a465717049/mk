@@ -15,7 +15,9 @@ namespace DPE.Core.IServices
 	{
 		Task<UserInfo> GetUserInfo(long uid);
 
-		Task<PageModel<UserInfo>> GetAllUserInfo(int index, int pagesize,string key, string orderby);
+		Task<PageModel<UserInfo>> GetAllUserInfo(int index, int pagesize,string key,string utid,
+			string ulevel, string uhonur, string ustatus , string startdate , string enddate, string orderby);
+
 
 		Task<DataSet> GetSPSearchServic(string beginTime,string endTime);
 	}

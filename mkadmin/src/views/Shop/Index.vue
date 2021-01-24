@@ -13,10 +13,16 @@
       </el-table-column>
       <el-table-column prop="pDesc" label="商品描述" width="" sortable>
       </el-table-column>
-        <el-table-column prop="pIcon" label="商品图片" width="" sortable>
-      </el-table-column>
-         <el-table-column prop="pDetailIcon" label="商品详情图片" width="" sortable>
-      </el-table-column>
+  <el-table-column label="商品图片" align="center" min-width="100" width="" sortable>
+  　　　　<template slot-scope="data">
+  　　　　　　<img v-if="data.row.pIcon" :src="getimgurl(data.row.pIcon)" height="80" width="80" />
+  　　　　</template>
+  　      　</el-table-column>
+  <el-table-column label="商品详情图片" align="center" min-width="100" width="" sortable>
+  　　　　<template slot-scope="data">
+  　　　　　　<img v-if="data.row.pDetailIcon" :src="getimgurl(data.row.pDetailIcon)" height="80" width="80" />
+  　　　　</template> 
+  　      　</el-table-column>
        <el-table-column prop="pNum" label="数量" width="" sortable>
       </el-table-column>
        <el-table-column prop="price" label="价格" width="" sortable>
@@ -30,6 +36,14 @@
       <el-table-column prop="status" label="状态" width="" sortable>
       </el-table-column> -->
          <el-table-column prop="createTime" label="创建时间" width="" sortable>
+      </el-table-column>
+          <el-table-column label="操作" align="center" width="" >
+        <el-row class="edita" slot-scope="sholistinfo">  
+             <a href="#" @click="groundingshop(sholistinfo.row.id)">
+               <p v-if="sholistinfo.row.isgrounding">下架</p>
+                <p v-else>上架</p>	
+             </a>
+        </el-row>
       </el-table-column>
     </el-table>
 
@@ -141,7 +155,11 @@
     </el-dialog>
 
     <!--sku增加-->
-    <el-dialog title="sku" :visible.sync="addskuFormVisible" v-model="addskuFormVisible" :close-on-click-modal="false">
+    <el-dialog title="sku管理" :visible.sync="addskuFormVisible" v-model="addskuFormVisible" :close-on-click-modal="false">
+      <div v-if="addeditshowsku">
+      <el-button  @click="addskunamelist" >增加sku</el-button>
+      <el-button  @click="plusskunamelist" >删除sku</el-button>
+      </div>
       <el-form  label-width="80px" >
         <el-form-item label="id" hidden >
         <el-input v-model="Formadd.id" auto-complete="off"></el-input>
@@ -149,15 +167,21 @@
          <el-form-item label="shopid" hidden  >
         <el-input v-model="Formadd.shopid" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="sku名称" >
-        <el-input v-model="Formadd.skuname" auto-complete="off"></el-input>
+
+
+        <el-form-item label="sku名称" > <!--  Formadd.skuname  -->
+        <div v-if="addeditshowsku">
+          <el-input  v-for="(el,idx) in skunamelist" :key="idx" v-model="el.skuname" auto-complete="off" style="width:200px"></el-input>
+        </div>
+           <el-input  v-if="!addeditshowsku" v-model="Formadd.skuname" auto-complete="off" ></el-input>
         </el-form-item>
+
+
         <el-form-item label="sku描述" >
-        <el-input v-model="Formadd.skudesc" auto-complete="off"></el-input>
+        <el-input v-model="Formadd.skudesc" auto-complete="off" ></el-input>
         </el-form-item>
-        
         <el-form-item label="sku图片" >
-        <el-input v-model="Formadd.skuIcon" disabled auto-complete="off"></el-input>
+        <el-input v-model="Formadd.skuIcon" disabled auto-complete="off" ></el-input>
           <img v-if="shopskutmpimg" :src="getimgurl(shopskutmpimg)"  height="128" width="128" />
         <div class="Thisform">
         <el-form ref="skuform" :model="skuform" label-width="80px">
@@ -165,13 +189,53 @@
         </el-form>
         </div>
         </el-form-item>
-           </el-form>
+
+         <div v-if="addeditshowsku">
+         <el-button  @click="addskudtnamelist" >明细</el-button>
+          <div v-if="addskudtshow">
+          <el-button  @click="addskudtname" >增加明细</el-button>
+          <el-button  @click="plusskudtname" >删除明细</el-button>
+         <el-form  label-width="80px" >
+        <el-form-item label="id"  hidden>
+        <el-input v-model="Formadddt.id" auto-complete="off"></el-input>
+        </el-form-item>
+         <el-form-item label="skuid" hidden >
+        <el-input v-model="Formadddt.skuid" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="明细名称" >
+        <!--<el-input v-model="Formadddt.detailname" auto-complete="off"></el-input> -->
+         <el-input  v-for="(el,idx) in skunamedtlist" :key="idx" v-model="el.skudtname" auto-complete="off" style="width:200px"></el-input>
+        </el-form-item>
+        
+        <el-form-item label="明细描述" >
+        <el-input v-model="Formadddt.detaildesc" auto-complete="off"></el-input>
+        </el-form-item>
+            <el-form-item label="明细价格" >
+        <el-input v-model="Formadddt.detailprice" auto-complete="off"></el-input>
+        </el-form-item>
+         <el-form-item label="明细数量" >
+        <el-input v-model="Formadddt.detailnum" auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="明细图片" >
+        <el-input v-model="Formadddt.detailicon" disabled auto-complete="off"></el-input>
+        <img  v-if="shopskudttmpimg" :src="getimgurl(shopskudttmpimg)" height="128" width="128" />
+        <div class="Thisform">
+      <el-form ref="skudtform" :model="skudtform" label-width="80px">
+          <input type="file" @change="getskudtFile($event)">
+      </el-form>
+    </div>
+  </el-form-item>
+      </el-form>
+          </div>
+      
+      </div>
+        </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click.native="addskuFormVisible = false">取消</el-button>
         <el-button type="primary" @click.native="addskuSubmit" :loading="levelLoading">提交</el-button>
       </div>
-  
     </el-dialog>
+
 
     <el-dialog title="商品sku管理" :visible.sync="skuFormVisible" v-model="skuFormVisible" :close-on-click-modal="false">
      <el-button type="primary" @click="addskuinfo" >新增sku</el-button>
@@ -241,7 +305,7 @@ import {
   DeleteShopListMyweb,AddShopListMyweb,uploadPicture,
   uploadPictureDetail,GetShopSkuInfoMyweb,DeleteSkudetailInfoMyweb,DeleteSkuInfoMyweb,
   uploadPictureSkuDetail ,AddSkuMyweb ,AddSkuDetailMyweb,uploadPictureSku,
-  configimgurl 
+  configimgurl ,AddSkuAndDetail,UpdateGrounding
 } from "../../api/api";
 import { getButtonList } from "../../promissionRouter";
 import Toolbar from "../../components/Toolbar";
@@ -255,6 +319,10 @@ export default {
       shopdetailtmpimg:"",
       shopskutmpimg:"",
       shopskudttmpimg:"",
+
+      skunamelist:[{skuname:""}],
+      skunamedtlist:[{skudtname:""}],
+      addeditshowsku:false,
       
      //推荐
       addskuFormVisible:false,
@@ -302,6 +370,7 @@ export default {
         priceType: 1,
         Shopgroup: 1,
       },
+      addskudtshow:false,
       skuFormVisible:false,
       skudtFormVisible:false,
       levelFormVisible: false,
@@ -329,6 +398,26 @@ export default {
     };
   },
   methods: {
+    groundingshop(thisid)
+    {
+        this.$confirm("确认上下架该商品吗？", "提示", {}).then(() => {
+            UpdateGrounding({id:thisid}).then((res) => {
+              if (res.success) {
+                this.tidFormVisible = false;
+                this.$message({
+                  message: "操作成功",
+                  type: "success",
+                });
+                  this.getUsers();
+              } else {
+                this.$message({
+                  message: res.msg,
+                  type: "error",
+                });
+              }
+            });
+          });
+    },
     getimgurl(imgurl)
     {   
     if(imgurl.length<200)
@@ -348,6 +437,18 @@ export default {
         this.Formadd.skudesc='';
         this.shopskutmpimg='';
         this.addskuFormVisible=true;
+        this.addeditshowsku=true;
+        this.skunamelist=[{skuname:""}];
+        this.addskudtshow=false;
+    },
+    addskudtnamelist()
+    {
+      this.skunamedtlist= [{skudtname:""}];
+      this.Formadddt.detailname="";
+      this.Formadddt.detaildesc="";
+      this.Formadddt.detailprice=0;
+      this.Formadddt.detailnum=0;
+      if(this.addskudtshow)this.addskudtshow=false;else this.addskudtshow=true;
     },
     addskudt()
     {
@@ -366,6 +467,8 @@ export default {
       this.Formadd=model;
       this.shopskutmpimg=model.skuIcon;
       this.addskuFormVisible=true;
+      this.addeditshowsku=false;
+      this.addskudtshow=false;
     },
     editskudtinfo(model)
     {
@@ -496,7 +599,7 @@ export default {
       param.append("file", this.file);
       param.append("id", this.Formtid.id);
       uploadPicture(param).then((res) => {
-            //   this.files="";
+             this.file=""
             });
     },
      onSubmitdetail() {
@@ -507,8 +610,19 @@ export default {
       param.append("file", this.detailfile);
       param.append("id", this.Formtid.id);
       uploadPictureDetail(param).then((res) => {
-             // this.files="";
+              this.detailfile=""
             });
+    },
+    onSubmitdetaillist(numlist)
+    {
+      let that = this;
+      event.preventDefault();
+      let param = new FormData();
+      param.append("file", this.skudetailfile);
+      param.append("id", numlist);
+      uploadPictureSkuDetail(param).then((res) => {
+            this.skudetailfile=""
+      });
     },
     onskudtSubmit()
     {
@@ -520,7 +634,7 @@ export default {
       console.log(this.skudetailfile)
       console.log(this.Formadddt.id)
       uploadPictureSkuDetail(param).then((res) => {
-             
+               this.skudetailfile=""
       });
     },
      onskuSubmit()
@@ -531,7 +645,18 @@ export default {
       param.append("file", this.skufile);
       param.append("id", this.Formadd.id);
       uploadPictureSku(param).then((res) => {
-             
+             this.skufile=""
+      });
+    },
+     onskuSubmitlist(numlist)
+    {
+      let that = this;
+      event.preventDefault();
+      let param = new FormData();
+      param.append("file", this.skufile);
+      param.append("id", numlist);
+      uploadPictureSku(param).then((res) => {
+            this.skufile=""
       });
     },
     formatlv: function (row, column) {
@@ -602,9 +727,34 @@ export default {
         }
       });
     },
-    addskuSubmit:function()
+    addskunamelist()
     {
+      this.skunamelist.push({skuname:""});
+    },
+    plusskunamelist()
+    {
+      if(this.skunamelist.length>1)
+      {
+        this.skunamelist.splice(this.skunamelist.length-1,1)
+      }
+    },
+     addskudtname()
+    {
+      this.skunamedtlist.push({skudtname:""});
+    },
+    plusskudtname()
+    {
+      if(this.skunamedtlist.length>1)
+      {
+        this.skunamedtlist.splice(this.skunamedtlist.length-1,1)
+      }
+    },
+    addskuSubmit:function()
+    {  
         let _this=this;
+
+        if(!this.addeditshowsku)
+        {
         AddSkuMyweb(this.Formadd).then((res) => {
         if (res.success) {
         if(this.skufile)
@@ -625,6 +775,50 @@ export default {
         });
         }
         });
+        }else
+        {
+          var  tmpskulist = [];
+          this.skunamelist.forEach(element => {
+              var ss = Object.assign({},this.Formadd);
+              ss.skuname=element.skuname;
+              tmpskulist.push(ss);
+          });
+        var  tmpskudtlist = [];
+          if(this.addskudtshow)
+          {
+               this.skunamedtlist.forEach(element => {
+              var ss = Object.assign({},this.Formadddt);
+              ss.detailname=element.skudtname;
+              tmpskudtlist.push(ss);
+          });
+          }
+
+          AddSkuAndDetail({strskulist:JSON.stringify(tmpskulist) ,strskudtlist:JSON.stringify(tmpskudtlist)}).then((res) => {
+               if(res.success)
+               {
+                    if(this.skufile && res.response.resultnum.length>0)
+                    {
+                        this.onskuSubmitlist(res.response.resultnum);
+                    }
+                    if(this.skudetailfile && res.response.resultdtnum.length>0)
+                    {
+                        this.onSubmitdetaillist(res.response.resultdtnum);
+                    }
+                      let _this=this;
+                    setTimeout(function(){_this.editskuinfo(); _this.addskuFormVisible=false;},4000)
+               }
+            });
+          
+
+        this.$message({
+        message: "操作成功",
+        type: "success",
+        });
+      //  this.addskuFormVisible=false;
+       // this.editskuinfo();
+        }
+
+       
     },
     addskudtSubmit:function()
     {
