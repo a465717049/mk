@@ -10,8 +10,52 @@
       <div class="text item"><i class="el-icon-edit"></i>今天新增：{{dayinfo.daytotal}} </div>
 
     </el-card>
+
     <!--工具条-->
     <toolbar :buttonList="buttonList" @callFunction="callFunction"></toolbar>
+    
+   <el-col  :span="24" class="toolbar" style="padding-bottom: 0px;">
+    <el-form :inline="true" >
+      <el-form-item>
+      <el-select v-model="ustatus" placeholder="订单状态">
+      <el-option label="全部状态" value="">全部状态</el-option>
+      <el-option label="正常" value="0">正常</el-option>
+      <el-option label="锁定" value="1">锁定</el-option>
+      </el-select>
+      </el-form-item>  
+
+      <el-form-item>
+      <el-select v-model="ulevel" placeholder="选择职位">
+      <el-option label="全部职位" value=""></el-option>
+      <el-option label="会员" value="0"></el-option>
+      <el-option label="经理" value="1"></el-option>
+      <el-option label="总监" value="2"></el-option>
+      <el-option label="总裁" value="3"></el-option>
+      <el-option label="董事" value="4"></el-option>
+      <el-option label="合伙人" value="5"></el-option>
+      </el-select>
+      </el-form-item> 
+
+      <el-form-item>
+      <el-select v-model="uhonur" placeholder="选择等级">
+      <el-option label="全部等级" value=""></el-option>
+      <el-option label="初级会员" value="1"></el-option>
+      <el-option label="中级会员" value="2"></el-option>
+      <el-option label="高级会员" value="3"></el-option>
+      </el-select>
+      </el-form-item> 
+
+     <el-form-item>
+      <el-input type="text" placeholder="输入推荐人" v-model="ujid"></el-input>
+      </el-form-item>
+      <el-form-item> 
+        <el-input type="date" v-model="startdate"></el-input> 
+      </el-form-item>
+        <el-form-item>
+      <el-input type="date" v-model="enddate"></el-input>
+      </el-form-item>
+    </el-form>
+   </el-col>
 
     <!--列表-->
     <el-table :data="users" highlight-current-row @current-change="selectCurrentRow" v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
@@ -24,8 +68,6 @@
       <el-table-column prop="nickname" label="昵称" width="100" sortable>
       </el-table-column>
       <el-table-column prop="create_time" label="注册日期" width="150" sortable>
-      </el-table-column>
-      <el-table-column prop="ison" :formatter="formatSon" label="主/子" width="" sortable>
       </el-table-column>
       <el-table-column prop="lv_name" :formatter="formatlv" label="职位" width="" sortable>
       </el-table-column>
@@ -156,6 +198,12 @@ export default {
   components: { Toolbar },
   data() {
     return {
+      ujid:"",
+      ulevel:"",
+      uhonur:"",
+      ustatus:"",
+      startdate:"",
+      enddate:"",
       filters: {
         name: "",
       },
@@ -450,10 +498,17 @@ export default {
     },
     //获取Sell列表
     getUsers() {
+     // ujid ulevel uhonur ustatus startdate enddate
       let para = {
         pageindex: this.page,
         pagesize: 20,
         key: this.filters.name,
+        ujid:this.ujid,
+        ulevel:this.ulevel,
+        uhonur:this.uhonur,
+        ustatus:this.ustatus,
+        startdate:this.startdate,
+        enddate:this.enddate
       };
       this.listLoading = true;
       //NProgress.start();

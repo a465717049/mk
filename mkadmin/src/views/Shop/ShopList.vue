@@ -320,12 +320,16 @@ export default {
         enddt:this.enddate,
         ordertype:this.ordertype,
       };
-        this.listLoading = true;
+       // this.listLoading = true;
+        this.$message({
+        message: "已加入导出列表请稍后再来查看",
+        type: "success",
+        });
         OrderOutAllPut(para).then((res) => {
         this.getorderoutput();
         this.listLoading = false;
         this.$message({
-        message: "操作成功",
+        message: "导出成功",
         type: "success",
         });
         });

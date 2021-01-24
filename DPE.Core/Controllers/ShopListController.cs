@@ -917,11 +917,11 @@ namespace DPE.Core.Controllers
 
                 if (string.IsNullOrEmpty(enddt) || string.IsNullOrWhiteSpace(enddt))
                 {
-                    dt2 = DateTime.Now;
+                    dt2 = DateTime.Now.AddDays(1);
                 }
                 else 
                 {
-                    dt2 = Convert.ToDateTime(enddt);
+                    dt2 = Convert.ToDateTime(enddt).AddDays(1);
                 }
 
 

@@ -223,7 +223,8 @@ namespace DPE.Core.Controllers
 
         //获取用户所有信息
         [Route("GetALLUserInfo")]
-        public async Task<MessageModel<dynamic>> GetALLUserInfo(int pageindex, int pagesize, string key = "")
+        public async Task<MessageModel<dynamic>> GetALLUserInfo(int pageindex, int pagesize, string key = "",string utid = "",
+            string ulevel = "", string uhonur = "", string ustatus = "", string startdate = "", string enddate = "")
         {
             pageindex = pageindex == 0 ? 1 : pageindex;
             pagesize = pagesize == 0 ? 20 : pagesize;
@@ -237,7 +238,7 @@ namespace DPE.Core.Controllers
                     msg = "",
                 };
             }
-            var user = await _userInfoServices.GetAllUserInfo(pageindex, pagesize, key, "uID");
+            var user = await _userInfoServices.GetAllUserInfo(pageindex, pagesize, key, utid, ulevel,uhonur,ustatus,startdate,enddate, "uID");
 
             return new MessageModel<dynamic>()
             {
@@ -278,7 +279,9 @@ namespace DPE.Core.Controllers
                                 ison = item.isSon,
                                 jid = item.jid,
                                 tid = item.tid,
-                                isDelete = item.isDelete
+                                isDelete = item.isDelete,
+                                phone=item.userphone,
+                                urealname = item.UrealName
                             }).ToList<dynamic>()
                 }
             };
