@@ -17,6 +17,7 @@
               <div class="tag gtag" v-else-if="data.status===2">配送中</div>
               <div class="tag rtag" v-else-if="data.status===3">确认收货</div>
               <div class="tag graytag" v-else-if="data.status===4">己完成</div>
+               <div class="tag gtag" v-else-if="data.status===5">已发货</div>
             </div>
             <div class="goods base-flex flex-start p-58 borderR mb-80">
               <img :src="getimgurl(data.shopsku.detailicon)" class="img" alt />

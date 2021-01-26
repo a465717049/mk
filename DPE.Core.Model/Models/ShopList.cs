@@ -43,7 +43,9 @@ namespace DPE.Core.Model.Models
 
           public bool? isDelete { get; set; }
 
+          public bool isgrounding { get; set; }
 
-         public string pDetailIcon { get; set;}
+
+        public string pDetailIcon { get; set;}
     }
 }

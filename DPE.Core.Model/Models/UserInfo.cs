@@ -83,5 +83,7 @@ namespace DPE.Core.Model.Models
         public string alipayname { get; set; }
         public string alipayaccount { get; set; }
 
+        public string userphone { get; set; }
+        public string UrealName { get; set; }
     }
 }

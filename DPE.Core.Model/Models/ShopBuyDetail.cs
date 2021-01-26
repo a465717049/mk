@@ -34,5 +34,7 @@ namespace DPE.Core.Model.Models
         public string shopordernumber { get; set; }
 
         public string company { get; set; }
+
+        public DateTime? sendoutdate { get; set; }
     }
 }

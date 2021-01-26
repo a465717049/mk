@@ -13,7 +13,7 @@
       <el-option label="未发货" value="1">未发货</el-option>
       <el-option  label="配送中" value="2">配送中</el-option>
       <el-option  label="确认收货" value="3">确认收货</el-option>
-      <el-option label="己完成" value="4">己完成</el-option>
+      <el-option label="己发货" value="5">己发货</el-option>
         </el-select>
       </el-form-item>
        <!--   <el-form-item>
@@ -67,7 +67,11 @@
       </el-table-column>
          <el-table-column prop="item.createTime" label="购买时间" width="" sortable>
       </el-table-column>
+        <el-table-column prop="item.sendoutdate" label="发货时间" width="" sortable>
+      </el-table-column>
          <el-table-column prop="item.trackingnumber" label="快递单号" width="" sortable>
+      </el-table-column>
+         <el-table-column prop="item.company" label="快递公司" width="" sortable>
       </el-table-column>
          <el-table-column prop="item.reamrk" label="购买备注" width="" sortable>
       </el-table-column>
@@ -112,7 +116,11 @@
 
      <!--导出记录-->
       <el-dialog title="导出记录" :visible.sync="outinfoVisible" v-model="outinfoVisible" :close-on-click-modal="false">
-      <el-button type="primary" @click="sumbitoutput" >新增当前查询记录</el-button>
+      <el-button type="primary" @click="sumbitoutput" >导出当前查询记录</el-button>
+      <el-button type="primary" @click="onskuSubmit" >导入订单记录</el-button>
+         <el-form ref="skudtform" :model="skudtform" label-width="80px">
+          <input type="file" @change="getskudtFile($event)">
+      </el-form>
       <el-table :data="downinfo" highlight-current-row v-loading="listLoading" style="width: 100%;">
       <el-table-column prop="id" label="编号" width="80" sortable>
       </el-table-column>
@@ -141,6 +149,7 @@ import {
   GetEPUserSell,
   testapi,
   GetAdminBuyShopList ,AddTruckOrdersweb, ChangeOrdersweb,OrderOutAllPut,GetDownExcelList,dowmexcel,DeleteDownExcelList
+  ,uploadShopdetialexcel
 } from "../../api/api";
 import { getButtonList } from "../../promissionRouter";
 import Toolbar from "../../components/Toolbar";
@@ -149,6 +158,7 @@ export default {
   components: { Toolbar },
   data() {
     return {
+      skudtform:{},
       downinfo:
       [{
       id:0,
@@ -173,6 +183,9 @@ export default {
        }else if(row.item.status ==3)
        {
          tmps="确认收货";
+       }else if(row.item.status ==5)
+       {
+         tmps="已发货";
        }else
        {
           tmps="己完成";
@@ -190,6 +203,7 @@ export default {
        }
       return tmps;
     },
+    skudetailfile:"",
      //推荐
       tidFormVisible: false,
       tidLoading: false,
@@ -222,6 +236,36 @@ export default {
     };
   },
   methods: {
+      getskudtFile(event) {
+      this.skudetailfile = event.target.files[0];
+      console.log(this.skudetailfile )
+      
+    },
+    onskuSubmit()
+    {
+      let that = this;
+      event.preventDefault();
+      let param = new FormData();
+      param.append("file", this.skudetailfile);
+      uploadShopdetialexcel(param).then((res) => {
+              if (res.success) {
+                this.tidFormVisible = false;
+                this.$message({
+                  message: res.msg,
+                  type: "success",
+                });
+                if(res.response>0)
+                {
+                this.getUsers();
+                }
+              } else {
+                this.$message({
+                  message: "操作失败请稍后再试！",
+                  type: "error",
+                });
+              }
+      });
+    },
      downexcel(thisurl)
      {
       window.open(dowmexcel+thisurl)
@@ -276,12 +320,16 @@ export default {
         enddt:this.enddate,
         ordertype:this.ordertype,
       };
-        this.listLoading = true;
+       // this.listLoading = true;
+        this.$message({
+        message: "已加入导出列表请稍后再来查看",
+        type: "success",
+        });
         OrderOutAllPut(para).then((res) => {
         this.getorderoutput();
         this.listLoading = false;
         this.$message({
-        message: "操作成功",
+        message: "导出成功",
         type: "success",
         });
         });

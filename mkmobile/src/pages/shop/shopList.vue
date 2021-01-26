@@ -23,6 +23,7 @@
                 <div class="tag gtag" v-else-if="item.status===2">配送中</div>
                 <div class="tag rtag" v-else-if="item.status===3">确认收货</div>
                 <div class="tag graytag" v-else-if="item.status===4">己完成</div>
+                 <div class="tag gtag" v-else-if="data.status===5">已发货</div>
               </li>
             </ul>
           </div>
