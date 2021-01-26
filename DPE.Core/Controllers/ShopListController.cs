@@ -2218,7 +2218,7 @@ namespace DPE.Core.Controllers
         #region 导出
         [HttpPost]
         [Route("OrderOutAllPut")]
-        public  IActionResult OrderOutAllPut()
+        public async Task<IActionResult> OrderOutAllPut()
         {
             try
             {
@@ -2251,7 +2251,6 @@ namespace DPE.Core.Controllers
                     DateTime dt1 = new DateTime();
                     DateTime dt2 = new DateTime();
 
-
                     if (string.IsNullOrEmpty(startdt) || string.IsNullOrWhiteSpace(startdt))
                     {
                         dt1 = Convert.ToDateTime("1999-01-01");
@@ -2264,17 +2263,18 @@ namespace DPE.Core.Controllers
 
                     if (string.IsNullOrEmpty(enddt) || string.IsNullOrWhiteSpace(enddt))
                     {
-                        dt2 = DateTime.Now;
+                        dt2 = DateTime.Now.AddDays(1);
                     }
                     else
                     {
-                        dt2 = Convert.ToDateTime(enddt);
+                        dt2 = Convert.ToDateTime(enddt).AddDays(1);
                     }
-                    var data = _ishopbuydetailserivces.QueryPage(x => x.status.ToString().Contains(stype) &&
+
+                    var data =await  _ishopbuydetailserivces.QueryPage(x => x.status.ToString().Contains(stype) &&
                   (x.buyuid.ToString().Contains(key) || x.buyaddr.Contains(key)) && (x.createTime >= dt1 && x.createTime <= dt2), pageindex, pagesize, " createTime DESC ");
 
 
-                    var datalist = (from item in data.Result.data
+                    var datalist = (from item in data.data
                                     select new
                                     {
                                         item,
@@ -2449,7 +2449,7 @@ namespace DPE.Core.Controllers
                         worksheet.Cells[j, 46].Value = "";
                     }
                     package.Save();
-                   _idownexcelrecordservices.Add(new DownExcelRecord() { downdate=DateTime.Now, downname=sFileName, isdelete=false, downtype="buyorder" } );
+                 await  _idownexcelrecordservices.Add(new DownExcelRecord() { downdate=DateTime.Now, downname=sFileName, isdelete=false, downtype="buyorder" } );
                 }
                 var returnFile = File(sFileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
                 returnFile.FileDownloadName = sFileName;
