@@ -791,7 +791,7 @@ namespace DPE.Core.Controllers
         public async Task<MessageModel<dynamic>> GetShopSkuList(long shopid)
         {
             //_user.ID
-            //     var user = await _userInfoServices.GetUserInfo(_user.ID);
+            //var user = await _userInfoServices.GetUserInfo(_user.ID);
             var spinfo = await _ishopskuservices.Query(x => x.shopid == shopid);
             return new MessageModel<dynamic>()
             {
