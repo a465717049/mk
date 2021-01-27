@@ -1,6 +1,8 @@
 <template>
   <div class="ep-list">
-    <TopBar class="center-one-search">{{tmpcktype}}台账</TopBar>
+    <TopBar class="center-one-search">
+      {{tmpcktype=="DPE"?"PP":tmpcktype}}
+      台账</TopBar>
     <div class="relative">
       <div class="trade clearfix">
         <van-tabs @click="readloadinfo" v-model="active" color="#EFB618" line-height="0">
@@ -216,7 +218,7 @@ export default {
   },
   created () {
     // console.log(this.$route.params);
-    // this.tmpcktype = this.$route.params.cktype.toUpperCase();
+   this.tmpcktype = this.$route.params.cktype.toUpperCase();
     this.load(1)
   }
 }

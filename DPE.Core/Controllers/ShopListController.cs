@@ -2254,7 +2254,7 @@ namespace DPE.Core.Controllers
                     if (string.IsNullOrEmpty(startdt) || string.IsNullOrWhiteSpace(startdt))
                     {
                         dt1 = Convert.ToDateTime("1999-01-01");
-                    }
+                    } 
                     else
                     {
                         dt1 = Convert.ToDateTime(startdt);
