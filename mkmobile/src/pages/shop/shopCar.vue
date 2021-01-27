@@ -23,8 +23,8 @@
               <van-stepper
                 v-model="key.shopnum"
                 min="0"
-                @plus="onPlus(key.id,key.shopdetail.ptype)"
-                @minus="onMinus(key.id,key.shopnum,key.shopdetail.ptype)"
+                @plus="onPlus(key.shopsku.id,key.shopdetail.ptype)"
+                @minus="onMinus(key.shopsku.id,key.shopnum,key.shopdetail.ptype)"
                 class="font42"
               />
             </template>
@@ -51,7 +51,7 @@
         <div class="sumInfo" v-if="buytotalep>0">
           <span class="tit">需扣除您的奖金：</span>
           <span class="num">{{buytotalep}}</span>
-          <span class="unit">（RP/EP)</span>
+          <span class="unit">（EP)</span>
         </div>
           <div class="sumInfo" v-if="buytotalpp>0">
           <span class="tit">需扣除您的产品分：</span>
@@ -59,7 +59,7 @@
           <span class="unit">（PP)</span>
         </div>
         <div class="sumInfo">
-          <span class="tit">您目前帐户可购买商品的余额为：RP:{{totalrp}} EP:{{ totalep}} PP:{{totalpp}} </span
+          <span class="tit">您目前帐户可购买商品的余额为：EP:{{ totalep}} PP:{{totalpp}} </span
           >
         </div>
         <div class="buttonWrap">
@@ -112,7 +112,6 @@ export default {
     return {
       isshowconfirm:false,
       totalep: 0,
-      totalrp: 0,
       totalpp:0,
       buytotalep: 0,
       buytotalpp: 0,
@@ -126,19 +125,19 @@ export default {
           id: 1,
           shopsku:
           {
-          createtime: "",
-          detaildesc: "",
+          createtime: "2021-01-06 00:00",
+          detaildesc: "黑色-S码",
           detailicon: "shopimg_1.png",
-          detailname: "",
-          detailnum: 0,
-          detailprice: 0,
-          id: 0,
-          skuid: 0,
+          detailname: "S",
+          detailnum: 200,
+          detailprice: 300,
+          id: 1,
+          skuid: 1,
           },
           shopskudetail:{
             createtime: "2021-01-06 00:00",
-            id: 0,
-            shopid: 0,
+            id: 1,
+            shopid: 1,
             skuIcon: "shopimg_1.png",
             skudesc: "黑色的东西",
             skuname: "黑色",
@@ -156,9 +155,9 @@ export default {
             status: 0,
             ptype:0,
           },
-          shopid: 0,
-          shopnum: 0,
-          uid: 0
+          shopid: 8,
+          shopnum: 8,
+          uid: 8
         }
       ],
       topBarOption: {
@@ -232,6 +231,16 @@ export default {
       }
     },
     buyShop () {
+      if (this.totalep < this.buytotalep) {
+        this.isEnter = true
+        this.tips = '当前奖金不足'
+        return
+      }
+       if (this.totalpp < this.buytotalpp) {
+        this.isEnter = true
+        this.tips = '当前产品分不足'
+        return
+      }
       http(
         BuyGoodsbyweb,
         {
@@ -276,7 +285,6 @@ export default {
         if (json.code === 0) {
           this.totalep = json.response.gold
           this.totalpp=json.response.apple
-          this.totalrp=json.response.rp
         }
       })
     },
@@ -308,6 +316,7 @@ export default {
     }
   },
   created () {
+
     this.TogetUserInfo()
     this.getshopcartnum()
     http(GetShopaddr, null, (json) => {
