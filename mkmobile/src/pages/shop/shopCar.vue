@@ -51,7 +51,7 @@
         <div class="sumInfo" v-if="buytotalep>0">
           <span class="tit">需扣除您的奖金：</span>
           <span class="num">{{buytotalep}}</span>
-          <span class="unit">（EP)</span>
+          <span class="unit">（RP/EP)</span>
         </div>
           <div class="sumInfo" v-if="buytotalpp>0">
           <span class="tit">需扣除您的产品分：</span>
@@ -59,7 +59,7 @@
           <span class="unit">（PP)</span>
         </div>
         <div class="sumInfo">
-          <span class="tit">您目前帐户可购买商品的余额为：EP:{{ totalep}} PP:{{totalpp}} </span
+          <span class="tit">您目前帐户可购买商品的余额为：RP:{{totalrp}} EP:{{ totalep}} PP:{{totalpp}} </span
           >
         </div>
         <div class="buttonWrap">
@@ -112,6 +112,7 @@ export default {
     return {
       isshowconfirm:false,
       totalep: 0,
+      totalrp: 0,
       totalpp:0,
       buytotalep: 0,
       buytotalpp: 0,
@@ -131,13 +132,13 @@ export default {
           detailname: "",
           detailnum: 0,
           detailprice: 0,
-          id: 1,
-          skuid: 1,
+          id: 0,
+          skuid: 0,
           },
           shopskudetail:{
             createtime: "2021-01-06 00:00",
-            id: 1,
-            shopid: 1,
+            id: 0,
+            shopid: 0,
             skuIcon: "shopimg_1.png",
             skudesc: "黑色的东西",
             skuname: "黑色",
@@ -275,6 +276,7 @@ export default {
         if (json.code === 0) {
           this.totalep = json.response.gold
           this.totalpp=json.response.apple
+          this.totalrp=json.response.rp
         }
       })
     },
