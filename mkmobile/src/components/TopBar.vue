@@ -66,7 +66,7 @@
                 </router-link>
               </li>
               <li>
-                <router-link to="epList" class="router">
+                <router-link to="exChangeData" class="router">
                   <i class="iconfont iconarrow-right"></i>台帐
                 </router-link>
               </li>

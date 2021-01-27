@@ -188,6 +188,11 @@ const router = new Router({
           component: resolve => require(['@/pages/trade/list'], resolve)
         },
         {
+          name: 'exChangeData',
+          path: '/exChangeData', // 台账
+          component: resolve => require(['@/pages/trade/exChangeData'], resolve)
+        },
+        {
           name: 'JoinUs',
           path: '/joinUs', // 注册
           component: resolve => require(['@/pages/join/JoinUs'], resolve)
