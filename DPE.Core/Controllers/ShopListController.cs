@@ -1042,6 +1042,13 @@ namespace DPE.Core.Controllers
             MessageModel<dynamic> result = new MessageModel<dynamic>();
             try
             {
+                if (_ishopbuydetailserivces.QueryById(shopid).Result == null)
+                {
+                    result.code = 0;
+                    result.msg = "不存在该";
+                    result.success = true;
+                    return result;
+                }
                 var addshop = await _ishoppingcartserivces.Query(x => x.shopid == shopid && x.uid == _user.ID);
                 if (addshop.Count() > 0)
                 {
