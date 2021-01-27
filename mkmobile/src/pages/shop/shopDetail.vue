@@ -75,8 +75,8 @@
                 </template>
               </van-field>
               <div class="base-flex ">
-                <div class="addShop borderR">
-                  <i class="iconfont icongouwucheman" @click="addshop"></i>
+                <div class="addShop borderR" @click="addshop">
+                  <i class="iconfont icongouwucheman"></i>
                   <span>加入购物车</span>
                 </div>
               </div>

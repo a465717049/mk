@@ -23,8 +23,8 @@
               <van-stepper
                 v-model="key.shopnum"
                 min="0"
-                @plus="onPlus(key.shopsku.id,key.shopdetail.ptype)"
-                @minus="onMinus(key.shopsku.id,key.shopnum,key.shopdetail.ptype)"
+                @plus="onPlus(key.id,key.shopdetail.ptype)"
+                @minus="onMinus(key.id,key.shopnum,key.shopdetail.ptype)"
                 class="font42"
               />
             </template>
@@ -125,12 +125,12 @@ export default {
           id: 1,
           shopsku:
           {
-          createtime: "2021-01-06 00:00",
-          detaildesc: "黑色-S码",
+          createtime: "",
+          detaildesc: "",
           detailicon: "shopimg_1.png",
-          detailname: "S",
-          detailnum: 200,
-          detailprice: 300,
+          detailname: "",
+          detailnum: 0,
+          detailprice: 0,
           id: 1,
           skuid: 1,
           },
@@ -155,9 +155,9 @@ export default {
             status: 0,
             ptype:0,
           },
-          shopid: 8,
-          shopnum: 8,
-          uid: 8
+          shopid: 0,
+          shopnum: 0,
+          uid: 0
         }
       ],
       topBarOption: {
@@ -231,16 +231,6 @@ export default {
       }
     },
     buyShop () {
-      if (this.totalep < this.buytotalep) {
-        this.isEnter = true
-        this.tips = '当前奖金不足'
-        return
-      }
-       if (this.totalpp < this.buytotalpp) {
-        this.isEnter = true
-        this.tips = '当前产品分不足'
-        return
-      }
       http(
         BuyGoodsbyweb,
         {
@@ -316,7 +306,6 @@ export default {
     }
   },
   created () {
-
     this.TogetUserInfo()
     this.getshopcartnum()
     http(GetShopaddr, null, (json) => {
