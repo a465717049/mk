@@ -40,7 +40,7 @@
                   />
                   <div class="title font-weight Tleft">{{item.price}}</div>
                   <div class="detail Tleft">{{item.name}}</div>
-                  <div class="circle"  @click.stop="addshop(item.id)">+</div>
+                <!--    <div class="circle"  @click.stop="addshop(item.id)">+</div> -->
                   <div class="tag" v-show="item.tag">{{item.tag}}</div>
                 </div>
               </template>
