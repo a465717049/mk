@@ -1042,10 +1042,10 @@ namespace DPE.Core.Controllers
             MessageModel<dynamic> result = new MessageModel<dynamic>();
             try
             {
-                if (_ishopbuydetailserivces.QueryById(shopid).Result == null)
+                if (_ishopskudetailservices.QueryById(shopid).Result == null)
                 {
                     result.code = 0;
-                    result.msg = "不存在该";
+                    result.msg = "不存在该商品";
                     result.success = true;
                     return result;
                 }
