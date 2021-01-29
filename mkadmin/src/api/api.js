@@ -484,7 +484,7 @@ export const AdminDisposeFeedBack = params => {
 };
 
 export const GetSearchRelation = params => {
-    return axios.post(`${base}/api/Relation/GetRelationList`, qs.stringify(params)).then(res => res.data);
+    return axios.post(`${base}/api/Relation/GetRelationListadmin`, qs.stringify(params)).then(res => res.data);
 };
 
 

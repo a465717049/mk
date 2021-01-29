@@ -325,6 +325,55 @@ namespace DPE.Core.Controllers
             }
 
         }
+
+
+        /// <summary>
+        /// 朋友关係
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<MessageModel<dynamic>> GetRelationListadmin(long uid)
+        {
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+
+            try
+            {
+                if (uid == 0)
+                {
+                    Stream sm = HttpContext.Request.Body;
+                    if (sm.Length > 0)
+                    {
+                        byte[] buff = new byte[sm.Length];
+                        sm.Read(buff, 0, buff.Length);
+                        string str = Encoding.UTF8.GetString(buff);
+                        long.TryParse(str.Split("=")[1], out uid);
+                    }
+                }
+                if (uid == 0) uid = Convert.ToInt64(HttpContext.Request.Form["uid"]);
+
+                var friendData = await _sysUserInfoServices.GetRelationListadmin(uid, _user.ID);
+                if (friendData == null || friendData.Rows.Count <= 0)
+                {
+                    result.code = 63001;
+                    result.success = false;
+                    return result;
+                }
+
+                result.code = 0;
+                result.success = true;
+                result.response = friendData;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                result.success = false;
+                result.code = 1007;
+                result.msg = ex.Message;
+                return result;
+            }
+
+        }
     }
 }
 

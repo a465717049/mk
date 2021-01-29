@@ -32,6 +32,10 @@ namespace DPE.Core.IServices
         Task<sysUserInfo> GetUserInfo(long uid);
 
         Task<DataTable> GetRelationList(long parentid, long uid);
+
+        Task<DataTable> GetRelationListadmin(long parentid, long uid);
+
+
         Task<DataTable> GetRelationListbyid(long parentid);
         Task<DataTable> GetFriendsList(long parentid,long uid);
 

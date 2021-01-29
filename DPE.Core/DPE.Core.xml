@@ -756,6 +756,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:DPE.Core.Controllers.RelationController.GetRelationListadmin(System.Int64)">
+            <summary>
+            朋友关係
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:DPE.Core.Controllers.StockPriceTrendController">
              StockPriceTrend管理
         </member>

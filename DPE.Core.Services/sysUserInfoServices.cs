@@ -163,6 +163,14 @@ namespace DPE.Core.FrameWork.Services
             return await _dal.QueryProcTable("SP_SearchRelation", parameters);
         }
 
+        public async Task<DataTable> GetRelationListadmin(long parentid, long uid)
+        {
+            SugarParameter[] parameters = new SugarParameter[2];
+            parameters[0] = new SugarParameter("@parentId", parentid);
+            parameters[1] = new SugarParameter("@maxId", uid);
+            return await _dal.QueryProcTable("SP_SearchRelationbylist", parameters);
+        }
+
         public async Task<DataTable> GetRelationListbyid(long parentid)
         {
             SugarParameter[] parameters = new SugarParameter[1];
