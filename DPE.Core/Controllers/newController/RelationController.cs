@@ -300,7 +300,7 @@ namespace DPE.Core.Controllers
                         long.TryParse(str.Split("=")[1], out uid);
                     }
                 }
-                if (uid == 0) uid = _user.ID;
+                if (uid == 0) uid = Convert.ToInt64( HttpContext.Request.Form["uid"]);
 
                 var friendData = await _sysUserInfoServices.GetRelationList(uid, _user.ID);
                 if (friendData == null || friendData.Rows.Count <= 0)

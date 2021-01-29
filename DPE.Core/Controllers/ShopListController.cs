@@ -1053,7 +1053,7 @@ namespace DPE.Core.Controllers
                 if (addshop.Count() > 0)
                 {
                     var model = addshop.First();
-                    if (string.IsNullOrEmpty(option))
+                    if (string.IsNullOrEmpty(option))   
                     {
                         model.shoptotalnum += num;
                     }
@@ -1072,7 +1072,7 @@ namespace DPE.Core.Controllers
                     }
                 }
                 else 
-                {
+                {   
                     await _ishoppingcartserivces.Add(new ShoppingCart() { shopid = shopid, shoptotalnum = num, uid = _user.ID });
                    
                 }

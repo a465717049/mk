@@ -483,6 +483,11 @@ export const AdminDisposeFeedBack = params => {
     return axios.post(`${base}/api/User/AdminDisposeFeedBack`, qs.stringify(params)).then(res => res.data);
 };
 
+export const GetSearchRelation = params => {
+    return axios.post(`${base}/api/Relation/GetRelationList`, qs.stringify(params)).then(res => res.data);
+};
+
+
 //GetAdminAllUserFeedBack
 export const GetAdminAllUserFeedBack = params => {
     return axios.post(`${base}/api/User/GetAdminAllUserFeedBack`, qs.stringify(params)).then(res => res.data);
@@ -611,3 +616,137 @@ export const AddTruckOrdersweb = params => {
 export const changepwdbyadmin = params => {
     return axios.post(`${base}/api/User/changepwdbyadmin`, qs.stringify(params)).then(res => res.data);
 };
+
+import head01 from '@/assets/imgs/set/head01.png'
+import head02 from '@/assets/imgs/set/head02.png'
+import head03 from '@/assets/imgs/set/head03.png'
+import head04 from '@/assets/imgs/set/head04.png'
+import head05 from '@/assets/imgs/set/head05.png'
+import head06 from '@/assets/imgs/set/head06.png'
+import head07 from '@/assets/imgs/set/head07.png'
+import head08 from '@/assets/imgs/set/head08.png'
+import head09 from '@/assets/imgs/set/head09.png'
+
+import head010 from '@/assets/imgs/set/head10.png'
+import head011 from '@/assets/imgs/set/head11.png'
+import head012 from '@/assets/imgs/set/head12.png'
+import head013 from '@/assets/imgs/set/head13.png'
+import head014 from '@/assets/imgs/set/head14.png'
+import head015 from '@/assets/imgs/set/head15.png'
+import head016 from '@/assets/imgs/set/head16.png'
+import head017 from '@/assets/imgs/set/head17.png'
+import head018 from '@/assets/imgs/set/head18.png'
+import head019 from '@/assets/imgs/set/head19.png'
+
+import head020 from '@/assets/imgs/set/head20.png'
+import head021 from '@/assets/imgs/set/head21.png'
+import head022 from '@/assets/imgs/set/head22.png'
+import head023 from '@/assets/imgs/set/head23.png'
+import head024 from '@/assets/imgs/set/head24.png'
+import head025 from '@/assets/imgs/set/head25.png'
+import head026 from '@/assets/imgs/set/head26.png'
+import head027 from '@/assets/imgs/set/head27.png'
+import head028 from '@/assets/imgs/set/head28.png'
+import head029 from '@/assets/imgs/set/head29.png'
+
+import head030 from '@/assets/imgs/set/head30.png'
+import head031 from '@/assets/imgs/set/head31.png'
+import head032 from '@/assets/imgs/set/head32.png'
+import head033 from '@/assets/imgs/set/head33.png'
+import head034 from '@/assets/imgs/set/head34.png'
+import head035 from '@/assets/imgs/set/head35.png'
+import head036 from '@/assets/imgs/set/head36.png'
+import head037 from '@/assets/imgs/set/head37.png'
+import head038 from '@/assets/imgs/set/head38.png'
+import head039 from '@/assets/imgs/set/head39.png'
+
+import head040 from '@/assets/imgs/set/head40.png'
+import head041 from '@/assets/imgs/set/head41.png'
+import head042 from '@/assets/imgs/set/head42.png'
+import head043 from '@/assets/imgs/set/head43.png'
+import head044 from '@/assets/imgs/set/head44.png'
+import head045 from '@/assets/imgs/set/head45.png'
+import head046 from '@/assets/imgs/set/head46.png'
+import head047 from '@/assets/imgs/set/head47.png'
+import head048 from '@/assets/imgs/set/head48.png'
+import head049 from '@/assets/imgs/set/head49.png'
+
+import head050 from '@/assets/imgs/set/head50.png'
+import head051 from '@/assets/imgs/set/head51.png'
+import head052 from '@/assets/imgs/set/head52.png'
+import head053 from '@/assets/imgs/set/head53.png'
+import head054 from '@/assets/imgs/set/head54.png'
+import head055 from '@/assets/imgs/set/head55.png'
+import head056 from '@/assets/imgs/set/head56.png'
+import head057 from '@/assets/imgs/set/head57.png'
+import head058 from '@/assets/imgs/set/head58.png'
+import head059 from '@/assets/imgs/set/head59.png'
+import head060 from '@/assets/imgs/set/head60.png'
+
+export const photoList = {
+    head01: head01,
+    head02: head02,
+    head03: head03,
+    head04: head04,
+    head05: head05,
+    head06: head06,
+    head07: head07,
+    head08: head08,
+    head09: head09,
+
+    head010: head010,
+    head011: head011,
+    head012: head012,
+    head013: head013,
+    head014: head014,
+    head015: head015,
+    head016: head016,
+    head017: head017,
+    head018: head018,
+    head019: head019,
+
+    head020: head020,
+    head021: head021,
+    head022: head022,
+    head023: head023,
+    head024: head024,
+    head025: head025,
+    head026: head026,
+    head027: head027,
+    head028: head028,
+    head029: head029,
+
+    head030: head030,
+    head031: head031,
+    head032: head032,
+    head033: head033,
+    head034: head034,
+    head035: head035,
+    head036: head036,
+    head037: head037,
+    head038: head038,
+    head039: head039,
+
+    head040: head040,
+    head041: head041,
+    head042: head042,
+    head043: head043,
+    head044: head044,
+    head045: head045,
+    head046: head046,
+    head047: head047,
+    head048: head048,
+    head049: head049,
+
+    head050: head050,
+    head051: head051,
+    head052: head052,
+    head053: head053,
+    head054: head054,
+    head055: head055,
+    head056: head056,
+    head057: head057,
+    head058: head058,
+    head059: head059,
+    head060: head060
+}
