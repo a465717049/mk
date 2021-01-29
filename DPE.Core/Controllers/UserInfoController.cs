@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml;
 using SqlSugar;
 
 namespace DPE.Core.Controllers
@@ -41,11 +42,15 @@ namespace DPE.Core.Controllers
         readonly IUser _user;
         readonly PermissionRequirement _requirement;
         readonly ISysUserInfoServices _isysuserinfoservices;
+
+        readonly IDownExcelRecordServices _idownexcelrecordservices;
         /// <summary>
         /// 构造函数注入
         /// </summary>
 
-        public UserInfoController(ISysUserInfoServices isysuserinfoservices,IEPServices EPServices, IUserInfoServices userInfoServices, IEPexchangeServices ePexchangeServices, ISPexchangeServices spexchangeServices, PermissionRequirement requirement, IUser user)
+        public UserInfoController(ISysUserInfoServices isysuserinfoservices,IEPServices EPServices, IUserInfoServices userInfoServices, 
+            IEPexchangeServices ePexchangeServices, ISPexchangeServices spexchangeServices,
+            PermissionRequirement requirement, IUser user, IDownExcelRecordServices idownexcelrecordservices)
         {
             _userInfoServices = userInfoServices;
             _user = user;
@@ -54,7 +59,8 @@ namespace DPE.Core.Controllers
             _EPexchangeServices = ePexchangeServices;
             _SPexchangeServices = spexchangeServices;
             _isysuserinfoservices = isysuserinfoservices;
-        }
+            _idownexcelrecordservices=idownexcelrecordservices;
+    }
 
 
 
@@ -285,6 +291,100 @@ namespace DPE.Core.Controllers
                             }).ToList<dynamic>()
                 }
             };
+
+        }
+
+
+        [HttpPost]
+        [Route("GetALLUserInfoExcel")]
+        public async Task<IActionResult> GetALLUserInfoExcel()
+        {
+            try
+            {
+
+                string key = HttpContext.Request.Form["key"]; 
+                string utid = HttpContext.Request.Form["utid"];
+                string ulevel =  HttpContext.Request.Form["ulevel"];
+                string uhonur =  HttpContext.Request.Form["uhonur"];
+                string ustatus = HttpContext.Request.Form["ustatus"];
+                string startdate = HttpContext.Request.Form["startdate"];
+                string enddate = HttpContext.Request.Form["enddate"];
+                string jwtStr = string.Empty;
+
+                var user = await _userInfoServices.GetAllUserInfo(1, 999999, key, utid, ulevel, uhonur, ustatus, startdate, enddate, "uID");
+
+
+                var sWebRootFolder = Directory.GetCurrentDirectory() + @"//shopimg//downinfo//";
+                var nowdate = DateTime.Now;
+                Random rad = new Random();
+                int value = rad.Next(1000, 10000);
+                string sFileName = string.Format("{0}{1}{2}{3}_{4}.xlsx", "会员列表", nowdate.Year.ToString(), nowdate.Month.ToString(), nowdate.Day.ToString(), value.ToString());
+                FileInfo file = new FileInfo(Path.Combine(sWebRootFolder, sFileName));
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (ExcelPackage package = new ExcelPackage(file))
+                {
+                    // 添加worksheet
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("worksheet");
+                    //添加头
+                    worksheet.Cells[1, 1].Value = "会员编号";
+                    worksheet.Cells[1, 2].Value = "昵称";
+                    worksheet.Cells[1, 3].Value = "注册日期";
+                    worksheet.Cells[1, 4].Value = "职位";
+                    worksheet.Cells[1, 5].Value = "等级";
+                    worksheet.Cells[1, 6].Value = "推荐id";
+                    worksheet.Cells[1, 7].Value = "安置id";
+                    worksheet.Cells[1, 8].Value = "EP";
+                    worksheet.Cells[1, 9].Value = "RP";
+                    worksheet.Cells[1, 10].Value = "DPE";
+                    worksheet.Cells[1, 11].Value = "好友数";
+                    worksheet.Cells[1, 12].Value = "L";
+                    worksheet.Cells[1, 13].Value = "R";
+                    worksheet.Cells[1, 14].Value = "状态";
+
+
+                    for (int i = 0; i < user.data.Count(); i++)
+                    {
+                        int j = i + 2;
+                        worksheet.Cells[j, 1].Value = user.data[i].uID;
+                        worksheet.Cells[j, 2].Value = user.data[i].uNickName;
+                        worksheet.Cells[j, 3].Value = user.data[i].uCreateTime.ToString("yyyy-MM-dd hh:mm:ss");
+                        string us = "";
+                        if (user.data[i].honorLevel == 0) us = "会员";
+                        if (user.data[i].honorLevel == 1) us = "经理";
+                        if (user.data[i].honorLevel == 2) us = "总监";
+                        if (user.data[i].honorLevel == 3) us = "总裁";
+                        if (user.data[i].honorLevel == 4) us = "董事";
+                        if (user.data[i].honorLevel == 5) us = "合伙人";
+                        worksheet.Cells[j, 4].Value = us;
+                        string lv = "";
+                        if (user.data[i].uStatus == 1) lv = "初级会员";
+                        if (user.data[i].uStatus == 2) lv = "中级会员";
+                        if (user.data[i].uStatus == 3) lv = "高级会员";
+                        worksheet.Cells[j, 5].Value = lv;
+                        worksheet.Cells[j, 6].Value = user.data[i].tid;
+                        worksheet.Cells[j, 7].Value = user.data[i].jid;
+                        worksheet.Cells[j, 8].Value = user.data[i].EP;
+                        worksheet.Cells[j, 9].Value = user.data[i].RP;
+                        worksheet.Cells[j, 10].Value = user.data[i].DPE;
+                        worksheet.Cells[j, 11].Value = user.data[i].friends;
+                        worksheet.Cells[j, 12].Value = user.data[i].LProfit;
+                        worksheet.Cells[j, 13].Value = user.data[i].RProfit;
+                        worksheet.Cells[j, 14].Value = user.data[i].isDelete==0? "正常":"锁定";
+
+                    }
+                    package.Save();
+                    await _idownexcelrecordservices.Add(new DownExcelRecord() { downdate = DateTime.Now, downname = sFileName, isdelete = false, downtype = "userout" });
+                }
+                var returnFile = File(sFileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                returnFile.FileDownloadName = sFileName;
+
+                return returnFile;
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
 
         }
 
