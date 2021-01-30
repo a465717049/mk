@@ -230,7 +230,7 @@ namespace DPE.Core.Controllers
         //获取用户所有信息
         [Route("GetALLUserInfo")]
         public async Task<MessageModel<dynamic>> GetALLUserInfo(int pageindex, int pagesize, string key = "",string utid = "",
-            string ulevel = "", string uhonur = "", string ustatus = "", string startdate = "", string enddate = "")
+            string ulevel = "", string uhonur = "", string ustatus = "", string startdate = "", string enddate = "", string stid = "", string etid = "", string sjid = "", string ejid = "")
         {
             pageindex = pageindex == 0 ? 1 : pageindex;
             pagesize = pagesize == 0 ? 20 : pagesize;
@@ -244,7 +244,7 @@ namespace DPE.Core.Controllers
                     msg = "",
                 };
             }
-            var user = await _userInfoServices.GetAllUserInfo(pageindex, pagesize, key, utid, ulevel,uhonur,ustatus,startdate,enddate, "uID");
+            var user = await _userInfoServices.GetAllUserInfo(pageindex, pagesize, key, utid, ulevel,uhonur,ustatus,startdate,enddate, "uID", stid, etid, sjid, ejid);
 
             return new MessageModel<dynamic>()
             {
@@ -309,16 +309,39 @@ namespace DPE.Core.Controllers
                 string ustatus = HttpContext.Request.Form["ustatus"];
                 string startdate = HttpContext.Request.Form["startdate"];
                 string enddate = HttpContext.Request.Form["enddate"];
+
+                string type = HttpContext.Request.Form["type"];
+
+                string stid = HttpContext.Request.Form["stid"];
+                string etid = HttpContext.Request.Form["etid"];
+                string sjid = HttpContext.Request.Form["sjid"];
+                string ejid = HttpContext.Request.Form["ejid"];
                 string jwtStr = string.Empty;
 
-                var user = await _userInfoServices.GetAllUserInfo(1, 999999, key, utid, ulevel, uhonur, ustatus, startdate, enddate, "uID");
+                var user = await _userInfoServices.GetAllUserInfo(1, 999999, key, utid, ulevel, uhonur, ustatus, startdate, enddate, "uID",stid,etid,sjid,ejid);
 
+                if (string.IsNullOrEmpty(type))
+                {
+                    type = "会员列表";
+                }
+                else 
+                {
+                    if (type.Equals("tid"))
+                    {
+                        type = "安置业绩";
+                    }
+                   else if (type.Equals("jid"))
+                    {
+                        type = "推荐业绩";
+                    }
+
+                }
 
                 var sWebRootFolder = Directory.GetCurrentDirectory() + @"//shopimg//downinfo//";
                 var nowdate = DateTime.Now;
                 Random rad = new Random();
                 int value = rad.Next(1000, 10000);
-                string sFileName = string.Format("{0}{1}{2}{3}_{4}.xlsx", "会员列表", nowdate.Year.ToString(), nowdate.Month.ToString(), nowdate.Day.ToString(), value.ToString());
+                string sFileName = string.Format("{0}{1}{2}{3}_{4}.xlsx", type, nowdate.Year.ToString(), nowdate.Month.ToString(), nowdate.Day.ToString(), value.ToString());
                 FileInfo file = new FileInfo(Path.Combine(sWebRootFolder, sFileName));
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 using (ExcelPackage package = new ExcelPackage(file))
