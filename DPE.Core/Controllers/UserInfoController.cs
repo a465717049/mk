@@ -253,7 +253,7 @@ namespace DPE.Core.Controllers
                 response =
 
                 new
-                {
+                { 
                     datacount = user.dataCount,
                     data = (from item in user.data
                             orderby item.uID
