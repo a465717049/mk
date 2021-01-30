@@ -460,6 +460,11 @@ export const GetOpenShopMyweb = params => {
 export const OrderOutAllPut = params => {
     return axios.post(`${base}/api/Shop/OrderOutAllPut`, qs.stringify(params)).then(res => res.data);
 };
+export const GetALLUserInfoExcel = params => {
+    return axios.post(`${base}/api/UserInfo/GetALLUserInfoExcel`, qs.stringify(params)).then(res => res.data);
+};
+
+
 
 export const GetDownExcelList = params => {
     return axios.post(`${base}/api/Shop/GetDownExcelList`, qs.stringify(params)).then(res => res.data);

@@ -37,7 +37,7 @@
     <!--荣誉界面-->
     <el-dialog title="更改" :visible.sync="levelFormVisible" v-model="levelFormVisible" :close-on-click-modal="false">
       <el-form :model="Formlevel" label-width="80px" :rules="Formlevels" ref="Formlevel">
-        <el-form-item v-if="showzw"  label="职位" prop="Name">
+        <el-form-item v-if="showzw"  label="职位">
           <el-select v-model="Formlevel.Name" placeholder="请选择职位">
           <el-option label="会员" :value="0"></el-option>
           <el-option label="经理" :value="1"></el-option>
@@ -170,12 +170,12 @@ export default {
         });
         return;
       }
-      
-      this.showlv=true;
       this.showzw=false;
+      this.showlv=true;
+      
       this.Formlevel.Id = rows.uid;
-      this.Formlevel.Name = rows.lv_name;
-      this.Formlevels.honur=rows.farmers;
+      this.Formlevel.Name = '';
+      this.Formlevel.honur='';
        this.levelFormVisible = true;
      
     },
@@ -215,8 +215,8 @@ export default {
       this.showlv=false;
       this.showzw=true;
       this.Formlevel.Id = rows.uid;
-      this.Formlevel.Name = rows.lv_name;
-      this.Formlevels.honur=rows.farmers;
+      this.Formlevel.Name ='';
+      this.Formlevel.honur='';
       this.levelFormVisible = true;
     },
     handleCurrentChange(val) {
@@ -244,7 +244,7 @@ export default {
     },
   },
   mounted() {
-   // this.getUsers();
+    this.getUsers();
     let routers = window.localStorage.router
       ? JSON.parse(window.localStorage.router)
       : [];

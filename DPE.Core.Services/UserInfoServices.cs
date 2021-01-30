@@ -30,7 +30,8 @@ namespace DPE.Core.Services
         }
 
         public async Task<PageModel<UserInfo>> GetAllUserInfo(int index, int pagesize, string key, string utid,
-            string ulevel, string uhonur, string ustatus, string startdate, string enddate, string orderby)
+            string ulevel, string uhonur, string ustatus, string startdate, string enddate, string orderby,
+             string stid = "", string etid = "", string sjid = "", string ejid = "")
         {
 
             DateTime dt1 = new DateTime();
@@ -78,7 +79,30 @@ namespace DPE.Core.Services
                 querry = querry.And(x => x.isDelete.ToString()== ustatus);
             }
 
-                querry = querry.And(x => x.uCreateTime >= dt1 && x.uCreateTime <= dt2);
+
+            if (!string.IsNullOrEmpty(stid))
+            {
+                querry = querry.And(x => x.LProfit >= Convert.ToInt64(stid) );
+            }
+
+            if (!string.IsNullOrEmpty(etid))
+            {
+                querry = querry.And(x => x.LProfit <= Convert.ToInt64(etid));
+            }
+
+
+            if (!string.IsNullOrEmpty(sjid))
+            {
+                querry = querry.And(x => x.LProfit >= Convert.ToInt64(sjid));
+            }
+
+            if (!string.IsNullOrEmpty(ejid))
+            {
+                querry = querry.And(x => x.LProfit <= Convert.ToInt64(ejid));
+            }
+
+
+            querry = querry.And(x => x.uCreateTime >= dt1 && x.uCreateTime <= dt2);
    
             var result = await _dal.QueryPage(querry
   , index, pagesize, orderby);
@@ -105,6 +129,7 @@ namespace DPE.Core.Services
 
             return  result;
         }
+
 
         
     }

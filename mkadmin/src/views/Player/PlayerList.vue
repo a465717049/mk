@@ -57,6 +57,25 @@
     </el-form>
    </el-col>
 
+     <el-col  :span="24" class="toolbar" style="padding-bottom: 0px;">
+    <el-form :inline="true" >
+
+     <el-form-item>
+      <el-input type="text" placeholder="输入起始安置业绩" v-model="stid"></el-input>
+      </el-form-item>
+      <el-form-item>
+      <el-input type="text" placeholder="输入截止安置业绩" v-model="etid"></el-input>
+      </el-form-item>
+      <el-form-item>
+      <el-input type="text" placeholder="输入起始推荐业绩" v-model="sjid"></el-input>
+      </el-form-item>
+       <el-form-item>
+      <el-input type="text" placeholder="输入截止推荐业绩" v-model="ejid"></el-input>
+      </el-form-item>
+    </el-form>
+   </el-col>
+
+
     <!--列表-->
     <el-table :data="users" highlight-current-row @current-change="selectCurrentRow" v-loading="listLoading" @selection-change="selsChange" style="width: 100%;">
       <el-table-column type="selection" width="50">
@@ -346,6 +365,30 @@
     </div>
     </el-dialog>
 
+    <!--导出记录-->
+      <el-dialog title="导出记录" :visible.sync="outinfoVisible" v-model="outinfoVisible" :close-on-click-modal="false">
+      <el-button type="primary" @click="sumbitoutput" >导出当前会员记录</el-button>
+      <el-button type="primary" @click="sumbitazoutput" >导出当前安置记录</el-button>
+      <el-button type="primary" @click="sumbittjoutput" >导出当前推荐记录</el-button>
+      <el-table :data="downinfo" highlight-current-row v-loading="listLoading" style="width: 100%;">
+      <el-table-column prop="id" label="编号" width="80" sortable>
+      </el-table-column>
+      <el-table-column prop="downname" label="下载名称" width="" sortable>
+      </el-table-column>
+      <el-table-column prop="downdate" label="下载时间" width="" sortable>
+      </el-table-column>
+      <el-table-column label="操作" width="" >
+      <el-row class="edita" slot-scope="downinfo">  
+      <a href="#" @click="downexcel(downinfo.row.downname)">下载</a>   
+      <a style="margin-left:20px" href="#" @click="deleteexcel(downinfo.row.id)">删除</a>
+      </el-row> 
+      </el-table-column>
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+      <el-button @click.native="outinfoVisible = false">关闭</el-button>
+      </div>
+      </el-dialog>
+
   </section>
 </template>
 
@@ -362,7 +405,8 @@ import {
   adminResetanswer,
   adminResetidcard,
   GetSearchRelation ,
-  photoList
+  photoList,
+  dowmexcel,GetALLUserInfoExcel,GetDownExcelList,DeleteDownExcelList
 } from "../../api/api";
 import { getButtonList } from "../../promissionRouter";
 import Toolbar from "../../components/Toolbar";
@@ -371,6 +415,17 @@ export default {
   components: { Toolbar },
   data() {
     return {
+      stid:"",
+      etid:"",
+      sjid:"",
+      ejid:"",
+       downinfo:
+      [{
+      id:0,
+      downname:'',
+      downdate:'',
+      }],
+        outinfoVisible:false,
       relationFormVisible:false,
        realtionid: 0,
       topBarOption: {
@@ -473,6 +528,139 @@ export default {
     };
   },
   methods: {
+     sumbitoutput()
+     {
+        let para = {
+        pageindex: this.page,
+        pagesize: 20,
+        key: this.filters.name,
+        ujid:this.ujid,
+        ulevel:this.ulevel,
+        uhonur:this.uhonur,
+        ustatus:this.ustatus,
+        startdate:this.startdate,
+        enddate:this.enddate
+      };
+        this.$message({
+        message: "已加入导出列表请稍后再来查看",
+        type: "success",
+        });
+        GetALLUserInfoExcel(para).then((res) => {
+        this.getorderoutput();
+        this.listLoading = false;
+        this.$message({
+        message: "导出成功",
+        type: "success",
+        });
+        });
+     },
+     sumbitazoutput()
+     {
+  let para = {
+        pageindex: this.page,
+        pagesize: 20,
+        key: this.filters.name,
+        ujid:this.ujid,
+        ulevel:this.ulevel,
+        uhonur:this.uhonur,
+        ustatus:this.ustatus,
+        startdate:this.startdate,
+        enddate:this.enddate,
+        stid:this.stid,
+        etid:this.etid,
+        sjid:this.sjid,
+        ejid:this.ejid,
+        type:"tid"
+      };
+        this.$message({
+        message: "已加入导出列表请稍后再来查看",
+        type: "success",
+        });
+        GetALLUserInfoExcel(para).then((res) => {
+        this.getorderoutput();
+        this.listLoading = false;
+        this.$message({
+        message: "导出成功",
+        type: "success",
+        });
+        });
+
+     },
+     sumbittjoutput()
+     {
+  let para = {
+        pageindex: this.page,
+        pagesize: 20,
+        key: this.filters.name,
+        ujid:this.ujid,
+        ulevel:this.ulevel,
+        uhonur:this.uhonur,
+        ustatus:this.ustatus,
+        startdate:this.startdate,
+        enddate:this.enddate,
+        stid:this.stid,
+        etid:this.etid,
+        sjid:this.sjid,
+        ejid:this.ejid,
+        type:"jid"
+      };
+        this.$message({
+        message: "已加入导出列表请稍后再来查看",
+        type: "success",
+        });
+        GetALLUserInfoExcel(para).then((res) => {
+        this.getorderoutput();
+        this.listLoading = false;
+        this.$message({
+        message: "导出成功",
+        type: "success",
+        });
+        });
+
+     },
+     getorderoutput()
+     {
+        let para = {
+        pageSize: 20,
+        pageIndex: 1,
+        key: "",
+      };
+      //NProgress.start();
+      GetDownExcelList(para).then((res) => {
+        this.downinfo=res.response.data;
+      });
+     },
+    deleteexcel(thisid)
+     {
+        this.$confirm("确认删除吗？", "提示", {}).then(() => {
+
+            DeleteDownExcelList({id:thisid}).then((res) => {
+              if (res.success) {
+                this.tidFormVisible = false;
+                this.$message({
+                  message: "操作成功",
+                  type: "success",
+                });
+                this.getorderoutput();
+              } else {
+                this.$message({
+                  message: "操作失败请稍后再试！",
+                  type: "error",
+                });
+              }
+            });
+          });
+
+     },
+     downexcel(thisurl)
+     {
+      window.open(dowmexcel+thisurl)
+     } ,
+    getuserout()
+    {
+      this.outinfoVisible=true;
+      this.getorderoutput();
+    },
     showrelation(thisid)
     {
       this.realtionid=thisid;
@@ -704,7 +892,11 @@ export default {
         uhonur:this.uhonur,
         ustatus:this.ustatus,
         startdate:this.startdate,
-        enddate:this.enddate
+        enddate:this.enddate,
+        stid:this.stid,
+        etid:this.etid,
+        sjid:this.sjid,
+        ejid:this.ejid,
       };
       this.listLoading = true;
       //NProgress.start();
@@ -889,7 +1081,7 @@ export default {
     }
   },
   mounted() {
-    //this.getUsers();
+    this.getUsers();
     let routers = window.localStorage.router
       ? JSON.parse(window.localStorage.router)
       : [];
@@ -904,7 +1096,6 @@ export default {
     });
 
      this.realtionid = this.$route.params.uid;
-    this.loadData();
   },
 };
 </script>

@@ -457,7 +457,9 @@ export default {
       this.listLoading = true;
       //NProgress.start();
       GetAdminBuyShopList(para).then((res) => {
-        this.total = res.response.datacount;
+  
+        this.total = res.response.dataCount;
+              console.log(this.total)
         this.users = res.response.data;
         this.listLoading = false;
         //NProgress.done();
@@ -468,7 +470,7 @@ export default {
     },
   },
   mounted() {
-    // this.getUsers();
+    this.getUsers();
     let routers = window.localStorage.router
       ? JSON.parse(window.localStorage.router)
       : [];

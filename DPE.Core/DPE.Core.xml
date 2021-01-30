@@ -1344,7 +1344,7 @@
             用户信息
             </summary>
         </member>
-        <member name="M:DPE.Core.Controllers.UserInfoController.#ctor(DPE.Core.IServices.ISysUserInfoServices,DPE.Core.IServices.IEPServices,DPE.Core.IServices.IUserInfoServices,DPE.Core.IServices.IEPexchangeServices,DPE.Core.IServices.ISPexchangeServices,DPE.Core.AuthHelper.PermissionRequirement,DPE.Core.Common.HttpContextUser.IUser)">
+        <member name="M:DPE.Core.Controllers.UserInfoController.#ctor(DPE.Core.IServices.ISysUserInfoServices,DPE.Core.IServices.IEPServices,DPE.Core.IServices.IUserInfoServices,DPE.Core.IServices.IEPexchangeServices,DPE.Core.IServices.ISPexchangeServices,DPE.Core.AuthHelper.PermissionRequirement,DPE.Core.Common.HttpContextUser.IUser,DPE.Core.IServices.IDownExcelRecordServices)">
             <summary>
             构造函数注入
             </summary>
