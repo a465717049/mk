@@ -358,10 +358,20 @@ namespace DPE.Core.Controllers
                     worksheet.Cells[1, 7].Value = "安置id";
                     worksheet.Cells[1, 8].Value = "EP";
                     worksheet.Cells[1, 9].Value = "RP";
-                    worksheet.Cells[1, 10].Value = "DPE";
+                    worksheet.Cells[1, 10].Value = "PP";
                     worksheet.Cells[1, 11].Value = "好友数";
-                    worksheet.Cells[1, 12].Value = "L";
-                    worksheet.Cells[1, 13].Value = "R";
+               
+
+                    if (type.Equals("会员列表"))
+                    {
+                        worksheet.Cells[1, 12].Value = "左区推荐业绩";
+                        worksheet.Cells[1, 13].Value = "右区推荐业绩";
+                    }
+                    else
+                    {
+                        worksheet.Cells[1, 12].Value = "安置业绩";
+                        worksheet.Cells[1, 13].Value = "推荐业绩";
+                    }
                     worksheet.Cells[1, 14].Value = "状态";
 
 
@@ -390,8 +400,17 @@ namespace DPE.Core.Controllers
                         worksheet.Cells[j, 9].Value = user.data[i].RP;
                         worksheet.Cells[j, 10].Value = user.data[i].DPE;
                         worksheet.Cells[j, 11].Value = user.data[i].friends;
-                        worksheet.Cells[j, 12].Value = user.data[i].LProfit;
-                        worksheet.Cells[j, 13].Value = user.data[i].RProfit;
+                        if (type.Equals("会员列表"))
+                        {
+                            worksheet.Cells[j, 12].Value = _userInfoServices.Query(x => x.jid == user.data[i].uID && x.L == 1).Result.Sum(x => x.RProfit); //user.data[i].LProfit;
+                            worksheet.Cells[j, 13].Value = _userInfoServices.Query(x => x.jid == user.data[i].uID && x.R == 1).Result.Sum(x => x.RProfit); 
+                        }
+                        else
+                        {
+                            worksheet.Cells[j, 12].Value = user.data[i].LProfit ; 
+                            worksheet.Cells[j, 13].Value = user.data[i].RProfit ;
+                        }
+                       
                         worksheet.Cells[j, 14].Value = user.data[i].isDelete==0? "正常":"锁定";
 
                     }

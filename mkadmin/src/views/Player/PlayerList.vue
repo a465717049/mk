@@ -42,6 +42,7 @@
       <el-option label="初级会员" value="1"></el-option>
       <el-option label="中级会员" value="2"></el-option>
       <el-option label="高级会员" value="3"></el-option>
+      <el-option label="超级会员" value="4"></el-option>
       </el-select>
       </el-form-item> 
 
@@ -106,9 +107,9 @@
       </el-table-column>
       <el-table-column prop="friend" label="好友" width="" sortable>
       </el-table-column>
-      <el-table-column prop="lprofit" label="L" width="120" sortable>
+      <el-table-column prop="lprofit" label="安置业绩" width="120" sortable>
       </el-table-column>
-      <el-table-column prop="rprofit" label="R" width="120" sortable>
+      <el-table-column prop="rprofit" label="推荐业绩" width="120" sortable>
       </el-table-column>
       <el-table-column prop="isDelete" label="状态" width="" sortable>
         <template slot-scope="scope">
@@ -404,9 +405,12 @@ import {
   adminResettid,
   adminResetanswer,
   adminResetidcard,
-  GetSearchRelation ,
+  GetSearchRelation,
   photoList,
-  dowmexcel,GetALLUserInfoExcel,GetDownExcelList,DeleteDownExcelList
+  dowmexcel,
+  GetALLUserInfoExcel,
+  GetDownExcelList,
+  DeleteDownExcelList,
 } from "../../api/api";
 import { getButtonList } from "../../promissionRouter";
 import Toolbar from "../../components/Toolbar";
@@ -415,22 +419,23 @@ export default {
   components: { Toolbar },
   data() {
     return {
-      stid:"",
-      etid:"",
-      sjid:"",
-      ejid:"",
-       downinfo:
-      [{
-      id:0,
-      downname:'',
-      downdate:'',
-      }],
-        outinfoVisible:false,
-      relationFormVisible:false,
-       realtionid: 0,
+      stid: "",
+      etid: "",
+      sjid: "",
+      ejid: "",
+      downinfo: [
+        {
+          id: 0,
+          downname: "",
+          downdate: "",
+        },
+      ],
+      outinfoVisible: false,
+      relationFormVisible: false,
+      realtionid: 0,
       topBarOption: {
         iconLeft: "back",
-        iconRight: ""
+        iconRight: "",
       },
       tipTitle: "xx",
       isEnter: false,
@@ -442,17 +447,17 @@ export default {
       SecList: [],
       ThrLeftList: [],
       ThrRightList: [],
-      ujid:"",
-      ulevel:"",
-      uhonur:"",
-      ustatus:"",
-      startdate:"",
-      enddate:"",
+      ujid: "",
+      ulevel: "",
+      uhonur: "",
+      ustatus: "",
+      startdate: "",
+      enddate: "",
       filters: {
         name: "",
       },
-      showjid:false,
-      showtid:false,
+      showjid: false,
+      showtid: false,
       dayinfo: {
         total: 0,
         maintotal: 0,
@@ -478,13 +483,13 @@ export default {
       tidFormVisible: false,
       tidLoading: false,
       Formtids: {
-       // Name: [{ required: true, message: "请输入推荐人", trigger: "blur" }],
-       // JID: [{ required: true, message: "请输入安置ID", trigger: "blur" }],
+        // Name: [{ required: true, message: "请输入推荐人", trigger: "blur" }],
+        // JID: [{ required: true, message: "请输入安置ID", trigger: "blur" }],
       },
       Formtid: {
         Id: 0,
         Name: "",
-        jid:"",
+        jid: "",
       },
       //密码
       pwdFormVisible: false,
@@ -528,148 +533,135 @@ export default {
     };
   },
   methods: {
-     sumbitoutput()
-     {
-        let para = {
+    sumbitoutput() {
+      let para = {
         pageindex: this.page,
         pagesize: 20,
         key: this.filters.name,
-        ujid:this.ujid,
-        ulevel:this.ulevel,
-        uhonur:this.uhonur,
-        ustatus:this.ustatus,
-        startdate:this.startdate,
-        enddate:this.enddate
+        ujid: this.ujid,
+        ulevel: this.ulevel,
+        uhonur: this.uhonur,
+        ustatus: this.ustatus,
+        startdate: this.startdate,
+        enddate: this.enddate,
       };
-        this.$message({
+      this.$message({
         message: "已加入导出列表请稍后再来查看",
         type: "success",
-        });
-        GetALLUserInfoExcel(para).then((res) => {
+      });
+      GetALLUserInfoExcel(para).then((res) => {
         this.getorderoutput();
         this.listLoading = false;
         this.$message({
-        message: "导出成功",
-        type: "success",
+          message: "导出成功",
+          type: "success",
         });
-        });
-     },
-     sumbitazoutput()
-     {
-  let para = {
+      });
+    },
+    sumbitazoutput() {
+      let para = {
         pageindex: this.page,
         pagesize: 20,
         key: this.filters.name,
-        ujid:this.ujid,
-        ulevel:this.ulevel,
-        uhonur:this.uhonur,
-        ustatus:this.ustatus,
-        startdate:this.startdate,
-        enddate:this.enddate,
-        stid:this.stid,
-        etid:this.etid,
-        sjid:this.sjid,
-        ejid:this.ejid,
-        type:"tid"
+        ujid: this.ujid,
+        ulevel: this.ulevel,
+        uhonur: this.uhonur,
+        ustatus: this.ustatus,
+        startdate: this.startdate,
+        enddate: this.enddate,
+        stid: this.stid,
+        etid: this.etid,
+        sjid: this.sjid,
+        ejid: this.ejid,
+        type: "tid",
       };
-        this.$message({
+      this.$message({
         message: "已加入导出列表请稍后再来查看",
         type: "success",
-        });
-        GetALLUserInfoExcel(para).then((res) => {
+      });
+      GetALLUserInfoExcel(para).then((res) => {
         this.getorderoutput();
         this.listLoading = false;
         this.$message({
-        message: "导出成功",
-        type: "success",
+          message: "导出成功",
+          type: "success",
         });
-        });
-
-     },
-     sumbittjoutput()
-     {
-  let para = {
+      });
+    },
+    sumbittjoutput() {
+      let para = {
         pageindex: this.page,
         pagesize: 20,
         key: this.filters.name,
-        ujid:this.ujid,
-        ulevel:this.ulevel,
-        uhonur:this.uhonur,
-        ustatus:this.ustatus,
-        startdate:this.startdate,
-        enddate:this.enddate,
-        stid:this.stid,
-        etid:this.etid,
-        sjid:this.sjid,
-        ejid:this.ejid,
-        type:"jid"
+        ujid: this.ujid,
+        ulevel: this.ulevel,
+        uhonur: this.uhonur,
+        ustatus: this.ustatus,
+        startdate: this.startdate,
+        enddate: this.enddate,
+        stid: this.stid,
+        etid: this.etid,
+        sjid: this.sjid,
+        ejid: this.ejid,
+        type: "jid",
       };
-        this.$message({
+      this.$message({
         message: "已加入导出列表请稍后再来查看",
         type: "success",
-        });
-        GetALLUserInfoExcel(para).then((res) => {
+      });
+      GetALLUserInfoExcel(para).then((res) => {
         this.getorderoutput();
         this.listLoading = false;
         this.$message({
-        message: "导出成功",
-        type: "success",
+          message: "导出成功",
+          type: "success",
         });
-        });
-
-     },
-     getorderoutput()
-     {
-        let para = {
+      });
+    },
+    getorderoutput() {
+      let para = {
         pageSize: 20,
         pageIndex: 1,
         key: "",
       };
       //NProgress.start();
       GetDownExcelList(para).then((res) => {
-        this.downinfo=res.response.data;
+        this.downinfo = res.response.data;
       });
-     },
-    deleteexcel(thisid)
-     {
-        this.$confirm("确认删除吗？", "提示", {}).then(() => {
-
-            DeleteDownExcelList({id:thisid}).then((res) => {
-              if (res.success) {
-                this.tidFormVisible = false;
-                this.$message({
-                  message: "操作成功",
-                  type: "success",
-                });
-                this.getorderoutput();
-              } else {
-                this.$message({
-                  message: "操作失败请稍后再试！",
-                  type: "error",
-                });
-              }
+    },
+    deleteexcel(thisid) {
+      this.$confirm("确认删除吗？", "提示", {}).then(() => {
+        DeleteDownExcelList({ id: thisid }).then((res) => {
+          if (res.success) {
+            this.tidFormVisible = false;
+            this.$message({
+              message: "操作成功",
+              type: "success",
             });
-          });
-
-     },
-     downexcel(thisurl)
-     {
-      window.open(dowmexcel+thisurl)
-     } ,
-    getuserout()
-    {
-      this.outinfoVisible=true;
+            this.getorderoutput();
+          } else {
+            this.$message({
+              message: "操作失败请稍后再试！",
+              type: "error",
+            });
+          }
+        });
+      });
+    },
+    downexcel(thisurl) {
+      window.open(dowmexcel + thisurl);
+    },
+    getuserout() {
+      this.outinfoVisible = true;
       this.getorderoutput();
     },
-    showrelation(thisid)
-    {
-      this.realtionid=thisid;
+    showrelation(thisid) {
+      this.realtionid = thisid;
       this.loadData();
-      this.relationFormVisible=true;
-      
+      this.relationFormVisible = true;
     },
     //荣誉
-    levelSubmit: function () {
+    levelSubmit: function() {
       this.$refs.Formlevel.validate((valid) => {
         if (valid) {
           this.$confirm("确认提交吗？", "提示", {}).then(() => {
@@ -685,32 +677,30 @@ export default {
       });
     },
     //tid
-    tidSubmit: function () {
+    tidSubmit: function() {
       this.$refs.Formtid.validate((valid) => {
         if (valid) {
           this.$confirm("确认提交吗？", "提示", {}).then(() => {
-            var para = {}
-            if(this.showtid)
-            {
-              para={
-              uid: this.Formtid.Id,
-              tid: this.Formtid.Name,
+            var para = {};
+            if (this.showtid) {
+              para = {
+                uid: this.Formtid.Id,
+                tid: this.Formtid.Name,
               };
-            }else
-            {
-               para={
-              uid: this.Formtid.Id,
-              jid: this.Formtid.jid,
+            } else {
+              para = {
+                uid: this.Formtid.Id,
+                jid: this.Formtid.jid,
               };
             }
-            console.log(para)
+            console.log(para);
             adminResettid(para).then((res) => {
-               if (res.success) {
+              if (res.success) {
                 this.$message({
                   message: "操作成功",
                   type: "success",
                 });
-                this.tidFormVisible=false;
+                this.tidFormVisible = false;
                 this.getUsers();
               } else {
                 this.$message({
@@ -724,7 +714,7 @@ export default {
       });
     },
     //pwd
-    pwdSubmit: function () {
+    pwdSubmit: function() {
       this.$refs.Formpwd.validate((valid) => {
         if (valid) {
           this.$confirm("确认提交吗？", "提示", {}).then(() => {
@@ -740,7 +730,7 @@ export default {
       });
     },
     //answer
-    answerSubmit: function () {
+    answerSubmit: function() {
       this.$refs.Formanswer.validate((valid) => {
         if (valid) {
           this.$confirm("确认提交吗？", "提示", {}).then(() => {
@@ -756,7 +746,7 @@ export default {
       });
     },
     //idcard
-    idcardSubmit: function () {
+    idcardSubmit: function() {
       this.$refs.Formidcard.validate((valid) => {
         if (valid) {
           this.$confirm("确认提交吗？", "提示", {}).then(() => {
@@ -794,13 +784,13 @@ export default {
         });
         return;
       }
-        this.showtid=true;
-      this.showjid=false;
-    
+      this.showtid = true;
+      this.showjid = false;
+
       this.Formtid.Id = rows.uid;
       this.tidFormVisible = true;
     },
-     changejid(index, row) {
+    changejid(index, row) {
       let rows = this.currentRow;
       if (!rows) {
         this.$message({
@@ -809,8 +799,8 @@ export default {
         });
         return;
       }
-      this.showjid=true;
-      this.showtid=false;
+      this.showjid = true;
+      this.showtid = false;
       this.Formtid.jid = rows.jid;
       this.tidFormVisible = true;
     },
@@ -854,21 +844,27 @@ export default {
       this.currentRow = val;
     },
 
-    formatSon: function (row, column) {
+    formatSon: function(row, column) {
       return row.ison == 1 ? "子" : row.ison == 0 ? "主" : "未知";
     },
-    formatlv: function (row, column) {
-          var tmpname="";
-          if (row.lv_name == 0) tmpname= '会员'
-          if (row.lv_name == 1) tmpname= '经理'
-          if (row.lv_name == 2) tmpname= '总监'
-          if (row.lv_name == 3) tmpname= '总裁'
-          if (row.lv_name == 4) tmpname= '董事'
-          if (row.lv_name == 5) tmpname= '合伙人'
+    formatlv: function(row, column) {
+      var tmpname = "";
+      if (row.lv_name == 0) tmpname = "会员";
+      if (row.lv_name == 1) tmpname = "经理";
+      if (row.lv_name == 2) tmpname = "总监";
+      if (row.lv_name == 3) tmpname = "总裁";
+      if (row.lv_name == 4) tmpname = "董事";
+      if (row.lv_name == 5) tmpname = "合伙人";
       return tmpname;
     },
-    formatfarmers: function (row, column) {
-      return row.farmers == 1 ? "初级会员" : row.farmers == 2 ? "中级会员" : "高级会员";
+    formatfarmers: function(row, column) {
+      return row.farmers == 1
+        ? "初级会员"
+        : row.farmers == 2
+          ? "中级会员"
+          : row.farmers == 3
+            ? "高级会员"
+            : "超级会员";
     },
     callFunction(item) {
       this.filters = {
@@ -882,21 +878,21 @@ export default {
     },
     //获取Sell列表
     getUsers() {
-     // ujid ulevel uhonur ustatus startdate enddate
+      // ujid ulevel uhonur ustatus startdate enddate
       let para = {
         pageindex: this.page,
         pagesize: 20,
         key: this.filters.name,
-        ujid:this.ujid,
-        ulevel:this.ulevel,
-        uhonur:this.uhonur,
-        ustatus:this.ustatus,
-        startdate:this.startdate,
-        enddate:this.enddate,
-        stid:this.stid,
-        etid:this.etid,
-        sjid:this.sjid,
-        ejid:this.ejid,
+        ujid: this.ujid,
+        ulevel: this.ulevel,
+        uhonur: this.uhonur,
+        ustatus: this.ustatus,
+        startdate: this.startdate,
+        enddate: this.enddate,
+        stid: this.stid,
+        etid: this.etid,
+        sjid: this.sjid,
+        ejid: this.ejid,
       };
       this.listLoading = true;
       //NProgress.start();
@@ -907,10 +903,10 @@ export default {
         //NProgress.done();
       });
     },
-    selsChange: function (sels) {
+    selsChange: function(sels) {
       this.sels = sels;
     },
-      goJoin(parentId, isLeft) {
+    goJoin(parentId, isLeft) {
       this.isEnter = true;
       this.parentId = parentId;
       this.isLeft = isLeft;
@@ -919,14 +915,14 @@ export default {
       this.isEnter = false;
       this.$router.push({
         name: "JoinUs",
-        params: { uid: this.parentId, isLeft: this.isLeft }
+        params: { uid: this.parentId, isLeft: this.isLeft },
       });
     },
     clickNo() {
       this.isEnter = false;
       this.$router.push({
         name: "JoinFamily",
-        params: { uid: this.parentId, isLeft: this.isLeft }
+        params: { uid: this.parentId, isLeft: this.isLeft },
       });
     },
     go(uid) {
@@ -950,11 +946,9 @@ export default {
         }
       }
     },
-    Search(uid)
-    {
-      if(uid=="")
-       uid=0
-      this.realtionid =uid;
+    Search(uid) {
+      if (uid == "") uid = 0;
+      this.realtionid = uid;
       this.loadData();
     },
     loadData(history) {
@@ -967,13 +961,12 @@ export default {
       this.ThrRightList = [];
 
       GetSearchRelation({ uid: this.realtionid }).then((json) => {
-       
         if (json.response) {
           that.friendsList = json.response;
           that.First = that.friendsList[0];
           that.upID = that.friendsList[0].jid;
 
-          that.friendsList.forEach(element => {
+          that.friendsList.forEach((element) => {
             element.photo = photoList[element.photo];
             if (element.ceng == 1) {
               that.SecList.push(element);
@@ -1001,7 +994,7 @@ export default {
               RProfit: 0,
               LCount: 0,
               RCount: 0,
-              uID: 0
+              uID: 0,
             });
           }
           if (that.ThrLeftList.length < 2) {
@@ -1019,7 +1012,7 @@ export default {
               RProfit: 0,
               LCount: 0,
               RCount: 0,
-              uID: 0
+              uID: 0,
             });
             if (that.ThrLeftList.length == 1) {
               that.ThrLeftList.push({
@@ -1036,7 +1029,7 @@ export default {
                 RProfit: 0,
                 LCount: 0,
                 RCount: 0,
-                uID: 0
+                uID: 0,
               });
             }
           }
@@ -1055,7 +1048,7 @@ export default {
               RProfit: 0,
               LCount: 0,
               RCount: 0,
-              uID: 0
+              uID: 0,
             });
             if (that.ThrRightList.length == 1) {
               that.ThrRightList.push({
@@ -1072,13 +1065,13 @@ export default {
                 RProfit: 0,
                 LCount: 0,
                 RCount: 0,
-                uID: 0
+                uID: 0,
               });
             }
           }
         }
       });
-    }
+    },
   },
   mounted() {
     this.getUsers();
@@ -1095,12 +1088,11 @@ export default {
         this.dayinfo.daymaintotal + this.dayinfo.daysontotal;
     });
 
-     this.realtionid = this.$route.params.uid;
+    this.realtionid = this.$route.params.uid;
   },
 };
 </script>
 <style lang='less' scoped>
-
 .relation-box {
   margin-top: -20px;
   // height: 75vh;
@@ -1152,15 +1144,15 @@ export default {
         }
       }
     }
-     .first-relation.one {
-       margin-top: 60px;
-     }
-      .first-relation.two {
-       margin-top: 100px;
-     }
-      .first-relation.thr {
-       margin-top: 160px;
-     }
+    .first-relation.one {
+      margin-top: 60px;
+    }
+    .first-relation.two {
+      margin-top: 100px;
+    }
+    .first-relation.thr {
+      margin-top: 160px;
+    }
     .person1 {
       width: 263px;
       height: 239px;

@@ -181,6 +181,7 @@ export default {
       if (this.initData.addlevle == 666) { this.nowvip = '初级会员' }
       if (this.initData.addlevle == 2000) { this.nowvip = '中级会员' }
       if (this.initData.addlevle == 10000) { this.nowvip = '高级会员' }
+      if (this.initData.addlevle == 30000) { this.nowvip = '超级会员' }
     }
     // this.isEnter = false
   }

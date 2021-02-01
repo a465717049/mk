@@ -101,6 +101,7 @@ export default {
           if (json.response.farmers == 1) this.level = '初级会员'
           if (json.response.farmers == 2) this.level = '中级会员'
           if (json.response.farmers == 3) this.level = '高级会员'
+          if (json.response.farmers == 4) this.level = '超级会员'
 
           if (json.response.lv_name == 0) this.userlv = '会员'
           if (json.response.lv_name == 1) this.userlv = '经理'

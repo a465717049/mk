@@ -76,7 +76,10 @@ namespace DPE.Core.Model.Models
 
         public long? isDelete { get; set; }
 
+        public int L { get; set; }
 
+
+        public int R { get; set; }
         public string bankname { get; set; }
         public string bankidcard { get; set; }
         public string bankaddr { get; set; }

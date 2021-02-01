@@ -219,6 +219,9 @@ namespace DPE.Core.Controllers
                     rate = cnRate / usdRate;
                 }
 
+                //手续费0.02
+                amount = amount * Convert.ToDecimal(1-0.02);
+
                 var userdata =await _userInfoServices.GetUserInfo(_user.ID);
                 if (amount > userdata.EP) 
                 {
@@ -228,6 +231,9 @@ namespace DPE.Core.Controllers
                     return result;
 
                 }
+
+
+             
 
                 EPRecords epmRecordsModel = new EPRecords()
                 {
