@@ -620,6 +620,8 @@ namespace DPE.Core.Controllers
                                                     fromID = _user.ID
                                                 }).Result > 0)
                                                 {
+
+
                                                 }
                                                 if (_ishoppingcartserivces.DeleteById(model.id).Result)
                                                 {
@@ -668,7 +670,33 @@ namespace DPE.Core.Controllers
                                             }
                                         }
 
-                                     
+                                        //结算完奖励
+                                        if (_iepexchangeservices.Add(new EPexchange()
+                                        {
+                                            amount = 90,
+                                            createTime = DateTime.Now,
+                                            uID = _user.ID,
+                                            lastTotal = epinfo.amount + totalshopprice,
+                                            stype = 6,
+                                            remark = "零售利润",
+                                            fromID = _user.ID
+                                        }).Result > 0)
+                                        {
+                                            epinfo.amount = epinfo.amount + 90;
+                                            await _iepservices.Update(epinfo);
+                                        }
+                                        else 
+                                        {
+                                            result.code = 1002;
+                                            result.msg = shopskudetialinfo.detailname + "结算异常请稍后再试";
+                                            result.success = false;
+                                            _unitOfWork.RollbackTran();
+                                            return result;
+                                        }
+
+
+
+
                                     }
                                     else
                                     {
