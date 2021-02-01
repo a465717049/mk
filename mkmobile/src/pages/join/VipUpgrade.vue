@@ -77,7 +77,8 @@ export default {
       receiptTypeList: [
         { text: '初级会员', value: 666 },
         { text: '中级会员', value: 2000 },
-        { text: '高级会员', value: 10000 }
+        { text: '高级会员', value: 10000 },
+        { text: '超级会员', value: 30000 }
       ],
       transPassword: null,
       verificationCode: null,
@@ -130,6 +131,7 @@ export default {
           if (json.response.farmers == 1) { this.form.amount = 666; this.nowvip = '初级会员' }
           if (json.response.farmers == 2) { this.form.amount = 2000; this.nowvip = '中级会员' }
           if (json.response.farmers == 3) { this.form.amount = 10000; this.nowvip = '高级会员' }
+          if (json.response.farmers == 4) { this.form.amount = 30000; this.nowvip = '超级会员' }
 
           if (this.form.oType == 'EP') {
             this.account = json.response.gold

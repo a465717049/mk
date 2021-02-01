@@ -42,6 +42,7 @@
       <el-option label="初级会员" value="1"></el-option>
       <el-option label="中级会员" value="2"></el-option>
       <el-option label="高级会员" value="3"></el-option>
+      <el-option label="超级会员" value="4"></el-option>
       </el-select>
       </el-form-item> 
 
@@ -868,7 +869,7 @@ export default {
       return tmpname;
     },
     formatfarmers: function (row, column) {
-      return row.farmers == 1 ? "初级会员" : row.farmers == 2 ? "中级会员" : "高级会员";
+       return row.farmers == 1 ? "初级会员" : row.farmers == 2 ? "中级会员": row.farmers == 3 ? "高级会员"  : "超级会员";
     },
     callFunction(item) {
       this.filters = {
