@@ -8,6 +8,7 @@ using DPE.Core.AuthHelper;
 using DPE.Core.AuthHelper.OverWrite;
 using DPE.Core.Common.Helper;
 using DPE.Core.Common.HttpContextUser;
+using DPE.Core.IRepository.UnitOfWork;
 using DPE.Core.IServices;
 using DPE.Core.Model;
 using DPE.Core.Model.Models;
@@ -35,15 +36,19 @@ namespace DPE.Core.Controllers
         private readonly IRPServices _IRPServices;
         private readonly IRPexchangeServices _irpexchangeservices;
         readonly ISysUserInfoServices _isysuserinfoservice;
+        private readonly IUnitOfWork _unitOfWork;
 
 
-        public RPController(ISysUserInfoServices isysuserinfoservice, IRPServices iRPpservices, IUserInfoServices userInfoServices, IUser user, IRPexchangeServices irpexchangeservices)
+
+        public RPController(ISysUserInfoServices isysuserinfoservice, IRPServices iRPpservices, 
+            IUserInfoServices userInfoServices, IUser user, IRPexchangeServices irpexchangeservices, IUnitOfWork unitOfWork)
         {
             _IRPServices = iRPpservices;
             _userInfoServices = userInfoServices;
             _user = user;
             _irpexchangeservices = irpexchangeservices;
             _isysuserinfoservice = isysuserinfoservice;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -232,6 +237,126 @@ namespace DPE.Core.Controllers
                 result.code = 200;
                 result.success = true;
                 return result;
+            }
+            catch (Exception ex)
+            {
+                result.code = 500;
+                result.msg = ex.Message;
+                result.success = false;
+                return result;
+            }
+
+        }
+
+        [HttpPost]
+        [Route("adminbofen")]
+        public async Task<MessageModel<dynamic>> adminbofen()
+        {
+
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                long uid = Convert.ToInt64(HttpContext.Request.Form["uid"]);
+                long luid = Convert.ToInt64(HttpContext.Request.Form["luid"]);
+                decimal amount = Convert.ToDecimal( HttpContext.Request.Form["amount"]);
+
+                var model = await _isysuserinfoservice.QueryById(uid);
+                if (model != null)
+                {
+                    var lrpmodel = await _IRPServices.QueryById(luid);
+                    if (lrpmodel.amount < amount)
+                    {
+                        result.code = 400;
+                        result.success = false;
+                        result.msg = "来源uid金额不足拨分，请输入可用金额！";
+                        return result;
+                    }
+                    else 
+                    {
+                        var rpmodel = await _IRPServices.QueryById(uid);
+                        _unitOfWork.BeginTran();
+
+                        lrpmodel.amount = lrpmodel.amount - amount;
+                        if (_IRPServices.Update(lrpmodel).Result)
+                        {
+                            if (_irpexchangeservices.Add( new RPexchange() { 
+                                amount =-amount, stype=87, createTime=DateTime.Now, fromID= uid,
+                                uID=luid, remark="拨分", lastTotal= lrpmodel.amount+amount }).Result >0)
+                            {
+
+                                rpmodel.amount = rpmodel.amount + amount;
+                                if (_IRPServices.Update(rpmodel).Result)
+                                {
+                                    if (_irpexchangeservices.Add(new RPexchange()
+                                    {
+                                        amount = amount,
+                                        stype = 87,
+                                        createTime = DateTime.Now,
+                                        fromID = luid,
+                                        uID = uid,
+                                        remark = "拨分",
+                                        lastTotal = rpmodel.amount - amount
+                                    }).Result > 0)
+                                    {
+
+                                        result.code = 200;
+                                        result.success = true;
+                                        result.msg = "拨分成功！";
+
+                                        _unitOfWork.CommitTran();
+                                        return result;
+                                    }
+                                    else 
+                                    {
+                                        result.code = 400;
+                                        result.success = false;
+                                        result.msg = "拨分失败请稍后再试！";
+                                        _unitOfWork.RollbackTran();
+                                        return result;
+                                    }
+
+                                    }
+                                else 
+                                {
+
+                                    result.code = 400;
+                                    result.success = false;
+                                    result.msg = "拨分失败请稍后再试！";
+                                    _unitOfWork.RollbackTran();
+                                    return result;
+                                }
+
+                                }
+                            else 
+                            {
+                                result.code = 400;
+                                result.success = false;
+                                result.msg = "拨分失败请稍后再试！";
+                                _unitOfWork.RollbackTran();
+                                return result;
+                            }
+
+                        }
+                        else 
+                        {
+
+                            result.code = 400;
+                            result.success = false;
+                            result.msg = "拨分失败请稍后再试！";
+                            _unitOfWork.RollbackTran();
+                            return result;
+                        }
+                    }
+
+                }
+                else 
+                {
+                    result.code = 400;
+                    result.success = false;
+                    result.msg = "拨分uid不存在，请查询后再重试！";
+                    return result;
+                }
             }
             catch (Exception ex)
             {

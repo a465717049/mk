@@ -111,10 +111,16 @@
       </el-table-column>
       <el-table-column prop="rprofit" label="推荐业绩" width="120" sortable>
       </el-table-column>
+       <el-table-column prop="isBindGoogle" label="状态" width="" sortable>
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.isBindGoogle  ? 'success' : 'danger'" disable-transitions>{{scope.row.isBindGoogle ? "绑定":"未绑定"}}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column prop="isDelete" label="状态" width="" sortable>
         <template slot-scope="scope">
           <el-tag :type="!scope.row.isDelete  ? 'success' : 'danger'" disable-transitions>{{!scope.row.isDelete ? "正常":"锁定"}}</el-tag>
            <el-tag type="success" @click="showrelation(scope.row.uid)" >关系图</el-tag>
+           <el-tag type="success" @click="showjihuoma(scope.row.uid)" >调用激活码</el-tag>
         </template>
       </el-table-column>
     </el-table>
@@ -390,6 +396,17 @@
       </div>
       </el-dialog>
 
+
+     <!--激活码-->
+      <el-dialog title="激活码" 
+      :visible.sync="jihuomaVisible" v-model="jihuomaVisible" :close-on-click-modal="false">
+       <el-input type="text" v-model="jihuomakey"></el-input>
+      <div slot="footer" class="dialog-footer">
+      <el-button @click.native="jihuomaVisible = false">关闭</el-button>
+      </div>
+      </el-dialog>
+
+
   </section>
 </template>
 
@@ -411,6 +428,8 @@ import {
   GetALLUserInfoExcel,
   GetDownExcelList,
   DeleteDownExcelList,
+  admincanceGoogle,
+  admintidgooglekey,
 } from "../../api/api";
 import { getButtonList } from "../../promissionRouter";
 import Toolbar from "../../components/Toolbar";
@@ -419,6 +438,8 @@ export default {
   components: { Toolbar },
   data() {
     return {
+      jihuomaVisible:false,
+      jihuomakey:"",
       stid: "",
       etid: "",
       sjid: "",
@@ -533,6 +554,35 @@ export default {
     };
   },
   methods: {
+    cancelgoogle(index, row) {
+      let rows = this.currentRow;
+      if (!rows) {
+        this.$message({
+          message: "请选择要操作的一行数据！",
+          type: "error",
+        });
+        return;
+      }
+
+        this.$confirm("确认解绑吗？", "提示", {}).then(() => {
+        admincanceGoogle({ uid: rows.uid }).then((res) => {
+          if (res.success) {
+            this.$message({
+              message: "操作成功",
+              type: "success",
+            });
+            this.getUsers();
+          } else {
+            this.$message({
+              message: "操作失败请稍后再试！",
+              type: "error",
+            });
+          }
+        });
+      });
+
+
+    },
     sumbitoutput() {
       let para = {
         pageindex: this.page,
@@ -659,6 +709,16 @@ export default {
       this.realtionid = thisid;
       this.loadData();
       this.relationFormVisible = true;
+    },
+    showjihuoma(thisid)
+    {
+
+      admintidgooglekey({ uid: thisid }).then((res) => {
+          if (res.success) {
+            this.jihuomakey=res.msg;
+          }
+        });
+      this.jihuomaVisible = true;
     },
     //荣誉
     levelSubmit: function() {

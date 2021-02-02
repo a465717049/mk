@@ -4,11 +4,12 @@
     <toolbar :buttonList="buttonList" @callFunction="callFunction"></toolbar>
     <el-select style="width:202px" v-model="searchstatusVal" placeholder="类型">
       <el-option value="" label="全部">全部</el-option>
-      <el-option value="7" label="創建新賬號">創建新賬號</el-option>
-      <el-option value="8" label="RP轉SP">RP轉SP</el-option>
-      <el-option value="9" label="EP轉RP">EP轉RP</el-option>
+      <el-option value="7" label="创建新账号">创建新账号</el-option>
+      <el-option value="9" label="EP转RP">EP转RP</el-option>
       <el-option value="13" label="转换">转换</el-option>
-      <el-option value="17" label="歸縂">歸縂</el-option>
+      <el-option value="88" label="购买商品">购买商品</el-option>
+      <el-option value="89" label="升级">升级</el-option>
+      <el-option value="87" label="拨分">拨分</el-option>
     </el-select>
 
     <!--列表-->
@@ -39,6 +40,30 @@
       </el-pagination>
     </el-col>
 
+
+      <!--拨分-->
+    <el-dialog title="拨分" :visible.sync="idcardFormVisible" v-model="idcardFormVisible" :close-on-click-modal="false">
+      <el-form  label-width="80px"  ref="Formidcard">
+         <el-form-item label="可用金额" >
+          <el-input v-model="kebojine" disabled auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="来源uid" >
+          <el-input v-model="laiyuanuid" disabled auto-complete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="拨分uid" >
+          <el-input v-model="bofenuid" auto-complete="off"></el-input>
+        </el-form-item>
+         <el-form-item label="拨分金额" >
+         <el-input v-model="bofenjine" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click.native="idcardFormVisible = false">取消</el-button>
+        <el-button type="primary" @click.native="idcardSubmit" >提交</el-button>
+      </div>
+    </el-dialog>
+
+
   </section>
 </template>
 
@@ -49,6 +74,8 @@ import {
   testapi,
   GetAdminRPExchange,
   RollBackTran,
+  GetUserInfo,
+  adminbofen
 } from "../../api/api";
 import { getButtonList } from "../../promissionRouter";
 import Toolbar from "../../components/Toolbar";
@@ -57,6 +84,11 @@ export default {
   components: { Toolbar },
   data() {
     return {
+      kebojine:0,
+      laiyuanuid:"",
+      bofenuid:"",
+      bofenjine:0,
+      idcardFormVisible:false,
       filters: {
         name: "",
       },
@@ -72,6 +104,40 @@ export default {
     };
   },
   methods: {
+    idcardSubmit()
+    {
+       this.$confirm("是否确认拨分？", "提示", {}).then(() => {
+        let para = {
+          luid: this.laiyuanuid,
+          uid:this.bofenuid,
+          amount:this.bofenjine
+        };
+        adminbofen(para).then((res) => {
+          if (res.success) {
+            this.$message({
+              message: "操作成功",
+              type: "success",
+            });
+            this.getUsers();
+            this.getUserInfo();
+          } else {
+            this.$message({
+              message: res.msg,
+              type: "error",
+            });
+          }
+        });
+      });
+
+    },
+    allocatecore()
+    {
+      this.idcardFormVisible=true;
+      this.laiyuanuid=10000;
+      this.bofenuid=0;
+      this.bofenjine=0;
+      this.getUserInfo();
+    },
     selectCurrentRow(val) {
       this.currentRow = val;
     },
@@ -84,6 +150,12 @@ export default {
     handleCurrentChange(val) {
       this.page = val;
       this.getUsers();
+    },
+    getUserInfo()
+    { 
+       GetUserInfo(null).then((res) => {
+           this.kebojine=res.response.rp;
+      });
     },
     //获取Sell列表
     getUsers() {
