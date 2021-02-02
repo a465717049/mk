@@ -57,11 +57,14 @@ namespace DPE.Core.Controllers
 
         private readonly IEPexchangeRepository _exchangedal;
 
+        private readonly ICompanyProfitServices _icompanyprofitservices;
+
 
         public EPController(IExchangeTotalServices iexchangetotalservices, ISysUserInfoServices isysuserinfoservice, IEPRecordsServices ieprecordsservices,
             IEPServices epspservices, IUser user, IEPexchangeServices iepexchangeservices, IUserInfoServices userInfoServices
             , IUserComplaintServices iusercomplaintservices, ISysUserInfoServices sysUserInfoServices, 
-            ISettingsServices settingsdal, IUnitOfWork iunitofwork, IEPRecordsRepository ePRecordsdal, IEPexchangeRepository exchangedal)
+            ISettingsServices settingsdal, IUnitOfWork iunitofwork, IEPRecordsRepository ePRecordsdal,
+            IEPexchangeRepository exchangedal, ICompanyProfitServices icompanyprofitservices)
         {
             _EPServices = epspservices;
             this._user = user;
@@ -76,6 +79,7 @@ namespace DPE.Core.Controllers
             _iunitofwork = iunitofwork;
             _ePRecordsdal = ePRecordsdal;
             _exchangedal = exchangedal;
+            _icompanyprofitservices = icompanyprofitservices;
         }
 
         /// <summary>
@@ -220,7 +224,11 @@ namespace DPE.Core.Controllers
                 }
 
                 //手续费0.02
+                long sxf = Convert.ToInt64((amount - (amount * Convert.ToDecimal(1 - 0.02)))) ;
                 amount = amount * Convert.ToDecimal(1-0.02);
+
+                //手续费 
+
 
                 var userdata =await _userInfoServices.GetUserInfo(_user.ID);
                 if (amount > userdata.EP) 
@@ -235,7 +243,7 @@ namespace DPE.Core.Controllers
 
              
 
-                EPRecords epmRecordsModel = new EPRecords()
+               EPRecords epmRecordsModel = new EPRecords()
                 {
                     uID =_user.ID,
                     amount = 0-amount,
@@ -273,6 +281,9 @@ namespace DPE.Core.Controllers
                         createTime = DateTime.Now,
                         remark = "提现EP"
                     };
+
+                    await _icompanyprofitservices.Add(new CompanyProfit() { 
+                        amount = sxf,createTime=DateTime.Now,pType=1, eType= "平台手续费",fromID=_user.ID  });
 
                     var changerowid = await _exchangedal.Add(pexchange);
                     if (changerowid > 0)
@@ -318,8 +329,9 @@ namespace DPE.Core.Controllers
                 result.msg = "提现成功！";
                 return result;
             } 
-            catch 
+            catch (Exception ex)
             {
+                string a = ex.Message;
                 result.code = 20001;
                 result.success = false;
                 result.msg = "提现失败请稍后再试！";

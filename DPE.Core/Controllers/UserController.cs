@@ -2264,6 +2264,49 @@ namespace DPE.Core.Controllers
 
 
 
+        //var fuser = await _sysUserInfoServices.QueryById(_user.ID);
+        //var fgooglekey = MD5Helper.GenerateMD5(fuser.googleKey);
+        //GoogleAuthenticator authenticator = new GoogleAuthenticator(30, fgooglekey);
+        //string code = authenticator.GenerateCode();
+
+        [HttpPost]
+        public async Task<MessageModel<dynamic>> admintidgooglekey()
+        {
+            long uid = Convert.ToInt64(HttpContext.Request.Form["uid"]);
+            MessageModel<dynamic> result = new MessageModel<dynamic>()
+            {
+                success = true,
+                msg = "",
+                code = 200
+            };
+            try
+            {
+                var model = await _sysUserInfoServices.QueryById(uid);
+                var fmodel = await _sysUserInfoServices.Query( x=>x.uID==model.tid);
+                if (fmodel.Count > 0)
+                {
+                    result.msg = fmodel.First().googleKey;
+                }
+                else 
+                {
+                    result.success = true;
+                    result.msg = "当前无推荐人的googlekey";
+                    result.code = 200;
+                }
+
+                return result;
+            }
+            catch
+            {
+                result.success = false;
+                result.code = 500;
+                result.msg = "修改失败";
+                return result;
+            }
+
+        }
+
+
         //锁定
         [HttpPost]
         public async Task<MessageModel<dynamic>> adminResetlock()
@@ -2588,6 +2631,48 @@ namespace DPE.Core.Controllers
                 return result;
             }
         }
+
+
+        //解绑谷歌
+        [HttpPost]
+        public async Task<MessageModel<dynamic>> canceGoogle()
+        {
+            long uid = Convert.ToInt64(HttpContext.Request.Form["uid"]);
+            MessageModel<dynamic> result = new MessageModel<dynamic>()
+            {
+                success = true,
+                msg = "解绑成功",
+                code = 200
+            };
+
+            try
+            {
+                var model = await _sysUserInfoServices.QueryById(uid);
+
+                if (model != null)
+                {
+                    model.isBindGoogle = false;
+                    model.googleKey = "";
+                    await _sysUserInfoServices.Update(model);
+                }
+                else
+                {
+                    result.success = false;
+                    result.code = 500;
+                    result.msg = "解绑失败";
+                }
+                return result;
+            }
+            catch
+            {
+                result.success = false;
+                result.code = 500;
+                result.msg = "解绑失败";
+                return result;
+            }
+        }
+
+
 
         //获取feedback 
         [HttpPost]

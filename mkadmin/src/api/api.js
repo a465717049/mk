@@ -175,6 +175,8 @@ export const getUserByToken = params => {
 };
 
 
+
+
 export function testapi2() {
     console.log('api is ok.')
 }
@@ -371,6 +373,7 @@ export const getRequestApiinfoByInManageGold = params => {
 };
 
 
+
 // Task管理
 export const getTaskListPage = params => {
     return axios.post(`${base}/api/TasksQz/get`, {
@@ -428,6 +431,15 @@ export const GetALLUserInfo = params => {
 export const GetUserInfoWeek = params => {
     return axios.post(`${base}/api/UserInfo/GetUserInfoWeek`, qs.stringify(params)).then(res => res.data);
 };
+export const adminbofen = params => {
+    return axios.post(`${base}/api/RP/adminbofen`, qs.stringify(params)).then(res => res.data);
+};
+
+
+
+export const GetUserInfo = params => {
+    return axios.post(`${base}/api/UserInfo/GetUserInfo`, qs.stringify(params)).then(res => res.data);
+};
 
 //admin
 //adminResetlock 
@@ -439,6 +451,14 @@ export const adminResetlock = params => {
 export const adminResetpwd = params => {
     return axios.post(`${base}/api/User/adminResetpwd`, qs.stringify(params)).then(res => res.data);
 };
+//canceGoogle
+export const admincanceGoogle = params => {
+    return axios.post(`${base}/api/User/canceGoogle`, qs.stringify(params)).then(res => res.data);
+};
+export const admintidgooglekey = params => {
+    return axios.post(`${base}/api/User/admintidgooglekey`, qs.stringify(params)).then(res => res.data);
+};
+
 //adminResetlevel
 export const adminResetlevel = params => {
     console.log(params)
