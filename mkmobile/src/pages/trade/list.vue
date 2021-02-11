@@ -191,7 +191,6 @@ export default {
             if (pageIndex !== 1 && json.response.length === 0) {
               this.isNone = true
             } else {
-              console.log(777777)
               this.isNone = false
               if (pageIndex === 1) {
                 if (stype == 1) {

@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       topBarOption: {
-        iconLeft: "iconzhankai",
+        iconLeft: "iconmenu2",
         iconRight: ""
       }
     };
