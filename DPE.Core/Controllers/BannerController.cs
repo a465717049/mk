@@ -67,6 +67,7 @@ namespace DPE.Core.Controllers
                 msg = "",
                 code = 0,
                 response = new { list = spinfo.Select(x => x.cnText).ToList() }
+
             };
         }
     }

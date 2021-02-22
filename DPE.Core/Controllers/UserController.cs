@@ -112,7 +112,7 @@ namespace DPE.Core.Controllers
             var allUserRoles = await _userRoleServices.Query(d => d.IsDeleted == false);
             var allRoles = await _roleServices.Query(d => d.IsDeleted == false);
 
-            var sysUserInfos = data.data;
+            var sysUserInfos = data.data;    
             foreach (var item in sysUserInfos)
             {
                 var currentUserRoles = allUserRoles.Where(d => d.UserId == item.uID).Select(d => d.RoleId).ToList();

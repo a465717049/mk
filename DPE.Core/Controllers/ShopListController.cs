@@ -2442,9 +2442,9 @@ namespace DPE.Core.Controllers
                         worksheet.Cells[j, 4].Value = datalist[i].item.price;
                         worksheet.Cells[j, 5].Value = shopinfo.pName+"-"+shopsku.skuname+"-"+shopskudt.detailname;
                         worksheet.Cells[j, 6].Value = shopskudt.detaildesc;
-                        worksheet.Cells[j, 7].Value = shopsku.skuname;
-                        worksheet.Cells[j, 8].Value = shopskudt.detailname;
-                        worksheet.Cells[j, 9].Value = shopskudt.detailprice == 0 ? "是" : "否";
+                        worksheet.Cells[j, 7].Value = "";//shopsku.skuname;
+                        worksheet.Cells[j, 8].Value = "";// shopskudt.detailname;
+                        worksheet.Cells[j, 9].Value = "";// shopskudt.detailprice == 0 ? "是" : "否";
                         worksheet.Cells[j, 10].Value = datalist[i].item.buyNum;
                         worksheet.Cells[j, 11].Value = datalist[i].item.price;
                         worksheet.Cells[j, 12].Value = "";
