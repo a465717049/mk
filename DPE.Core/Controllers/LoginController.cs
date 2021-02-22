@@ -71,6 +71,7 @@ namespace DPE.Core.Controllers
         [Route("Login")]
         public async Task<MessageModel<TokenInfoViewModel>> Login(string name = "", string pass = "")
         {
+
             string jwtStr = string.Empty;
             if (string.IsNullOrEmpty(name))
             {
@@ -144,7 +145,7 @@ namespace DPE.Core.Controllers
 
                 try
                 {
-                    string redisuid = "userid:" + user.FirstOrDefault().uID.ToString();
+                    string redisuid = "mkuserid:" + user.FirstOrDefault().uID.ToString();
                     string redistoken = MD5Helper.MD5Encrypt32(token.token);
                     if (_redisCacheManager.Get(redisuid))
                     {
@@ -155,9 +156,13 @@ namespace DPE.Core.Controllers
                     _redisCacheManager.SetString(redisuid, redistoken, TimeSpan.FromMinutes(300));
                     _redisCacheManager.SetString(redistoken, redisuid, TimeSpan.FromMinutes(300));
                 }
-                catch
+                catch(Exception ex)
                 {
-
+                    return new MessageModel<TokenInfoViewModel>()
+                    {
+                        success = true,
+                        msg = "登录失败" + ex.Message
+                    };
                 }
 
 

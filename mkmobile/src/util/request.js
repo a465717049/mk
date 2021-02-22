@@ -1,17 +1,9 @@
 /**
  * 网络相关Api
  */
-import {
-  config
-} from "./config.js";
-import {
-  storage
-} from "./storage.js";
-import {
-  accessToken,
-  IPHONE,
-  Safari
-} from "./const.js";
+import { config } from "./config.js";
+import { storage } from "./storage.js";
+import { accessToken, IPHONE, Safari } from "./const.js";
 import axios from "axios";
 import notice from "./notice";
 import router from "../router";
@@ -27,11 +19,13 @@ let getAccessToken = () => {
 let headerOption = () => {
   return {
     Authorization: getAccessToken(),
-    "Access-Control-Allow-Origin": "https://api.a8dog.top",
+    "Access-Control-Allow-Origin": "https://app.a8dog.top/,https://api.a8dog.top/,*",
     "Access-Control-Allow-Credentials": "true",
     "content-type": "application/json;"
   };
 };
+
+console.log(headerOption.Authorizationm,'Authorization')
 // http返回码状态判断
 let state = (res, noLoading) => {
   if (noLoading) {
@@ -39,38 +33,32 @@ let state = (res, noLoading) => {
     notice.loadingHide();
   }
 
-  if (!res.code && res.code > 0) {
+  if (!res.code&&res.code>0 ) { 
     notice.loadingHide();
   }
   switch (res.status) {
     case 302:
       notice.errorModal("302");
       break;
-    case 400:
+    case 400: 
       notice.errorModal("請求參數錯誤");
       break;
     case 401:
-      notice.errorModal("未授權，請重新登陸", function () {
-        router.push({
-          path: "/login"
-        });
+      notice.errorModal("未授權，請重新登陸", function() {
+       router.push({ path: "/login" });
       });
       break;
     case 403:
-      notice.errorModal("登錄超時，請重新登陸！", function () {
+      notice.errorModal("登錄超時，請重新登陸！", function() {
         notice.loadingHide();
-        router.push({
-          path: "/login"
-        });
-      });
+        router.push({ path: "/login" });
+       });
       break;
     case 404:
-      notice.errorModal("非法請求！請重新登陸", function () {
+      notice.errorModal("非法請求！請重新登陸", function() {
         notice.loadingHide();
-        router.push({
-          path: "/login"
-        });
-      });
+        router.push({ path: "/login" });
+       });
       break;
     case 405:
       notice.errorModal("非法請求！請重新登陸！");
@@ -94,10 +82,8 @@ let state = (res, noLoading) => {
       notice.errorModal("参数错误！");
       break;
     case 10002:
-      notice.errorModal("未授權，請重新登陸！", function () {
-        router.push({
-          path: "/login"
-        });
+      notice.errorModal("未授權，請重新登陸！", function() {
+        router.push({ path: "/login" });
       });
       break;
   }
@@ -115,47 +101,53 @@ export const http = (opts, params, success, noLoading, error) => {
     notice.loading();
   }
   var xhr;
-  if (IPHONE) {
-    xhr = new plus.net.XMLHttpRequest();
-  }
-  if (IPHONE && Safari) {
-    if (!XMLHttpRequest) {
-      return;
-    }
-    xhr = new XMLHttpRequest();
-  }
+   if (IPHONE) {
+     xhr = new plus.net.XMLHttpRequest();
+     
+   // console.log(xhr,'xhr')
+   }
+  //  if (IPHONE && Safari) {
+  //    if (!XMLHttpRequest) {
+  //      return;
+  //    }
+  //   xhr = new XMLHttpRequest();
+  //  }
   if (xhr) {
     error =
       error ||
-      function (XMLHttpRequest, textStatus, errorThrown) {
-        console.log("status:" + textStatus);
-        console.log("data:" + XMLHttpRequest.responseText);
+      function(XMLHttpRequest, textStatus, errorThrown) {
+       // console.log("status:" + textStatus);
+       // console.log("data:" + XMLHttpRequest.responseText);
       };
-    opts.url = baseUrl + opts.version + opts.url;
-    let token = getAccessToken();
-    xhr.setRequestHeader("Authorization", token);
+      if(opts.url.substring(0,4)!=='http'){
+        opts.url = baseUrl + opts.version + opts.url;
+      }
+   
+  
     xhr.setRequestHeader(
       "Access-Control-Allow-Origin",
-      "https://api.a8dog.top,https://api.a8dog.top,*"
+      "https://app.a8dog.top/,https://api.a8dog.top/,*"
     );
     xhr.setRequestHeader("Access-Control-Allow-Credentials", "true");
-    xhr.onreadystatechange = function () {
+    xhr.onreadystatechange = function() {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           var json = JSON.parse(xhr.responseText || xhr.response);
           success(json);
           notice.loadingHide();
         } else {
+          //console.log(xhr.responseText)
           state(xhr, noLoading);
           error(xhr, xhr.status);
           notice.loadingHide();
         }
+      }else{
+        //console.log(xhr.responseText)
       }
     };
 
     try {
       var postData = params;
-      xhr.open(opts.method, opts.url, false);
       if (opts.string) {
         xhr.setRequestHeader(
           "Content-Type",
@@ -171,7 +163,13 @@ export const http = (opts, params, success, noLoading, error) => {
       } else {
         xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
       }
+      xhr.open(opts.method, opts.url+'?'+postData, false);
+      //console.log(opts.url,'URL')
+      let token = getAccessToken();
+     // console.log(token,'token')
+      xhr.setRequestHeader("Authorization", token);
       xhr.send(postData);
+      //console.log(postData)
     } catch (e) {
       console.log(e);
     }
@@ -216,29 +214,27 @@ export const http = (opts, params, success, noLoading, error) => {
     );
     axios.interceptors.response.use(
       response => {
-        if (response && response.status && response.status === 200) {
+        if (response&&response.status && response.status === 200) {
           notice.loadingHide();
-          state(response, '');
-          if (response.data) {
-            return response.data;
-          } else {
-            return response;
-          }
-
-        } else if (response && response.status && response.status != 200) {
-
-          state(response, '');
-          return response;
-        } else if (response) {
-          state({
-            code: 403
-          }, '');
+          state(response, ''); 
+        if (response.data) {
+          return response.data;
+        } else {
           return response;
         }
-
+       
+        }else if(response&&response.status && response.status != 200){
+          
+            state(response, ''); 
+            return response;
+          }else if(response){
+            state({code:403}, '');  
+            return response;
+        }
+       
       },
       err => {
-        state(err, '');
+        state(err, ''); 
         return Promise.resolve(err.response);
       }
     );

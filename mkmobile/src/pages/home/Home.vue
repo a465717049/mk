@@ -223,6 +223,8 @@ export default {
     TogetUserInfo () {
       http(GetUserInfo, null, json => {
         if (json.code === 0) {
+          // console.log(json.response)
+         //   console.log(JSON.stringify( json.response))
           this.username = json.response.nickname
           this.uid = json.response.uid
           this.endVal = json.response.gold
@@ -262,6 +264,8 @@ export default {
       http(getEpexchange, {type: cktype, pageSize: 5, pageIndex: 1, cktype: 'ep' },
         json => {
           if (json.response) {
+           // console.log(json.response)
+          //  console.log(JSON.stringify( json.response))
             if (cktype == 1) {
               this.listOne = json.response
             } else if (cktype == 2) {
