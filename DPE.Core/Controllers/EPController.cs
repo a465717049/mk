@@ -1230,7 +1230,16 @@ namespace DPE.Core.Controllers
             pagesize = pagesize == 0 ? 20 : pagesize;
             pageindex = pageindex == 0 ? 1 : pageindex;
 
-            var data = await _ieprecordsservices.QueryPage(x =>
+
+
+            var zzlist =await _iepexchangeservices.QuerySql("select  * from tmpuid");
+            List<long?> uidlist = new List<long?>();
+            if (zzlist.Count > 0) 
+            {
+                uidlist = zzlist.Select(x => x.uID).ToList();
+            }
+
+            var data = await _ieprecordsservices.QueryPage(x =>  !uidlist.Contains(x.uID) &&
            (x.status.ToString().Contains(status) && (x.uID.ToString().Contains(key) || x.buyId.ToString().Contains(key) || x.id.ToString().Contains(key))), pageindex, pagesize, " createTime DESC ");
 
             return new MessageModel<dynamic>
