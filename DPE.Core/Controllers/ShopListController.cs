@@ -2436,7 +2436,7 @@ namespace DPE.Core.Controllers
                         var user = _isysuserinfoservices.QueryById(datalist[i].item.buyuid).Result;
                         var shopsku = _ishopskuservices.QueryById(_ishopskudetailservices.QueryById(datalist[i].item.shopid).Result.skuid).Result;
                         var shopinfo = _ishoplistservices.QueryById(_ishopskuservices.QueryById(_ishopskudetailservices.QueryById(datalist[i].item.shopid).Result.skuid).Result.shopid).Result;
-                        worksheet.Cells[j, 1].Value = "摩奇猴";
+                        worksheet.Cells[j, 1].Value = "长青666";
                         worksheet.Cells[j, 2].Value = datalist[i].item.shopordernumber;
                         worksheet.Cells[j, 3].Value = datalist[i].item.buyuid;
                         worksheet.Cells[j, 4].Value = datalist[i].item.price;

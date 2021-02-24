@@ -45,6 +45,8 @@ namespace DPE.Core.IServices
         Task<sysUserInfo> checkTrad(long uid, string password);
         Task<sysUserInfo> checkGoogleKey(long uid, string googleKey);
 
+        Task<bool> ckGoogleKey(string googleKey);
+
         Task<DataTable> AddSpCreatePayUser(AddNewUserModel model);
 
         //更新等级

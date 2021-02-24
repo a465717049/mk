@@ -242,6 +242,27 @@ export default {
         this.tips = '当前产品分不足'
         return
       }
+
+      // buyaddr buyname buyphone
+
+        if (!this.buyaddr) {
+        this.isEnter = true
+        this.tips = '请输入购买地址'
+        return
+        }
+
+        if (!this.buyname) {
+        this.isEnter = true
+        this.tips = '请输入购买姓名'
+        return
+        }
+
+        if (!this.buyphone) {
+        this.isEnter = true
+        this.tips = '请输入购买手机'
+        return
+        }
+
       http(
         BuyGoodsbyweb,
         {

@@ -6,6 +6,9 @@
     @submit.prevent="onSubmit"
     style="margin:20px;width:60%;min-width:600px;"
   >
+
+
+
     <el-form-item label="我的昵称">
       <el-input v-model="editForm.uNickName"></el-input>
     </el-form-item>
@@ -39,17 +42,30 @@
    <!-- <el-form-item label="留言/备注">
       <el-input type="textarea" v-model="editForm.desc"></el-input>
     </el-form-item>-->
+
+
     <el-form-item> 
       <el-button @click="onSubmit" type="primary">更新</el-button>
       <el-button @click.native.prevent>取消</el-button>
     </el-form-item>
+
+
+    
+     <el-form-item label="谷歌验证">
+     <el-input v-model="gokey"></el-input>
+    </el-form-item>
+    
+    <el-form-item> 
+      <el-button @click="gokeySubmit" type="primary">验证</el-button>
+    </el-form-item>
+
   </el-form>
 </template>
 
 <script>
 import util from "../../../util/date";
 import {
-  getUserByToken,changepwdbyadmin
+  getUserByToken,changepwdbyadmin,ckgoogle
 } from "../../api/api";
 import { getButtonList } from "../../promissionRouter";
 import Toolbar from "../../components/Toolbar";
@@ -58,6 +74,7 @@ export default {
   components: { Toolbar },
   data() {
     return {
+      gokey:"",
       editForm: {
         id: 0,
         uID: 0,
@@ -98,6 +115,34 @@ export default {
     };
   },
   methods: {
+    gokeySubmit()
+    {
+        
+      if(!this.gokey)
+      {
+      this.$message({
+      message: "请输入谷歌验证码",
+      type: "error"
+      });
+      return;
+      }
+       ckgoogle({
+       gokey:this.gokey}).then((res) => {
+            if (res.success) {
+              this.$message({
+                message: "验证成功！",
+                type: "success",
+              });
+            } else {
+              this.$message({
+                message:"验证失败！",
+                type: "error",
+              });
+            }
+          });
+      
+
+    },
     onSubmit() {
 
 

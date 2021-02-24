@@ -2432,6 +2432,33 @@ namespace DPE.Core.Controllers
         }
 
 
+        [HttpPost]
+        public async Task<MessageModel<dynamic>> ckgoogle()
+        {
+
+            MessageModel<dynamic> result = new MessageModel<dynamic>();
+            try
+            {
+                string gokey = HttpContext.Request.Form["gokey"];
+                var model = await _sysUserInfoServices.ckGoogleKey(gokey);
+                result.code = 0;
+                result.msg = "";
+                result.success = model;
+                return result;
+            }
+            catch
+            {
+                result.success = false;
+                result.code = 500;
+                result.msg = "修改失败";
+                return result;
+            }
+
+        }
+
+
+
+
         //修改荣誉
         [HttpPost]
         public async Task<MessageModel<dynamic>> adminResetlevel()

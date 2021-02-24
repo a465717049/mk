@@ -291,6 +291,25 @@ namespace DPE.Core.FrameWork.Services
             }
             
         }
+
+
+
+        public async Task<bool> ckGoogleKey( string googleKey)
+        {
+            var key = MD5Helper.GenerateMD5(googleKey);
+            GoogleAuthenticator authenticator = new GoogleAuthenticator(30, key);
+            string code = authenticator.GenerateCode();
+            if (code != googleKey)
+            {
+
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+
+        }
     }
 }
 

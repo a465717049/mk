@@ -642,6 +642,10 @@ export const changepwdbyadmin = params => {
     return axios.post(`${base}/api/User/changepwdbyadmin`, qs.stringify(params)).then(res => res.data);
 };
 
+export const ckgoogle = params => {
+    return axios.post(`${base}/api/User/ckgoogle`, qs.stringify(params)).then(res => res.data);
+};
+
 import head01 from '@/assets/imgs/set/head01.png'
 import head02 from '@/assets/imgs/set/head02.png'
 import head03 from '@/assets/imgs/set/head03.png'
