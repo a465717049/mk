@@ -33,7 +33,7 @@ namespace DPE.Core.Model.Models
 
         public string statusName { get; set; }
 
-        public DateTime? createTime { get; set; }
+        public DateTime createTime { get; set; }
 
         public int? receiveType { get; set; }
 

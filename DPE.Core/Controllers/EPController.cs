@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using OfficeOpenXml;
 using SqlSugar;
 using StackExchange.Redis;
 
@@ -59,12 +61,14 @@ namespace DPE.Core.Controllers
 
         private readonly ICompanyProfitServices _icompanyprofitservices;
 
+        readonly IDownExcelRecordServices _idownexcelrecordservices;
+
 
         public EPController(IExchangeTotalServices iexchangetotalservices, ISysUserInfoServices isysuserinfoservice, IEPRecordsServices ieprecordsservices,
             IEPServices epspservices, IUser user, IEPexchangeServices iepexchangeservices, IUserInfoServices userInfoServices
             , IUserComplaintServices iusercomplaintservices, ISysUserInfoServices sysUserInfoServices, 
             ISettingsServices settingsdal, IUnitOfWork iunitofwork, IEPRecordsRepository ePRecordsdal,
-            IEPexchangeRepository exchangedal, ICompanyProfitServices icompanyprofitservices)
+            IEPexchangeRepository exchangedal, ICompanyProfitServices icompanyprofitservices, IDownExcelRecordServices idownexcelrecordservices)
         {
             _EPServices = epspservices;
             this._user = user;
@@ -80,7 +84,8 @@ namespace DPE.Core.Controllers
             _ePRecordsdal = ePRecordsdal;
             _exchangedal = exchangedal;
             _icompanyprofitservices = icompanyprofitservices;
-        }
+            _idownexcelrecordservices=idownexcelrecordservices;
+    }
 
         /// <summary>
         /// 获取EP数据根据 uid
@@ -680,7 +685,7 @@ namespace DPE.Core.Controllers
                                 datacount = result.dataCount,
                                 id = item.uID,
                                 img = "head01",
-                                date = item.createTime.Value.ToString("yy/MM/dd HH:mm:ss"),
+                                date = item.createTime.ToString("yy/MM/dd HH:mm:ss"),
                                 item.amount,
                                 status=item.status
                             })
@@ -1247,6 +1252,89 @@ namespace DPE.Core.Controllers
                 response = data
             };
         }
+
+
+        [HttpPost]
+        [Route("EPRecordOutAllPut")]
+        public async Task<IActionResult> EPRecordOutAllPut()
+        {
+            try
+            {
+
+                var sWebRootFolder = Directory.GetCurrentDirectory() + @"//shopimg//downinfo//";
+                var nowdate = DateTime.Now;
+                Random rad = new Random();
+                int value = rad.Next(1000, 10000);
+                string sFileName = string.Format("{0}{1}{2}{3}_{4}.xlsx", "EP交易列表详细", nowdate.Year.ToString(), nowdate.Month.ToString(), nowdate.Day.ToString(), value.ToString());
+                FileInfo file = new FileInfo(Path.Combine(sWebRootFolder, sFileName));
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                int pageindex = 1;
+                int pagesize = 999999;
+                string key = HttpContext.Request.Form["key"];
+                string status = HttpContext.Request.Form["status"];
+
+                if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+                {
+                    key = "";
+                }
+
+                var zzlist = await _iepexchangeservices.QuerySql("select  * from tmpuid");
+                List<long?> uidlist = new List<long?>();
+                if (zzlist.Count > 0)
+                {
+                    uidlist = zzlist.Select(x => x.uID).ToList();
+                }
+
+                var data = await _ieprecordsservices.QueryPage(x => !uidlist.Contains(x.uID) &&
+               (x.status.ToString().Contains(status) && (x.uID.ToString().Contains(key) || x.buyId.ToString().Contains(key) || x.id.ToString().Contains(key))), pageindex, pagesize, " createTime DESC ");
+                var datalist = data.data;
+                using (ExcelPackage package = new ExcelPackage(file))
+                {
+
+                    // 添加worksheet
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("worksheet");
+                    //添加头
+                    worksheet.Cells[1, 1].Value = "UID";
+                    worksheet.Cells[1, 2].Value = "EP金额";
+                    worksheet.Cells[1, 3].Value = "状态";
+                    worksheet.Cells[1, 4].Value = "usdt地址";
+                    worksheet.Cells[1, 5].Value = "支付宝账号";
+                    worksheet.Cells[1, 6].Value = "支付宝姓名";
+                    worksheet.Cells[1, 7].Value = "银行卡姓名";
+                    worksheet.Cells[1, 8].Value = "开户行";
+                    worksheet.Cells[1, 9].Value = "银行卡号";
+                    worksheet.Cells[1, 10].Value = "提现时间";
+                    for (int i = 0; i < datalist.Count(); i++)
+                    {
+                        int j = i + 2;
+
+                        worksheet.Cells[j, 1].Value = datalist[i].uID;
+                        worksheet.Cells[j, 2].Value = datalist[i].amount;
+                        worksheet.Cells[j, 3].Value = datalist[i].statusName;
+                        worksheet.Cells[j, 4].Value = datalist[i].usdtAddress;
+                        worksheet.Cells[j, 5].Value = datalist[i].alipayaccount;
+                        worksheet.Cells[j, 6].Value = datalist[i].alipayname;
+                        worksheet.Cells[j, 7].Value = datalist[i].bankname;
+                        worksheet.Cells[j, 8].Value = datalist[i].bankaddr;
+                        worksheet.Cells[j, 9].Value = datalist[i].bankidcard;
+                        worksheet.Cells[j, 10].Value = datalist[i].createTime.ToString("yyyy-MM-dd hh:mm:ss");
+                    }
+                    package.Save();
+                    await _idownexcelrecordservices.Add(new DownExcelRecord() { downdate = DateTime.Now, downname = sFileName, isdelete = false, downtype = "eprecord" });
+                }
+                var returnFile = File(sFileName, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                returnFile.FileDownloadName = sFileName;
+
+                return returnFile;
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
+
 
 
         //投诉

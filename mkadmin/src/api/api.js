@@ -484,6 +484,11 @@ export const GetALLUserInfoExcel = params => {
     return axios.post(`${base}/api/UserInfo/GetALLUserInfoExcel`, qs.stringify(params)).then(res => res.data);
 };
 
+export const EPRecordOutAllPut = params => {
+    return axios.post(`${base}/api/EP/EPRecordOutAllPut`, qs.stringify(params)).then(res => res.data);
+};
+
+
 
 
 export const GetDownExcelList = params => {
