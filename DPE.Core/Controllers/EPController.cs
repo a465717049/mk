@@ -762,7 +762,7 @@ namespace DPE.Core.Controllers
             foreach (var item in res)
             {
                 response.Add(new
-                {
+                {   
                     item.id,
                     item.euid,
                     img = (await _isysuserinfoservice.QueryById(item.euid)).uHeadImgUrl,
